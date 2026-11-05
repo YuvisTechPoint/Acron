@@ -1,0 +1,6 @@
+# /posh-insights-faq
+
+Build /posh, /blog, /blog/[slug], /faq in the right moods.
+POSH LANDING (calm mode): ivory and soft blue-100 surfaces, no dark dramatic hero, fade-only motion. Hero: "Safe, compliant workplaces" with buttons "Book a POSH consultation" and "Report a concern". Sections: why compliance matters (plain language), what Acorn offers (icon list), how the platform works (six steps vertical timeline: File, Acknowledge, Inquire, Report, Act, Close), who it is for, confidentiality and trust, resources, FAQ, short consultation form. Add the note "This page is general information, not legal advice."
+INSIGHTS (magazine layout): featured article full-width with arch image, category filter chips with animated underline, search, then an asymmetric masonry-style grid with varied card sizes. ARTICLE: 68ch reading column, thin brass reading-progress bar, sticky table of contents on the left (desktop), drop cap on the first paragraph, pull quotes, author box, related articles, consultation CTA and the disclaimer. Add Article JSON-LD.
+FAQ: left category rail (sticky), search at the top, smooth accordion, anchor links per question, and an "Ask a question" panel with a refined form and reference-ID confirmation state.

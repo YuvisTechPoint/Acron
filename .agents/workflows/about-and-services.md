@@ -1,0 +1,6 @@
+# /about-and-services
+
+Build /about, /services and /services/[slug].
+ABOUT: editorial long-form layout. Page header with the large serif headline "Where legal expertise meets strategic excellence." Section 1 "Our story" in a 5/7 split with an offset arch image. Section 2 a full-bleed navy pull-quote with the philosophy statement. Section 3 "Our approach" as four numbered rows (advisory, legal documentation, dispute resolution, representation). Section 4 "Our values" as a six-item grid with thin dividers, no cards. Section 5 "Our team" with arch-shaped portrait placeholders marked [to be supplied]. Closing CTA.
+SERVICES INDEX: a premium index list rather than a card grid: six full-width rows, each with a number, serif title, one-line description and an arrow. On hover (desktop), the row expands slightly and reveals a floating arch image preview that follows the cursor smoothly (disabled on touch and reduced motion).
+SERVICE DETAIL: hero with title and "Request this service"; a sticky left table of contents with active section highlighting; content sections (overview, who it is for, typical engagements as a checklist, our process, FAQ accordion); a sticky enquiry card on the right (desktop) that becomes a bottom bar on mobile; related insights; closing CTA. Generate realistic placeholder copy without promising outcomes.
