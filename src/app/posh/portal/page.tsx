@@ -6,8 +6,6 @@ import {
   ShieldAlert,
   ShieldCheck,
   FileText,
-  Lock,
-  HeartHandshake,
   HelpCircle,
   ExternalLink,
   Phone,
@@ -193,7 +191,7 @@ export default function PoshPortalPage() {
         {/* Confidentiality Notice Box (Section 16) */}
         <div className="bg-slate-50 border border-slate-300 rounded-card p-6 flex items-start gap-4">
           <div className="w-10 h-10 rounded-full bg-primary/10 text-primary flex items-center justify-center shrink-0">
-            <Lock className="w-5 h-5" />
+            <ShieldCheck className="w-5 h-5" />
           </div>
           <div className="space-y-1">
             <h4 className="font-serif font-bold text-ink text-sm">

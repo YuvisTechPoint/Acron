@@ -4,7 +4,6 @@ import React, { useState } from "react";
 import Link from "next/link";
 import {
   ShieldCheck,
-  Lock,
   FileCheck2,
   CheckCircle2,
   AlertTriangle,
@@ -95,7 +94,7 @@ export default function PoshIcDeclarationsPage() {
         {/* Header */}
         <div className="bg-white p-6 rounded-card border border-border shadow-sm">
           <div className="flex items-center gap-2 text-xs uppercase tracking-widest text-gold font-bold">
-            <Lock className="w-4 h-4 text-primary" />
+            <ShieldCheck className="w-4 h-4 text-primary" />
             <span>Statutory Undertakings &bull; Sections 16 &amp; 17</span>
           </div>
           <h1 className="font-serif text-2xl font-bold text-ink mt-1">

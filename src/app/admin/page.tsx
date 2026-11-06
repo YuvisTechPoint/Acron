@@ -10,7 +10,6 @@ import {
   CreditCard,
   Code,
   ShieldCheck,
-  Scale,
   Clock,
   ArrowRight,
   TrendingUp,

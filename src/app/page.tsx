@@ -5,13 +5,14 @@ import Link from "next/link";
 import {
   Briefcase,
   FileText,
-  Scale,
+  Compass,
+  Landmark,
   ShieldCheck,
   Building,
   HelpCircle,
   ArrowRight,
   Phone,
-  Lock,
+  Shield,
   Eye,
   CheckCircle2,
   ChevronDown,
@@ -33,7 +34,8 @@ import {
 const ICON_MAP: Record<string, React.ReactNode> = {
   Briefcase: <Briefcase className="w-5 h-5 text-brass-500" />,
   FileText: <FileText className="w-5 h-5 text-brass-500" />,
-  Scale: <Scale className="w-5 h-5 text-brass-500" />,
+  Compass: <Compass className="w-5 h-5 text-brass-500" />,
+  Landmark: <Landmark className="w-5 h-5 text-brass-500" />,
   ShieldCheck: <ShieldCheck className="w-5 h-5 text-brass-500" />,
   Building: <Building className="w-5 h-5 text-brass-500" />,
   HelpCircle: <HelpCircle className="w-5 h-5 text-brass-500" />,
@@ -209,7 +211,7 @@ export default function HomePage() {
                       {
                         title: "Discretion",
                         desc: "Absolute privilege & confidentiality",
-                        icon: Lock,
+                        icon: Shield,
                         delay: 0,
                       },
                       {
@@ -384,9 +386,9 @@ export default function HomePage() {
               </Card>
             </div>
 
-            {/* Smaller Card 3, 4, 5, 6 (Spans 4 cols each) */}
-            {PRACTICE_AREAS.slice(2, 5).map((pa, i) => (
-              <div key={pa.slug} className="md:col-span-4">
+            {/* Smaller Cards 3, 4, 5, 6 (Spans 3 cols each on lg, 6 cols on md) */}
+            {PRACTICE_AREAS.slice(2).map((pa, i) => (
+              <div key={pa.slug} className="md:col-span-6 lg:col-span-3">
                 <Card
                   variant="white"
                   arrowOnHover
@@ -399,7 +401,7 @@ export default function HomePage() {
                         0{i + 3}
                       </span>
                       <div className="w-9 h-9 rounded-full bg-blue-100 flex items-center justify-center text-navy-700">
-                        {ICON_MAP[pa.icon] || <Scale className="w-4 h-4 text-brass-500" />}
+                        {ICON_MAP[pa.icon] || <Compass className="w-4 h-4 text-brass-500" />}
                       </div>
                     </div>
 
@@ -762,7 +764,7 @@ export default function HomePage() {
 
             <a
               href={`tel:${BRAND_CONFIG.phone}`}
-              className="inline-flex items-center gap-2 px-6 h-[58px] rounded-btn border border-brass-500/40 text-ivory-50 text-sm font-semibold tracking-wide hover:bg-white/10 transition"
+              className="inline-flex items-center gap-2 px-6 h-[52px] rounded-btn border border-brass-500/40 text-ivory-50 text-sm font-semibold tracking-wide hover:bg-white/10 transition"
             >
               <Phone className="w-4 h-4 text-brass-300" />
               <span>Call: {BRAND_CONFIG.phone}</span>

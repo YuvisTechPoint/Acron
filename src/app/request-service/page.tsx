@@ -9,7 +9,7 @@ import {
   ShieldCheck,
   Phone,
   Clock,
-  Lock,
+  Shield,
   Upload,
   AlertCircle,
   FileText,
@@ -112,19 +112,15 @@ function RequestServiceContent() {
       // Log to platformStore if available
       try {
         platformStore.addServiceRequest({
-          clientName: fullName,
-          clientEmail: email,
-          clientPhone: phone,
-          clientType,
-          orgName: orgName || undefined,
-          city: "Kolkata",
-          serviceCategory: selectedPractice,
+          fullName,
+          email,
+          phone,
+          organization: orgName || undefined,
+          preferredChannel: "phone",
+          serviceCategory: selectedPractice || "corporate_advisory",
           subject,
           description,
-          preferredContact: "Phone",
-          preferredTimeWindow: "Morning (10:00 AM - 1:00 PM)",
-          urgency: "Standard",
-          attachmentsCount: files.length,
+          urgency: "standard",
         });
       } catch {}
 
@@ -449,7 +445,7 @@ function RequestServiceContent() {
 
                 <div className="space-y-4 pt-4 border-t border-navy-800 text-xs text-slate-300">
                   <div className="flex items-start gap-3">
-                    <Lock className="w-4 h-4 text-brass-500 shrink-0 mt-0.5" />
+                    <Shield className="w-4 h-4 text-brass-500 shrink-0 mt-0.5" />
                     <span>Protected by Section 126 advocate-client privilege under Indian Evidence Act.</span>
                   </div>
 

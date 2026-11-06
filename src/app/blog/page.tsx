@@ -41,7 +41,7 @@ export default function BlogIndexPage() {
       b.category.toLowerCase().includes(selectedCategory.toLowerCase());
     const matchesSearch =
       b.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      b.excerpt.toLowerCase().includes(searchTerm.toLowerCase());
+      (b.excerpt || b.summary || "").toLowerCase().includes(searchTerm.toLowerCase());
     return matchesCat && matchesSearch;
   });
 
@@ -126,7 +126,7 @@ export default function BlogIndexPage() {
                     <Badge variant="brass">{featured.category}</Badge>
                     <span className="text-xs text-ink-muted flex items-center gap-1">
                       <Clock className="w-3.5 h-3.5" />
-                      <span>{featured.readTimeMinutes || 6} min read</span>
+                      <span>{featured.readTimeMinutes || featured.readingTimeMinutes || 6} min read</span>
                     </span>
                     <span className="text-xs text-ink-muted">&bull;</span>
                     <span className="text-xs text-ink-muted">
@@ -144,13 +144,13 @@ export default function BlogIndexPage() {
                   </h2>
 
                   <p className="font-sans text-base text-ink-secondary leading-relaxed">
-                    {featured.excerpt}
+                    {featured.excerpt || featured.summary}
                   </p>
                 </div>
 
                 <div className="pt-6 border-t border-border flex items-center justify-between">
                   <div className="text-xs font-medium text-ink">
-                    By <span className="font-semibold text-navy-700">{featured.authorName}</span>
+                    By <span className="font-semibold text-navy-700">{typeof featured.author === "object" ? featured.author.name : (featured.authorName || featured.author || "Acorn Legal Counsel")}</span>
                   </div>
                   <EditorialLink href={`/blog/${featured.slug}`}>
                     Read Full Analysis
@@ -204,13 +204,13 @@ export default function BlogIndexPage() {
                       </h3>
 
                       <p className="font-sans text-xs sm:text-sm text-ink-secondary line-clamp-3 leading-relaxed">
-                        {art.excerpt}
+                        {art.excerpt || art.summary}
                       </p>
                     </div>
 
                     <div className="pt-4 border-t border-border flex items-center justify-between text-xs">
                       <span className="text-ink-muted">
-                        {art.readTimeMinutes || 5} min read
+                        {art.readTimeMinutes || art.readingTimeMinutes || 5} min read
                       </span>
                       <span className="font-semibold text-navy-700 flex items-center gap-1">
                         <span>Read</span>

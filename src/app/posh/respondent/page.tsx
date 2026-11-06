@@ -7,7 +7,6 @@ import {
   Clock,
   ShieldAlert,
   CheckCircle2,
-  Lock,
   Download,
   Upload,
   ArrowRight,
@@ -88,7 +87,7 @@ export default function PoshRespondentDeskPage() {
                   {poshCase.summary}
                 </p>
                 <div className="text-[11px] text-ink-secondary pt-1">
-                  Incident Dates: {poshCase.incidentDates.join(", ")} &bull; Location: {poshCase.incidentLocation}
+                  Incident Dates: {poshCase.incidentDates?.join(", ") || "Not specified"} &bull; Location: {poshCase.incidentLocation || "Kolkata"}
                 </div>
               </div>
 

@@ -6,7 +6,6 @@ import {
   KeyRound,
   ShieldAlert,
   AlertTriangle,
-  Lock,
   ArrowLeft,
   Clock,
   CheckCircle2,

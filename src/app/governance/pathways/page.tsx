@@ -3,7 +3,6 @@
 import React from "react";
 import Link from "next/link";
 import {
-  Scale,
   ShieldCheck,
   Building2,
   FileText,
@@ -12,7 +11,6 @@ import {
   CheckCircle2,
   Clock,
   Compass,
-  Lock
 } from "lucide-react";
 
 interface Pathway {
@@ -172,7 +170,7 @@ export default function JusticePathwaysPage() {
                   <div>
                     <span className="font-bold text-slate-700 block mb-0.5">Confidentiality Safeguards:</span>
                     <div className="p-2.5 bg-blue-50/60 rounded border border-blue-200 text-blue-900 flex items-center gap-2">
-                      <Lock className="w-4 h-4 text-blue-700 shrink-0" />
+                      <ShieldCheck className="w-4 h-4 text-blue-700 shrink-0" />
                       <span>{p.confidentialityProtection}</span>
                     </div>
                   </div>

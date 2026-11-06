@@ -10,17 +10,26 @@ import {
   Send,
   AlertTriangle,
   Building2,
-  Lock,
   FileCheck
 } from "lucide-react";
+import { platformStore } from "@/lib/store";
 
 export default function ComplainantInterimReliefPage() {
+  const [caseId] = useState("POSH-TECHKOL-2026-0014");
   const [reliefType, setReliefType] = useState("REMOTE_WORK");
   const [justification, setJustification] = useState("");
   const [submitted, setSubmitted] = useState(false);
 
+  const poshCase = platformStore.getCaseById(caseId);
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!justification.trim()) return;
+    platformStore.addInterimRelief(caseId, {
+      type: reliefType,
+      details: justification,
+      status: "requested"
+    });
     setSubmitted(true);
   };
 
@@ -119,6 +128,21 @@ export default function ComplainantInterimReliefPage() {
                 ACTIVE
               </span>
             </div>
+
+            {poshCase?.interimReliefs && poshCase.interimReliefs.map((ir: any) => (
+              <div key={ir.id} className="p-3.5 bg-amber-50/70 border border-amber-200 rounded-lg flex items-start justify-between">
+                <div>
+                  <div className="font-bold text-amber-900">Requested: {ir.type}</div>
+                  <p className="text-amber-800 mt-0.5">{ir.details}</p>
+                  <div className="text-[11px] text-amber-700 font-mono mt-1">
+                    Application Ref: {ir.id} &bull; Transmitted {new Date(ir.requestedAt || Date.now()).toLocaleDateString("en-IN")}
+                  </div>
+                </div>
+                <span className="px-2 py-0.5 bg-amber-200 text-amber-900 font-bold rounded text-[10px] uppercase">
+                  {ir.status || "PENDING"}
+                </span>
+              </div>
+            ))}
           </div>
         </div>
 

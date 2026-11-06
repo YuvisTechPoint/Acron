@@ -3,33 +3,40 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import {
-  Scale,
+  Landmark,
   ArrowLeft,
   CheckCircle2,
   AlertTriangle,
   FileText,
   ShieldCheck,
-  Send,
-  Lock
+  Send
 } from "lucide-react";
+import { platformStore } from "@/lib/store";
 
 export default function ComplainantMotionsPage() {
+  const [caseId] = useState("POSH-TECHKOL-2026-0014");
   const [requestType, setRequestType] = useState<"CONCILIATION" | "WITHDRAWAL">("CONCILIATION");
   const [statement, setStatement] = useState("");
   const [noMonetaryAck, setNoMonetaryAck] = useState(false);
   const [noCoercionAck, setNoCoercionAck] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [submitted, setSubmitted] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    setErrorMessage(null);
     if (requestType === "CONCILIATION" && !noMonetaryAck) {
-      alert("You must acknowledge that no monetary settlement can form the basis of conciliation.");
+      setErrorMessage("Statutory Requirement: You must acknowledge that no monetary settlement can form the basis of conciliation under Section 10(1).");
       return;
     }
     if (requestType === "WITHDRAWAL" && !noCoercionAck) {
-      alert("You must confirm this withdrawal is made freely without coercion or inducement.");
+      setErrorMessage("Anti-Coercion Requirement: You must confirm this withdrawal is made freely without coercion or inducement.");
       return;
     }
+    platformStore.addCaseMotion(caseId, {
+      type: requestType,
+      details: statement.trim()
+    });
     setSubmitted(true);
   };
 
@@ -54,7 +61,7 @@ export default function ComplainantMotionsPage() {
         {/* Header */}
         <div className="bg-white p-6 rounded-card border border-border shadow-sm">
           <div className="flex items-center gap-2 text-xs uppercase tracking-widest text-gold font-bold">
-            <Scale className="w-4 h-4 text-primary" />
+            <Landmark className="w-4 h-4 text-primary" />
             <span>Procedural Motions &bull; Section 10 (C-09)</span>
           </div>
           <h1 className="font-serif text-2xl font-bold text-ink mt-1">
@@ -115,6 +122,13 @@ export default function ComplainantMotionsPage() {
         ) : (
           <form onSubmit={handleSubmit} className="bg-white p-6 rounded-card border border-border shadow-sm space-y-6">
             
+            {errorMessage && (
+              <div className="p-3 bg-rose-50 border border-rose-200 rounded text-xs text-rose-800 flex items-center gap-2">
+                <AlertTriangle className="w-4 h-4 text-rose-600 shrink-0" />
+                <span>{errorMessage}</span>
+              </div>
+            )}
+
             {/* Toggle */}
             <div>
               <label className="text-xs font-bold text-slate-700 block mb-2">Select Motion Type</label>

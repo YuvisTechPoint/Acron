@@ -5,7 +5,7 @@ import Link from "next/link";
 import {
   ShieldAlert,
   Building2,
-  Scale,
+  Landmark,
   Users,
   AlertTriangle,
   Clock,
@@ -15,8 +15,7 @@ import {
   ArrowRight,
   Search,
   Filter,
-  Lock,
-  HeartHandshake,
+  HeartPulse,
   Calendar,
   ChevronRight,
   ShieldCheck,
@@ -42,7 +41,7 @@ export default function PoshCentralAdminPage() {
     const matchesSearch = org.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       org.code.toLowerCase().includes(searchTerm.toLowerCase()) ||
       org.city.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesSector = sectorFilter === "all" || org.industry.toLowerCase().includes(sectorFilter.toLowerCase());
+    const matchesSector = sectorFilter === "all" || (org.industry?.toLowerCase().includes(sectorFilter.toLowerCase()) ?? false);
     return matchesSearch && matchesSector;
   });
 
@@ -97,7 +96,7 @@ export default function PoshCentralAdminPage() {
           <div className="bg-white p-5 rounded-card border border-border shadow-sm">
             <div className="flex items-center justify-between text-slate-500 mb-2">
               <span className="text-xs uppercase font-bold tracking-wider">Active Inquiries</span>
-              <Scale className="w-4 h-4 text-gold" />
+              <Landmark className="w-4 h-4 text-gold" />
             </div>
             <div className="text-3xl font-bold text-primary">{activeCases.length}</div>
             <div className="text-xs text-slate-600 mt-1">Across {orgs.length} client employers</div>
@@ -130,7 +129,7 @@ export default function PoshCentralAdminPage() {
           >
             <div>
               <div className="flex items-center justify-between mb-2">
-                <Scale className="w-5 h-5 text-primary group-hover:text-gold transition" />
+                <Landmark className="w-5 h-5 text-primary group-hover:text-gold transition" />
                 <span className="text-[10px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded font-mono">X-03</span>
               </div>
               <h3 className="font-bold text-sm text-ink group-hover:text-primary transition">Case Oversight</h3>
@@ -166,7 +165,7 @@ export default function PoshCentralAdminPage() {
           >
             <div>
               <div className="flex items-center justify-between mb-2">
-                <HeartHandshake className="w-5 h-5 text-primary group-hover:text-gold transition" />
+                <HeartPulse className="w-5 h-5 text-primary group-hover:text-gold transition" />
                 <span className="text-[10px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded font-mono">X-07</span>
               </div>
               <h3 className="font-bold text-sm text-ink group-hover:text-primary transition">Aftercare & Retaliation</h3>
@@ -321,7 +320,7 @@ export default function PoshCentralAdminPage() {
                             href={`/posh/admin/cases?org=${org.code}`}
                             className="px-2.5 py-1 text-[11px] bg-primary/10 hover:bg-primary/20 text-primary rounded transition font-medium inline-flex items-center gap-1"
                           >
-                            <Scale className="w-3 h-3" />
+                            <Landmark className="w-3 h-3" />
                             <span>Cases</span>
                           </Link>
                         </div>
@@ -336,7 +335,7 @@ export default function PoshCentralAdminPage() {
 
         {/* Section 16 Statutory Warning Card */}
         <div className="p-4 bg-amber-50 border border-amber-200 rounded-card flex items-start gap-3 text-xs text-amber-900">
-          <Lock className="w-4 h-4 text-amber-600 mt-0.5 shrink-0" />
+          <ShieldAlert className="w-4 h-4 text-amber-600 mt-0.5 shrink-0" />
           <div>
             <div className="font-bold">Section 16 Statutory Prohibition &amp; Audit Warning</div>
             <p className="mt-0.5 text-amber-800 leading-relaxed">

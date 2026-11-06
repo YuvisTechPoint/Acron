@@ -8,7 +8,12 @@ export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
 
-    if (!body.name || !body.email || !body.practiceArea || !body.description) {
+    const name = body.name || body.fullName;
+    const email = body.email;
+    const practiceArea = body.practiceArea || body.serviceCategory;
+    const description = body.description;
+
+    if (!name || !email || !practiceArea || !description) {
       return NextResponse.json(
         { error: "Missing required fields: name, email, practiceArea, description" },
         { status: 400 }
@@ -18,17 +23,22 @@ export async function POST(req: NextRequest) {
     const referenceNumber = generateReferenceNumber("SR");
     const newRequest: ServiceRequest = {
       id: `SR-${Date.now()}`,
+      refNumber: referenceNumber,
       referenceNumber,
-      name: body.name,
-      email: body.email,
+      fullName: name,
+      name: name,
+      email: email,
       phone: body.phone || "",
       organization: body.organization || "",
-      practiceArea: body.practiceArea,
-      description: body.description,
+      serviceCategory: practiceArea,
+      practiceArea: practiceArea,
+      subject: body.subject || `Legal Inquiry: ${practiceArea}`,
+      description: description,
       status: "NEW",
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
-      urgency: body.urgency || "NORMAL",
+      urgency: body.urgency || "standard",
+      preferredChannel: "phone",
       preferredMode: body.preferredMode || "ONLINE_VC",
     };
 

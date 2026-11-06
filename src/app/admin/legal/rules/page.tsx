@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { Scale, ShieldCheck, ArrowLeft, CheckCircle2, Lock, Plus } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 
 export default function LegalRulesConsolePage() {
   const [rules, setRules] = useState([

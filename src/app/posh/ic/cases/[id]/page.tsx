@@ -5,12 +5,10 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 import {
   ShieldCheck,
-  Scale,
   Calendar,
   Clock,
   UserCheck,
   FileText,
-  Lock,
   Eye,
   EyeOff,
   AlertTriangle,
@@ -66,7 +64,7 @@ export default function ICCaseDetailPage() {
     );
   }
 
-  const daysRemaining = calculateDaysRemaining(poshCase.inquiryDeadline);
+  const daysRemaining = calculateDaysRemaining(poshCase.inquiryDeadline || "");
 
   const handleScheduleHearing = (e: React.FormEvent) => {
     e.preventDefault();
@@ -77,7 +75,7 @@ export default function ICCaseDetailPage() {
       scheduledDate: newHearingDate,
       scheduledTime: newHearingTime,
       locationOrLink: newHearingVenue,
-      attendees: ["Dr. Ananya Mukherjee (PO)", "Adv. Debjani Sen (External Member)", poshCase.complainantName],
+      attendees: ["Dr. Ananya Mukherjee (PO)", "Adv. Debjani Sen (External Member)", poshCase.complainantName || "Complainant"],
       agenda: newHearingAgenda,
       status: "scheduled",
     });
@@ -287,7 +285,7 @@ export default function ICCaseDetailPage() {
                 <div><strong>Designation:</strong> {poshCase.complainantDesignation}</div>
                 <div><strong>Department:</strong> {poshCase.complainantDepartment}</div>
                 <div><strong>Safe Contact:</strong> {isMasked ? "REDACTED" : poshCase.complainantEmail}</div>
-                <div><strong>Preferred Language:</strong> {poshCase.preferredLanguage.toUpperCase()}</div>
+                <div><strong>Preferred Language:</strong> {poshCase.preferredLanguage?.toUpperCase() || "EN"}</div>
               </div>
 
               <div className="bg-white p-4 rounded border border-border space-y-2">

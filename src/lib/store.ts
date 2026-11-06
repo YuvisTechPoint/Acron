@@ -8,6 +8,8 @@ import {
   PaymentTransaction,
   ScriptTag,
   AuditLogEntry,
+  Hearing,
+  EvidenceItem,
 } from "./types";
 import {
   generateServiceRequestRef,
@@ -658,15 +660,25 @@ class PlatformStore {
     return this.get("qa_list", SEED_QUESTIONS);
   }
 
-  addQuestion(authorName: string, authorEmail: string, category: QuestionAnswer["category"], question: string): QuestionAnswer {
+  addQuestion(
+    qaOrName: QuestionAnswer | string,
+    authorEmail?: string,
+    category?: QuestionAnswer["category"],
+    question?: string
+  ): QuestionAnswer {
     const list = this.getQuestions();
+    if (typeof qaOrName === "object") {
+      list.unshift(qaOrName);
+      this.set("qa_list", list);
+      return qaOrName;
+    }
     const newQA: QuestionAnswer = {
       id: `qa-${Date.now()}`,
       refNumber: generateQARef(),
-      authorName,
-      authorEmail,
-      category,
-      question,
+      authorName: qaOrName,
+      authorEmail: authorEmail || "",
+      category: category || "corporate",
+      question: question || "",
       status: "pending_review",
       isPublic: false,
       views: 0,
@@ -809,6 +821,12 @@ class PlatformStore {
     return newCase;
   }
 
+  addCase(c: POSHCase): void {
+    const list = this.getCases();
+    list.unshift(c);
+    this.set("posh_cases", list);
+  }
+
   updateCaseState(caseId: string, newState: POSHCase["state"], details?: string): void {
     const list = this.getCases();
     const c = list.find((item) => item.id === caseId || item.caseNumber === caseId);
@@ -858,6 +876,43 @@ class PlatformStore {
       c.updatedAt = new Date().toISOString();
       this.set("posh_cases", list);
       this.addAuditLog("Evidence Vault", "ic_member", "EVIDENCE_DEPOSITED", "case", c.caseNumber, `Deposited Exhibit ${newEv.exhibitCode}: ${newEv.title}`);
+    }
+  }
+
+  addInterimRelief(caseId: string, relief: { type: string; details: string; status?: string }): void {
+    const list = this.getCases();
+    const c = list.find((item) => item.id === caseId || item.caseNumber === caseId);
+    if (c) {
+      if (!c.interimReliefs) c.interimReliefs = [];
+      const item = {
+        id: `ir-${Date.now()}`,
+        type: relief.type,
+        details: relief.details,
+        status: relief.status || "requested",
+        requestedAt: new Date().toISOString(),
+      };
+      c.interimReliefs.push(item);
+      c.interimReliefRequested = {
+        type: (relief.type.toLowerCase().includes("leave") ? "paid_leave_up_to_3_months" : relief.type.toLowerCase().includes("transfer") ? "transfer" : "other") as any,
+        details: relief.details,
+        status: "requested",
+      };
+      c.updatedAt = new Date().toISOString();
+      this.set("posh_cases", list);
+      this.addAuditLog("Section 12 Safeguard", "complainant", "INTERIM_RELIEF_REQUESTED", "case", c.caseNumber, `Requested Section 12 relief: ${relief.type}`);
+    }
+  }
+
+  addCaseMotion(caseId: string, motion: { type: string; details: string }): void {
+    const list = this.getCases();
+    const c = list.find((item) => item.id === caseId || item.caseNumber === caseId);
+    if (c) {
+      if (motion.type === "CONCILIATION") {
+        c.conciliationRequested = true;
+      }
+      c.updatedAt = new Date().toISOString();
+      this.set("posh_cases", list);
+      this.addAuditLog("Procedural Motion", "complainant", `MOTION_${motion.type}`, "case", c.caseNumber, motion.details);
     }
   }
 
@@ -916,6 +971,12 @@ class PlatformStore {
     return newPay;
   }
 
+  addPayment(payment: PaymentTransaction): void {
+    const list = this.getPayments();
+    list.unshift(payment);
+    this.set("payments", list);
+  }
+
   // Scripts
   getScripts(): ScriptTag[] {
     return this.get("scripts", SEED_SCRIPTS);
@@ -937,18 +998,41 @@ class PlatformStore {
     return this.get("audit_logs", SEED_AUDIT_LOGS);
   }
 
-  addAuditLog(actor: string, actorRole: string, action: string, entityType: AuditLogEntry["entityType"], entityId: string, details: string): void {
+  addAuditLog(
+    actorOrAction: string,
+    actorRoleOrActor: string,
+    actionOrDetails: string,
+    entityType?: AuditLogEntry["entityType"],
+    entityId?: string,
+    details?: string
+  ): void {
+    let finalActor = actorOrAction;
+    let finalActorRole = actorRoleOrActor;
+    let finalAction = actionOrDetails;
+    let finalEntityType = entityType || "system";
+    let finalEntityId = entityId || "system";
+    let finalDetails = details || "";
+
+    if (entityType === undefined) {
+      finalAction = actorOrAction;
+      finalActor = actorRoleOrActor;
+      finalActorRole = "user";
+      finalEntityType = "system";
+      finalEntityId = "system";
+      finalDetails = actionOrDetails;
+    }
+
     const logs = this.getAuditLogs();
     const entry: AuditLogEntry = {
       id: `log-${Date.now()}`,
-      actor,
-      actorRole,
-      action,
-      entityType,
-      entityId,
+      actor: finalActor,
+      actorRole: finalActorRole,
+      action: finalAction,
+      entityType: finalEntityType,
+      entityId: finalEntityId,
       ipAddress: "103.21.124.50",
       timestamp: new Date().toLocaleString("en-IN") + " IST",
-      details,
+      details: finalDetails,
     };
     logs.unshift(entry);
     this.set("audit_logs", logs.slice(0, 100)); // maintain latest 100

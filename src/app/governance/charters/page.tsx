@@ -5,7 +5,7 @@ import Link from "next/link";
 import {
   FileText,
   UserCheck,
-  Scale,
+  Landmark,
   ShieldCheck,
   Building2,
   CheckCircle2,
@@ -166,7 +166,7 @@ export default function RightsChartersPage() {
         {activeCharter === "RESPONDENT" && (
           <div className="bg-white rounded-card border border-border shadow-sm p-8 space-y-6">
             <h2 className="font-serif text-2xl font-bold text-ink flex items-center gap-2">
-              <Scale className="w-6 h-6 text-primary" />
+              <Landmark className="w-6 h-6 text-primary" />
               <span>Respondent Rights &amp; Fair Trial Charter</span>
             </h2>
 

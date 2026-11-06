@@ -2,7 +2,7 @@
 
 import React, { useState, useRef } from "react";
 import Link from "next/link";
-import { ArrowRight, Briefcase, FileText, Scale, ShieldCheck, Building, HelpCircle } from "lucide-react";
+import { ArrowRight, Briefcase, FileText, Compass, Landmark, ShieldCheck, Building, HelpCircle } from "lucide-react";
 import { PRACTICE_AREAS, BRAND_CONFIG } from "@/lib/constants";
 import { Eyebrow, SectionHeading, Button, Rule, usePrefersReducedMotion } from "@/components/ui";
 
@@ -14,13 +14,10 @@ export default function ServicesIndexPage() {
 
   const handleMouseMove = (e: React.MouseEvent) => {
     if (reducedMotion) return;
-    if (containerRef.current) {
-      const rect = containerRef.current.getBoundingClientRect();
-      setCursorPos({
-        x: e.clientX - rect.left,
-        y: e.clientY - rect.top,
-      });
-    }
+    setCursorPos({
+      x: e.clientX,
+      y: e.clientY,
+    });
   };
 
   return (

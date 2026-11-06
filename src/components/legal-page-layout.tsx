@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { Printer, Scale, ShieldAlert, ArrowLeft } from "lucide-react";
+import { Printer, Landmark, ShieldAlert, ArrowLeft } from "lucide-react";
 import { GoldEyebrow } from "@/components/gold-eyebrow";
 
 export interface TocItem {
@@ -98,7 +98,7 @@ export function LegalPageLayout({
           {showTopBarCouncilNotice && (
             <div className="mb-10 p-6 bg-surface rounded-card border-l-4 border-l-gold border border-border shadow-soft space-y-3">
               <div className="flex items-center gap-2 text-navy font-serif font-bold text-base">
-                <Scale className="w-5 h-5 text-gold" />
+                <Landmark className="w-5 h-5 text-gold" />
                 <span>Bar Council of India Rule 36 Statutory Declaration</span>
               </div>
               <p className="text-xs sm:text-sm text-slate leading-relaxed">
@@ -153,7 +153,7 @@ export function LegalPageLayout({
                 <div className="pt-8 border-t border-border mt-12">
                   <div className="p-5 bg-surface rounded-card border border-border text-xs text-slate space-y-2">
                     <div className="flex items-center gap-2 font-semibold text-navy">
-                      <Scale className="w-4 h-4 text-gold" />
+                      <Landmark className="w-4 h-4 text-gold" />
                       <span>Bar Council of India Disclaimer</span>
                     </div>
                     <p className="leading-relaxed">

@@ -4,7 +4,6 @@ import React, { useState } from "react";
 import Link from "next/link";
 import {
   ShieldCheck,
-  Scale,
   Calendar,
   AlertTriangle,
   Clock,
@@ -12,7 +11,6 @@ import {
   FileText,
   Search,
   CheckCircle2,
-  Lock,
   ArrowRight,
 } from "lucide-react";
 import { platformStore } from "@/lib/store";
@@ -137,7 +135,7 @@ export default function ICWorkspaceDashboard() {
               </thead>
               <tbody className="divide-y divide-border-subtle bg-white">
                 {filteredCases.map((c) => {
-                  const deadlineInfo = calculateDaysRemaining(c.inquiryDeadline);
+                  const deadlineInfo = calculateDaysRemaining(c.inquiryDeadline || "");
                   return (
                     <tr key={c.id} className="hover:bg-surface transition-colors">
                       <td className="p-4">

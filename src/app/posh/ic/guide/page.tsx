@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import {
   BookOpen,
-  Scale,
+  Landmark,
   ShieldCheck,
   CheckCircle2,
   AlertTriangle,
@@ -82,7 +82,7 @@ export default function PoshIcGuidePage() {
         {activeSection === "NATURAL_JUSTICE" && (
           <div className="bg-white p-6 rounded-card border border-border shadow-sm space-y-4">
             <h2 className="font-serif text-lg font-bold text-ink flex items-center gap-2">
-              <Scale className="w-5 h-5 text-primary" />
+              <Landmark className="w-5 h-5 text-primary" />
               <span>Core Principles of Natural Justice</span>
             </h2>
 

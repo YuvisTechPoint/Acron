@@ -5,10 +5,9 @@ import Link from "next/link";
 import {
   Briefcase,
   FileText,
-  Scale,
-  Gavel,
+  Compass,
   ShieldCheck,
-  Lock,
+  Shield,
   Eye,
   CheckCircle2,
   Sparkles,

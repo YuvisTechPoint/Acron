@@ -7,7 +7,10 @@ export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
 
-    if (!body.razorpay_order_id || !body.razorpay_payment_id) {
+    const orderId = body.razorpay_order_id || body.razorpayOrderId || body.orderId;
+    const paymentId = body.razorpay_payment_id || body.razorpayPaymentId || body.paymentId;
+
+    if (!orderId || !paymentId) {
       return NextResponse.json(
         { error: "Missing Razorpay order or payment transaction identifiers." },
         { status: 400 }
@@ -24,18 +27,24 @@ export async function POST(req: NextRequest) {
 
     const transaction: PaymentTransaction = {
       id: `TXN-${Date.now()}`,
-      orderId: body.razorpay_order_id,
-      paymentId: body.razorpay_payment_id,
       receiptNumber,
       invoiceNumber,
       clientName: body.clientName || "Corporate Client",
       clientEmail: body.clientEmail || "client@company.in",
       clientPhone: body.clientPhone || "+91 98300 00000",
-      packageCode: body.packageCode || "LEGAL-CONSULT-01",
-      packageName: body.packageName || "Legal Consultation / Service Retainer",
+      serviceCategory: body.packageCode || "corporate_advisory",
+      itemDescription: body.packageName || "Legal Consultation / Service Retainer",
       amountPaise,
+      taxPaise: gstPaise,
       gstPaise,
       totalPaise,
+      currency: "INR",
+      razorpayOrderId: body.razorpay_order_id,
+      razorpayPaymentId: body.razorpay_payment_id,
+      orderId: body.razorpay_order_id,
+      paymentId: body.razorpay_payment_id,
+      packageCode: body.packageCode || "LEGAL-CONSULT-01",
+      packageName: body.packageName || "Legal Consultation / Service Retainer",
       status: "paid",
       method: body.method || "card",
       paidAt: new Date().toISOString(),

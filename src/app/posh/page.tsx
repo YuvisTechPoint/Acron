@@ -4,10 +4,10 @@ import React, { useState } from "react";
 import Link from "next/link";
 import {
   ShieldCheck,
-  Scale,
+  Landmark,
   Users,
   FileText,
-  Lock,
+  KeyRound,
   CheckCircle2,
   Building,
   ArrowRight,
@@ -185,7 +185,7 @@ export default function PoshPage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div className="p-8 bg-white rounded-card border border-border shadow-card space-y-3">
               <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-navy-700">
-                <Scale className="w-5 h-5 text-navy-700" />
+                <Landmark className="w-5 h-5 text-navy-700" />
               </div>
               <h3 className="font-serif text-2xl font-bold text-ink">Statutory Liability</h3>
               <p className="font-sans text-sm text-ink-secondary leading-relaxed">
@@ -306,7 +306,7 @@ export default function PoshPage() {
         <div className="max-w-[1040px] mx-auto px-4 sm:px-6">
           <div className="p-8 sm:p-12 bg-blue-100/50 rounded-card border border-blue-100 space-y-6">
             <div className="flex items-center gap-3">
-              <Lock className="w-6 h-6 text-navy-700" />
+              <KeyRound className="w-6 h-6 text-navy-700" />
               <Eyebrow>STATUTORY CONFIDENTIALITY ASSURANCE</Eyebrow>
             </div>
 

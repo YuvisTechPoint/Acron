@@ -7,7 +7,7 @@ import {
   MapPin,
   Phone,
   Mail,
-  Scale,
+  Landmark,
   Save,
   ArrowLeft,
   CheckCircle2,
@@ -90,7 +90,7 @@ export default function AdminSiteSettingsPage() {
           
           <div className="space-y-4">
             <h3 className="font-bold text-sm text-ink border-b pb-2 flex items-center gap-2">
-              <Scale className="w-4 h-4 text-primary" />
+              <Landmark className="w-4 h-4 text-primary" />
               <span>Firm Identity &amp; Positioning</span>
             </h3>
 

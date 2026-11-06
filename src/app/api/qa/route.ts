@@ -8,7 +8,11 @@ export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
 
-    if (!body.name || !body.email || !body.question) {
+    const name = body.name || body.authorName || body.askedByName;
+    const email = body.email || body.authorEmail || body.askedByEmail;
+    const question = body.question;
+
+    if (!name || !email || !question) {
       return NextResponse.json(
         { error: "Missing required fields: name, email, question" },
         { status: 400 }
@@ -18,13 +22,19 @@ export async function POST(req: NextRequest) {
     const referenceNumber = generateReferenceNumber("QA");
     const newQuestion: QuestionAnswer = {
       id: `QA-${Date.now()}`,
+      refNumber: referenceNumber,
       referenceNumber,
+      authorName: body.name || "Anonymous",
+      authorEmail: body.email || "",
       askedByName: body.name,
       askedByEmail: body.email,
       question: body.question,
-      category: body.category || "General Corporate Law",
+      category: body.category || "corporate",
       status: "pending_review",
+      isPublic: false,
       isPublished: false,
+      views: 0,
+      upvotes: 0,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString()
     };
@@ -62,7 +72,7 @@ export async function GET(req: NextRequest) {
     if (statusParam === "all") {
       // Return all for admin
     } else {
-      questions = questions.filter((q) => q.isPublished || q.status === "answered_published");
+      questions = questions.filter((q) => q.isPublic || q.isPublished || q.status === "published" || q.status === "answered");
     }
 
     if (categoryParam) {

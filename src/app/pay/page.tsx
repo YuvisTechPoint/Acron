@@ -6,7 +6,6 @@ import { useRouter } from "next/navigation";
 import {
   CreditCard,
   ShieldCheck,
-  Lock,
   ArrowRight,
   FileText,
   Clock,
@@ -411,7 +410,7 @@ export default function PayOnlinePage() {
 
             <div className="pt-4 border-t border-border text-xs text-ink-secondary space-y-2">
               <div className="flex items-center gap-2">
-                <Lock className="w-4 h-4 text-brass-500" />
+                <ShieldCheck className="w-4 h-4 text-brass-500" />
                 <span>UPI, RuPay, Netbanking, Corporate Cards</span>
               </div>
               <div className="flex items-center gap-2">

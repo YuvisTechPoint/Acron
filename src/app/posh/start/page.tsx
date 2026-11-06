@@ -9,7 +9,7 @@ import {
   ArrowRight,
   ArrowLeft,
   Building,
-  Scale,
+  Landmark,
   ExternalLink,
 } from "lucide-react";
 
@@ -219,7 +219,7 @@ export default function PoshApplicabilityWizard() {
               {isRoutedToLocalCommittee ? (
                 <div className="p-5 bg-amber-50 rounded border border-amber-200 space-y-3 text-xs text-amber-950">
                   <div className="font-serif font-bold text-sm text-amber-900 flex items-center gap-1.5">
-                    <Scale className="w-4 h-4" />
+                    <Landmark className="w-4 h-4" />
                     <span>Route: District Local Committee (LC) Referral</span>
                   </div>
                   <p className="leading-relaxed">

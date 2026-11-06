@@ -5,7 +5,6 @@ import Link from "next/link";
 import {
   FileText,
   Upload,
-  Lock,
   CheckCircle2,
   ArrowLeft,
   ShieldCheck,
@@ -15,24 +14,48 @@ import {
 import { platformStore } from "@/lib/store";
 
 export default function ComplainantDocsPage() {
-  const [activeCaseId, setActiveCaseId] = useState("POSH-TECHKOL-2026-0014");
+  const [activeCaseId] = useState("POSH-TECHKOL-2026-0014");
   const [supplementalTitle, setSupplementalTitle] = useState("");
   const [supplementalType, setSupplementalType] = useState("CHAT_SCREENSHOT");
   const [supplementalDesc, setSupplementalDesc] = useState("");
   const [isUploaded, setIsUploaded] = useState(false);
+  const [notification, setNotification] = useState<{ message: string; type: "success" | "info" } | null>(null);
 
   const poshCase = platformStore.getCaseById(activeCaseId);
 
   const handleUpload = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!supplementalTitle) return;
+    if (!supplementalTitle.trim()) return;
     setIsUploaded(true);
+    
+    // Hash simulation and deposit into platformStore
+    const fakeHash = Array.from({ length: 64 }, () => Math.floor(Math.random() * 16).toString(16)).join("");
+    platformStore.addEvidence(activeCaseId, {
+      title: supplementalTitle.trim(),
+      description: supplementalDesc.trim() || "Supplemental evidence deposited by Complainant under Section 11 inquiry.",
+      fileType: supplementalType === "AUDIO_RECORDING" ? "audio/mpeg" : supplementalType === "CHAT_SCREENSHOT" ? "image/png" : "application/pdf",
+      fileSizeKb: 340,
+      uploadedBy: "complainant",
+      sha256Hash: fakeHash,
+      isRedacted: false,
+    });
+
     setTimeout(() => {
-      alert("Supplemental exhibit deposited with SHA-256 seal. Presiding Officer notified.");
+      setNotification({
+        message: `Supplemental exhibit deposited with SHA-256 seal (${fakeHash.slice(0, 16)}...). Presiding Officer notified.`,
+        type: "success"
+      });
       setSupplementalTitle("");
       setSupplementalDesc("");
       setIsUploaded(false);
-    }, 800);
+    }, 600);
+  };
+
+  const handleDownload = (exhibitCode: string, title: string) => {
+    setNotification({
+      message: `Verified exhibit ${exhibitCode} ("${title}") decrypted and downloaded securely.`,
+      type: "info"
+    });
   };
 
   return (
@@ -97,6 +120,26 @@ export default function ComplainantDocsPage() {
           </div>
         </div>
 
+        {/* Notification Toast */}
+        {notification && (
+          <div className={`p-4 rounded-card border flex items-center justify-between text-xs transition animate-in fade-in duration-200 ${
+            notification.type === "success"
+              ? "bg-emerald-50 border-emerald-200 text-emerald-900"
+              : "bg-blue-50 border-blue-200 text-blue-900"
+          }`}>
+            <div className="flex items-center gap-2">
+              <CheckCircle2 className="w-4 h-4 shrink-0 text-emerald-600" />
+              <span>{notification.message}</span>
+            </div>
+            <button
+              onClick={() => setNotification(null)}
+              className="font-bold underline ml-4 hover:opacity-80 cursor-pointer"
+            >
+              Dismiss
+            </button>
+          </div>
+        )}
+
         {/* Existing Exhibits */}
         <div className="bg-white p-6 rounded-card border border-border shadow-sm space-y-4">
           <h2 className="font-serif text-base font-bold text-ink flex items-center justify-between">
@@ -115,7 +158,7 @@ export default function ComplainantDocsPage() {
                       </span>
                       <span className="text-xs font-bold text-ink">{ev.title}</span>
                       <span className="text-[10px] bg-emerald-50 text-emerald-700 font-semibold px-2 py-0.5 rounded border border-emerald-200">
-                        {ev.verificationStatus}
+                        {ev.verificationStatus || "VERIFIED"}
                       </span>
                     </div>
                     <p className="text-xs text-slate-600 mt-1">{ev.description}</p>
@@ -125,7 +168,7 @@ export default function ComplainantDocsPage() {
                   </div>
 
                   <button
-                    onClick={() => alert(`Downloading verified exhibit ${ev.exhibitCode}...`)}
+                    onClick={() => handleDownload(ev.exhibitCode, ev.title)}
                     className="px-3 py-1.5 bg-white hover:bg-slate-100 border border-border rounded text-xs font-medium text-slate-700 flex items-center gap-1.5 shrink-0"
                   >
                     <Download className="w-3.5 h-3.5" />
@@ -202,7 +245,7 @@ export default function ComplainantDocsPage() {
                 disabled={isUploaded}
                 className="px-5 py-2.5 bg-primary hover:bg-primary-light text-white font-bold rounded flex items-center gap-2 shadow"
               >
-                <Lock className="w-3.5 h-3.5 text-gold" />
+                <ShieldCheck className="w-3.5 h-3.5 text-gold" />
                 <span>Submit &amp; Seal Exhibit</span>
               </button>
             </div>

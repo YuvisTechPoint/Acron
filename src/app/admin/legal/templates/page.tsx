@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { FileText, ArrowLeft, CheckCircle2, Lock, Eye, Download } from "lucide-react";
+import { FileText, ArrowLeft, CheckCircle2, Eye, Download } from "lucide-react";
 
 export default function LegalTemplatesConsolePage() {
   const templates = [

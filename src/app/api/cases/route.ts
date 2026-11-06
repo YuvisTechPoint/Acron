@@ -7,7 +7,9 @@ export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
 
-    if (!body.orgId || !body.incidentDescription) {
+    const description = body.incidentDescription || body.summary || body.detailedStatement;
+
+    if (!body.orgId || !description) {
       return NextResponse.json(
         { error: "Missing required fields: orgId, incidentDescription" },
         { status: 400 }
@@ -33,14 +35,14 @@ export async function POST(req: NextRequest) {
       evidence: [],
       hearings: [],
       interimReliefs: [],
-      presidingOfficerName: org?.presidingOfficerName || "Presiding Officer",
-      externalMemberName: org?.externalMemberName || "Adv. Debjani Sen (Acorn Legal)"
+      presidingOfficerName: org?.presidingOfficerName || org?.icPresidingOfficer || "Presiding Officer",
+      externalMemberName: org?.externalMemberName || org?.icExternalMember || "Adv. Debjani Sen (Acorn Legal)"
     };
 
     platformStore.addCase(newCase);
     platformStore.addAuditLog(
       "POSH_INTAKE_SUBMITTED",
-      newCase.complainantCode,
+      newCase.complainantCode || "Anonymous",
       `New confidential inquiry docket ${caseNumber} initiated.`
     );
 

@@ -5,7 +5,6 @@ import Link from "next/link";
 import {
   Search,
   CheckCircle2,
-  Lock,
   Link as LinkIcon,
   Check,
   Send,

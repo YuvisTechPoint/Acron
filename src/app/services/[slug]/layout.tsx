@@ -18,13 +18,13 @@ export async function generateMetadata({
 
   return {
     title: `${area.title} | Acorn Legal Consultants, Kolkata`,
-    description: area.shortDescription,
+    description: area.shortDesc,
     alternates: {
       canonical: `https://www.acornlegal.in/services/${area.slug}`,
     },
     openGraph: {
       title: `${area.title} | Acorn Legal Consultants, Kolkata`,
-      description: area.shortDescription,
+      description: area.shortDesc,
       url: `https://www.acornlegal.in/services/${area.slug}`,
       siteName: "Acorn Legal Consultants",
       type: "website",

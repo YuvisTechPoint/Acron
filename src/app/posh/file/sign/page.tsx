@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { ShieldCheck, CheckCircle2, Lock, ArrowRight, ArrowLeft } from "lucide-react";
+import { ShieldCheck, CheckCircle2, ArrowRight, ArrowLeft } from "lucide-react";
 import { platformStore } from "@/lib/store";
 
 export default function PoshSignPage() {

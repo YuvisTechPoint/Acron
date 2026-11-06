@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import {
-  Scale,
+  Landmark,
   Search,
   Filter,
   Building2,
@@ -13,7 +13,7 @@ import {
   Eye,
   ArrowLeft,
   Calendar,
-  Lock,
+  ShieldCheck,
   Download,
   AlertCircle
 } from "lucide-react";
@@ -30,8 +30,8 @@ export default function PoshCrossTenantCasesPage() {
 
   const filteredCases = cases.filter((c) => {
     const matchesSearch = c.caseNumber.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      c.complainantCode.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      c.respondentCode.toLowerCase().includes(searchTerm.toLowerCase());
+      (c.complainantCode?.toLowerCase().includes(searchTerm.toLowerCase()) ?? false) ||
+      (c.respondentCode?.toLowerCase().includes(searchTerm.toLowerCase()) ?? false);
     const matchesStatus = statusFilter === "all" || c.state === statusFilter;
     const matchesOrg = orgFilter === "all" || c.orgId === orgFilter;
     return matchesSearch && matchesStatus && matchesOrg;
@@ -59,7 +59,7 @@ export default function PoshCrossTenantCasesPage() {
         <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-4 bg-white p-6 rounded-card border border-border shadow-sm">
           <div>
             <div className="flex items-center gap-2 text-xs uppercase tracking-widest text-gold font-bold">
-              <Scale className="w-4 h-4 text-primary" />
+              <Landmark className="w-4 h-4 text-primary" />
               <span>Cross-Tenant Oversight &bull; Statutory Inquiries</span>
             </div>
             <h1 className="font-serif text-2xl font-bold text-ink mt-1">
@@ -72,7 +72,7 @@ export default function PoshCrossTenantCasesPage() {
 
           <div className="flex items-center gap-2">
             <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-blue-50 text-blue-800 text-xs font-semibold rounded border border-blue-200">
-              <Lock className="w-3.5 h-3.5 text-blue-600" />
+              <ShieldCheck className="w-3.5 h-3.5 text-blue-600" />
               <span>Section 16 Masking Active</span>
             </span>
           </div>

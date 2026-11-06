@@ -23,10 +23,10 @@ import {
   Shield,
   CheckCircle,
   FileText,
-  Lock,
+  ShieldCheck,
   ArrowRight,
   Info,
-  Scale,
+  Compass,
 } from "lucide-react";
 
 // Contrast calculation based on WCAG 2.1 relative luminance
@@ -320,7 +320,7 @@ export default function DesignSystemPage() {
               <Card arrowOnHover>
                 <div className="space-y-3">
                   <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-navy-700">
-                    <Scale className="w-5 h-5" />
+                    <Compass className="w-5 h-5" />
                   </div>
                   <h4 className="font-serif text-2xl font-bold text-ink">Corporate Advisory</h4>
                   <p className="font-sans text-sm text-ink-secondary leading-relaxed">

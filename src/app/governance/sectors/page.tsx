@@ -8,7 +8,7 @@ import {
   Stethoscope,
   Laptop,
   Factory,
-  Scale,
+  Compass,
   ShieldCheck,
   CheckCircle2,
   AlertTriangle,
@@ -91,7 +91,7 @@ const SECTOR_OVERLAYS: SectorOverlay[] = [
     name: "Law Firms, Consulting Partnerships & Chambers",
     regulatoryBody: "Bar Council of India / High Court Rules",
     statutoryReference: "Bar Council of India Rules & Gender Sensitization and Internal Complaints Committee (GSICC)",
-    icon: Scale,
+    icon: Compass,
     keyMandates: [
       "Addressing power imbalances between Equity Partners / Senior Advocates and junior associates, paralegals, or interns.",
       "Confidentiality safeguards protecting future professional career prospects of junior lawyers.",
@@ -219,7 +219,7 @@ export default function SectorOverlaysPage() {
 
           <div className="p-5 bg-gold/10 border border-gold/30 rounded-lg space-y-2">
             <div className="flex items-center gap-2 font-bold text-primary text-xs">
-              <Scale className="w-4 h-4 text-gold" />
+              <Compass className="w-4 h-4 text-gold" />
               <span>Acorn Legal Consulting Practice Blueprint</span>
             </div>
             <p className="text-xs text-slate-700 leading-relaxed">

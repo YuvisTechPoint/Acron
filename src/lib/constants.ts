@@ -56,7 +56,7 @@ export const PRACTICE_AREAS = [
     title: "Dispute Resolution & Arbitration",
     shortDesc:
       "Pre-litigation strategy, commercial mediation, and domestic and international arbitration representation to resolve disputes with commercial pragmatism.",
-    icon: "Scale",
+    icon: "Compass",
     services: [
       "Commercial Dispute Mediation & Negotiation",
       "Domestic & International Arbitration Practice",
@@ -138,7 +138,7 @@ export const PRACTICE_AREAS = [
   },
 ];
 
-export const POSH_HELPLINES = [
+export const HELPLINE_DIRECTORY = [
   {
     name: "National Commission for Women (NCW) 24x7 Helpline",
     number: "7827170170",
@@ -180,6 +180,8 @@ export const POSH_HELPLINES = [
     hours: "10:00 AM – 5:30 PM",
   },
 ];
+
+export const POSH_HELPLINES = HELPLINE_DIRECTORY;
 
 export const SERVICE_PACKAGES = [
   {

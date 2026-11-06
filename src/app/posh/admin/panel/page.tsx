@@ -7,7 +7,6 @@ import {
   ShieldCheck,
   Award,
   Building2,
-  Scale,
   Plus,
   ArrowLeft,
   Mail,

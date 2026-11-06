@@ -9,7 +9,6 @@ import {
   ThumbsUp,
   Plus,
   MessageSquare,
-  Lock,
   ArrowRight,
   ShieldCheck,
 } from "lucide-react";

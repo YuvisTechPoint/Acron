@@ -54,7 +54,7 @@ export default function SingleBlogPostPage() {
     "@context": "https://schema.org",
     "@type": "Article",
     headline: post.title,
-    description: post.excerpt,
+    description: post.excerpt || post.summary,
     author: {
       "@type": "Person",
       name: authorName,
@@ -109,7 +109,7 @@ export default function SingleBlogPostPage() {
             <Badge variant="brass">{post.category}</Badge>
             <span className="text-xs text-ink-muted flex items-center gap-1">
               <Clock className="w-3.5 h-3.5" />
-              <span>{post.readTimeMinutes || 6} min read</span>
+              <span>{post.readTimeMinutes || post.readingTimeMinutes || 6} min read</span>
             </span>
             <span className="text-xs text-ink-muted">&bull;</span>
             <span className="text-xs text-ink-muted">
@@ -122,7 +122,7 @@ export default function SingleBlogPostPage() {
           </h1>
 
           <p className="font-sans text-lg sm:text-xl text-ink-secondary leading-relaxed max-w-3xl">
-            {post.excerpt}
+            {post.excerpt || post.summary}
           </p>
 
           <div className="pt-4 border-t border-border flex items-center justify-between text-xs text-ink-secondary">

@@ -2,7 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
-import { Scale, ShieldCheck, Briefcase, Users, Building2, Landmark, CheckCircle, ArrowRight } from "lucide-react";
+import { Compass, ShieldCheck, Briefcase, Users, Building2, Landmark, CheckCircle, ArrowRight } from "lucide-react";
 import { PRACTICE_AREAS } from "@/lib/constants";
 
 export default function PracticeAreasPage() {
@@ -38,7 +38,7 @@ export default function PracticeAreasPage() {
                 <div className="w-12 h-12 rounded bg-primary text-white flex items-center justify-center shadow-card">
                   {pa.slug === "posh-compliance" && <ShieldCheck className="w-6 h-6 text-accent-gold" />}
                   {pa.slug === "corporate-commercial" && <Briefcase className="w-6 h-6 text-accent-gold" />}
-                  {pa.slug === "dispute-resolution" && <Scale className="w-6 h-6 text-accent-gold" />}
+                  {pa.slug === "dispute-resolution" && <Compass className="w-6 h-6 text-accent-gold" />}
                   {pa.slug === "employment-labour" && <Users className="w-6 h-6 text-accent-gold" />}
                   {pa.slug === "real-estate-property" && <Building2 className="w-6 h-6 text-accent-gold" />}
                   {pa.slug === "banking-finance" && <Landmark className="w-6 h-6 text-accent-gold" />}

@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { useParams, useSearchParams } from "next/navigation";
-import { ShieldCheck, CheckCircle2, ArrowRight, Phone, Scale } from "lucide-react";
+import { ShieldCheck, CheckCircle2, ArrowRight, Phone, Landmark } from "lucide-react";
 import { BRAND_CONFIG } from "@/lib/constants";
 import { platformStore } from "@/lib/store";
 
@@ -42,7 +42,7 @@ export default function CampaignLandingPage() {
         {/* Campaign Hero */}
         <div className="text-center max-w-3xl mx-auto space-y-4">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary-light text-primary text-xs font-bold uppercase tracking-wider">
-            <Scale className="w-3.5 h-3.5 text-accent" />
+            <Landmark className="w-3.5 h-3.5 text-accent" />
             <span>Exclusive Corporate Advisory &bull; Kolkata</span>
           </div>
 

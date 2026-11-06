@@ -12,7 +12,7 @@ import {
   Clock,
   Briefcase,
   FileText,
-  Scale,
+  Compass,
   Sparkles,
 } from "lucide-react";
 import { PRACTICE_AREAS, BRAND_CONFIG } from "@/lib/constants";

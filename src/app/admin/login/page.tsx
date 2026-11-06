@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { Scale, Lock, ShieldCheck, ArrowRight, User } from "lucide-react";
+import { Landmark, ShieldCheck, ArrowRight, User } from "lucide-react";
 
 export default function AdminLoginPage() {
   const router = useRouter();
@@ -26,7 +26,7 @@ export default function AdminLoginPage() {
       <div className="bg-white max-w-md w-full rounded-card p-8 border border-border shadow-modal space-y-6">
         <div className="text-center space-y-2">
           <div className="w-12 h-12 bg-primary text-accent-gold rounded-lg flex items-center justify-center mx-auto shadow-card">
-            <Scale className="w-6 h-6" />
+            <Landmark className="w-6 h-6" />
           </div>
           <h1 className="font-serif text-2xl font-bold text-ink">
             Acorn Admin Control System

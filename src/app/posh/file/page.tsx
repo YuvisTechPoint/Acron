@@ -6,7 +6,6 @@ import { useRouter } from "next/navigation";
 import {
   ShieldAlert,
   ShieldCheck,
-  Lock,
   User,
   Building,
   Calendar,
@@ -158,7 +157,7 @@ export default function PoshComplaintIntakePage() {
           {currentStep === 1 && (
             <div className="space-y-4">
               <div className="flex items-center gap-2 text-primary font-serif font-bold text-lg">
-                <Lock className="w-5 h-5 text-accent" />
+                <ShieldCheck className="w-5 h-5 text-accent" />
                 <span>Statutory Confidentiality &amp; Trauma-Informed Notice</span>
               </div>
               <p className="text-xs text-ink-secondary leading-relaxed">

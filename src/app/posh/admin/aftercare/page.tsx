@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import {
-  HeartHandshake,
+  HeartPulse,
   ShieldAlert,
   Clock,
   Calendar,
@@ -112,7 +112,7 @@ export default function PoshAftercarePage() {
         <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-4 bg-white p-6 rounded-card border border-border shadow-sm">
           <div>
             <div className="flex items-center gap-2 text-xs uppercase tracking-widest text-gold font-bold">
-              <HeartHandshake className="w-4 h-4 text-primary" />
+              <HeartPulse className="w-4 h-4 text-primary" />
               <span>Post-Inquiry Care &amp; Retaliation Prevention</span>
             </div>
             <h1 className="font-serif text-2xl font-bold text-ink mt-1">

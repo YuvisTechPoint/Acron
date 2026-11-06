@@ -39,10 +39,14 @@ export type ServiceRequestStatus =
 export interface ServiceRequest {
   id: string;
   refNumber: string; // ACN-SR-YYYY-NNNNNN
+  referenceNumber?: string;
   fullName: string;
+  name?: string;
   email: string;
   phone: string;
+  organization?: string;
   preferredChannel: "phone" | "email" | "whatsapp" | "in_person";
+  preferredMode?: string;
   serviceCategory:
     | "corporate_advisory"
     | "posh_compliance"
@@ -50,10 +54,12 @@ export interface ServiceRequest {
     | "employment_labour"
     | "real_estate"
     | "contract_drafting"
-    | "general_counsel";
+    | "general_counsel"
+    | string;
+  practiceArea?: string;
   subject: string;
   description: string;
-  urgency: "standard" | "urgent" | "emergency";
+  urgency: "standard" | "urgent" | "emergency" | "NORMAL" | "URGENT" | "EMERGENCY" | string;
   status: ServiceRequestStatus;
   assignedTo?: string;
   internalNotes?: Array<{
@@ -69,24 +75,30 @@ export interface ServiceRequest {
 export interface QuestionAnswer {
   id: string;
   refNumber: string; // ACN-QA-YYYY-NNNNNN
+  referenceNumber?: string;
   authorName: string;
   authorEmail: string;
+  askedByName?: string;
+  askedByEmail?: string;
   category:
     | "posh_law"
     | "employment"
     | "contracts"
     | "litigation"
     | "corporate"
-    | "property";
+    | "property"
+    | string;
   question: string;
   answer?: string;
   answeredBy?: string;
   answeredAt?: string;
-  status: "pending_review" | "answered" | "published" | "rejected";
+  status: "pending_review" | "answered" | "published" | "rejected" | string;
   isPublic: boolean;
+  isPublished?: boolean;
   views: number;
   upvotes: number;
   createdAt: string;
+  updatedAt?: string;
 }
 
 export interface BlogPost {
@@ -94,15 +106,18 @@ export interface BlogPost {
   slug: string;
   title: string;
   summary: string;
+  excerpt?: string;
   content: string;
   author: {
     name: string;
     role: string;
     avatar?: string;
   };
+  authorName?: string;
   category: string;
   tags: string[];
   readingTimeMinutes: number;
+  readTimeMinutes?: number;
   featuredImage?: string;
   status: "draft" | "published" | "archived";
   publishedAt?: string;
@@ -141,10 +156,15 @@ export interface Organization {
   complianceScore: number; // 0 - 100
   icPresidingOfficer: string;
   icExternalMember: string;
+  presidingOfficerName?: string;
+  externalMemberName?: string;
+  industry?: string;
+  healthScore?: number;
+  plan?: string;
   policyAcknowledgedPct: number;
   lastAnnualReportYear: number;
   annualReportStatus: "draft" | "submitted_to_do" | "pending";
-  planTier: "basic" | "retainer_standard" | "retainer_enterprise";
+  planTier: "basic" | "retainer_standard" | "retainer_enterprise" | string;
   createdAt: string;
 }
 
@@ -184,6 +204,8 @@ export interface EvidenceItem {
   sha256Hash: string;
   isRedacted: boolean;
   uploadedAt: string;
+  verificationStatus?: "verified" | "pending" | "rejected" | string;
+  description?: string;
   chainOfCustody: Array<{
     action: string;
     user: string;
@@ -195,33 +217,40 @@ export interface POSHCase {
   id: string;
   caseNumber: string; // POSH-ORG-YYYY-NNNN
   orgId: string;
-  orgName: string;
-  state: CaseState;
-  incidentDates: string[]; // YYYY-MM-DD
-  incidentLocation: string;
-  natureOfHarassment: string[];
-  summary: string;
-  detailedStatement: string;
+  orgName?: string;
+  state: CaseState | string;
+  incidentDates?: string[]; // YYYY-MM-DD
+  incidentLocation?: string;
+  natureOfHarassment?: string[];
+  summary?: string;
+  detailedStatement?: string;
+  allegations?: string[];
+  priority?: "NORMAL" | "HIGH" | "URGENT" | "normal" | "urgent" | "emergency" | string;
+  daysRemaining90?: number;
+  presidingOfficerName?: string;
+  externalMemberName?: string;
   
   // Complainant Details (Masked in non-privileged views)
-  complainantName: string;
-  complainantDesignation: string;
-  complainantDepartment: string;
-  complainantEmail: string;
-  complainantPhone: string;
-  needsAssistance: boolean;
+  complainantName?: string;
+  complainantDesignation?: string;
+  complainantDepartment?: string;
+  complainantEmail?: string;
+  complainantPhone?: string;
+  complainantCode?: string;
+  needsAssistance?: boolean;
   supportPersonName?: string;
-  preferredLanguage: "en" | "bn" | "hi";
+  preferredLanguage?: "en" | "bn" | "hi";
 
   // Respondent Details
-  respondentName: string;
-  respondentDesignation: string;
-  respondentDepartment: string;
-  respondentEmail: string;
+  respondentName?: string;
+  respondentDesignation?: string;
+  respondentDepartment?: string;
+  respondentEmail?: string;
   respondentPhone?: string;
+  respondentCode?: string;
 
   // Witnesses
-  witnesses: Array<{
+  witnesses?: Array<{
     name: string;
     role: string;
     contact?: string;
@@ -234,26 +263,27 @@ export interface POSHCase {
     status: "requested" | "recommended" | "rejected" | "implemented";
     recommendedAt?: string;
   };
+  interimReliefs?: any[];
 
   // Statutory Timers & Milestones
   filedAt: string; // Day 0
-  limitationStatus: "within_3_months" | "extended_with_grounds" | "time_barred";
+  limitationStatus?: "within_3_months" | "extended_with_grounds" | "time_barred";
   extensionReason?: string;
-  noticeToRespondentDeadline: string; // Day 7 working days
+  noticeToRespondentDeadline?: string; // Day 7 working days
   noticeServedAt?: string;
   respondentReplyDeadline?: string; // 10 working days from notice
   respondentReplyReceivedAt?: string;
   respondentDefenseSummary?: string;
-  inquiryDeadline: string; // Day 90 statutory max
+  inquiryDeadline?: string; // Day 90 statutory max
   inquiryCompletedAt?: string;
-  reportDeadline: string; // 10 days from inquiry completion
+  reportDeadline?: string; // 10 days from inquiry completion
   reportSubmittedAt?: string;
   employerActionDeadline?: string; // 60 days from report
   employerActionTaken?: string;
   appealDeadline?: string; // 90 days from recommendations
 
   // Procedural Records
-  conciliationRequested: boolean;
+  conciliationRequested?: boolean;
   conciliationTerms?: string;
   conciliationOutcome?: "successful" | "failed" | "not_attempted";
 
@@ -272,10 +302,10 @@ export interface POSHCase {
     totalAmountRupees: number;
   };
 
-  assignedICMembers: string[];
-  isConfidential: boolean;
-  createdAt: string;
-  updatedAt: string;
+  assignedICMembers?: string[];
+  isConfidential?: boolean;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export interface ConcernReport {
@@ -303,10 +333,16 @@ export interface PaymentTransaction {
   itemDescription: string;
   amountPaise: number; // in paise
   taxPaise: number; // 18% GST
+  gstPaise?: number;
   totalPaise: number;
   currency: "INR";
   razorpayPaymentId?: string;
   razorpayOrderId?: string;
+  orderId?: string;
+  paymentId?: string;
+  packageCode?: string;
+  packageName?: string;
+  method?: string;
   status: "paid" | "pending" | "refunded" | "failed";
   paidAt?: string;
   createdAt: string;
@@ -331,7 +367,7 @@ export interface AuditLogEntry {
   actor: string;
   actorRole: string;
   action: string;
-  entityType: "case" | "request" | "payment" | "script" | "user" | "policy";
+  entityType: "case" | "request" | "payment" | "script" | "user" | "policy" | "system" | string;
   entityId: string;
   ipAddress: string;
   timestamp: string;

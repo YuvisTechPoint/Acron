@@ -11,7 +11,6 @@ import {
   CheckCircle2,
   AlertCircle,
   Download,
-  Lock,
   ArrowRight,
 } from "lucide-react";
 import { platformStore } from "@/lib/store";
@@ -199,7 +198,7 @@ export default function ComplainantCaseTrackingPage() {
                         onClick={() => alert(`Secured Exhibit ${ev.exhibitCode} integrity validated via SHA-256 hash.`)}
                         className="px-3 py-1.5 border border-border rounded text-[11px] font-medium hover:bg-surface flex items-center gap-1"
                       >
-                        <Lock className="w-3 h-3 text-emerald-600" />
+                        <ShieldCheck className="w-3 h-3 text-emerald-600" />
                         <span>Inspect Hash</span>
                       </button>
                     </div>
