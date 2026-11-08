@@ -157,7 +157,7 @@ export default function ICCaseDetailPage() {
           </div>
         </div>
 
-        {/* Dedicated Procedural Step Pages (PRD Section 22.4.3: I-03 to I-10) */}
+        {/* Dedicated Procedural Step Pages (PRD Section 22.4.3: I-03 to I-10 & v3.0 Enterprise) */}
         <div className="flex items-center gap-2 overflow-x-auto pb-1 text-xs">
           <span className="text-[11px] font-bold uppercase tracking-wider text-accent shrink-0">Dedicated Screens:</span>
           <Link href={`/posh/ic/cases/${poshCase.id}/triage`} className="px-2.5 py-1 bg-surface border border-border rounded hover:bg-white text-ink shrink-0 font-medium">
@@ -172,6 +172,9 @@ export default function ICCaseDetailPage() {
           <Link href={`/posh/ic/cases/${poshCase.id}/hearings`} className="px-2.5 py-1 bg-surface border border-border rounded hover:bg-white text-ink shrink-0 font-medium">
             Hearings (I-06)
           </Link>
+          <Link href={`/posh/ic/cases/${poshCase.id}/hearings/vhr-${poshCase.id.replace(/[^a-zA-Z0-9]/g, "")}-01/room`} className="px-2.5 py-1 bg-navy-900 text-brass-300 border border-brass-500/40 rounded hover:bg-navy-800 shrink-0 font-medium flex items-center gap-1">
+            <span>Virtual Hearing (v3.0)</span>
+          </Link>
           <Link href={`/posh/ic/cases/${poshCase.id}/evidence`} className="px-2.5 py-1 bg-surface border border-border rounded hover:bg-white text-ink shrink-0 font-medium">
             Evidence Vault (I-07)
           </Link>
@@ -183,6 +186,9 @@ export default function ICCaseDetailPage() {
           </Link>
           <Link href={`/posh/ic/cases/${poshCase.id}/close`} className="px-2.5 py-1 bg-surface border border-border rounded hover:bg-white text-ink shrink-0 font-medium">
             Closure &amp; Aftercare (I-10)
+          </Link>
+          <Link href={`/posh/ic/cases/${poshCase.id}/ai-assistant`} className="px-2.5 py-1 bg-brass-100 text-brass-900 border border-brass-400 rounded hover:bg-brass-200 shrink-0 font-semibold flex items-center gap-1">
+            <span>Case AI Assistant (v3.0)</span>
           </Link>
         </div>
 
