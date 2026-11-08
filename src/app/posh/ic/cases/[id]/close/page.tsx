@@ -22,7 +22,7 @@ import { POSHCase } from "@/lib/types";
 export default function ICCloseCasePage() {
   const params = useParams();
   const caseId = (params?.id as string) || "case-01";
-  const [poshCase, setPoshCase] = useState<POSHCase | undefined>(undefined);
+  const [poshCase, setPoshCase] = useState<POSHCase | undefined>(() => platformStore.getCaseById(caseId));
 
   const [reportSubmittedChecked, setReportSubmittedChecked] = useState(true);
   const [partiesReceivedCopies, setPartiesReceivedCopies] = useState(true);
