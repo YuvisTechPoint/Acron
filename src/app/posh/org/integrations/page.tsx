@@ -195,7 +195,7 @@ export default function OrgIntegrationsPage() {
             </div>
             <div className="p-3 bg-slate-50 rounded border border-slate-100 space-y-1">
               <div className="font-semibold text-slate-800">HMAC-SHA256 Signatures</div>
-              <p className="text-slate-500 text-[11px]">Every outbound webhook contains <code>X-Acorn-Signature</code> header signed by the employer's private key.</p>
+              <p className="text-slate-500 text-[11px]">Every outbound webhook contains <code>X-Acorn-Signature</code> header signed by the employer&apos;s private key.</p>
             </div>
             <div className="p-3 bg-slate-50 rounded border border-slate-100 space-y-1">
               <div className="font-semibold text-slate-800">Automated Re-keying</div>

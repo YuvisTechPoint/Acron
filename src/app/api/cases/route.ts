@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { platformStore } from "@/lib/store";
 import { POSHCase } from "@/lib/types";
+import { canAccessCase } from "@/lib/rules/access";
 
 // POST /api/cases - Submit POSH complaint intake
 export async function POST(req: NextRequest) {
@@ -66,15 +67,35 @@ export async function POST(req: NextRequest) {
   }
 }
 
-// GET /api/cases - List cases (Section 16 masked)
+// GET /api/cases - List cases (Section 16 masked, access-controlled)
 export async function GET(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url);
     const orgId = searchParams.get("orgId");
+    const userId = req.headers.get("x-user-id") || searchParams.get("userId");
+    const userRole = req.headers.get("x-user-role") || searchParams.get("role");
+    const userOrgId = req.headers.get("x-user-org-id") || orgId || undefined;
 
     let cases = platformStore.getCases();
     if (orgId) {
       cases = cases.filter((c) => c.orgId === orgId);
+    }
+
+    // Apply server-side canAccessCase authorization if user credentials provided
+    if (userId && userRole) {
+      const user = {
+        id: userId,
+        roles: [userRole],
+        orgId: userOrgId,
+      };
+      cases = cases.filter((c) =>
+        canAccessCase(user, {
+          id: c.id,
+          orgId: c.orgId,
+          complainantCode: c.complainantCode,
+          respondentCode: c.respondentCode,
+        })
+      );
     }
 
     // Ensure Section 16 compliance by returning masked metadata

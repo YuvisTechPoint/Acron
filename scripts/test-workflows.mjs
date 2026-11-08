@@ -1,7 +1,43 @@
 // Automated test for interactive workflows and API endpoints
+import { spawn } from "child_process";
+import fs from "fs";
+import crypto from "crypto";
+
 const BASE_URL = process.env.TEST_BASE_URL || "http://localhost:3000";
 
+let serverProc = null;
+
+async function ensureServerRunning(url) {
+  try {
+    const res = await fetch(`${url}/api/health`, { signal: AbortSignal.timeout(1000) });
+    if (res.status === 200) return null;
+  } catch {}
+
+  const serverScript = fs.existsSync(".next/standalone/server.js")
+    ? [".next/standalone/server.js"]
+    : ["node_modules/next/dist/bin/next", "start", "-p", "3000"];
+
+  console.log(`Starting standalone server via node ${serverScript.join(" ")}...`);
+  const child = spawn("node", serverScript, {
+    stdio: "ignore",
+    env: { ...process.env, PORT: "3000" },
+  });
+
+  for (let i = 0; i < 30; i++) {
+    await new Promise((r) => setTimeout(r, 300));
+    try {
+      const res = await fetch(`${url}/api/health`, { signal: AbortSignal.timeout(500) });
+      if (res.status === 200) {
+        console.log("Server is ready for tests.\n");
+        return child;
+      }
+    } catch {}
+  }
+  return child;
+}
+
 async function testWorkflows() {
+  serverProc = await ensureServerRunning(BASE_URL);
   console.log("Testing interactive workflows and API endpoints...\n");
   let passed = 0;
   let failed = 0;
@@ -95,12 +131,38 @@ async function testWorkflows() {
 
   // 4. Test Payment Verification API
   try {
+    const orderId = "order_test_99182";
+    const paymentId = "pay_test_workflow_99182";
+    const secret = process.env.RAZORPAY_KEY_SECRET || "default_razorpay_secret_key";
+    const signature = crypto
+      .createHmac("sha256", secret)
+      .update(`${orderId}|${paymentId}`)
+      .digest("hex");
+
+    // 4a. Verify signature mismatch is blocked with 400
+    const tamperedRes = await fetch(`${BASE_URL}/api/payments/verify`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        razorpayPaymentId: paymentId,
+        orderId: orderId,
+        signature: "invalid_tampered_signature_hex",
+        amountPaise: 5000000,
+      }),
+    });
+    const tamperedData = await tamperedRes.json();
+    const tamperingBlocked = tamperedRes.status === 400 && tamperedData.verified === false;
+
+    // 4b. Verify valid signature succeeds with 200
     const res = await fetch(`${BASE_URL}/api/payments/verify`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        razorpayPaymentId: "pay_test_workflow_99182",
-        orderId: "order_test_99182",
+        razorpayPaymentId: paymentId,
+        orderId: orderId,
+        signature: signature,
+        razorpay_signature: signature,
+        razorpaySignature: signature,
         clientName: "Automated Test Payer",
         clientEmail: "payer@testacorn.com",
         clientPhone: "+91 98300 11111",
@@ -112,8 +174,8 @@ async function testWorkflows() {
 
     const data = await res.json();
     const isSuccess = (res.status === 200 || res.status === 201) && (data.receiptNumber || data.success);
-    if (isSuccess) {
-      console.log(`✔ [PASS] Payment Verification API: Receipt ${data.receiptNumber || "Verified"}`);
+    if (isSuccess && tamperingBlocked) {
+      console.log(`✔ [PASS] Payment Verification API: Receipt ${data.receiptNumber || "Verified"} (Tampered signature rejected)`);
       passed++;
     } else {
       console.error(`✖ [FAIL] Payment Verification API: Status ${res.status}`, data);
@@ -387,6 +449,9 @@ async function testWorkflows() {
   }
 
   console.log(`\nWorkflow test results: ${passed} passed, ${failed} failed.`);
+  if (serverProc) {
+    serverProc.kill();
+  }
   if (failed > 0) {
     process.exit(1);
   } else {

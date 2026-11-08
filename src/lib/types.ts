@@ -364,6 +364,7 @@ export interface ScriptTag {
 
 export interface AuditLogEntry {
   id: string;
+  orgId: string;
   actor: string;
   actorRole: string;
   action: string;
@@ -372,6 +373,8 @@ export interface AuditLogEntry {
   ipAddress: string;
   timestamp: string;
   details: string;
+  prevHash: string;
+  hash: string;
 }
 
 export interface EngagementStep {

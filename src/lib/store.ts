@@ -53,6 +53,7 @@ import {
   generateInvoiceNumber,
   generateConcernRef,
 } from "./utils";
+import { computeAuditHash, scrubPII } from "./crypto";
 
 // Initial Seed Data reflecting real-world Kolkata practice & PRD specifications
 const SEED_ORGANIZATIONS: Organization[] = [
@@ -699,6 +700,7 @@ fbq('track', 'PageView');
 const SEED_AUDIT_LOGS: AuditLogEntry[] = [
   {
     id: "log-1",
+    orgId: "org-1",
     actor: "Adv. Debjani Sen",
     actorRole: "ic_external_member",
     action: "HEARING_SCHEDULED",
@@ -707,9 +709,12 @@ const SEED_AUDIT_LOGS: AuditLogEntry[] = [
     ipAddress: "103.21.124.50",
     timestamp: "2026-10-20 14:15:22 IST",
     details: "Scheduled Hearing #2 with Respondent for 08 Nov 2026 at 02:30 PM",
+    prevHash: "24aeb90f08ff3a57ac9229d2fe9f9b94077a146bb9049c403cd1f33cd3321687",
+    hash: "d1e4e36d17411e5cc04f0e0bbde1e68d2034c11f5ab3f8cb77d70e4cd001fda8",
   },
   {
     id: "log-2",
+    orgId: "org-1",
     actor: "Dr. Ananya Mukherjee",
     actorRole: "ic_presiding_officer",
     action: "EVIDENCE_VERIFIED",
@@ -718,9 +723,12 @@ const SEED_AUDIT_LOGS: AuditLogEntry[] = [
     ipAddress: "14.139.212.18",
     timestamp: "2026-09-23 11:15:10 IST",
     details: "Verified digital signature and SHA-256 hash of Exhibit EX-001",
+    prevHash: "7aad9b832eff8ead9e8ce0e42a0e81e51da84f50d37dee863fdf4ba81e67c698",
+    hash: "24aeb90f08ff3a57ac9229d2fe9f9b94077a146bb9049c403cd1f33cd3321687",
   },
   {
     id: "log-3",
+    orgId: "org-1",
     actor: "Super Admin",
     actorRole: "super_admin",
     action: "ORGANIZATION_HEALTH_AUDIT",
@@ -729,6 +737,8 @@ const SEED_AUDIT_LOGS: AuditLogEntry[] = [
     ipAddress: "182.74.89.14",
     timestamp: "2026-10-01 10:00:00 IST",
     details: "Validated IC composition quorum: 4 members, 75% women, external member active",
+    prevHash: "0000000000000000000000000000000000000000000000000000000000000000",
+    hash: "7aad9b832eff8ead9e8ce0e42a0e81e51da84f50d37dee863fdf4ba81e67c698",
   },
 ];
 
@@ -1151,12 +1161,27 @@ const SEED_PAGE_CONTENTS: PageContentItem[] = [
   },
 ];
 
+// Global in-memory storage declaration for server-side persistence
+declare global {
+  // eslint-disable-next-line no-var
+  var __acorn_server_store__: Map<string, any> | undefined;
+}
+
+if (!globalThis.__acorn_server_store__) {
+  globalThis.__acorn_server_store__ = new Map<string, any>();
+}
+
 // Helper to access and mutate localStorage with fallback to in-memory store
 class PlatformStore {
   private isClient = typeof window !== "undefined";
 
   private get<T>(key: string, seed: T): T {
-    if (!this.isClient) return seed;
+    if (!this.isClient) {
+      if (globalThis.__acorn_server_store__?.has(key)) {
+        return globalThis.__acorn_server_store__.get(key);
+      }
+      return seed;
+    }
     try {
       const data = localStorage.getItem(`acorn_${key}`);
       return data ? JSON.parse(data) : seed;
@@ -1166,7 +1191,10 @@ class PlatformStore {
   }
 
   private set<T>(key: string, value: T): void {
-    if (!this.isClient) return;
+    if (!this.isClient) {
+      globalThis.__acorn_server_store__?.set(key, value);
+      return;
+    }
     try {
       localStorage.setItem(`acorn_${key}`, JSON.stringify(value));
       // Real-time broadcast within current window
@@ -1626,16 +1654,25 @@ class PlatformStore {
     }
 
     const logs = this.getAuditLogs();
-    const entry: AuditLogEntry = {
+    const prevHash = logs.length > 0 && logs[0].hash ? logs[0].hash : "0".repeat(64);
+    const orgId = "org-1";
+    const timestamp = new Date().toLocaleString("en-IN") + " IST";
+    const entryWithoutHash = {
       id: `log-${Date.now()}`,
-      actor: finalActor,
+      orgId,
+      actor: scrubPII(finalActor),
       actorRole: finalActorRole,
       action: finalAction,
       entityType: finalEntityType,
       entityId: finalEntityId,
       ipAddress: "103.21.124.50",
-      timestamp: new Date().toLocaleString("en-IN") + " IST",
-      details: finalDetails,
+      timestamp,
+      details: scrubPII(finalDetails),
+      prevHash,
+    };
+    const entry: AuditLogEntry = {
+      ...entryWithoutHash,
+      hash: computeAuditHash(entryWithoutHash),
     };
     logs.unshift(entry);
     this.set("audit_logs", logs.slice(0, 100)); // maintain latest 100

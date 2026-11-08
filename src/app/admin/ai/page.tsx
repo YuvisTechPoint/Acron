@@ -68,7 +68,7 @@ export default function AdminAIGovernancePage() {
               Business Rules BR-075, BR-077 &amp; BR-078 Strictly Enforced
             </span>
             <p className="leading-relaxed">
-              <strong>BR-075:</strong> Zero case data leaves Acorn's isolated perimeter to commercial cloud LLMs. All inference is run on dedicated on-premise nodes.<br />
+              <strong>BR-075:</strong> Zero case data leaves Acorn&apos;s isolated perimeter to commercial cloud LLMs. All inference is run on dedicated on-premise nodes.<br />
               <strong>BR-077:</strong> AI summaries are classified as working notes and can never be entered into the record unless independently verified and signed by a human counsel.<br />
               <strong>BR-078:</strong> The platform strictly prohibits predictive credibility scoring, guilt probability indexes, or automated sanction recommendations.
             </p>

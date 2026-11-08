@@ -17,7 +17,13 @@ export default function AdminLoginPage() {
     setIsLoading(true);
     setTimeout(() => {
       localStorage.setItem("acorn_admin_session", "active");
-      router.push("/admin");
+      // Set session cookies so Edge middleware authorizes the session
+      document.cookie = "acorn_admin_session=active; path=/; max-age=86400; SameSite=Lax";
+      document.cookie = "acorn_session=active; path=/; max-age=86400; SameSite=Lax";
+      document.cookie = "acorn_posh_session=active; path=/; max-age=86400; SameSite=Lax";
+      const params = new URLSearchParams(window.location.search);
+      const callback = params.get("callbackUrl") || "/admin";
+      router.push(callback);
     }, 800);
   };
 

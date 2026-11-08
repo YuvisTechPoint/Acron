@@ -111,13 +111,14 @@ export default function OrgAuditPacksPage() {
                     <span className="px-3 py-1 bg-emerald-50 text-emerald-700 border border-emerald-200 rounded text-xs font-mono font-bold">
                       Score: {p.complianceScore}% (Audit Ready)
                     </span>
-                    <button
-                      onClick={() => alert(`Downloading signed inspection pack for ${p.orgCode} (${p.fiscalYear})...`)}
+                    <a
+                      href={`/api/org/audit-packs/download?orgCode=${encodeURIComponent(p.orgCode)}&fiscalYear=${encodeURIComponent(p.fiscalYear)}`}
+                      download={`Inspection-Manifest-${p.orgCode}-${p.fiscalYear}.json`}
                       className="px-3 py-1.5 bg-[#101F38] hover:bg-navy-900 text-brass-300 rounded text-xs font-medium transition inline-flex items-center gap-1.5"
                     >
                       <Download className="w-3.5 h-3.5" />
-                      <span>Download PDF Dossier</span>
-                    </button>
+                      <span>Download Sealed Manifest</span>
+                    </a>
                   </div>
                 </div>
 

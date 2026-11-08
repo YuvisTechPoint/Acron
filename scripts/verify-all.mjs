@@ -1,5 +1,39 @@
 // Programmatic route and link verification crawler
+import { spawn } from "child_process";
+import fs from "fs";
+
 const BASE_URL = process.env.TEST_BASE_URL || "http://localhost:3000";
+
+let serverProc = null;
+
+async function ensureServerRunning(url) {
+  try {
+    const res = await fetch(`${url}/api/health`, { signal: AbortSignal.timeout(1000) });
+    if (res.status === 200) return null;
+  } catch {}
+
+  const serverScript = fs.existsSync(".next/standalone/server.js")
+    ? [".next/standalone/server.js"]
+    : ["node_modules/next/dist/bin/next", "start", "-p", "3000"];
+
+  console.log(`Starting standalone server via node ${serverScript.join(" ")}...`);
+  const child = spawn("node", serverScript, {
+    stdio: "ignore",
+    env: { ...process.env, PORT: "3000" },
+  });
+
+  for (let i = 0; i < 30; i++) {
+    await new Promise((r) => setTimeout(r, 300));
+    try {
+      const res = await fetch(`${url}/api/health`, { signal: AbortSignal.timeout(500) });
+      if (res.status === 200) {
+        console.log("Server is ready for verification.\n");
+        return child;
+      }
+    } catch {}
+  }
+  return child;
+}
 
 // List of all 88 primary routes
 const ROUTES = [
@@ -139,6 +173,7 @@ const ROUTES = [
 ];
 
 async function main() {
+  serverProc = await ensureServerRunning(BASE_URL);
   console.log(`Starting crawl of ${ROUTES.length} routes on ${BASE_URL}...\n`);
   let passed = 0;
   let failed = 0;
@@ -202,6 +237,10 @@ async function main() {
   }
 
   console.log(`\nInternal link verification: ${linkPassed} valid, ${linkFailed} broken.`);
+
+  if (serverProc) {
+    serverProc.kill();
+  }
 
   if (failed > 0 || linkFailed > 0) {
     console.error("\nVerification FAILED.");
