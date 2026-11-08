@@ -4,9 +4,10 @@ import { PRACTICE_AREAS } from "@/lib/constants";
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ slug: string }>;
+  params: { slug: string } | Promise<{ slug: string }>;
 }): Promise<Metadata> {
-  const { slug } = await params;
+  const resolvedParams = await Promise.resolve(params);
+  const slug = resolvedParams?.slug;
   const area = PRACTICE_AREAS.find((p) => p.slug === slug);
 
   if (!area) {

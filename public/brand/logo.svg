@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 64" fill="none" width="280" height="64">
+  <!-- Acorn Monogram Crest -->
+  <rect x="2" y="2" width="60" height="60" rx="8" fill="#0A192F" stroke="#C5A880" stroke-width="2"/>
+  <path d="M32 14 L20 48 H27 L30 38 H34 L37 48 H44 L32 14 Z M30.8 33 L32 24.5 L33.2 33 H30.8 Z" fill="#D9C29A"/>
+  
+  <!-- Wordmark -->
+  <text x="76" y="34" font-family="'Cormorant Garamond', Georgia, serif" font-size="28" font-weight="700" letter-spacing="1" fill="#FFFFFF">ACORN</text>
+  <text x="78" y="50" font-family="'Inter', -apple-system, sans-serif" font-size="10.5" font-weight="600" letter-spacing="3" text-transform="uppercase" fill="#C5A880">LEGAL CONSULTANTS</text>
+</svg>

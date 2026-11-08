@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import {
   Briefcase,
@@ -16,6 +17,8 @@ import {
   Eye,
   CheckCircle2,
   ChevronDown,
+  Lock,
+  Search,
 } from "lucide-react";
 import { BRAND_CONFIG, PRACTICE_AREAS } from "@/lib/constants";
 import {
@@ -128,137 +131,192 @@ export default function HomePage() {
 
   return (
     <div className="bg-ivory-50 text-ink selection:bg-brass-300/30">
-      
-      {/* 1. HERO SECTION: min-height 92vh, ink-950 to navy-800 gradient, soft brass glow, paper grain */}
-      <section className="relative min-h-[92vh] bg-hero-gradient text-white flex flex-col justify-between pt-32 pb-16 sm:pt-40 sm:pb-24 border-b border-navy-800/80 overflow-hidden">
-        {/* Subtle Paper Grain & Ambient Radial Glows */}
-        <div className="absolute inset-0 bg-paper-grain opacity-20 pointer-events-none" />
-        <div className="absolute top-1/4 right-1/4 w-[480px] h-[480px] bg-brass-500/10 rounded-full blur-[120px] pointer-events-none" />
-        <div className="absolute bottom-10 left-10 w-[400px] h-[400px] bg-blue-600/15 rounded-full blur-[100px] pointer-events-none" />
 
-        <div className="relative max-w-[1240px] mx-auto px-4 sm:px-6 w-full my-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
-            
-            {/* Left 7 Columns: Editorial Headline, Sub-headline, CTAs */}
-            <div className="lg:col-span-7 space-y-8 text-left">
-              <Eyebrow dark>ACORN LEGAL CONSULTANTS</Eyebrow>
+      {/* 1. HERO SECTION: Full-bleed Heritage Law Library with Architectural Double Arch */}
+      <section className="relative min-h-[92vh] lg:min-h-[96vh] bg-[#07101F] text-white flex flex-col justify-between pt-28 pb-14 sm:pt-32 sm:pb-16 border-b border-navy-800/80 overflow-hidden">
+        {/* Full-bleed Hero Background Image - Exactly matches user's uploaded master background */}
+        <div className="absolute inset-0 z-0 select-none pointer-events-none">
+          <Image
+            src="/images/hero.jpg"
+            alt="Chambers of Acorn Legal Consultants, Kolkata"
+            fill
+            priority
+            quality={100}
+            className="object-cover object-right lg:object-center"
+          />
+          {/* Subtle top & bottom edge transition blends */}
+          <div className="absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-[#07101F]/70 via-[#07101F]/20 to-transparent pointer-events-none" />
+          <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-[#07101F]/60 to-transparent pointer-events-none" />
+        </div>
 
-              <h1 className="font-serif text-display-xl font-bold tracking-tight text-white leading-[1.02]">
+        <div className="relative z-10 max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8 w-full my-auto py-4">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
+
+            {/* Left Column (7 cols): Editorial Headline, Sub-headline, CTAs, Metadata */}
+            <div className="lg:col-span-7 space-y-6 sm:space-y-7 text-left max-w-2xl">
+
+              {/* Eyebrow */}
+              <div className="inline-flex items-center gap-2.5">
+                <span className="w-5 h-[1.5px] bg-brass-400" />
+                <span className="font-sans text-[11px] sm:text-xs font-bold uppercase tracking-[0.22em] text-brass-400 drop-shadow-sm">
+                  ACORN LEGAL CONSULTANTS
+                </span>
+              </div>
+
+              {/* Display Headline - Bold & Authoritative */}
+              <h1 className="font-serif text-5xl sm:text-6xl lg:text-[72px] font-bold tracking-tight text-white leading-[1.08] drop-shadow-lg">
                 Excellence in Law.<br />
-                <span className="font-serif italic font-normal text-brass-300">Integrity</span> in Practice.
+                <span className="font-serif italic font-normal text-brass-400">Integrity</span> in Practice.
               </h1>
 
-              <p className="font-sans text-base sm:text-lg text-slate-300 max-w-xl leading-relaxed">
+              {/* Subtitle Paragraph */}
+              <p className="font-sans text-base sm:text-[18px] text-slate-200 leading-[1.65] max-w-xl font-normal drop-shadow">
                 A professional legal consultancy delivering thoughtful, precise, and result-oriented solutions for individuals, businesses, and institutions in Kolkata and across India.
               </p>
 
-              <div className="pt-2 flex flex-wrap items-center gap-5">
-                <Button
-                  variant="dark-primary"
-                  size="md"
+              {/* Action Buttons */}
+              <div className="pt-2 flex flex-wrap items-center gap-4">
+                <Link
                   href="/request-service"
-                  arrow
+                  className="h-[48px] px-6 rounded-btn bg-brass-500 hover:bg-brass-400 text-ink-950 font-sans font-bold text-sm flex items-center gap-2.5 shadow-raised transition-all duration-200 hover:translate-x-0.5"
                 >
-                  Request a Consultation
-                </Button>
+                  <span>Request a Consultation</span>
+                  <ArrowRight className="w-4 h-4" />
+                </Link>
 
-                <EditorialLink href="/services" dark>
-                  Explore our services
-                </EditorialLink>
+                <Link
+                  href="/services"
+                  className="h-[48px] px-6 rounded-btn bg-[#07101F]/40 hover:bg-[#07101F]/70 border border-brass-500/50 hover:border-brass-400 text-brass-200 hover:text-white font-sans font-medium text-sm flex items-center gap-2.5 backdrop-blur-sm transition-all duration-200"
+                >
+                  <span>Explore our services</span>
+                  <ArrowRight className="w-4 h-4 text-brass-400" />
+                </Link>
               </div>
 
-              {/* Chambers Badge */}
-              <div className="pt-6 border-t border-white/10 flex items-center gap-3 text-xs text-slate-300">
-                <span className="w-2 h-2 rounded-full bg-brass-500 animate-pulse" />
-                <span>Kolkata Chambers &bull; Park Street District &bull; Confidential Privileged Intake</span>
+              {/* Metadata Badges Line */}
+              <div className="pt-6 flex flex-wrap items-center gap-x-6 gap-y-2 text-xs sm:text-[13px] font-sans text-slate-300 font-medium">
+                <div className="flex items-center gap-1.5">
+                  <span className="text-brass-400 font-bold">•</span>
+                  <span>Kolkata Chambers</span>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <span className="text-brass-400 font-bold">•</span>
+                  <span>Park Street District</span>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <span className="text-brass-400 font-bold">•</span>
+                  <span>Confidential Privileged Intake</span>
+                </div>
               </div>
+
             </div>
 
-            {/* Right 5 Columns: Arch Glass Panel with Oak Motif & 3 Floating Principle Chips */}
+            {/* Right Column (5 cols): Architectural Double Arch Window Frame & 3 Floating Principle Cards */}
             <div className="lg:col-span-5 flex justify-center lg:justify-end">
-              <div className="relative w-full max-w-md">
-                {/* Arch-shaped glass panel */}
-                <div className="arch-mask bg-navy-900/60 border border-brass-500/30 p-8 pt-16 pb-12 backdrop-blur-md shadow-raised flex flex-col items-center text-center relative overflow-hidden group">
-                  
-                  {/* Subtle Inner Arch Linework */}
-                  <div className="absolute inset-4 rounded-t-full border border-brass-500/20 pointer-events-none" />
+              <div className="relative w-full max-w-[540px]">
 
-                  {/* Oak Leaf & Acorn Line-Art Emblem */}
-                  <div className="w-20 h-20 rounded-full bg-navy-800/80 border border-brass-500/40 flex items-center justify-center mb-6 shadow-inner text-brass-300">
-                    <svg viewBox="0 0 48 48" fill="none" className="w-10 h-10">
-                      <path
-                        d="M24 8 C28 14 36 18 36 26 C36 34 30 38 24 38 C18 38 12 34 12 26 C12 18 20 14 24 8 Z"
-                        stroke="currentColor"
-                        strokeWidth="1.5"
-                      />
-                      <path d="M24 14 L24 34" stroke="currentColor" strokeWidth="1.2" />
-                      <path d="M24 22 L30 18" stroke="currentColor" strokeWidth="1" />
-                      <path d="M24 28 L18 24" stroke="currentColor" strokeWidth="1" />
-                      <circle cx="24" cy="42" r="2" fill="currentColor" />
+                {/* Double Golden Arch Outer Frame */}
+                <div className="relative w-full min-h-[540px] sm:min-h-[580px] lg:min-h-[620px] rounded-t-full border-[1.5px] border-brass-500/50 p-2 sm:p-2.5 flex flex-col justify-between shadow-2xl">
+
+                  {/* Inner Arch Stroke (Double line effect from reference image) */}
+                  <div className="absolute inset-2 sm:inset-2.5 rounded-t-full border border-brass-500/35 pointer-events-none" />
+
+                  {/* Top Dome with Crest & Typography */}
+                  <div className="relative z-10 pt-7 pb-8 px-4 rounded-t-full bg-gradient-to-b from-[#07101F]/85 via-[#07101F]/50 to-transparent flex flex-col items-center text-center">
+
+                    {/* Oak Leaf Crest Motif */}
+                    <div className="w-11 h-11 flex items-center justify-center text-brass-400 mb-1 drop-shadow">
+                      <svg viewBox="0 0 48 48" fill="none" className="w-10 h-10" aria-hidden="true">
+                        {/* Right Leaf */}
+                        <path d="M25 24 C24 21 26 18 28 17 C27 15 26 13 28 11 C29 9 32 8 34 6 C36 7 37 8 37 10 C39 11 40 13 39 15 C41 17 41 19 39 21 C40 23 39 25 36 26 C34 27 32 26 30 28 C28 29 26 27 25 24 Z" fill="currentColor" />
+                        {/* Left Leaf */}
+                        <path d="M23 24 C24 21 22 18 20 17 C21 15 22 13 20 11 C19 9 16 8 14 6 C12 7 11 8 11 10 C9 11 8 13 9 15 C7 17 7 19 9 21 C8 23 9 25 12 26 C14 27 16 26 18 28 C20 29 22 27 23 24 Z" fill="currentColor" />
+                        {/* Center Leaf */}
+                        <path d="M24 6 C26 7 27 9 27 11 C29 12 30 14 29 16 C30 18 29 20 27 21 C26 23 25 24 24 26 C23 24 22 23 21 21 C19 20 18 18 19 16 C18 14 19 12 21 11 C21 9 22 7 24 6 Z" fill="currentColor" />
+                        {/* Acorn 1 (Right) */}
+                        <path d="M26 27 C27 25 31 26 31 28 C30 29 29 30 27 30 C26 30 25 29 26 27 Z" fill="currentColor" />
+                        <path d="M26.5 29 C27 33 30 35 30.8 34 C31.5 33 31.2 30 30.5 29 Z" fill="currentColor" opacity="0.9" />
+                        {/* Acorn 2 (Left) */}
+                        <path d="M22 27 C21 25 17 26 17 28 C18 29 19 30 21 30 C22 30 23 29 22 27 Z" fill="currentColor" />
+                        <path d="M21.5 29 C21 33 18 35 17.2 34 C16.5 33 16.8 30 17.5 29 Z" fill="currentColor" opacity="0.9" />
+                        {/* Center Stem */}
+                        <path d="M24 26 L24 36" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+                      </svg>
+                    </div>
+
+                    <span className="font-serif text-2xl sm:text-[28px] font-bold text-[#F3E5D3] tracking-wide drop-shadow-md leading-tight mt-1">
+                      Chambers of Acorn
+                    </span>
+                    <span className="font-sans text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.25em] text-brass-400 mt-1 drop-shadow">
+                      CAMAC STREET &bull; KOLKATA
+                    </span>
+                  </div>
+
+                  {/* Open Middle Area: Transparently frames the senior advocate at desk in heritage library */}
+                  <div className="flex-1 min-h-[160px] sm:min-h-[190px]" />
+
+                  {/* Bottom: 3 Horizontal Glassmorphic Cards (Matching Attached Image) */}
+                  <div className="relative z-10 grid grid-cols-3 gap-2 sm:gap-2.5 pb-2 px-1">
+
+                    {/* Card 1: Discretion */}
+                    <div className="bg-[#07101F]/75 border border-brass-500/35 rounded-lg p-3 sm:p-3.5 flex flex-col justify-between shadow-2xl backdrop-blur-md transition-all duration-200 hover:border-brass-400 hover:bg-[#07101F]/90">
+                      <div>
+                        <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-white/5 border border-brass-500/30 flex items-center justify-center text-brass-400 mb-2">
+                          <Lock className="w-3.5 h-3.5 text-brass-400 shrink-0" />
+                        </div>
+                        <h3 className="text-xs sm:text-[13px] font-bold text-white tracking-tight mb-1">
+                          Discretion
+                        </h3>
+                        <p className="text-[10px] sm:text-[11px] text-slate-300 leading-snug">
+                          Absolute privilege &amp; confidentiality
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Card 2: Diligence */}
+                    <div className="bg-[#07101F]/75 border border-brass-500/35 rounded-lg p-3 sm:p-3.5 flex flex-col justify-between shadow-2xl backdrop-blur-md transition-all duration-200 hover:border-brass-400 hover:bg-[#07101F]/90">
+                      <div>
+                        <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-white/5 border border-brass-500/30 flex items-center justify-center text-brass-400 mb-2">
+                          <Search className="w-3.5 h-3.5 text-brass-400 shrink-0" />
+                        </div>
+                        <h3 className="text-xs sm:text-[13px] font-bold text-white tracking-tight mb-1">
+                          Diligence
+                        </h3>
+                        <p className="text-[10px] sm:text-[11px] text-slate-300 leading-snug">
+                          Exhaustive statutory research
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Card 3: Transparency */}
+                    <div className="bg-[#07101F]/75 border border-brass-500/35 rounded-lg p-3 sm:p-3.5 flex flex-col justify-between shadow-2xl backdrop-blur-md transition-all duration-200 hover:border-brass-400 hover:bg-[#07101F]/90">
+                      <div>
+                        <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-white/5 border border-brass-500/30 flex items-center justify-center text-brass-400 mb-2">
+                          <ShieldCheck className="w-3.5 h-3.5 text-brass-400 shrink-0" />
+                        </div>
+                        <h3 className="text-xs sm:text-[13px] font-bold text-white tracking-tight mb-1">
+                          Transparency
+                        </h3>
+                        <p className="text-[10px] sm:text-[11px] text-slate-300 leading-snug">
+                          Clear scope &amp; accountable advisory
+                        </p>
+                      </div>
+                    </div>
+
+                  </div>
+
+                  {/* Corner Brass Sparkle Accent (Bottom Right of Arch as in Reference) */}
+                  <div className="absolute -bottom-1 -right-1 sm:-bottom-1.5 sm:-right-1.5 text-brass-400 drop-shadow pointer-events-none">
+                    <svg className="w-4 h-4 sm:w-5 sm:h-5 fill-current" viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M12 0 L14.5 9.5 L24 12 L14.5 14.5 L12 24 L9.5 14.5 L0 12 L9.5 9.5 Z" />
                     </svg>
                   </div>
 
-                  <span className="font-serif text-2xl font-bold text-white tracking-wide">
-                    Chambers of Acorn
-                  </span>
-                  <span className="font-sans text-[11px] font-semibold uppercase tracking-[0.18em] text-brass-300 mt-1">
-                    Camac Street &bull; Kolkata
-                  </span>
-
-                  {/* 3 Floating Principle Chips */}
-                  <div className="w-full mt-8 space-y-3">
-                    {[
-                      {
-                        title: "Discretion",
-                        desc: "Absolute privilege & confidentiality",
-                        icon: Shield,
-                        delay: 0,
-                      },
-                      {
-                        title: "Diligence",
-                        desc: "Exhaustive statutory research",
-                        icon: ShieldCheck,
-                        delay: 80,
-                      },
-                      {
-                        title: "Transparency",
-                        desc: "Clear scope & accountable advisory",
-                        icon: Eye,
-                        delay: 160,
-                      },
-                    ].map((chip) => {
-                      const Icon = chip.icon;
-                      return (
-                        <div
-                          key={chip.title}
-                          className="bg-navy-950/70 border border-brass-500/25 rounded-card p-3 flex items-center gap-3 text-left shadow-sm backdrop-blur-sm transition-transform duration-200 hover:translate-x-1"
-                        >
-                          <div className="w-8 h-8 rounded-full bg-navy-800 border border-brass-500/30 flex items-center justify-center shrink-0 text-brass-300">
-                            <Icon className="w-4 h-4" />
-                          </div>
-                          <div>
-                            <div className="text-xs font-bold text-white tracking-wide">
-                              {chip.title}
-                            </div>
-                            <div className="text-[11px] text-slate-300">{chip.desc}</div>
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </div>
-
                 </div>
+
               </div>
             </div>
 
-          </div>
-        </div>
-
-        {/* Thin Scroll Cue at Bottom */}
-        <div className="relative text-center pt-8 pointer-events-none select-none">
-          <div className="inline-flex flex-col items-center gap-2 text-[10px] uppercase font-semibold tracking-[0.2em] text-brass-300/80">
-            <span>Scroll to explore</span>
-            <div className="w-[1px] h-6 bg-gradient-to-b from-brass-300 to-transparent" />
           </div>
         </div>
       </section>
@@ -292,7 +350,7 @@ export default function HomePage() {
       {/* 3. PRACTICE AREAS BENTO: 12-column bento grid, 1 large feature + 5 smaller cards */}
       <section className="bg-stone-100 py-24 sm:py-32 border-b border-border">
         <div className="max-w-[1240px] mx-auto px-4 sm:px-6 space-y-16">
-          
+
           <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6">
             <SectionHeading
               eyebrow="Core Competencies"
@@ -307,7 +365,7 @@ export default function HomePage() {
 
           {/* Bento Grid */}
           <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-stretch">
-            
+
             {/* Large Feature Card: Advisory (Spans 7 cols) */}
             <div className="md:col-span-7">
               <Card
@@ -431,7 +489,7 @@ export default function HomePage() {
       <section className="bg-ivory-50 py-24 sm:py-32 border-b border-border">
         <div className="max-w-[1240px] mx-auto px-4 sm:px-6">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
-            
+
             {/* Sticky Left Column (Spans 5 cols) */}
             <div className="lg:col-span-5 lg:sticky lg:top-32 space-y-6">
               <Eyebrow>ENGAGEMENT PROTOCOL</Eyebrow>
@@ -468,11 +526,10 @@ export default function HomePage() {
                 <div
                   key={step.num}
                   onMouseEnter={() => setActiveStep(idx)}
-                  className={`p-6 sm:p-8 rounded-card border transition-all duration-200 ${
-                    activeStep === idx
-                      ? "bg-white border-brass-500/50 shadow-card"
-                      : "bg-surface/60 border-border hover:bg-white"
-                  }`}
+                  className={`p-6 sm:p-8 rounded-card border transition-all duration-200 ${activeStep === idx
+                    ? "bg-white border-brass-500/50 shadow-card"
+                    : "bg-surface/60 border-border hover:bg-white"
+                    }`}
                 >
                   <div className="flex items-start gap-4">
                     <span className="font-serif text-3xl sm:text-4xl font-bold text-brass-700 shrink-0">
@@ -557,7 +614,7 @@ export default function HomePage() {
             <div className="absolute top-0 right-0 w-80 h-80 bg-brass-500/10 rounded-full blur-3xl pointer-events-none" />
 
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center relative z-10">
-              
+
               <div className="lg:col-span-7 space-y-6">
                 <Eyebrow dark>INSTITUTIONAL GOVERNANCE</Eyebrow>
                 <h2 className="font-serif text-3xl sm:text-5xl font-bold text-white leading-[1.12]">
@@ -578,12 +635,17 @@ export default function HomePage() {
               </div>
 
               <div className="lg:col-span-5 flex justify-center">
-                <div className="w-full max-w-sm">
-                  <ArchImage
-                    aspect="standard"
-                    label="POSH Compliance Desk"
-                    sublabel="Section 4(2)(c) Neutrality"
+                <div className="relative w-full max-w-[360px] sm:max-w-[420px] aspect-[1856/2304] rounded-2xl overflow-hidden shadow-2xl border border-brass-500/30 bg-navy-950 group">
+                  <Image
+                    src="/images/posh.png"
+                    alt="POSH Compliance Desk - External Member Consultation at Chambers"
+                    fill
+                    priority
+                    sizes="(max-width: 768px) 100vw, 420px"
+                    className="object-contain group-hover:scale-[1.02] transition-transform duration-500"
                   />
+                  {/* Subtle inner gold border overlay */}
+                  <div className="absolute inset-0 rounded-2xl border border-brass-500/20 pointer-events-none" />
                 </div>
               </div>
 
@@ -595,7 +657,7 @@ export default function HomePage() {
       {/* 7. INSIGHTS: 1 large featured article + 2 smaller ones */}
       <section className="bg-stone-100 py-24 sm:py-32 border-b border-border">
         <div className="max-w-[1240px] mx-auto px-4 sm:px-6 space-y-16">
-          
+
           <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6">
             <SectionHeading
               eyebrow="Knowledge &amp; Commentary"
@@ -609,7 +671,7 @@ export default function HomePage() {
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
-            
+
             {/* Large Featured Article (7 cols) */}
             <div className="lg:col-span-7">
               <Link href={`/blog/${FEATURED_INSIGHTS[0].slug}`} className="block h-full group focus:outline-none">
@@ -676,7 +738,7 @@ export default function HomePage() {
       <section className="bg-ivory-50 py-24 sm:py-32 border-b border-border">
         <div className="max-w-[1240px] mx-auto px-4 sm:px-6">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
-            
+
             {/* Accordion on Left (7 cols) */}
             <div className="lg:col-span-7 space-y-8">
               <SectionHeading

@@ -1,5 +1,5 @@
 // Automated test for interactive workflows and API endpoints
-const BASE_URL = "http://localhost:3001";
+const BASE_URL = process.env.TEST_BASE_URL || "http://localhost:3000";
 
 async function testWorkflows() {
   console.log("Testing interactive workflows and API endpoints...\n");

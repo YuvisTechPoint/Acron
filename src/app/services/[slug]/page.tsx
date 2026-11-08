@@ -26,6 +26,15 @@ import {
   EditorialLink,
 } from "@/components/ui";
 
+const TOC_ITEMS = [
+  { id: "overview", label: "Overview & Scope" },
+  { id: "who-it-is-for", label: "Who This Is For" },
+  { id: "engagements", label: "Typical Engagements" },
+  { id: "process", label: "Our Engagement Process" },
+  { id: "faq", label: "Frequently Asked Questions" },
+  { id: "related-insights", label: "Related Insights" },
+];
+
 export default function ServiceDetailPage() {
   const params = useParams();
   const slug = (params?.slug as string) || "advisory";
@@ -39,15 +48,6 @@ export default function ServiceDetailPage() {
       shortDesc: "Strategic corporate structuring, board governance, and compliance guidance.",
       services: [],
     };
-
-  const TOC_ITEMS = [
-    { id: "overview", label: "Overview & Scope" },
-    { id: "who-it-is-for", label: "Who This Is For" },
-    { id: "engagements", label: "Typical Engagements" },
-    { id: "process", label: "Our Engagement Process" },
-    { id: "faq", label: "Frequently Asked Questions" },
-    { id: "related-insights", label: "Related Insights" },
-  ];
 
   useEffect(() => {
     const handleScroll = () => {

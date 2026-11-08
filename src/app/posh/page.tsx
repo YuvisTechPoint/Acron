@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import {
   ShieldCheck,
@@ -133,41 +134,61 @@ export default function PoshPage() {
   return (
     <div className="bg-ivory-50 text-ink min-h-screen">
       
-      {/* Calm Hero: Ivory & Soft Blue-100 surfaces, no dark dramatic gradient */}
+      {/* Calm Hero: Ivory & Soft Blue-100 surfaces with High-Res External Member Arch Image */}
       <section className="pt-32 pb-16 sm:pt-40 sm:pb-24 border-b border-border bg-gradient-to-b from-blue-100/40 via-ivory-50 to-ivory-50">
-        <div className="max-w-[1240px] mx-auto px-4 sm:px-6 space-y-6">
-          <Eyebrow>POSH ACT 2013 COMPLIANCE &amp; ADVISORY</Eyebrow>
+        <div className="max-w-[1240px] mx-auto px-4 sm:px-6">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+            
+            <div className="lg:col-span-7 space-y-6">
+              <Eyebrow>POSH ACT 2013 COMPLIANCE &amp; ADVISORY</Eyebrow>
 
-          <h1 className="font-serif text-4xl sm:text-6xl md:text-7xl font-bold tracking-tight text-ink-950 leading-[1.05] max-w-4xl">
-            Safe, <span className="font-serif italic font-normal text-brass-700">compliant</span> workplaces.
-          </h1>
+              <h1 className="font-serif text-4xl sm:text-6xl md:text-7xl font-bold tracking-tight text-ink-950 leading-[1.05] max-w-4xl">
+                Safe, <span className="font-serif italic font-normal text-brass-700">compliant</span> workplaces.
+              </h1>
 
-          <p className="font-sans text-lg sm:text-xl text-ink-secondary max-w-2xl leading-relaxed">
-            Thoughtful, legally sound guidance for organisations and institutions navigating the Sexual Harassment of Women at Workplace (Prevention, Prohibition and Redressal) Act 2013.
-          </p>
+              <p className="font-sans text-lg sm:text-xl text-ink-secondary max-w-2xl leading-relaxed">
+                Thoughtful, legally sound guidance for organisations and institutions navigating the Sexual Harassment of Women at Workplace (Prevention, Prohibition and Redressal) Act 2013.
+              </p>
 
-          <div className="pt-4 flex flex-wrap items-center gap-4">
-            <Button
-              variant="primary"
-              size="md"
-              href="/request-service?service=POSH%20Compliance"
-              arrow
-            >
-              Book a POSH consultation
-            </Button>
-            <Button
-              variant="secondary"
-              size="md"
-              href="/posh/start"
-              arrow
-            >
-              Report a concern
-            </Button>
-          </div>
+              <div className="pt-4 flex flex-wrap items-center gap-4">
+                <Button
+                  variant="primary"
+                  size="md"
+                  href="/request-service?service=POSH%20Compliance"
+                  arrow
+                >
+                  Book a POSH consultation
+                </Button>
+                <Button
+                  variant="secondary"
+                  size="md"
+                  href="/posh/start"
+                  arrow
+                >
+                  Report a concern
+                </Button>
+              </div>
 
-          <div className="pt-6 border-t border-border/80 flex items-center gap-2 text-xs text-ink-secondary">
-            <Shield className="w-4 h-4 text-brass-500" />
-            <span>Strict Section 16 statutory confidentiality &bull; Independent External Member practice</span>
+              <div className="pt-6 border-t border-border/80 flex items-center gap-2 text-xs text-ink-secondary">
+                <Shield className="w-4 h-4 text-brass-500" />
+                <span>Strict Section 16 statutory confidentiality &bull; Independent External Member practice</span>
+              </div>
+            </div>
+
+            <div className="lg:col-span-5 flex justify-center">
+              <div className="relative w-full max-w-[360px] sm:max-w-[400px] aspect-[1856/2304] rounded-2xl overflow-hidden shadow-2xl border border-brass-500/30 bg-navy-950 group">
+                <Image
+                  src="/images/posh.png"
+                  alt="POSH Compliance Desk - External Member Consultation at Chambers"
+                  fill
+                  priority
+                  sizes="(max-width: 768px) 100vw, 400px"
+                  className="object-contain group-hover:scale-[1.02] transition-transform duration-500"
+                />
+                <div className="absolute inset-0 rounded-2xl border border-brass-500/20 pointer-events-none" />
+              </div>
+            </div>
+
           </div>
         </div>
       </section>

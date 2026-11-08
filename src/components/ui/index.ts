@@ -6,3 +6,4 @@ export * from "./form-controls";
 export * from "./accordion";
 export * from "./badge-and-stepper";
 export * from "./motion";
+export * from "./toast";

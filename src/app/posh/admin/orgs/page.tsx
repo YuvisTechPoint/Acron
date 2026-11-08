@@ -278,7 +278,7 @@ export default function PoshOnboardOrgPage() {
                       >
                         <option value="Adv. Debjani Sen (Acorn Legal)">Adv. Debjani Sen (Acorn Legal Partner, Bar No. WB/1998)</option>
                         <option value="Adv. Subhasish Mukherjee (Acorn Legal)">Adv. Subhasish Mukherjee (Acorn Legal Managing Partner)</option>
-                        <option value="Smt. Anuradha Roy (Certified NGO Specialist)">Smt. Anuradha Roy (Kolkata Women's Legal Aid Trust)</option>
+                        <option value="Smt. Anuradha Roy (Certified NGO Specialist)">Smt. Anuradha Roy (Kolkata Women&apos;s Legal Aid Trust)</option>
                       </select>
                       <input
                         type="text"

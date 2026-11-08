@@ -158,10 +158,11 @@ export default function BlogIndexPage() {
                 </div>
               </div>
 
-              {/* Right 5 cols: Arch Mask Placeholder */}
+              {/* Right 5 cols: Arch Mask Image */}
               <div className="lg:col-span-5 p-6 lg:p-8 flex items-center justify-center bg-stone-100/50">
                 <div className="w-full max-w-sm">
                   <ArchImage
+                    src="/images/hero.jpg"
                     aspect="standard"
                     label={featured.category}
                     sublabel="Acorn Legal Commentary"

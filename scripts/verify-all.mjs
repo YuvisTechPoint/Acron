@@ -1,5 +1,5 @@
 // Programmatic route and link verification crawler
-const BASE_URL = "http://localhost:3001";
+const BASE_URL = process.env.TEST_BASE_URL || "http://localhost:3000";
 
 // List of all 88 primary routes
 const ROUTES = [
@@ -138,7 +138,10 @@ async function main() {
 
   for (const link of discoveredLinks) {
     try {
-      const res = await fetch(`${BASE_URL}${link}`, { method: "HEAD" });
+      const res = await fetch(`${BASE_URL}${link}`, {
+        method: "GET",
+        headers: { "User-Agent": "RouteCrawler/1.0" },
+      });
       if (res.status === 200 || res.status === 304 || res.status === 307 || res.status === 308) {
         linkPassed++;
       } else {

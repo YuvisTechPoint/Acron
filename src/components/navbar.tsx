@@ -40,25 +40,34 @@ export function Navbar() {
   );
   const megaMenuRef = useRef<HTMLDivElement>(null);
 
+  const isAdminOrConsole =
+    pathname.startsWith("/admin") ||
+    pathname.startsWith("/posh/admin") ||
+    pathname.startsWith("/posh/ic");
+
   const isDarkHeroPage = pathname === "/";
+  const isTransparent = isDarkHeroPage && !scrolled;
 
   useEffect(() => {
+    if (isAdminOrConsole) return;
     const handleScroll = () => {
-      setScrolled(window.scrollY > 24);
+      setScrolled(window.scrollY > 30);
     };
     handleScroll();
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [isAdminOrConsole]);
 
   // Close menus on route change
   useEffect(() => {
+    if (isAdminOrConsole) return;
     setMobileMenuOpen(false);
     setMegaMenuOpen(false);
-  }, [pathname]);
+  }, [pathname, isAdminOrConsole]);
 
   // Handle escape key to close mega menu and mobile menu
   useEffect(() => {
+    if (isAdminOrConsole) return;
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
         setMegaMenuOpen(false);
@@ -67,9 +76,12 @@ export function Navbar() {
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, []);
+  }, [isAdminOrConsole]);
 
-  const isHeaderTransparent = isDarkHeroPage && !scrolled;
+  if (isAdminOrConsole) {
+    return null;
+  }
+
   const activePractice =
     PRACTICE_AREAS.find((p) => p.slug === hoveredPracticeSlug) || PRACTICE_AREAS[0];
 
@@ -77,61 +89,43 @@ export function Navbar() {
     <>
       <header
         className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${
-          scrolled ? "h-[72px]" : "h-[88px]"
+          scrolled ? "h-[72px]" : "h-[84px]"
         } ${
-          isHeaderTransparent
+          isTransparent
             ? "bg-transparent text-white border-b border-white/10"
-            : "bg-ivory-50/95 backdrop-blur-md text-ink-950 border-b border-border shadow-card"
+            : "bg-white/95 backdrop-blur-md text-ink-950 border-b border-border shadow-card"
         }`}
       >
-        <div className="max-w-[1240px] mx-auto px-4 sm:px-6 h-full flex items-center justify-between">
+        <div className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center justify-between">
           
-          {/* Logo Lockup: A Monogram with oak leaf line + ACORN + LEGAL CONSULTANTS */}
+          {/* Logo Lockup: Monogram Box with A + ACORN + LEGAL CONSULTANTS */}
           <Link
             href="/"
             className="flex items-center gap-3 group focus:outline-none"
             aria-label="Acorn Legal Consultants Home"
           >
-            {/* Monogram A with subtle oak leaf line */}
+            {/* Monogram A square box */}
             <div
-              className={`w-10 h-10 rounded-btn flex items-center justify-center transition duration-200 border ${
-                isHeaderTransparent
-                  ? "bg-navy-800/80 border-brass-500/40 text-brass-300"
-                  : "bg-navy-700 border-navy-800 text-brass-300"
+              className={`w-10 h-10 rounded-md flex items-center justify-center transition duration-200 border ${
+                isTransparent
+                  ? "bg-[#101F38] border-brass-500/40 text-brass-300 shadow-inner group-hover:border-brass-400"
+                  : "bg-navy-800 border-brass-500/40 text-brass-300 shadow-sm group-hover:border-brass-400"
               }`}
             >
-              <svg
-                viewBox="0 0 32 32"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-                className="w-5 h-5"
-              >
-                {/* Refined Serif A with oak leaf stem line */}
-                <path
-                  d="M16 6 L7 26 H11 L13.5 20 H18.5 L21 26 H25 L16 6 Z M14.5 17 L16 11.5 L17.5 17 H14.5 Z"
-                  fill="currentColor"
-                />
-                {/* Subtle oak leaf stem tick */}
-                <path
-                  d="M16 11.5 C17 10 19 11 18.5 12.5 C18 14 16.5 15 16 17"
-                  stroke="#D9C29A"
-                  strokeWidth="0.8"
-                  strokeLinecap="round"
-                />
-              </svg>
+              <span className="font-serif text-2xl font-bold leading-none select-none text-brass-300">A</span>
             </div>
 
             <div className="flex flex-col">
               <span
-                className={`font-serif text-2xl font-bold tracking-tight leading-none ${
-                  isHeaderTransparent ? "text-white" : "text-ink-950"
+                className={`font-serif text-2xl font-bold tracking-tight leading-none transition-colors duration-200 ${
+                  isTransparent ? "text-white drop-shadow-sm" : "text-ink-950"
                 }`}
               >
                 ACORN
               </span>
               <span
-                className={`font-sans text-[10px] font-semibold tracking-[0.2em] uppercase mt-1 ${
-                  isHeaderTransparent ? "text-brass-300" : "text-brass-700"
+                className={`font-sans text-[10px] font-semibold tracking-[0.2em] uppercase mt-1 transition-colors duration-200 ${
+                  isTransparent ? "text-brass-300 drop-shadow-sm" : "text-brass-700"
                 }`}
               >
                 Legal Consultants
@@ -148,10 +142,10 @@ export function Navbar() {
               href="/"
               className={`px-3 py-2 rounded-btn transition ${
                 pathname === "/"
-                  ? isHeaderTransparent
+                  ? isTransparent
                     ? "text-white font-semibold"
                     : "text-navy-700 font-semibold bg-stone-100"
-                  : isHeaderTransparent
+                  : isTransparent
                   ? "text-white/80 hover:text-white"
                   : "text-ink hover:text-navy-700 hover:bg-stone-100"
               }`}
@@ -163,10 +157,10 @@ export function Navbar() {
               href="/about"
               className={`px-3 py-2 rounded-btn transition ${
                 pathname === "/about"
-                  ? isHeaderTransparent
+                  ? isTransparent
                     ? "text-white font-semibold"
                     : "text-navy-700 font-semibold bg-stone-100"
-                  : isHeaderTransparent
+                  : isTransparent
                   ? "text-white/80 hover:text-white"
                   : "text-ink hover:text-navy-700 hover:bg-stone-100"
               }`}
@@ -188,10 +182,10 @@ export function Navbar() {
                 aria-haspopup="true"
                 className={`flex items-center gap-1 px-3 py-2 rounded-btn transition ${
                   pathname.startsWith("/services")
-                    ? isHeaderTransparent
+                    ? isTransparent
                       ? "text-white font-semibold"
                       : "text-navy-700 font-semibold bg-stone-100"
-                    : isHeaderTransparent
+                    : isTransparent
                     ? "text-white/80 hover:text-white"
                     : "text-ink hover:text-navy-700 hover:bg-stone-100"
                 }`}
@@ -200,7 +194,7 @@ export function Navbar() {
                 <ChevronDown
                   className={`w-3.5 h-3.5 transition-transform duration-200 ${
                     megaMenuOpen ? "rotate-180" : ""
-                  } ${isHeaderTransparent ? "text-brass-300" : "text-brass-700"}`}
+                  } ${isTransparent ? "text-brass-300" : "text-brass-700"}`}
                 />
               </button>
 
@@ -260,19 +254,19 @@ export function Navbar() {
                         {activePractice.services?.slice(0, 3).map((item, i) => (
                           <li key={i} className="flex items-center gap-1.5">
                             <span className="w-1.5 h-1.5 rounded-full bg-brass-500" />
-                            <span className="truncate">{item}</span>
+                            <span className="line-clamp-1">{item}</span>
                           </li>
                         ))}
                       </ul>
                     </div>
 
-                    <div className="pt-3 border-t border-border mt-3">
+                    <div className="pt-4 mt-3 border-t border-border">
                       <Link
                         href={`/services/${activePractice.slug}`}
-                        className="text-xs font-semibold text-navy-700 hover:text-blue-600 flex items-center gap-1"
+                        className="text-xs font-semibold text-navy-700 hover:text-blue-600 flex items-center gap-1.5 group"
                       >
-                        <span>View service details</span>
-                        <ArrowRight className="w-3 h-3 text-brass-500" />
+                        <span>View Practice Scope</span>
+                        <ArrowRight className="w-3.5 h-3.5 text-brass-500 group-hover:translate-x-0.5 transition-transform" />
                       </Link>
                     </div>
                   </div>
@@ -284,10 +278,10 @@ export function Navbar() {
               href="/posh"
               className={`px-3 py-2 rounded-btn transition ${
                 pathname.startsWith("/posh")
-                  ? isHeaderTransparent
+                  ? isTransparent
                     ? "text-white font-semibold"
                     : "text-navy-700 font-semibold bg-stone-100"
-                  : isHeaderTransparent
+                  : isTransparent
                   ? "text-white/80 hover:text-white"
                   : "text-ink hover:text-navy-700 hover:bg-stone-100"
               }`}
@@ -299,10 +293,10 @@ export function Navbar() {
               href="/blog"
               className={`px-3 py-2 rounded-btn transition ${
                 pathname.startsWith("/blog")
-                  ? isHeaderTransparent
+                  ? isTransparent
                     ? "text-white font-semibold"
                     : "text-navy-700 font-semibold bg-stone-100"
-                  : isHeaderTransparent
+                  : isTransparent
                   ? "text-white/80 hover:text-white"
                   : "text-ink hover:text-navy-700 hover:bg-stone-100"
               }`}
@@ -314,10 +308,10 @@ export function Navbar() {
               href="/faq"
               className={`px-3 py-2 rounded-btn transition ${
                 pathname === "/faq"
-                  ? isHeaderTransparent
+                  ? isTransparent
                     ? "text-white font-semibold"
                     : "text-navy-700 font-semibold bg-stone-100"
-                  : isHeaderTransparent
+                  : isTransparent
                   ? "text-white/80 hover:text-white"
                   : "text-ink hover:text-navy-700 hover:bg-stone-100"
               }`}
@@ -329,10 +323,10 @@ export function Navbar() {
               href="/contact"
               className={`px-3 py-2 rounded-btn transition ${
                 pathname === "/contact"
-                  ? isHeaderTransparent
+                  ? isTransparent
                     ? "text-white font-semibold"
                     : "text-navy-700 font-semibold bg-stone-100"
-                  : isHeaderTransparent
+                  : isTransparent
                   ? "text-white/80 hover:text-white"
                   : "text-ink hover:text-navy-700 hover:bg-stone-100"
               }`}
@@ -346,25 +340,25 @@ export function Navbar() {
             <a
               href={`tel:${BRAND_CONFIG.phone}`}
               title={`Call Chambers: ${BRAND_CONFIG.phone}`}
-              className={`p-2.5 rounded-full transition border ${
-                isHeaderTransparent
-                  ? "text-brass-300 hover:text-white border-white/20 hover:bg-white/10"
-                  : "text-navy-700 hover:text-brass-700 border-border hover:bg-surface"
+              className={`w-10 h-10 rounded-full transition border flex items-center justify-center ${
+                isTransparent
+                  ? "bg-[#101F38]/60 border-white/20 text-brass-300 hover:text-white hover:border-brass-400 backdrop-blur-sm"
+                  : "border-border text-navy-700 hover:text-brass-700 hover:bg-surface"
               }`}
               aria-label="Call Acorn Legal Consultants"
             >
-              <Phone className="w-4 h-4 text-brass-500" />
+              <Phone className={`w-4 h-4 ${isTransparent ? "text-brass-400" : "text-brass-600"}`} />
             </a>
 
             <Link
               href="/request-service"
-              className={`h-[44px] px-5 rounded-btn flex items-center justify-center text-xs font-semibold uppercase tracking-wider transition-all duration-200 shadow-sm ${
-                isHeaderTransparent
-                  ? "bg-brass-500 hover:bg-brass-300 text-ink-950 font-bold border border-brass-300"
+              className={`h-[42px] px-5 rounded-btn flex items-center justify-center text-xs font-bold uppercase tracking-[0.14em] transition-all duration-200 shadow-sm ${
+                isTransparent
+                  ? "bg-brass-500 hover:bg-brass-400 text-ink-950 border border-brass-400"
                   : "bg-navy-700 hover:bg-blue-600 text-ivory-50 border border-navy-800"
               }`}
             >
-              Request a Consultation
+              REQUEST A CONSULTATION
             </Link>
           </div>
 
@@ -373,7 +367,7 @@ export function Navbar() {
             <a
               href={`tel:${BRAND_CONFIG.phone}`}
               className={`p-2 rounded-btn border ${
-                isHeaderTransparent
+                isTransparent
                   ? "text-brass-300 border-white/20"
                   : "text-navy-700 border-border"
               }`}
@@ -384,7 +378,7 @@ export function Navbar() {
             <button
               onClick={() => setMobileMenuOpen(true)}
               className={`p-2 rounded-btn ${
-                isHeaderTransparent ? "text-white" : "text-ink-950"
+                isTransparent ? "text-white" : "text-ink-950"
               }`}
               aria-label="Open mobile navigation"
             >
@@ -405,13 +399,8 @@ export function Navbar() {
           <div>
             <div className="flex items-center justify-between pb-6 border-b border-navy-800">
               <Link href="/" className="flex items-center gap-2.5">
-                <div className="w-9 h-9 rounded-btn bg-navy-800 border border-brass-500/30 flex items-center justify-center text-brass-300">
-                  <svg viewBox="0 0 32 32" fill="none" className="w-5 h-5">
-                    <path
-                      d="M16 6 L7 26 H11 L13.5 20 H18.5 L21 26 H25 L16 6 Z M14.5 17 L16 11.5 L17.5 17 H14.5 Z"
-                      fill="currentColor"
-                    />
-                  </svg>
+                <div className="w-9 h-9 rounded-md bg-navy-800 border border-brass-500/30 flex items-center justify-center text-brass-300">
+                  <span className="font-serif text-xl font-bold">A</span>
                 </div>
                 <div>
                   <div className="font-serif font-bold text-xl text-white">ACORN</div>

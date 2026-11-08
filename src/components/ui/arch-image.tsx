@@ -1,6 +1,9 @@
 import React from "react";
+import Image from "next/image";
 
 interface ArchImageProps {
+  src?: string;
+  alt?: string;
   label?: string;
   sublabel?: string;
   className?: string;
@@ -9,6 +12,8 @@ interface ArchImageProps {
 }
 
 export function ArchImage({
+  src,
+  alt = "Chambers visual",
   label = "Chambers of Acorn Legal",
   sublabel = "Kolkata, West Bengal",
   className = "",
@@ -20,6 +25,44 @@ export function ArchImage({
     portrait: "h-[440px] sm:h-[540px]",
     tall: "h-[500px] sm:h-[620px]",
   };
+
+  if (src) {
+    return (
+      <div
+        className={`relative w-full ${aspectHeights[aspect]} rounded-t-full rounded-b-2xl border-2 border-brass-500/40 shadow-raised overflow-hidden group select-none bg-navy-950 p-1.5 ${className}`}
+      >
+        <div className="relative w-full h-full rounded-t-full rounded-b-xl overflow-hidden border border-brass-500/25">
+          <Image
+            src={src}
+            alt={alt}
+            fill
+            sizes="(max-width: 768px) 100vw, 420px"
+            className="object-cover object-center group-hover:scale-[1.03] transition-transform duration-700 ease-out"
+            priority
+          />
+          {/* Architectural inner arch ring vignette */}
+          <div className="absolute inset-0 bg-gradient-to-t from-navy-950/70 via-transparent to-black/20 pointer-events-none" />
+          <div className="absolute inset-2 rounded-t-full border border-brass-500/20 pointer-events-none" />
+
+          {/* Subtitle pill badge at bottom */}
+          {(label || sublabel) && (
+            <div className="absolute inset-x-0 bottom-0 p-4 text-center bg-gradient-to-t from-navy-950 via-navy-950/80 to-transparent">
+              {label && (
+                <div className="font-serif text-sm sm:text-base font-medium text-white drop-shadow">
+                  {label}
+                </div>
+              )}
+              {sublabel && (
+                <div className="font-sans text-[10px] font-semibold uppercase tracking-[0.16em] text-brass-400 mt-0.5">
+                  {sublabel}
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div

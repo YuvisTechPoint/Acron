@@ -1,0 +1,9 @@
+Run the Acorn application build as seven gated stages. Planning mode. At each stage: show the plan, wait for approval, build, run all tests, produce a walkthrough with screenshots where UI exists, commit, STOP for my approval. Flag anything security-critical as NEEDS HUMAN REVIEW.
+
+STAGE 1 FOUNDATION (sequential): monorepo, shared package, API baseline, Docker services, CI, authentication with MFA, RBAC, tenancy, audit chain. Agents: backend-architect, auth-security-engineer, devops-sre, test-engineer.
+STAGE 2 PUBLIC BACK END (parallel A to D): A requests and Q&A; B blog CMS, media, scripts, settings; C payments; D email queue and files with scanning. Then wire the existing Next.js forms to the real API (keep graceful fallbacks).
+STAGE 3 ADMIN CONSOLE AND REAL-TIME (parallel A to D): A dashboard and live feed; B requests and Q&A moderation; C posts, pages, media, campaign pages; D users, roles, audit viewer, settings, notifications.
+STAGE 4 POSH RULES ENGINE (sequential, no UI): packages/rules with 40 scenarios. Human legal review of rules config before proceeding.
+STAGE 5 POSH APPLICATION (parallel A to D then review): A intake, drafts, OTP signature, routing, encryption, evidence; B IC workspace, case lifecycle, notices, hearings, report; C complainant, respondent and organisation portals in calm mode; D content-free notifications, audit viewer, break-glass. Then the confidentiality reviewer runs.
+STAGE 6 COMPLIANCE AND SERVICES (parallel A to D): A organisations, branches, IC roster, policy library, notices, compliance score; B annual report generator and analytics with small-group suppression; C LMS, surveys, certificates; D service desk with SLA timers, directory, knowledge base, legal console.
+STAGE 7 HARDENING AND RELEASE (parallel then sequential): security review, load and accessibility tests, backup and restore drill, monitoring, runbooks, go-live checklist, release PR. Never deploy.

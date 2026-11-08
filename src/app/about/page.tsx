@@ -125,6 +125,7 @@ export default function AboutPage() {
             <div className="lg:col-span-5 flex justify-center">
               <div className="w-full max-w-md lg:-mt-12">
                 <ArchImage
+                  src="/images/hero.jpg"
                   aspect="portrait"
                   label="Chambers Archive & Library"
                   sublabel="Camac Court, Kolkata"

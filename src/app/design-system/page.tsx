@@ -18,6 +18,7 @@ import {
   Stepper,
   Reveal,
   CountUp,
+  Toast,
 } from "@/components/ui";
 import {
   Shield,
@@ -332,8 +333,9 @@ export default function DesignSystemPage() {
             </div>
 
             <div className="space-y-4">
-              <h3 className="font-serif text-xl font-bold text-ink">Architectural Arch Image Mask</h3>
+              <h3 className="font-serif text-xl font-bold text-ink">Architectural Arch Image Frame</h3>
               <ArchImage
+                src="/images/hero.jpg"
                 aspect="standard"
                 label="Chambers at Camac Street"
                 sublabel="Park Street District, Kolkata"
@@ -421,6 +423,26 @@ export default function DesignSystemPage() {
           <div className="bg-white rounded-card border border-border p-6 sm:p-8 shadow-card space-y-6">
             <h3 className="font-serif text-xl font-bold text-ink">Accessible Animated Accordion</h3>
             <Accordion items={sampleAccordionItems} defaultOpenId="item-1" />
+          </div>
+
+          {/* Toast Notification Primitive */}
+          <div className="bg-white rounded-card border border-border p-6 sm:p-8 shadow-card space-y-6">
+            <h3 className="font-serif text-xl font-bold text-ink">Editorial Toast Notifications</h3>
+            <p className="text-sm text-ink-secondary">
+              Quiet Authority non-intrusive feedback toasts with 1px hairline brass border and status-aware icons.
+            </p>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <Toast
+                variant="success"
+                title="Service Request Registered"
+                description="Your matter intake has been logged under privileged reference ACN-SR-2026-00412."
+              />
+              <Toast
+                variant="info"
+                title="IC Committee Notice Dispatched"
+                description="Statutory notice served to the Respondent pursuant to Section 9 of the POSH Act."
+              />
+            </div>
           </div>
 
           {/* Motion Helpers */}

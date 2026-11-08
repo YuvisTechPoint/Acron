@@ -14,6 +14,7 @@
   --stone-100: #F1EEE7;
   --white: #FFFFFF;
   --brass-300: #D9C29A;
+  --brass-400: #C59A58;
   --brass-500: #B08D57;
   --brass-700: #8A6B3A;
   --text: #1B1F27;
@@ -240,3 +241,69 @@ button, a, input, select, textarea {
     color: #000000;
   }
 }
+
+/* Foldable Luxury Footer Drawer (Smooth grid-row transition without overlap) */
+.footer-foldable-drawer {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 420ms cubic-bezier(0.22, 1, 0.36, 1);
+  overflow: hidden;
+}
+
+.footer-foldable-drawer[data-open="true"] {
+  grid-template-rows: 1fr;
+}
+
+.footer-foldable-drawer-inner {
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* Rolling Text Micro-interaction (Vibe Music style kinetic typography for links) */
+.footer-roll-text {
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+  height: 1.25em;
+  line-height: 1.25;
+  vertical-align: bottom;
+}
+
+.footer-roll-text__track {
+  display: flex;
+  flex-direction: column;
+  transform: translate3d(0, 0, 0);
+  transition: transform 0.38s cubic-bezier(0.76, 0, 0.24, 1);
+  will-change: transform;
+}
+
+.footer-roll-text__line {
+  display: block;
+  flex-shrink: 0;
+  height: 1.25em;
+  line-height: 1.25;
+  white-space: nowrap;
+}
+
+a:hover .footer-roll-text__track,
+a:focus-visible .footer-roll-text__track,
+button:hover .footer-roll-text__track,
+button:focus-visible .footer-roll-text__track,
+.group:hover .footer-roll-text__track {
+  transform: translate3d(0, -50%, 0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .footer-roll-text__track {
+    transition: none;
+  }
+  a:hover .footer-roll-text__track,
+  a:focus-visible .footer-roll-text__track,
+  button:hover .footer-roll-text__track,
+  button:focus-visible .footer-roll-text__track,
+  .group:hover .footer-roll-text__track {
+    transform: none;
+  }
+}
+
+

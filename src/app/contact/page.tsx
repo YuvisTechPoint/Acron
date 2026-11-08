@@ -24,6 +24,7 @@ import {
   Textarea,
   Checkbox,
 } from "@/components/ui";
+import { ChambersMap } from "@/components/chambers-map";
 
 export default function ContactPage() {
   const [name, setName] = useState("");
@@ -129,52 +130,12 @@ export default function ContactPage() {
 
         </div>
 
-        {/* 2. Stylised Map Card & Short Form Grid */}
+        {/* 2. Stylised Realtime Map & Short Form Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
           
-          {/* Left 6 Cols: Stylised Map Placeholder Card */}
+          {/* Left 6 Cols: Synchronized Google Map & Chambers Geography */}
           <div className="lg:col-span-6 space-y-6">
-            <div className="bg-white rounded-card border border-border p-8 shadow-card space-y-6">
-              <div className="flex items-center justify-between pb-4 border-b border-border">
-                <span className="text-xs uppercase font-semibold text-brass-700 tracking-wider">
-                  Chambers Geography
-                </span>
-                <span className="text-xs text-ink-muted">Camac Street &bull; Kolkata</span>
-              </div>
-
-              {/* Stylised Map Visual Card */}
-              <div className="w-full h-72 rounded-card bg-navy-900 border border-navy-800 relative overflow-hidden flex flex-col items-center justify-center text-center p-6 text-white group select-none">
-                {/* Architectural Grid Lines */}
-                <div className="absolute inset-0 opacity-15 bg-[linear-gradient(to_right,#B08D57_1px,transparent_1px),linear-gradient(to_bottom,#B08D57_1px,transparent_1px)] bg-[size:24px_24px]" />
-                
-                {/* Center Location Pin */}
-                <div className="w-14 h-14 rounded-full bg-navy-800 border border-brass-500/40 flex items-center justify-center mb-3 text-brass-300 shadow-inner group-hover:scale-105 transition-transform duration-200">
-                  <MapPin className="w-6 h-6" />
-                </div>
-
-                <span className="font-serif text-xl font-bold text-white relative z-10">
-                  Camac Court, 25 Camac Street
-                </span>
-                <span className="font-sans text-xs text-brass-300 mt-1 relative z-10">
-                  Park Street Commercial Hub &bull; Kolkata 700016
-                </span>
-              </div>
-
-              <div className="flex items-center justify-between pt-2">
-                <span className="font-sans text-xs text-ink-secondary">
-                  Landmark: Near Park Street Crossing
-                </span>
-                <a
-                  href="https://maps.google.com/?q=25+Camac+Street+Kolkata"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 text-xs font-semibold text-navy-700 hover:text-blue-600 underline"
-                >
-                  <span>Open in Google Maps</span>
-                  <ExternalLink className="w-3.5 h-3.5" />
-                </a>
-              </div>
-            </div>
+            <ChambersMap />
 
             {/* Office Hours Card */}
             <div className="p-6 bg-stone-100 rounded-card border border-border flex items-start gap-4">
