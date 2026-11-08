@@ -8,10 +8,10 @@ export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
 
-    const name = body.name || body.fullName;
+    const name = body.name || body.fullName || body.clientName;
     const email = body.email;
-    const practiceArea = body.practiceArea || body.serviceCategory;
-    const description = body.description;
+    const practiceArea = body.practiceArea || body.serviceCategory || body.serviceRequested || "General Advisory";
+    const description = body.description || body.briefDescription || body.message || "Consultation request";
 
     if (!name || !email || !practiceArea || !description) {
       return NextResponse.json(
