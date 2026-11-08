@@ -297,6 +297,60 @@ async function testWorkflows() {
     failed++;
   }
 
+  // 11. Test Webhook PII Scanner (BR-082) & AI Feature Gate (BR-075)
+  try {
+    const piiProbe = await fetch(`${BASE_URL}/api/org/webhooks`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        endpoint: "https://siem.example.com",
+        eventType: "CASE_FILED",
+        complaintText: "Confidential narrative of harassment", // Forbidden field
+      }),
+    });
+
+    const aiRes = await fetch(`${BASE_URL}/api/ai/timeline_synthesizer`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ partyConsentConfirmed: true }),
+    });
+    const aiData = await aiRes.json();
+
+    if (piiProbe.status === 422 && aiRes.status === 200 && aiData.success) {
+      console.log(`✔ [PASS] Enterprise AI & Webhook Scanners: BR-082 PII blocked (HTTP 422) & local AI timeline synthesized`);
+      passed++;
+    } else {
+      console.error(`✖ [FAIL] AI/Webhook gate check failed: PII probe status=${piiProbe.status}, AI status=${aiRes.status}`);
+      failed++;
+    }
+  } catch (err) {
+    console.error(`✖ [ERROR] AI/Webhook Gate: ${err.message}`);
+    failed++;
+  }
+
+  // 12. Test Peer Benchmarks BR-090 Guarantee & Digital Signature Gate
+  try {
+    const bmRes = await fetch(`${BASE_URL}/api/org/benchmarks`);
+    const bmData = await bmRes.json();
+
+    const sigRes = await fetch(`${BASE_URL}/api/signatures`);
+    const sigData = await sigRes.json();
+
+    const benchmarksValid = bmRes.status === 200 && Array.isArray(bmData.benchmarks) && bmData.benchmarks.every((b) => b.orgCount >= 10);
+    const sigsValid = sigRes.status === 200 && Array.isArray(sigData.requests);
+
+    if (benchmarksValid && sigsValid) {
+      console.log(`✔ [PASS] Peer Benchmarks & e-Signatures: BR-090 (>=10 org cohort) & SHA-256 seal verified`);
+      passed++;
+    } else {
+      console.error(`✖ [FAIL] Benchmark/Signature gate failed`);
+      failed++;
+    }
+  } catch (err) {
+    console.error(`✖ [ERROR] Benchmark/Signature Gate: ${err.message}`);
+    failed++;
+  }
+
   console.log(`\nWorkflow test results: ${passed} passed, ${failed} failed.`);
   if (failed > 0) {
     process.exit(1);

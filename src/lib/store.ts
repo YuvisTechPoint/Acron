@@ -34,6 +34,16 @@ import {
   TeamMemberItem,
   EngagementStep,
   ChambersPrinciple,
+  SSOConfiguration,
+  IntegrationConnector,
+  AIFeatureDefinition,
+  PeerBenchmark,
+  EarlyWarningSignal,
+  AnonymousThread,
+  VirtualHearingRoom,
+  SignatureRequest,
+  AuditInspectionPack,
+  SLOMonitorMetric,
 } from "./types";
 import {
   generateServiceRequestRef,
@@ -2606,7 +2616,423 @@ class PlatformStore {
     this.set("team_members", filtered);
     this.addAuditLog("Admin", "editor", "TEAM_MEMBER_DELETED", "system", id, `Removed counsel profile ${id}`);
   }
+
+  // ========================================================================
+  // VERSION 3.0 ENTERPRISE DATA METHODS (PRD v3.0 Sections 31 - 40)
+  // ========================================================================
+
+  // SSO & SCIM 2.0 (E20 / E21)
+  getSSOConfigs(): SSOConfiguration[] {
+    return this.get("sso_configs", [
+      {
+        id: "sso-techkol",
+        orgCode: "TECHKOL",
+        protocol: "SAML2",
+        entityId: "https://identity.techkolkata.io/saml/metadata",
+        ssoUrl: "https://identity.techkolkata.io/saml/sso",
+        certificateFingerprint: "SHA256:7B:4E:9F:81:AA:C4:22:90:5B:11:89:C8:DE:33:F1",
+        domainTxtRecord: "acorn-domain-verify=tk-8849-verified-2026",
+        verified: true,
+        scimTokenMasked: "scim_live_••••••••••••94b2",
+        scimEnabled: true,
+        scimLeaverAction: "NOTIFY_PO_REASSIGN",
+        groupMappings: [
+          { idpGroup: "HR_Leadership", internalRole: "ORG_HR" },
+          { idpGroup: "Executive_Committee", internalRole: "ORG_ADMIN" },
+        ],
+      },
+      {
+        id: "sso-bengalind",
+        orgCode: "BENGALIND",
+        protocol: "OIDC",
+        entityId: "https://accounts.bengalind.com",
+        ssoUrl: "https://accounts.bengalind.com/oauth2/v1/authorize",
+        domainTxtRecord: "acorn-domain-verify=bi-2291-pending",
+        verified: false,
+        scimTokenMasked: "scim_live_••••••••••••11ac",
+        scimEnabled: false,
+        scimLeaverAction: "DEACTIVATE_IMMEDIATELY",
+        groupMappings: [
+          { idpGroup: "Compliance_Staff", internalRole: "ORG_HR" },
+        ],
+      },
+    ]);
+  }
+
+  saveSSOConfig(config: SSOConfiguration): void {
+    const list = this.getSSOConfigs();
+    const idx = list.findIndex((c) => c.orgCode === config.orgCode);
+    if (idx >= 0) {
+      list[idx] = config;
+    } else {
+      list.push(config);
+    }
+    this.set("sso_configs", list);
+    this.addAuditLog(config.orgCode, "org_admin", "SSO_CONFIG_UPDATED", "system", config.id, `Updated SSO settings: ${config.protocol} verified=${config.verified}`);
+  }
+
+  // Connectors & Integrations (E22 / E23)
+  getConnectors(orgCode?: string): IntegrationConnector[] {
+    const all: IntegrationConnector[] = this.get("integration_connectors", [
+      {
+        id: "conn-zoho",
+        orgCode: "TECHKOL",
+        provider: "ZOHO_PEOPLE",
+        name: "Zoho People HRMS Sync",
+        category: "HRMS",
+        status: "CONNECTED",
+        syncFrequency: "DAILY",
+        lastSyncAt: new Date(Date.now() - 3600000 * 4).toISOString(),
+        errorCount: 0,
+        config: { domain: "people.zoho.in", orgId: "770192" },
+      },
+      {
+        id: "conn-keka",
+        orgCode: "BENGALIND",
+        provider: "KEKA",
+        name: "Keka Employee Directory",
+        category: "HRMS",
+        status: "CONNECTED",
+        syncFrequency: "DAILY",
+        lastSyncAt: new Date(Date.now() - 3600000 * 12).toISOString(),
+        errorCount: 0,
+        config: { companyUrl: "bengalind.keka.com" },
+      },
+      {
+        id: "conn-teams",
+        orgCode: "TECHKOL",
+        provider: "MICROSOFT_TEAMS",
+        name: "Teams Content-Free Alert Bot",
+        category: "COLLABORATION",
+        status: "CONNECTED",
+        syncFrequency: "ON_DEMAND",
+        lastSyncAt: new Date(Date.now() - 3600000 * 2).toISOString(),
+        errorCount: 0,
+        config: { tenantId: "azure-ad-9921", botId: "acorn-sec16-bot" },
+      },
+      {
+        id: "conn-webhook",
+        orgCode: "TECHKOL",
+        provider: "WEBHOOK_GATEWAY",
+        name: "Enterprise SIEM Audit Outbox",
+        category: "CUSTOM_WEBHOOK",
+        status: "CONNECTED",
+        syncFrequency: "ON_DEMAND",
+        lastSyncAt: new Date().toISOString(),
+        errorCount: 0,
+        config: { endpoint: "https://siem.techkolkata.io/acorn-events", format: "JSON_MASKED" },
+      },
+    ]);
+    if (orgCode) {
+      return all.filter((c) => c.orgCode === orgCode);
+    }
+    return all;
+  }
+
+  toggleConnector(id: string, status: "CONNECTED" | "DISCONNECTED"): void {
+    const list = this.getConnectors();
+    const item = list.find((c) => c.id === id);
+    if (item) {
+      item.status = status;
+      this.set("integration_connectors", list);
+      this.addAuditLog(item.orgCode, "org_admin", "CONNECTOR_STATE_CHANGE", "system", id, `Changed connector status to ${status}`);
+    }
+  }
+
+  // AI & Automation Governance (E24)
+  getAIFeatures(): AIFeatureDefinition[] {
+    return this.get("ai_features", [
+      {
+        featureKey: "timeline_synthesizer",
+        name: "IC Chronological Timeline Synthesizer",
+        description: "Synthesizes date-stamped event sequences from party statements for IC member review without credibility commentary.",
+        riskTier: "TIER_1_LOW",
+        model: "Acorn-Local-Llama3-8B (Zero Egress)",
+        humanReviewRequired: true,
+        partyConsentRequired: true,
+        killSwitchActive: false,
+        lastEvalPassRate: 99.8,
+      },
+      {
+        featureKey: "policy_qa_assistant",
+        name: "Employee POSH Policy Q&A Assistant",
+        description: "Answers employee general policy and procedure questions strictly based on the employer's acknowledged handbook.",
+        riskTier: "TIER_1_LOW",
+        model: "Acorn-Local-Mistral-7B",
+        humanReviewRequired: false,
+        partyConsentRequired: false,
+        killSwitchActive: false,
+        lastEvalPassRate: 100.0,
+      },
+      {
+        featureKey: "natural_justice_checklist_verifier",
+        name: "Natural Justice Procedural Checker",
+        description: "Flags missing 7-day notice windows, unbalanced witness deposition opportunities, or absent cross-examination disclosures.",
+        riskTier: "TIER_2_MEDIUM",
+        model: "Acorn-Rule-Validator-v3",
+        humanReviewRequired: true,
+        partyConsentRequired: false,
+        killSwitchActive: false,
+        lastEvalPassRate: 99.4,
+      },
+      {
+        featureKey: "settlement_monetary_detector",
+        name: "Section 10(1) Monetary Settlement Bar Detector",
+        description: "Scans proposed conciliation terms to proactively prevent unlawful financial settlement clauses.",
+        riskTier: "TIER_3_HIGH",
+        model: "Acorn-Statutory-Guard-v1",
+        humanReviewRequired: true,
+        partyConsentRequired: false,
+        killSwitchActive: false,
+        lastEvalPassRate: 100.0,
+      },
+    ]);
+  }
+
+  toggleAIKillSwitch(featureKey: string, active: boolean): void {
+    const list = this.getAIFeatures();
+    const item = list.find((f) => f.featureKey === featureKey);
+    if (item) {
+      item.killSwitchActive = active;
+      this.set("ai_features", list);
+      this.addAuditLog("Admin", "counsel", "AI_KILL_SWITCH_TOGGLED", "system", featureKey, `AI Kill Switch for ${featureKey} set to ${active}`);
+    }
+  }
+
+  // Peer Benchmarking (E25)
+  getPeerBenchmarks(): PeerBenchmark[] {
+    return [
+      {
+        id: "bm-it-large",
+        segment: "INFORMATION_TECHNOLOGY",
+        employeeTier: "251-1000",
+        orgCount: 16, // >= 10 per BR-090
+        medianResolutionDays: 44,
+        conciliationRatePct: 22,
+        annualTrainingPct: 92,
+        retaliationIndex: 0.04,
+      },
+      {
+        id: "bm-fin-med",
+        segment: "FINANCIAL_SERVICES",
+        employeeTier: "50-250",
+        orgCount: 12,
+        medianResolutionDays: 52,
+        conciliationRatePct: 18,
+        annualTrainingPct: 88,
+        retaliationIndex: 0.02,
+      },
+      {
+        id: "bm-health",
+        segment: "HEALTHCARE",
+        employeeTier: "1000+",
+        orgCount: 11,
+        medianResolutionDays: 61,
+        conciliationRatePct: 15,
+        annualTrainingPct: 94,
+        retaliationIndex: 0.06,
+      },
+    ];
+  }
+
+  // Early Warning Signals (E25)
+  getEarlyWarnings(orgCode: string = "TECHKOL"): EarlyWarningSignal[] {
+    return [
+      {
+        id: "ew-1",
+        orgCode,
+        department: "Enterprise Sales & Client Services",
+        metricName: "Post-Work Client Dinner Incident Frequency",
+        riskLevel: "HIGH",
+        threshold: "< 1 reported per quarter",
+        currentVal: "3 informal mentions in pulse survey",
+        suggestedIntervention: "Issue Section 19(a) client hospitality advisory and refresh offsite guidelines.",
+      },
+      {
+        id: "ew-2",
+        orgCode,
+        department: "Quality Assurance & Engineering",
+        metricName: "Night Shift Female Staff Escort Verification",
+        riskLevel: "MEDIUM",
+        threshold: "100% route logging",
+        currentVal: "89% adherence in Sector V hub",
+        suggestedIntervention: "Review cab vendor GPS logs and instruct shift managers per West Bengal Shops & Est. rules.",
+      },
+      {
+        id: "ew-3",
+        orgCode,
+        department: "Finance & Accounts",
+        metricName: "Annual Awareness Refresher Participation",
+        riskLevel: "LOW",
+        threshold: "> 90% attendance",
+        currentVal: "94% certified",
+        suggestedIntervention: "Maintain current refresher schedule.",
+      },
+    ];
+  }
+
+  // Anonymous Advisory Threads (E26)
+  getAnonymousThreads(): AnonymousThread[] {
+    return this.get("anonymous_threads", [
+      {
+        tokenHash: "anon-tk-7729-hash",
+        docketNo: "INQ-ANON-2026-01",
+        orgCode: "TECHKOL",
+        status: "ACTIVE",
+        lastMessageAt: new Date(Date.now() - 3600000 * 2).toISOString(),
+        expiresAt: new Date(Date.now() + 86400000 * 30).toISOString(),
+        messages: [
+          {
+            id: "msg-1",
+            sender: "COMPLAINANT",
+            text: "Hello. I wanted to ask whether verbal remarks made on a private Slack channel by an offshore lead fall under the POSH Act scope?",
+            sentAt: new Date(Date.now() - 3600000 * 18).toISOString(),
+          },
+          {
+            id: "msg-2",
+            sender: "IC_EXTERNAL_MEMBER",
+            text: "Yes. Under Section 2(o) of the POSH Act, any electronic communication platform used in connection with workplace duties is deemed an extended workplace. You may file a formal complaint or request informal conciliation.",
+            sentAt: new Date(Date.now() - 3600000 * 2).toISOString(),
+          },
+        ],
+      },
+    ]);
+  }
+
+  sendAnonymousMessage(tokenHash: string, text: string, sender: "COMPLAINANT" | "IC_EXTERNAL_MEMBER"): void {
+    const list = this.getAnonymousThreads();
+    const thread = list.find((t) => t.tokenHash === tokenHash);
+    if (thread) {
+      thread.messages.push({
+        id: `msg-${Date.now()}`,
+        sender,
+        text,
+        sentAt: new Date().toISOString(),
+      });
+      thread.lastMessageAt = new Date().toISOString();
+      this.set("anonymous_threads", list);
+    }
+  }
+
+  // Virtual Hearing Rooms (E26)
+  getVirtualHearings(docketNo?: string): VirtualHearingRoom[] {
+    const all: VirtualHearingRoom[] = this.get("virtual_hearings", [
+      {
+        id: "vhr-0041-01",
+        docketNo: "ACN-POSH-2026-0041",
+        hearingNumber: 1,
+        title: "Preliminary Examination of Complainant Statement",
+        scheduledAt: new Date(Date.now() + 86400000 * 2).toISOString(),
+        durationMinutes: 45,
+        status: "SCHEDULED",
+        presidingOfficerPresent: true,
+        quorumMet: true,
+        minutesSigned: false,
+        roomUrl: "https://meet.acornlegal.in/posh/vhr-0041-01?sec16=1",
+      },
+      {
+        id: "vhr-0041-02",
+        docketNo: "ACN-POSH-2026-0041",
+        hearingNumber: 2,
+        title: "Cross-Deposition Examination with Natural Justice Guardrails",
+        scheduledAt: new Date(Date.now() + 86400000 * 5).toISOString(),
+        durationMinutes: 60,
+        status: "SCHEDULED",
+        presidingOfficerPresent: true,
+        quorumMet: true,
+        minutesSigned: false,
+        roomUrl: "https://meet.acornlegal.in/posh/vhr-0041-02?sec16=1",
+      },
+    ]);
+    if (docketNo) {
+      return all.filter((h) => h.docketNo === docketNo);
+    }
+    return all;
+  }
+
+  // Statutory Signatures & Document Sealing (Section 34.5 / 35)
+  getSignatures(): SignatureRequest[] {
+    return this.get("signature_requests", [
+      {
+        id: "sig-0041-inq",
+        documentCode: "INQ-REP-2026-0041",
+        documentTitle: "Final Statutory Inquiry Report Section 13 (Docket ACN-POSH-2026-0041)",
+        trustLevel: "CLASS_3_DSC",
+        signers: [
+          { role: "Presiding Officer", name: "Dr. Ananya Mukherjee", status: "SIGNED", signedAt: "2026-10-14T11:00:00Z" },
+          { role: "External Member", name: "Adv. Debjani Sen", status: "SIGNED", signedAt: "2026-10-14T11:45:00Z" },
+          { role: "Employee Member 1", name: "Ms. Rita Basu", status: "PENDING" },
+        ],
+        status: "PARTIALLY_SIGNED",
+        sha256Checksum: "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      },
+    ]);
+  }
+
+  // Inspection-Ready Audit Packs (E27)
+  getAuditPacks(orgCode: string = "TECHKOL"): AuditInspectionPack[] {
+    return this.get("audit_inspection_packs", [
+      {
+        id: "pack-techkol-2025",
+        orgCode: "TECHKOL",
+        fiscalYear: "2025-2026",
+        complianceScore: 98,
+        icGazetteVerified: true,
+        section19Status: {
+          noticesDisplayed: true,
+          policyAcknowledged: true,
+          workshopsConducted: true,
+          annualReportFiled: true,
+        },
+        generatedAt: "2026-04-02T10:00:00Z",
+        sha256Seal: "9f83c1221b29e71b26f8d3c1626c71c4c1e400490b4d4b1a457a4e69b50334f5",
+      },
+    ]);
+  }
+
+  // SLO Reliability Monitor (E28)
+  getSLOMetrics(): SLOMonitorMetric[] {
+    return [
+      {
+        sloKey: "SLO-01",
+        name: "Intake Availability & Encryption Gate",
+        targetPct: 99.95,
+        currentPct: 99.98,
+        errorBudgetRemainingPct: 82.4,
+        window: "30_DAYS",
+        status: "HEALTHY",
+      },
+      {
+        sloKey: "SLO-02",
+        name: "Section 16 PII Scrubber Latency (<50ms)",
+        targetPct: 99.90,
+        currentPct: 99.94,
+        errorBudgetRemainingPct: 76.1,
+        window: "30_DAYS",
+        status: "HEALTHY",
+      },
+      {
+        sloKey: "SLO-03",
+        name: "Natural Justice 7-Day Summons Delivery",
+        targetPct: 99.00,
+        currentPct: 99.60,
+        errorBudgetRemainingPct: 91.0,
+        window: "30_DAYS",
+        status: "HEALTHY",
+      },
+      {
+        sloKey: "SLO-04",
+        name: "Audit Log Append Hash-Chain Continuity",
+        targetPct: 100.0,
+        currentPct: 100.0,
+        errorBudgetRemainingPct: 100.0,
+        window: "30_DAYS",
+        status: "HEALTHY",
+      },
+    ];
+  }
 }
 
 export const platformStore = new PlatformStore();
+
 
