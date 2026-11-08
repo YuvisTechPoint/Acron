@@ -14,15 +14,16 @@ import {
   ArrowRight,
   UserCheck,
   Award,
+  Ban,
 } from "lucide-react";
 import { platformStore } from "@/lib/store";
-import { formatDate } from "@/lib/utils";
+import { formatDate, validateConciliationTerms } from "@/lib/utils";
 import { POSHCase } from "@/lib/types";
 
 export default function ICConciliationPage() {
   const params = useParams();
   const caseId = (params?.id as string) || "case-01";
-  const [poshCase, setPoshCase] = useState<POSHCase | undefined>(undefined);
+  const [poshCase, setPoshCase] = useState<POSHCase | undefined>(() => platformStore.getCaseById(caseId));
 
   const [requestedByComplainant, setRequestedByComplainant] = useState(true);
   const [monetaryFreeAcknowledged, setMonetaryFreeAcknowledged] = useState(false);
@@ -39,14 +40,25 @@ export default function ICConciliationPage() {
     if (c) setPoshCase(c);
   }, [caseId]);
 
+  const termsValidation = validateConciliationTerms(writtenTerms);
+
   const handleRecordConciliation = (outcome: "CONCLUDED" | "FAILED") => {
     if (!poshCase) return;
-    if (outcome === "CONCLUDED" && !monetaryFreeAcknowledged) {
-      alert("Statutory Error: You must acknowledge the statutory prohibition against monetary settlement (Section 10(1) Proviso).");
-      return;
-    }
 
     if (outcome === "CONCLUDED") {
+      if (!requestedByComplainant) {
+        alert("Statutory Violation: Under Section 10(1) of the POSH Act, conciliation may only take place upon the voluntary written request of the aggrieved woman. The IC or employer cannot initiate conciliation without complainant request.");
+        return;
+      }
+      if (!termsValidation.isValid) {
+        alert(termsValidation.errorMessage || "Statutory Error: The conciliation terms contain illegal monetary settlement provisions.");
+        return;
+      }
+      if (!monetaryFreeAcknowledged) {
+        alert("Statutory Error: You must acknowledge the statutory prohibition against monetary settlement (Section 10(1) Proviso).");
+        return;
+      }
+
       platformStore.updateCaseState(
         poshCase.id,
         "CONCILIATION_SUCCESS",
@@ -199,12 +211,33 @@ export default function ICConciliationPage() {
             </label>
           </div>
 
-          <textarea
-            rows={6}
-            value={writtenTerms}
-            onChange={(e) => setWrittenTerms(e.target.value)}
-            className="w-full p-4 bg-white border border-border rounded text-xs font-mono leading-relaxed focus:outline-none focus:border-primary"
-          />
+          <div className="space-y-2">
+            <textarea
+              rows={6}
+              value={writtenTerms}
+              onChange={(e) => setWrittenTerms(e.target.value)}
+              className={`w-full p-4 bg-white border rounded text-xs font-mono leading-relaxed focus:outline-none ${
+                !termsValidation.isValid
+                  ? "border-red-400 focus:border-red-600 bg-red-50/20"
+                  : "border-border focus:border-primary"
+              }`}
+            />
+
+            {!termsValidation.isValid && (
+              <div className="p-3 bg-red-50 rounded border border-red-200 text-xs text-red-900 space-y-1">
+                <div className="flex items-center gap-1.5 font-bold text-red-950">
+                  <ShieldAlert className="w-4 h-4 text-red-600 shrink-0" />
+                  <span>Statutory Violation Detected &bull; Proviso to Section 10(1)</span>
+                </div>
+                <p className="text-[11px] leading-relaxed">
+                  {termsValidation.errorMessage}
+                </p>
+                <div className="text-[10px] text-red-800 font-semibold">
+                  Detected Violations: {termsValidation.violations.join(", ")}
+                </div>
+              </div>
+            )}
+          </div>
 
           <div className="pt-4 flex flex-col sm:flex-row justify-between items-center gap-4 border-t border-border-subtle">
             <button
@@ -224,8 +257,13 @@ export default function ICConciliationPage() {
               </Link>
               <button
                 type="button"
+                disabled={!termsValidation.isValid || !requestedByComplainant || !monetaryFreeAcknowledged}
                 onClick={() => handleRecordConciliation("CONCLUDED")}
-                className="px-6 py-2 bg-emerald-800 text-white text-xs font-semibold rounded hover:bg-emerald-900 transition-colors inline-flex items-center gap-2"
+                className={`px-6 py-2 text-white text-xs font-semibold rounded transition-colors inline-flex items-center gap-2 ${
+                  !termsValidation.isValid || !requestedByComplainant || !monetaryFreeAcknowledged
+                    ? "bg-emerald-950/40 cursor-not-allowed"
+                    : "bg-emerald-800 hover:bg-emerald-900"
+                }`}
               >
                 <CheckCircle2 className="w-4 h-4" />
                 <span>Execute Settlement (Sec 10(2))</span>

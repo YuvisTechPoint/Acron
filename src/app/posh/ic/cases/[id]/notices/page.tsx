@@ -23,7 +23,7 @@ import { POSHCase } from "@/lib/types";
 export default function ICNoticesPage() {
   const params = useParams();
   const caseId = (params?.id as string) || "case-01";
-  const [poshCase, setPoshCase] = useState<POSHCase | undefined>(undefined);
+  const [poshCase, setPoshCase] = useState<POSHCase | undefined>(() => platformStore.getCaseById(caseId));
 
   const [selectedTemplate, setSelectedTemplate] = useState<"NOTICE_RESPONDENT" | "WITNESS_SUMMONS" | "HEARING_NOTICE">("NOTICE_RESPONDENT");
   const [recipientEmail, setRecipientEmail] = useState("");

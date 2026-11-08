@@ -16,6 +16,7 @@ import {
   Building,
 } from "lucide-react";
 import { platformStore } from "@/lib/store";
+import { formatSuppressedCount, isCellSuppressed } from "@/lib/utils";
 
 export default function PoshOrgReportsPage() {
   const [selectedOrgId, setSelectedOrgId] = useState("org-1");
@@ -121,17 +122,21 @@ export default function PoshOrgReportsPage() {
             <div className="bg-white p-4 rounded border border-border space-y-1">
               <span className="text-ink-secondary">1. Complaints Received (Sec 21(a)):</span>
               <div className="font-serif font-bold text-2xl text-primary mt-1">
-                {statutoryMetrics.received}
+                {formatSuppressedCount(statutoryMetrics.received)}
               </div>
-              <div className="text-[10px] text-ink-secondary">Registered within calendar year</div>
+              <div className="text-[10px] text-ink-secondary">
+                {isCellSuppressed(statutoryMetrics.received) ? "Small-cell suppressed (< 5)" : "Registered within calendar year"}
+              </div>
             </div>
 
             <div className="bg-white p-4 rounded border border-border space-y-1">
               <span className="text-ink-secondary">2. Complaints Disposed Of (Sec 21(b)):</span>
               <div className="font-serif font-bold text-2xl text-emerald-700 mt-1">
-                {statutoryMetrics.disposed}
+                {formatSuppressedCount(statutoryMetrics.disposed)}
               </div>
-              <div className="text-[10px] text-ink-secondary">Findings reports concluded</div>
+              <div className="text-[10px] text-ink-secondary">
+                {isCellSuppressed(statutoryMetrics.disposed) ? "Small-cell suppressed (< 5)" : "Findings reports concluded"}
+              </div>
             </div>
 
             <div className="bg-white p-4 rounded border border-border space-y-1">

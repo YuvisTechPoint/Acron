@@ -133,22 +133,32 @@ export default function PoshRespondentStatusPage() {
           </div>
 
           <div className="space-y-3">
-            <div className="bg-white p-4 rounded border border-border space-y-2 text-xs">
-              <div className="flex justify-between items-center border-b border-border-subtle pb-2">
-                <span className="font-bold text-ink">Hearing #1: Primary Cross-Examination of Documents</span>
-                <span className="px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 text-[10px] font-bold">
-                  CONFIRMED
-                </span>
+            {poshCase?.hearings && poshCase.hearings.length > 0 ? (
+              poshCase.hearings.map((h, i) => (
+                <div key={h.id || i} className="bg-white p-4 rounded border border-border space-y-2 text-xs">
+                  <div className="flex justify-between items-center border-b border-border-subtle pb-2">
+                    <span className="font-bold text-ink">Hearing #{h.hearingNumber || i + 1}: {h.agenda}</span>
+                    <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${
+                      h.status === "completed" ? "bg-slate-100 text-slate-800" : "bg-emerald-100 text-emerald-800"
+                    }`}>
+                      {h.status ? h.status.toUpperCase() : "SCHEDULED"}
+                    </span>
+                  </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 text-ink-secondary">
+                    <div>Date: <span className="font-semibold text-ink">{formatDate(h.scheduledDate)}</span></div>
+                    <div>Time: <span className="font-semibold text-ink">{h.scheduledTime || "11:00 AM IST"}</span></div>
+                    <div>Venue: <span className="font-semibold text-ink">{h.locationOrLink}</span></div>
+                  </div>
+                  <p className="text-ink-secondary text-[11px] pt-1 leading-relaxed">
+                    Attendees: {h.attendees?.join(", ") || "IC Quorum"}. Note: Pursuant to Section 11(4), no legal advocates may represent either party.
+                  </p>
+                </div>
+              ))
+            ) : (
+              <div className="p-4 bg-white rounded border border-border text-center text-xs text-ink-secondary">
+                No oral hearings scheduled at this stage. You will receive statutory notice at least 7 days prior to any convened session.
               </div>
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 text-ink-secondary">
-                <div>Date: <span className="font-semibold text-ink">18 Nov 2026</span></div>
-                <div>Time: <span className="font-semibold text-ink">02:30 PM IST</span></div>
-                <div>Venue: <span className="font-semibold text-ink">IC Chamber, Camac St / Webex</span></div>
-              </div>
-              <p className="text-ink-secondary text-[11px] pt-1 leading-relaxed">
-                Agenda: Verification of electronic messaging transcripts and examination of respondent written statement. Both parties are strictly barred from bringing legal practitioners pursuant to Section 11(4) of the Act.
-              </p>
-            </div>
+            )}
           </div>
         </div>
 

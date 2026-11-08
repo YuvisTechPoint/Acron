@@ -24,7 +24,7 @@ import { POSHCase, EvidenceItem } from "@/lib/types";
 export default function ICEvidencePage() {
   const params = useParams();
   const caseId = (params?.id as string) || "case-01";
-  const [poshCase, setPoshCase] = useState<POSHCase | undefined>(undefined);
+  const [poshCase, setPoshCase] = useState<POSHCase | undefined>(() => platformStore.getCaseById(caseId));
 
   const [newTitle, setNewTitle] = useState("");
   const [newUploader, setNewUploader] = useState<"complainant" | "respondent" | "ic_member">("complainant");

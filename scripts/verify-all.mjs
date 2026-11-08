@@ -135,12 +135,14 @@ async function main() {
     const url = `${BASE_URL}${route}`;
     try {
       const res = await fetch(url, { headers: { "User-Agent": "RouteCrawler/1.0" } });
-      if (res.status === 200) {
+      const html = await res.text();
+      const hasCaseNotFound = route.includes("/posh/ic/cases/") && (html.includes("Case not found") || html.includes("Case docket not found"));
+
+      if (res.status === 200 && !hasCaseNotFound) {
         passed++;
         process.stdout.write(`✔ [${res.status}] ${route}\n`);
         
         // Extract internal links from HTML
-        const html = await res.text();
         const matches = html.matchAll(/href="(\/[a-zA-Z0-9_\-\/#]*)"/g);
         for (const match of matches) {
           const href = match[1].split("#")[0]; // remove hash anchor
@@ -150,7 +152,11 @@ async function main() {
         }
       } else {
         failed++;
-        console.error(`✖ [${res.status}] ${route}`);
+        if (hasCaseNotFound) {
+          console.error(`✖ [DEFECT] ${route}: Page rendered empty 'Case not found' error!`);
+        } else {
+          console.error(`✖ [${res.status}] ${route}`);
+        }
       }
     } catch (err) {
       failed++;

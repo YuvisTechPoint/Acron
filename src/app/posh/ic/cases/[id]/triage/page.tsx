@@ -23,7 +23,7 @@ import { POSHCase } from "@/lib/types";
 export default function ICTriagePage() {
   const params = useParams();
   const caseId = (params?.id as string) || "case-01";
-  const [poshCase, setPoshCase] = useState<POSHCase | undefined>(undefined);
+  const [poshCase, setPoshCase] = useState<POSHCase | undefined>(() => platformStore.getCaseById(caseId));
 
   // 4-Point Checklist
   const [isAggrievedWoman, setIsAggrievedWoman] = useState(true);

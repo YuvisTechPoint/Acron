@@ -22,7 +22,7 @@ import { POSHCase } from "@/lib/types";
 export default function ICInterimReliefPage() {
   const params = useParams();
   const caseId = (params?.id as string) || "case-01";
-  const [poshCase, setPoshCase] = useState<POSHCase | undefined>(undefined);
+  const [poshCase, setPoshCase] = useState<POSHCase | undefined>(() => platformStore.getCaseById(caseId));
 
   const [reliefType, setReliefType] = useState<"TRANSFER" | "PAID_LEAVE" | "RESTRAIN" | "APPRAISAL_PROTECT">("TRANSFER");
   const [reliefDetails, setReliefDetails] = useState(

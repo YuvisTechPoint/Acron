@@ -30,7 +30,7 @@ export default function ICCaseDetailPage() {
 
   const [activeTab, setActiveTab] = useState<string>("overview");
   const [isMasked, setIsMasked] = useState(false);
-  const [poshCase, setPoshCase] = useState<POSHCase | undefined>(undefined);
+  const [poshCase, setPoshCase] = useState<POSHCase | undefined>(() => platformStore.getCaseById(caseId));
 
   // Hearing modal / form state
   const [newHearingDate, setNewHearingDate] = useState("");

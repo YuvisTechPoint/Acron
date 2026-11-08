@@ -23,7 +23,7 @@ import { POSHCase } from "@/lib/types";
 export default function ICReportPage() {
   const params = useParams();
   const caseId = (params?.id as string) || "case-01";
-  const [poshCase, setPoshCase] = useState<POSHCase | undefined>(undefined);
+  const [poshCase, setPoshCase] = useState<POSHCase | undefined>(() => platformStore.getCaseById(caseId));
 
   const [findingsDecision, setFindingsDecision] = useState<"charges_substantiated" | "charges_not_substantiated" | "settlement_concluded">("charges_substantiated");
   const [findingsSummary, setFindingsSummary] = useState(
@@ -52,20 +52,24 @@ export default function ICReportPage() {
 
     poshCase.findingsSummary = findingsSummary;
     poshCase.icRecommendation = findingsDecision;
-    poshCase.compensationDetails = {
-      mentalTraumaPaise: mentalTraumaRupees * 100,
-      careerLossPaise: careerLossRupees * 100,
-      medicalExpensesPaise: medicalExpensesRupees * 100,
-      respondentCapacityPaise: respondentCapacityRupees * 100,
-      totalAmountRupees: totalCompensationRupees,
-    };
+    if (findingsDecision === "charges_substantiated") {
+      poshCase.compensationDetails = {
+        mentalTraumaPaise: mentalTraumaRupees * 100,
+        careerLossPaise: careerLossRupees * 100,
+        medicalExpensesPaise: medicalExpensesRupees * 100,
+        respondentCapacityPaise: respondentCapacityRupees * 100,
+        totalAmountRupees: totalCompensationRupees,
+      };
+    } else {
+      poshCase.compensationDetails = undefined;
+    }
     poshCase.state = "REPORT_ISSUED";
     poshCase.reportSubmittedAt = new Date().toISOString();
 
     platformStore.updateCaseState(
       poshCase.id,
       "REPORT_ISSUED",
-      `Section 13 Inquiry Report issued to Employer and Parties. Recommendation: ${findingsDecision}. Compensation assessed: ${formatINR(totalCompensationRupees * 100)}`
+      `Section 13 Inquiry Report issued to Employer and Parties. Recommendation: ${findingsDecision}. Compensation assessed: ${findingsDecision === "charges_substantiated" ? formatINR(totalCompensationRupees * 100) : "None (Section 13(2))"}`
     );
 
     alert("Statutory Section 13 Inquiry Report submitted to Employer and Parties.");

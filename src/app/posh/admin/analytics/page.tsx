@@ -15,7 +15,7 @@ import {
   Lock,
 } from "lucide-react";
 import { platformStore } from "@/lib/store";
-import { formatINR } from "@/lib/utils";
+import { formatINR, formatSuppressedCount, isCellSuppressed } from "@/lib/utils";
 
 export default function PoshAdminAnalyticsPage() {
   const [selectedYear, setSelectedYear] = useState("2026");
@@ -169,9 +169,12 @@ export default function PoshAdminAnalyticsPage() {
                   <div className="text-[11px] text-ink-secondary">Exoneration on merits / insufficient evidence</div>
                 </div>
                 <div className="text-right">
-                  {/* Suppressed under <5 rule */}
-                  <div className="font-bold text-base text-ink-secondary">&lt; 5</div>
-                  <div className="text-[10px] text-amber-800 font-semibold">Small-Cell Suppressed</div>
+                  <div className="font-bold text-base text-ink-secondary">
+                    {formatSuppressedCount(analyticsMetrics.formalInquiryExoneratedCount)}
+                  </div>
+                  <div className="text-[10px] text-amber-800 font-semibold">
+                    {isCellSuppressed(analyticsMetrics.formalInquiryExoneratedCount) ? "Small-Cell Suppressed" : "Verified Count"}
+                  </div>
                 </div>
               </div>
             </div>

@@ -53,10 +53,17 @@ export default function PoshRespondentReplyPage() {
       poshCase.respondentDefenseSummary = writtenStatement;
       poshCase.respondentReplyReceivedAt = new Date().toISOString();
       poshCase.state = "REPLY_RECEIVED";
+      (poshCase as any).extensionRequested = extensionRequested;
+      (poshCase as any).extensionGrounds = extensionGrounds;
+
+      const logMessage = extensionRequested
+        ? `Respondent submitted formal Section 11 written statement and requested Rule 7 extension under natural justice: "${extensionGrounds || 'Additional time requested'}"`
+        : "Respondent submitted formal Section 11 written statement, witness list, and defense materials.";
+
       platformStore.updateCaseState(
         poshCase.id,
         "REPLY_RECEIVED",
-        "Respondent submitted formal Section 11 written statement, witness list, and defense materials."
+        logMessage
       );
     }
 

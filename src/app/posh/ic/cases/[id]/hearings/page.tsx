@@ -24,7 +24,7 @@ import { POSHCase } from "@/lib/types";
 export default function ICHearingsPage() {
   const params = useParams();
   const caseId = (params?.id as string) || "case-01";
-  const [poshCase, setPoshCase] = useState<POSHCase | undefined>(undefined);
+  const [poshCase, setPoshCase] = useState<POSHCase | undefined>(() => platformStore.getCaseById(caseId));
 
   const [hearingDate, setHearingDate] = useState("2026-11-20");
   const [hearingTime, setHearingTime] = useState("11:30 AM IST");
@@ -45,6 +45,11 @@ export default function ICHearingsPage() {
   const handleAddHearing = (e: React.FormEvent) => {
     e.preventDefault();
     if (!poshCase || !hearingDate || !agenda) return;
+
+    if (!isQuorumMet) {
+      alert("Statutory Quorum Violation (Section 4 & Rule 7): An Internal Committee hearing cannot convene with deficient quorum. Quorum requires minimum 3 members present, Presiding Officer present, and at least 50% women representation.");
+      return;
+    }
 
     platformStore.addHearing(poshCase.id, {
       hearingNumber: (poshCase.hearings?.length || 0) + 1,
