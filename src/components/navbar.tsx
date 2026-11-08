@@ -101,9 +101,32 @@ export function Navbar() {
 
   return (
     <>
+      {/* Sticky / Scrolled Top Chambers Ticker Ribbon (Positioned Above the Header when Scrolled) */}
+      <div
+        className={`fixed top-0 left-0 right-0 z-50 border-b border-navy-800/80 bg-[#040812] overflow-hidden select-none transition-all duration-300 ${
+          scrolled ? "h-7 opacity-100 translate-y-0" : "h-0 opacity-0 -translate-y-full pointer-events-none"
+        }`}
+        aria-label="Chambers Scrolled Header Ribbon"
+      >
+        <div className="footer-ticker-track flex items-center h-full">
+          <div className="flex shrink-0 items-center gap-8 px-4 text-[11px] font-serif italic text-brass-300 tracking-wider">
+            <span>{siteConfig.footerRollText || "Acorn Legal Consultants • Excellence in Law • Integrity in Practice • Camac Street Chambers • Kolkata • High Court Practice • POSH Redressal • Corporate Advisory"}</span>
+            <span className="text-brass-500/60 not-italic">✦</span>
+            <span>{siteConfig.footerRollText || "Acorn Legal Consultants • Excellence in Law • Integrity in Practice • Camac Street Chambers • Kolkata • High Court Practice • POSH Redressal • Corporate Advisory"}</span>
+            <span className="text-brass-500/60 not-italic">✦</span>
+          </div>
+          <div className="flex shrink-0 items-center gap-8 px-4 text-[11px] font-serif italic text-brass-300 tracking-wider" aria-hidden="true">
+            <span>{siteConfig.footerRollText || "Acorn Legal Consultants • Excellence in Law • Integrity in Practice • Camac Street Chambers • Kolkata • High Court Practice • POSH Redressal • Corporate Advisory"}</span>
+            <span className="text-brass-500/60 not-italic">✦</span>
+            <span>{siteConfig.footerRollText || "Acorn Legal Consultants • Excellence in Law • Integrity in Practice • Camac Street Chambers • Kolkata • High Court Practice • POSH Redressal • Corporate Advisory"}</span>
+            <span className="text-brass-500/60 not-italic">✦</span>
+          </div>
+        </div>
+      </div>
+
       <header
-        className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${
-          scrolled ? "h-[72px]" : "h-[84px]"
+        className={`fixed left-0 right-0 z-40 transition-all duration-300 ${
+          scrolled ? "top-7 h-[72px]" : "top-0 h-[84px]"
         } ${
           isTransparent
             ? "bg-transparent text-white border-b border-white/10"
