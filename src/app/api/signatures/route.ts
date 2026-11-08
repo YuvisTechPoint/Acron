@@ -30,3 +30,4 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: err.message || "Failed to sign document" }, { status: 500 });
   }
 }
+

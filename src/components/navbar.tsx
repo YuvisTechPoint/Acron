@@ -18,6 +18,7 @@ import {
   ArrowRight,
 } from "lucide-react";
 import { BRAND_CONFIG, PRACTICE_AREAS } from "@/lib/constants";
+import { useRealtimeSiteConfig, useRealtimeServices } from "@/lib/realtime";
 
 // Icon mapping helper
 const iconMap: Record<string, React.ReactNode> = {
@@ -32,11 +33,24 @@ const iconMap: Record<string, React.ReactNode> = {
 
 export function Navbar() {
   const pathname = usePathname();
+  const siteConfig = useRealtimeSiteConfig();
+  const customServices = useRealtimeServices();
+
+  const dynamicPractices = customServices.length > 0
+    ? customServices.map((s) => ({
+        slug: s.name.toLowerCase().replace(/[^a-z0-9]+/g, "-"),
+        title: s.name,
+        shortDesc: s.shortDesc,
+        icon: "Briefcase",
+        services: s.features,
+      }))
+    : PRACTICE_AREAS;
+
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [megaMenuOpen, setMegaMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [hoveredPracticeSlug, setHoveredPracticeSlug] = useState<string>(
-    PRACTICE_AREAS[0]?.slug || "advisory"
+    dynamicPractices[0]?.slug || "advisory"
   );
   const megaMenuRef = useRef<HTMLDivElement>(null);
 
@@ -47,6 +61,9 @@ export function Navbar() {
 
   const isDarkHeroPage = pathname === "/";
   const isTransparent = isDarkHeroPage && !scrolled;
+
+  const activePractice =
+    dynamicPractices.find((p) => p.slug === hoveredPracticeSlug) || dynamicPractices[0] || PRACTICE_AREAS[0];
 
   useEffect(() => {
     if (isAdminOrConsole) return;
@@ -81,9 +98,6 @@ export function Navbar() {
   if (isAdminOrConsole) {
     return null;
   }
-
-  const activePractice =
-    PRACTICE_AREAS.find((p) => p.slug === hoveredPracticeSlug) || PRACTICE_AREAS[0];
 
   return (
     <>
@@ -121,14 +135,14 @@ export function Navbar() {
                   isTransparent ? "text-white drop-shadow-sm" : "text-ink-950"
                 }`}
               >
-                ACORN
+                {siteConfig.firmName || "ACORN"}
               </span>
               <span
                 className={`font-sans text-[10px] font-semibold tracking-[0.2em] uppercase mt-1 transition-colors duration-200 ${
                   isTransparent ? "text-brass-300 drop-shadow-sm" : "text-brass-700"
                 }`}
               >
-                Legal Consultants
+                {siteConfig.tagline || "Legal Consultants"}
               </span>
             </div>
           </Link>
@@ -211,7 +225,7 @@ export function Navbar() {
                       Practice Areas &amp; Advisory Capabilities
                     </div>
                     <div className="grid grid-cols-2 gap-3 pt-3">
-                      {PRACTICE_AREAS.slice(0, 6).map((pa) => (
+                      {dynamicPractices.slice(0, 6).map((pa) => (
                         <Link
                           key={pa.slug}
                           href={`/services/${pa.slug}`}
@@ -338,8 +352,8 @@ export function Navbar() {
           {/* Right Action: Chambers Telephone & Primary Consultation Button */}
           <div className="hidden sm:flex items-center gap-3">
             <a
-              href={`tel:${BRAND_CONFIG.phone}`}
-              title={`Call Chambers: ${BRAND_CONFIG.phone}`}
+              href={`tel:${siteConfig.receptionPhone || BRAND_CONFIG.phone}`}
+              title={`Call Chambers: ${siteConfig.receptionPhone || BRAND_CONFIG.phone}`}
               className={`w-10 h-10 rounded-full transition border flex items-center justify-center ${
                 isTransparent
                   ? "bg-[#101F38]/60 border-white/20 text-brass-300 hover:text-white hover:border-brass-400 backdrop-blur-sm"

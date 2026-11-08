@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import { BRAND_CONFIG } from "@/lib/constants";
 import { platformStore } from "@/lib/store";
+import { useRealtimeSiteConfig, useRealtimeTeam } from "@/lib/realtime";
 import { PageContentItem } from "@/lib/types";
 import {
   Button,
@@ -103,13 +104,11 @@ const TEAM_MEMBERS = [
 
 export default function AboutPage() {
   const [pageData, setPageData] = useState(platformStore.getPageContent("about"));
-  const [teamMembers, setTeamMembers] = useState(platformStore.getTeamMembers());
-  const [siteConfig, setSiteConfig] = useState(platformStore.getSiteConfig());
+  const teamMembers = useRealtimeTeam();
+  const siteConfig = useRealtimeSiteConfig();
 
   useEffect(() => {
     setPageData(platformStore.getPageContent("about"));
-    setTeamMembers(platformStore.getTeamMembers());
-    setSiteConfig(platformStore.getSiteConfig());
   }, []);
 
   const valuesToDisplay = VALUES_GRID.map((val) => {

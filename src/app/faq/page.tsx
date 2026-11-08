@@ -23,6 +23,7 @@ import {
   Checkbox,
 } from "@/components/ui";
 import { platformStore } from "@/lib/store";
+import { useRealtimeFaqs } from "@/lib/realtime";
 import { FaqItem } from "@/lib/types";
 
 interface FAQItem {
@@ -101,7 +102,7 @@ const CATEGORIES = [
 ];
 
 export default function FAQPage() {
-  const [faqs, setFaqs] = useState<FaqItem[]>([]);
+  const faqs = useRealtimeFaqs();
   const [selectedCat, setSelectedCat] = useState("All Categories");
   const [searchQuery, setSearchQuery] = useState("");
   const [copiedId, setCopiedId] = useState<string | null>(null);
@@ -112,10 +113,6 @@ export default function FAQPage() {
   const [askQuestion, setAskQuestion] = useState("");
   const [formSubmitted, setFormSubmitted] = useState(false);
   const [refId, setRefId] = useState("");
-
-  useEffect(() => {
-    setFaqs(platformStore.getFaqs());
-  }, []);
 
   const effectiveFaqs = faqs.length > 0 ? faqs : FAQ_DATA;
 

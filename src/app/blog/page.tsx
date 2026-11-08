@@ -10,6 +10,7 @@ import {
   BookOpen,
 } from "lucide-react";
 import { platformStore } from "@/lib/store";
+import { useRealtimePosts } from "@/lib/realtime";
 import { formatDate } from "@/lib/utils";
 import {
   Button,
@@ -33,7 +34,7 @@ export default function BlogIndexPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All Insights");
 
-  const rawBlogs = platformStore.getBlogs();
+  const rawBlogs = useRealtimePosts();
 
   const filtered = rawBlogs.filter((b) => {
     const matchesCat =

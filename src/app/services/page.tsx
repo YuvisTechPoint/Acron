@@ -6,19 +6,16 @@ import { ArrowRight, Briefcase, FileText, Compass, Landmark, ShieldCheck, Buildi
 import { PRACTICE_AREAS, BRAND_CONFIG } from "@/lib/constants";
 import { Eyebrow, SectionHeading, Button, Rule, usePrefersReducedMotion } from "@/components/ui";
 import { platformStore } from "@/lib/store";
+import { useRealtimeServices } from "@/lib/realtime";
 import { CustomService } from "@/lib/types";
 import { formatINR } from "@/lib/utils";
 
 export default function ServicesIndexPage() {
   const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
   const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
-  const [services, setServices] = useState<CustomService[]>([]);
+  const services = useRealtimeServices();
   const reducedMotion = usePrefersReducedMotion();
   const containerRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    setServices(platformStore.getServices().filter((s) => s.isActive));
-  }, []);
 
   const handleMouseMove = (e: React.MouseEvent) => {
     if (reducedMotion) return;

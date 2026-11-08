@@ -23,6 +23,12 @@ import {
 import { BRAND_CONFIG, PRACTICE_AREAS } from "@/lib/constants";
 import { platformStore } from "@/lib/store";
 import {
+  useRealtimeSiteConfig,
+  useRealtimeFaqs,
+  useRealtimeServices,
+  useRealtimePosts,
+} from "@/lib/realtime";
+import {
   Button,
   Eyebrow,
   SectionHeading,
@@ -130,13 +136,20 @@ const FEATURED_INSIGHTS = [
 
 export default function HomePage() {
   const [activeStep, setActiveStep] = useState(0);
-  const [siteConfig, setSiteConfig] = useState(platformStore.getSiteConfig());
-  const [homepageFaqs, setHomepageFaqs] = useState(platformStore.getHomepageFaqs());
+  const siteConfig = useRealtimeSiteConfig();
+  const rawFaqs = useRealtimeFaqs();
+  const customServices = useRealtimeServices();
+  const rawPosts = useRealtimePosts();
 
-  useEffect(() => {
-    setSiteConfig(platformStore.getSiteConfig());
-    setHomepageFaqs(platformStore.getHomepageFaqs());
-  }, []);
+  const dynamicPractices = customServices.length > 0
+    ? customServices.map((s) => ({
+        slug: s.name.toLowerCase().replace(/[^a-z0-9]+/g, "-"),
+        title: s.name,
+        shortDesc: s.shortDesc,
+        icon: "Briefcase",
+        services: s.features,
+      }))
+    : PRACTICE_AREAS;
 
   const steps = siteConfig.pathwaySteps && siteConfig.pathwaySteps.length > 0
     ? siteConfig.pathwaySteps
@@ -165,6 +178,7 @@ export default function HomePage() {
         },
       ];
 
+  const homepageFaqs = rawFaqs.filter((f) => f.showOnHomepage);
   const formattedFaqs = homepageFaqs.length > 0
     ? homepageFaqs.map((f) => ({
         id: f.id,
@@ -414,14 +428,14 @@ export default function HomePage() {
               <Card
                 variant="white"
                 arrowOnHover
-                href={`/services/${PRACTICE_AREAS[0]?.slug || "advisory"}`}
+                href={`/services/${dynamicPractices[0]?.slug || "advisory"}`}
                 className="h-full flex flex-col justify-between"
               >
                 <div>
                   <div className="flex items-center justify-between pb-6 border-b border-border">
                     <span className="font-serif text-3xl font-bold text-navy-700/25">01</span>
                     <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-navy-700">
-                      {ICON_MAP[PRACTICE_AREAS[0]?.icon || "Briefcase"]}
+                      {ICON_MAP[dynamicPractices[0]?.icon || "Briefcase"]}
                     </div>
                   </div>
 
@@ -430,14 +444,14 @@ export default function HomePage() {
                       Flagship Practice
                     </span>
                     <h3 className="font-serif text-3xl sm:text-4xl font-bold text-ink-950">
-                      {PRACTICE_AREAS[0]?.title}
+                      {dynamicPractices[0]?.title}
                     </h3>
                     <p className="font-sans text-base text-ink-secondary leading-relaxed">
-                      {PRACTICE_AREAS[0]?.shortDesc}
+                      {dynamicPractices[0]?.shortDesc}
                     </p>
 
                     <div className="pt-4 grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-ink font-medium">
-                      {PRACTICE_AREAS[0]?.services?.slice(0, 4).map((s, idx) => (
+                      {dynamicPractices[0]?.services?.slice(0, 4).map((s, idx) => (
                         <div key={idx} className="flex items-center gap-2">
                           <CheckCircle2 className="w-3.5 h-3.5 text-brass-500 shrink-0" />
                           <span className="truncate">{s}</span>
@@ -459,23 +473,23 @@ export default function HomePage() {
               <Card
                 variant="white"
                 arrowOnHover
-                href={`/services/${PRACTICE_AREAS[1]?.slug || "legal-documentation"}`}
+                href={`/services/${dynamicPractices[1]?.slug || "legal-documentation"}`}
                 className="h-full flex flex-col justify-between"
               >
                 <div>
                   <div className="flex items-center justify-between pb-4 border-b border-border">
                     <span className="font-serif text-3xl font-bold text-navy-700/25">02</span>
                     <div className="w-9 h-9 rounded-full bg-blue-100 flex items-center justify-center text-navy-700">
-                      {ICON_MAP[PRACTICE_AREAS[1]?.icon || "FileText"]}
+                      {ICON_MAP[dynamicPractices[1]?.icon || "FileText"]}
                     </div>
                   </div>
 
                   <div className="mt-5 space-y-3">
                     <h3 className="font-serif text-2xl font-bold text-ink-950">
-                      {PRACTICE_AREAS[1]?.title}
+                      {dynamicPractices[1]?.title}
                     </h3>
                     <p className="font-sans text-sm text-ink-secondary leading-relaxed line-clamp-3">
-                      {PRACTICE_AREAS[1]?.shortDesc}
+                      {dynamicPractices[1]?.shortDesc}
                     </p>
                   </div>
                 </div>
@@ -488,7 +502,7 @@ export default function HomePage() {
             </div>
 
             {/* Smaller Cards 3, 4, 5, 6 (Spans 3 cols each on lg, 6 cols on md) */}
-            {PRACTICE_AREAS.slice(2).map((pa, i) => (
+            {dynamicPractices.slice(2).map((pa, i) => (
               <div key={pa.slug} className="md:col-span-6 lg:col-span-3">
                 <Card
                   variant="white"

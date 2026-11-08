@@ -28,3 +28,4 @@ export async function GET(req: Request) {
     rule: "BR-090 Quartile Privacy Guarantee Active",
   });
 }
+

@@ -351,6 +351,41 @@ async function testWorkflows() {
     failed++;
   }
 
+  // 13. Test Real-time Admin & Backend Sync APIs
+  try {
+    const [siteRes, servicesRes, faqRes, postsRes, teamRes] = await Promise.all([
+      fetch(`${BASE_URL}/api/site`),
+      fetch(`${BASE_URL}/api/services`),
+      fetch(`${BASE_URL}/api/faq`),
+      fetch(`${BASE_URL}/api/posts`),
+      fetch(`${BASE_URL}/api/team`),
+    ]);
+
+    const siteData = await siteRes.json();
+    const servicesData = await servicesRes.json();
+    const faqData = await faqRes.json();
+    const postsData = await postsRes.json();
+    const teamData = await teamRes.json();
+
+    const allSyncApisOk =
+      siteRes.status === 200 && siteData.success &&
+      servicesRes.status === 200 && servicesData.success &&
+      faqRes.status === 200 && faqData.success &&
+      postsRes.status === 200 && postsData.success &&
+      teamRes.status === 200 && teamData.success;
+
+    if (allSyncApisOk) {
+      console.log(`✔ [PASS] Real-time Admin & Backend Sync APIs: /site, /services, /faq, /posts, /team operational`);
+      passed++;
+    } else {
+      console.error(`✖ [FAIL] Real-time Admin Sync APIs returned unexpected status or payload`);
+      failed++;
+    }
+  } catch (err) {
+    console.error(`✖ [ERROR] Real-time Admin Sync APIs: ${err.message}`);
+    failed++;
+  }
+
   console.log(`\nWorkflow test results: ${passed} passed, ${failed} failed.`);
   if (failed > 0) {
     process.exit(1);

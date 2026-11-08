@@ -63,6 +63,11 @@ export default function AdminSiteSettingsPage() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     platformStore.updateSiteConfig(siteData);
+    fetch("/api/site", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(siteData),
+    }).catch(() => {});
     setSaved(true);
     setTimeout(() => setSaved(false), 3000);
   };

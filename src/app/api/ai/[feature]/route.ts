@@ -65,3 +65,4 @@ export async function POST(
     return NextResponse.json({ error: err.message || "AI gateway processing failure" }, { status: 500 });
   }
 }
+

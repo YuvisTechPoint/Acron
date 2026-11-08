@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import { BRAND_CONFIG } from "@/lib/constants";
 import { platformStore } from "@/lib/store";
+import { useRealtimeSiteConfig } from "@/lib/realtime";
 import {
   Button,
   Eyebrow,
@@ -28,17 +29,13 @@ import {
 import { ChambersMap } from "@/components/chambers-map";
 
 export default function ContactPage() {
-  const [siteConfig, setSiteConfig] = useState(platformStore.getSiteConfig());
+  const siteConfig = useRealtimeSiteConfig();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [message, setMessage] = useState("");
   const [consent, setConsent] = useState(false);
   const [submittedRef, setSubmittedRef] = useState<string | null>(null);
-
-  useEffect(() => {
-    setSiteConfig(platformStore.getSiteConfig());
-  }, []);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();

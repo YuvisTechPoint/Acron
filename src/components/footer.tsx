@@ -15,15 +15,19 @@ import {
 } from "lucide-react";
 import { BRAND_CONFIG, PRACTICE_AREAS } from "@/lib/constants";
 import { FooterClock, FooterRollText } from "@/components/footer-roll-text";
-import { platformStore } from "@/lib/store";
+import { useRealtimeSiteConfig, useRealtimeServices } from "@/lib/realtime";
 
 export function Footer() {
   const pathname = usePathname();
-  const [siteConfig, setSiteConfig] = useState(platformStore.getSiteConfig());
+  const siteConfig = useRealtimeSiteConfig();
+  const customServices = useRealtimeServices();
 
-  useEffect(() => {
-    setSiteConfig(platformStore.getSiteConfig());
-  }, []);
+  const dynamicPractices = customServices.length > 0
+    ? customServices.map((s) => ({
+        slug: s.name.toLowerCase().replace(/[^a-z0-9]+/g, "-"),
+        title: s.name,
+      }))
+    : PRACTICE_AREAS;
 
   // Suppress footer on administrative and console workspaces
   const isAdminOrConsole =
@@ -90,7 +94,7 @@ export function Footer() {
                 <span>Practice Areas</span>
               </h4>
               <ul className="space-y-2.5 font-sans text-xs text-slate-300">
-                {PRACTICE_AREAS.slice(0, 6).map((pa) => (
+                {dynamicPractices.slice(0, 6).map((pa) => (
                   <li key={pa.slug}>
                     <Link
                       href={`/services/${pa.slug}`}

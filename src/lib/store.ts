@@ -1169,6 +1169,18 @@ class PlatformStore {
     if (!this.isClient) return;
     try {
       localStorage.setItem(`acorn_${key}`, JSON.stringify(value));
+      // Real-time broadcast within current window
+      if (typeof window !== "undefined") {
+        window.dispatchEvent(new CustomEvent("acorn:store_update", { detail: { key, value } }));
+        // Real-time cross-tab broadcast
+        if ("BroadcastChannel" in window) {
+          try {
+            const bc = new BroadcastChannel("acorn_realtime_sync");
+            bc.postMessage({ key, value, timestamp: Date.now() });
+            bc.close();
+          } catch {}
+        }
+      }
     } catch (e) {
       console.error("Storage error:", e);
     }
