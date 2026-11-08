@@ -1,6 +1,6 @@
 {
   "version": "3.0.0",
-  "lastUpdated": "2026-11-08T19:45:51.560Z",
+  "lastUpdated": "2026-11-08T20:52:35.016Z",
   "siteConfig": {
     "firmName": "ACORN",
     "tagline": "Legal Consultants",
@@ -148,6 +148,28 @@
     }
   ],
   "cases": [
+    {
+      "id": "CASE-1794171154985",
+      "caseNumber": "POSH-ORG-BCT-01-2026-3118",
+      "orgId": "org-bengal-tech",
+      "orgName": "Bengal Cloud Technologies Pvt Ltd",
+      "complainantCode": "CMP-3731",
+      "respondentCode": "RSP-5523",
+      "state": "SUBMITTED",
+      "priority": "NORMAL",
+      "filedAt": "2026-11-08T20:52:34.985Z",
+      "daysRemaining90": 90,
+      "allegations": [
+        "Automated workflow verification for IC case docket registration."
+      ],
+      "summary": "Automated workflow verification for IC case docket registration.",
+      "detailedStatement": "Automated workflow verification for IC case docket registration.",
+      "evidence": [],
+      "hearings": [],
+      "interimReliefs": [],
+      "presidingOfficerName": "Presiding Officer",
+      "externalMemberName": "Adv. Debjani Sen (Acorn Legal)"
+    },
     {
       "id": "CASE-1794167151533",
       "caseNumber": "POSH-ORG-BCT-01-2026-5683",
@@ -368,6 +390,26 @@
   ],
   "serviceRequests": [
     {
+      "id": "SR-1794171152311",
+      "refNumber": "ACN-SR-2026-491170",
+      "referenceNumber": "ACN-SR-2026-491170",
+      "fullName": "Test Automated Client",
+      "name": "Test Automated Client",
+      "email": "autoclient@testacorn.com",
+      "phone": "+91 98300 99999",
+      "organization": "",
+      "serviceCategory": "corporate_commercial",
+      "practiceArea": "corporate_commercial",
+      "subject": "Automated Verification Test Intake",
+      "description": "Testing matter submission, validation, and reference code generation.",
+      "status": "NEW",
+      "createdAt": "2026-11-08T20:52:32.311Z",
+      "updatedAt": "2026-11-08T20:52:32.311Z",
+      "urgency": "standard",
+      "preferredChannel": "phone",
+      "preferredMode": "ONLINE_VC"
+    },
+    {
       "id": "SR-1794167151407",
       "refNumber": "ACN-SR-2026-570698",
       "referenceNumber": "ACN-SR-2026-570698",
@@ -449,6 +491,24 @@
     }
   ],
   "questions": [
+    {
+      "id": "QA-1794171153605",
+      "refNumber": "ACN-QA-2026-791655",
+      "referenceNumber": "ACN-QA-2026-791655",
+      "authorName": "Ananya Mukherjee",
+      "authorEmail": "ananya@example.com",
+      "askedByName": "Ananya Mukherjee",
+      "askedByEmail": "ananya@example.com",
+      "question": "Is an external member strictly required in the Internal Committee if our workplace has fewer than 20 employees?",
+      "category": "posh_compliance",
+      "status": "pending_review",
+      "isPublic": false,
+      "isPublished": false,
+      "views": 0,
+      "upvotes": 0,
+      "createdAt": "2026-11-08T20:52:33.605Z",
+      "updatedAt": "2026-11-08T20:52:33.605Z"
+    },
     {
       "id": "QA-1794167151467",
       "refNumber": "ACN-QA-2026-160812",
@@ -591,6 +651,48 @@
     }
   ],
   "auditLogs": [
+    {
+      "id": "audit-1794171154987-8m7o1",
+      "orgId": "org-bengal-tech",
+      "actor": "CMP-3731",
+      "actorRole": "super_admin",
+      "action": "POSH_INTAKE_SUBMITTED",
+      "entityType": "system",
+      "entityId": "sys-01",
+      "timestamp": "2026-11-08T20:52:34.987Z",
+      "details": "New confidential inquiry docket POSH-ORG-BCT-01-2026-3118 initiated in database.",
+      "ipAddress": "127.0.0.1",
+      "prevHash": "17b6b847df9af5a865d2d725dd67f80012ed9ff485fe96457722099ac30ee9e1",
+      "hash": "c46a4ccdd9b380d34a689bad1611eeae353a7788870c4dff4480679b61eb6c30"
+    },
+    {
+      "id": "audit-1794171153610-10wv7",
+      "orgId": "SYSTEM",
+      "actor": "ananya@example.com",
+      "actorRole": "super_admin",
+      "action": "QA_QUESTION_SUBMITTED",
+      "entityType": "system",
+      "entityId": "sys-01",
+      "timestamp": "2026-11-08T20:52:33.610Z",
+      "details": "New legal query ACN-QA-2026-791655 saved in database for moderation.",
+      "ipAddress": "127.0.0.1",
+      "prevHash": "c9ebb74a8183b2c111d8dd2e1e21fc8a2fe1a42f91f953d375a1cab98e61a0f6",
+      "hash": "17b6b847df9af5a865d2d725dd67f80012ed9ff485fe96457722099ac30ee9e1"
+    },
+    {
+      "id": "audit-1794171152315-y0qhx",
+      "orgId": "SYSTEM",
+      "actor": "autoclient@testacorn.com",
+      "actorRole": "super_admin",
+      "action": "SERVICE_REQUEST_SUBMITTED",
+      "entityType": "system",
+      "entityId": "sys-01",
+      "timestamp": "2026-11-08T20:52:32.315Z",
+      "details": "New service request ACN-SR-2026-491170 saved in database for practice area corporate_commercial",
+      "ipAddress": "127.0.0.1",
+      "prevHash": "99906d510c37b650bf16b2c7380f35b79fcf12c11ee87c46fea420c4c01dbaff",
+      "hash": "c9ebb74a8183b2c111d8dd2e1e21fc8a2fe1a42f91f953d375a1cab98e61a0f6"
+    },
     {
       "id": "audit-1794167151533-kks54",
       "orgId": "org-bengal-tech",

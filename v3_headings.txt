@@ -1,0 +1,474 @@
+Heading1 | Document Control
+Heading2 | Revision history
+Heading2 | Review and approval
+Heading2 | How to read this document
+Heading2 | Contents
+Heading1 | 1. Executive Summary
+Heading2 | 1.1 Purpose of this document
+Heading2 | 1.2 Product vision
+Heading2 | 1.3 What will be delivered
+Heading2 | 1.4 Why this matters
+Heading1 | 2. Business Context and Objectives
+Heading2 | 2.1 Client profile
+Heading2 | 2.2 Problem statement
+Heading2 | 2.3 Business objectives
+Heading2 | 2.4 Key performance indicators (post-launch)
+Heading1 | 3. Scope, Assumptions, Constraints and Dependencies
+Heading2 | 3.1 In scope
+Heading2 | 3.2 Out of scope (unless agreed through change control)
+Heading2 | 3.3 Assumptions
+Heading2 | 3.4 Constraints
+Heading2 | 3.5 Dependencies
+Heading1 | 4. Stakeholders, User Personas and Role Model
+Heading2 | 4.1 Stakeholders
+Heading2 | 4.2 User personas
+Heading2 | 4.3 Role model (RBAC)
+Heading1 | 5. Release Strategy and Phasing
+Heading2 | 5.1 Feature tiers for the POSH system
+Heading2 | 5.2 Delivery principles
+Heading1 | 6. Public Website, Landing Pages and Engagement Features
+Heading2 | 6.1 Design principles
+Heading2 | 6.2 Sitemap
+Heading2 | 6.3 Homepage
+Heading2 | 6.4 Landing pages
+Heading3 | 6.4.1 POSH landing page (/posh)
+Heading3 | 6.4.2 Service landing pages
+Heading3 | 6.4.3 Campaign landing pages (admin generated)
+Heading2 | 6.5 Service request module
+Heading3 | 6.5.1 Form fields
+Heading3 | 6.5.2 Request lifecycle
+Heading2 | 6.6 Q&A support module
+Heading2 | 6.7 Blog (content management)
+Heading2 | 6.8 Script management (admin control over scripts)
+Heading2 | 6.9 Payment gateway (Razorpay)
+Heading3 | 6.9.1 Payment flow
+Heading2 | 6.10 Contact and legal pages
+Heading1 | 7. Admin Control System
+Heading2 | 7.1 Module overview
+Heading2 | 7.2 Authentication and account management
+Heading2 | 7.3 Dashboard and real-time features
+Heading2 | 7.4 Content, user and settings control
+Heading2 | 7.5 Permission matrix (summary)
+Heading1 | 8. POSH Compliance and Case Management System (Basic to Advanced)
+Heading2 | 8.1 Legal and compliance background used to shape the product
+Heading2 | 8.2 Actors and portal structure
+Heading2 | 8.3 Case lifecycle and statutory timers
+ | 1. Received
+ | 2. Limitation check
+ | 3. Preliminary review
+ | 4. Conciliation (optional)
+ | 5. Notice to respondent
+ | 6. Inquiry
+ | 7. Findings and report
+ | 8. Employer action
+ | 9. Appeal window
+ | 10. Closed
+Heading2 | 8.4 Basic tier requirements
+Heading3 | 8.4.1 Complaint intake
+Heading3 | 8.4.2 Tracking and notifications
+Heading3 | 8.4.3 Basic admin case management
+Heading2 | 8.5 Standard tier requirements
+Heading3 | 8.5.1 Internal Committee management
+Heading3 | 8.5.2 Notices, hearings and evidence
+Heading3 | 8.5.3 Timeline engine, conciliation and reporting
+Heading2 | 8.6 Advanced tier requirements
+Heading3 | 8.6.1 Multi-organisation platform
+Heading3 | 8.6.2 Policy, awareness and training
+Heading3 | 8.6.3 Annual report, analytics and compliance health
+Heading3 | 8.6.4 Retention, integrations and administration
+Heading2 | 8.7 Confidentiality and data-protection controls specific to POSH
+ | Section 16 of the POSH Act makes confidentiality a legal duty. The following controls are therefore mandatory and are tested explicitly (Section 14).
+Heading2 | 8.8 Templates to be supplied or approved by Acorn
+Heading2 | 8.9 POSH acceptance criteria
+Heading2 | 8.10 Legal and regulatory framework
+ | Section 3 (prevention and circumstances)
+ | Section 4 (Internal Committee)
+ | Section 9 (complaint)
+ | Section 10 (conciliation)
+ | Section 11 (inquiry)
+ | Section 12 (interim relief)
+ | Section 13 (inquiry report and action)
+ | Section 14 (false or malicious complaint)
+ | Section 15 (compensation factors)
+ | Section 16 (prohibition of publication)
+ | Section 17 (penalty for publication)
+ | Section 18 (appeal)
+ | Section 19 (employer duties)
+ | Section 26 (penalty)
+ | Section 26.9 control mapping; privacy notice (Appendix E); retention engine (Section 26.10)
+Heading2 | 8.11 Applicability, jurisdiction and routing engine
+Heading2 | 8.12 POSH service catalogue and plans
+Heading3 | 8.12.1 Services
+Heading3 | 8.12.2 Plans, limits and billing
+Heading2 | 8.13 Support systems for all parties
+Heading2 | 8.14 Complaint intake specification
+Heading3 | 8.14.1 Intake rules
+Heading2 | 8.15 Case workflow state machine
+Heading3 | 8.15.1 States
+Heading3 | 8.15.2 Transitions
+Heading2 | 8.16 Timeline and calendar engine
+Heading3 | 8.16.1 Timers
+ | Section 9(1)
+ | Section 9(1) proviso
+ | Section 11(4)
+ | Section 13(1)
+ | Section 13(4)
+ | Section 18
+ | Section 12
+ | Section 4
+ | Section 19 (regular intervals)
+Heading3 | 8.16.2 Calendar and calculation rules
+Heading3 | 8.16.3 Clock-stop grounds and delay reasons
+Heading2 | 8.17 Inquiry procedure and natural-justice controls
+Heading2 | 8.18 Findings, recommendations, compensation and the report
+Heading3 | 8.18.1 Findings and recommendations
+Heading3 | 8.18.2 Compensation worksheet (Section 15)
+Heading3 | 8.18.3 Interim relief
+Heading3 | 8.18.4 Report structure and quality check
+Heading2 | 8.19 Appeals, legal hold, aftercare and reopening
+Heading2 | 8.20 Confidentiality, publication limits and anonymised outcomes
+Heading2 | 8.21 Employer compliance suite (Section 19 duties and scoring)
+Heading3 | 8.21.1 Duty register
+Heading3 | 8.21.2 Compliance health score
+Heading2 | 8.22 Statutory and external interfaces
+Heading2 | 8.23 Training and awareness (LMS) specification
+Heading2 | 8.24 Prevention, risk assessment and climate surveys
+Heading2 | 8.25 POSH notification and communication matrix
+Heading2 | 8.26 POSH document and template library
+Heading2 | 8.27 Case-level permission matrix
+Heading2 | 8.28 Special scenarios and edge-case playbook
+Heading2 | 8.29 POSH service desk, SLAs and escalation
+Heading2 | 8.30 Rules engine and legal content governance
+ | Section 9(1)
+ | Section 9(1) proviso
+ | Section 11(4)
+ | Section 13(1)
+ | Section 13(4)
+ | Section 18
+ | Section 12
+ | Section 4
+ | Section 4
+ | Section 4
+ | Section 10
+Heading2 | 8.31 Additional POSH acceptance criteria
+Heading2 | 8.32 POSH requirement ID index
+ | Section 8.10
+ | Section 8.11
+ | Section 8.12
+ | Section 8.13
+ | Section 8.15
+ | Section 8.16
+ | Section 8.21
+ | Section 8.22
+ | Section 8.25 and Appendix A
+ | Section 8.26
+ | Section 8.28
+ | Section 8.33
+ | Section 8.34
+ | Section 8.35
+ | Section 8.36
+ | Section 8.37
+Heading2 | 8.33 Sector overlays and special workplaces
+Heading2 | 8.34 Remedies and justice pathways map
+Heading2 | 8.35 Rights and duties charters for every party
+Heading2 | 8.36 Acorn’s own POSH compliance and professional conduct
+Heading2 | 8.37 Independence, conflicts and the service contract pack
+Heading1 | 9. Technical Architecture
+Heading2 | 9.1 Architecture overview
+Heading2 | 9.2 Technology stack
+Heading2 | 9.3 Code organisation
+Heading2 | 9.4 Engineering standards
+Heading1 | 10. Data Model
+Heading2 | 10.1 Data classification
+Heading1 | 11. API Specification Summary
+Heading2 | 11.1 API standards
+Heading1 | 12. Non-Functional Requirements
+Heading1 | 13. Security and Privacy
+Heading2 | 13.1 Threat model summary
+Heading2 | 13.2 Security requirements
+Heading2 | 13.3 Privacy and data protection
+Heading1 | 14. Testing Strategy and Quality Assurance
+Heading2 | 14.1 Quality objectives
+Heading2 | 14.2 Test levels and types
+Heading2 | 14.3 Environments and test data
+Heading2 | 14.4 Entry and exit criteria
+Heading2 | 14.5 Defect severity and handling
+Heading2 | 14.6 Representative test cases
+Heading1 | 15. Deployment, DevOps and Operations
+Heading2 | 15.1 Environments
+Heading2 | 15.2 Hosting options
+Heading2 | 15.3 CI/CD pipeline
+ | 1. Commit
+ | 2. Pull request
+ | 3. Merge to main
+ | 4. Staging release
+ | 5. Production release
+ | 6. Post-release
+Heading2 | 15.4 Operations
+Heading2 | 15.5 Rollback and release management
+Heading2 | 15.6 Go-live checklist
+Heading1 | 16. Project Plan, Milestones and Acceptance
+Heading2 | 16.1 Indicative timeline
+ | 0. Kick-off and design
+ | 1. Website and core admin
+ | 2. Engagement and real-time admin
+ | 3. POSH basic and standard
+ | 4. POSH advanced
+ | 5. Service, support and training suite
+ | 6. Hypercare
+Heading2 | 16.2 Team and responsibilities
+ | Part to full time
+ | Part time in Phase 0 and 1
+ | Part time, full time near releases
+ | Part time
+Heading2 | 16.3 Governance and communication
+Heading2 | 16.4 Acceptance procedure
+Heading2 | 16.5 Change control and revision policy
+Heading1 | 17. Commercial Summary (Indicative)
+Heading2 | 17.1 Phase-wise development cost (indicative)
+Heading2 | 17.2 Suggested payment schedule
+Heading2 | 17.2A Effort and price reality check (read with Section 28.4)
+Heading2 | 17.3 Recurring and third-party costs (client-owned, approximate)
+ | Section 19
+Heading1 | 18. Risks and Mitigation
+Heading1 | 19. Support and Maintenance
+Heading2 | 19.1 Warranty
+Heading2 | 19.2 Support model after warranty (optional retainer)
+Heading2 | 19.3 Handover and training
+Heading1 | 20. Open Questions and Decisions Required
+Heading1 | 21. Product Backlog: Epics, User Stories and Acceptance Criteria
+Heading2 | 21.1 Epics
+Heading2 | 21.2 E01 Platform foundation
+Heading2 | 21.3 E02 to E08 Website, requests, Q&A, blog, scripts, payments, admin
+Heading2 | 21.4 E09 to E13 POSH core
+ | Section 15 factors; instalments; recovery route; employer implementation
+Heading2 | 21.5 E14 to E19 Compliance, training, services, security and quality
+Heading1 | 22. UX Specification: Design System, Trauma-Informed Design and Screen Inventory
+Heading2 | 22.1 Design system
+Heading2 | 22.2 Trauma-informed design for the complaint portal
+Heading2 | 22.3 Global UI patterns
+Heading2 | 22.4 Screen inventory
+Heading3 | 22.4.1 Public site
+Heading3 | 22.4.2 Admin panel
+Heading3 | 22.4.3 POSH portals
+Heading1 | 23. Business Rules Catalogue and State Machines
+Heading2 | 23.1 Business rules
+Heading2 | 23.2 State machines for other modules
+Heading1 | 24. Data Dictionary and Database Design
+Heading2 | 24.1 Conventions
+Heading2 | 24.2 Reference numbers and counters
+Heading2 | 24.3 Core platform collections
+Heading2 | 24.4 Website, requests, Q&A, payments and services collections
+Heading2 | 24.5 POSH organisation, committee and compliance collections
+Heading2 | 24.6 POSH case collections (all tenant-scoped; narrative fields encrypted)
+ | Section 15 worksheet
+Heading2 | 24.7 Legal console, support, training, survey and helpdesk collections
+Heading2 | 24.8 Enumerations
+Heading2 | 24.9 Encryption field map
+Heading2 | 24.10 Relationships
+Heading1 | 25. API Contract Specification
+Heading2 | 25.1 Conventions
+Heading2 | 25.2 Error code catalogue
+Heading2 | 25.3 Authentication and account endpoints
+Heading2 | 25.4 Public website endpoints
+Heading2 | 25.5 Content, request, Q&A, script and settings administration
+Heading2 | 25.6 Payments and billing endpoints
+Heading2 | 25.7 POSH organisation and compliance endpoints
+Heading2 | 25.8 POSH case endpoints
+ | Section 15 factors
+Heading2 | 25.9 Legal console, training, survey and support endpoints
+Heading2 | 25.10 Real-time events (Socket.io)
+Heading2 | 25.11 Webhooks and outbound integrations
+Heading2 | 25.12 Contract testing and documentation
+Heading1 | 26. Security Implementation
+Heading2 | 26.1 Threat model summary
+Heading2 | 26.2 Authentication and session controls
+Heading2 | 26.3 Authorisation controls
+Heading2 | 26.4 Encryption and key management
+Heading2 | 26.5 Rate limits and abuse controls
+Heading2 | 26.6 Application security controls
+Heading2 | 26.7 Audit logging catalogue
+Heading2 | 26.8 Security and confidentiality incident response
+ | Section 16 review
+Heading2 | 26.9 DPDP Act control mapping
+ | 26.2 to 26.7
+Heading2 | 26.10 Retention, deletion and erasure engine
+Heading2 | 26.11 Security testing programme
+Heading1 | 27. Environment, Configuration and DevOps
+Heading2 | 27.1 Environments
+Heading2 | 27.2 Hosting architecture
+ | Section 27.8
+Heading2 | 27.3 Configuration and environment variables
+Heading2 | 27.4 Source control and repository layout
+Heading2 | 27.5 CI/CD pipeline
+Heading2 | 27.6 Background jobs and schedules
+Heading2 | 27.7 Backup, recovery and continuity
+Heading2 | 27.8 Monitoring, alerting and service levels
+ | 99.5 percent monthly
+ | 99.5 percent monthly during the first year, 99.9 percent target later
+Heading2 | 27.9 Release and rollback
+Heading2 | 27.10 Cost control of infrastructure
+Heading1 | 28. Delivery Plan
+Heading2 | 28.1 Team and roles
+Heading2 | 28.2 Working method
+Heading2 | 28.3 Weekly plan
+Heading2 | 28.4 Effort estimate and price reality check
+Heading2 | 28.5 RACI for key activities
+Heading2 | 28.6 Risk register for delivery
+Heading2 | 28.7 Decision log process
+Heading2 | 28.8 Kick-off and go-live checklists
+Heading2 | 28.9 Handover and acceptance
+Heading1 | 29. Test Specification
+Heading2 | 29.1 Critical end-to-end journeys
+Heading2 | 29.2 Unit and component tests by module
+Heading2 | 29.3 Timeline engine scenarios (forty cases)
+Heading2 | 29.4 Authorisation and tenant isolation tests
+Heading2 | 29.5 Security tests
+Heading2 | 29.6 Performance and resilience tests
+Heading2 | 29.7 Accessibility, usability and language tests
+Heading2 | 29.8 Legal content review and UAT
+Heading2 | 29.9 Requirements traceability
+Heading2 | 29.10 Test data
+Heading1 | 30. Operations: Runbooks and Standard Procedures
+Heading2 | 30.1 Procedure register
+Heading2 | 30.2 SOP-01 Confidentiality or security incident workflow
+Heading2 | 30.3 SOP-02 Break-glass access
+Heading2 | 30.4 SOP-03 Legal hold and SOP-04 retention
+Heading2 | 30.5 SOP-05 Annual report and audit cycle
+Heading2 | 30.6 SOP-06 Onboarding and SOP-07 offboarding of organisations
+Heading2 | 30.7 SOP-08 Staff joiner, mover and leaver
+Heading2 | 30.8 SOP-09 On-call and escalation
+Heading2 | 30.9 SOP-10 and SOP-11 legal change management
+Heading2 | 30.10 SOP-12 complainant welfare contact
+Heading2 | 30.11 SOP-13 to SOP-22 summary controls
+Heading1 | Part III. Advanced Platform (Version 3.0)
+Heading1 | 31. Enterprise Architecture and Integration Platform
+Heading2 | 31.1 Target architecture changes
+Heading2 | 31.2 Enterprise identity (SSO, directory sync)
+Heading2 | 31.3 Integrations catalogue
+Heading2 | 31.4 Client API and webhooks
+Heading2 | 31.5 White-label and multi-brand
+Heading2 | 31.6 Entitlements and plan packaging engine
+Heading1 | 32. AI and Automation Governance
+Heading2 | 32.1 Principles
+Heading2 | 32.2 Permitted and prohibited uses
+Heading2 | 32.3 AI gateway design
+Heading2 | 32.4 AI feature specifications (non-case)
+Heading2 | 32.5 Case-side AI (opt-in, private model only)
+Heading2 | 32.6 AI evaluation, monitoring and incident handling
+Heading1 | 33. Analytics, Insights and Benchmarking
+Heading2 | 33.1 Data principles
+Heading2 | 33.2 Metric catalogue
+ | Section 8.21 score by branch and domain, 12-month trend
+Heading2 | 33.3 Dashboards and reports
+Heading2 | 33.4 Benchmarking method
+Heading2 | 33.5 Survey and climate analytics
+Heading1 | 34. Omnichannel, Accessibility and e-Signature Expansion
+Heading2 | 34.1 Channel catalogue
+Heading2 | 34.2 Safety-first interface features
+Heading2 | 34.3 Language and accessibility expansion
+Heading2 | 34.4 Hearing technology
+Heading2 | 34.5 Electronic signature and document trust
+Heading1 | 35. Advanced Security, Privacy and Trust Assurance
+ | Section 26 gives the base controls. This section adds the evidence and architecture that large employers, auditors and the Data Protection Board will ask for. It is organised as a trust programme: design (threat model), prove (control mapping and testing) and keep proving (monitoring and disclosure).
+Heading2 | 35.1 Zero-trust and hardening architecture
+Heading2 | 35.2 STRIDE threat model by component
+Heading2 | 35.3 Control framework mapping
+ | Section 35.6 (office and device standards)
+ | Section 38
+Heading2 | 35.4 Data protection impact assessment (DPIA)
+Heading2 | 35.5 Vulnerability management and disclosure
+Heading2 | 35.6 People, office and device standards
+Heading1 | 36. Reliability Engineering and Scale
+Heading2 | 36.1 Service level objectives (SLOs) and error budgets
+ | 99.9 percent
+ | 99.5 percent
+ | 99.5 percent
+ | 99.9 percent
+ | 99.95 percent runs on time; zero missed
+ | 99.5 percent
+Heading2 | 36.2 Capacity model and scaling plan
+Heading2 | 36.3 Performance budgets
+Heading2 | 36.4 Resilience design
+Heading2 | 36.5 Failure and chaos experiments
+Heading2 | 36.6 Observability
+Heading2 | 36.7 Cost management (FinOps)
+Heading1 | 37. Roadmap, Packaging and Commercial Model
+Heading2 | 37.1 Release train
+Heading2 | 37.2 Packaging and positioning
+Heading2 | 37.3 Pricing logic and unit economics
+Heading2 | 37.4 Success measures (OKRs and KPIs)
+Heading2 | 37.5 Product governance
+Heading1 | 38. Compliance Assurance and Inspection Readiness
+Heading2 | 38.1 Evidence automation
+Heading2 | 38.2 Inspection readiness pack
+ | Section 35 data
+Heading2 | 38.3 Internal audit programme
+Heading2 | 38.4 Certification and attestation path
+Heading2 | 38.5 Legal register and regulatory change
+Heading2 | 38.6 Management review
+Heading1 | 39. Version 3 Backlog, Rules, Data and API Additions
+Heading2 | 39.1 Epic summary
+Heading2 | 39.2 E20 Architecture and platform services
+Heading2 | 39.3 E21 Enterprise identity
+Heading2 | 39.4 E22 Integrations
+Heading2 | 39.5 E23 Client API, webhooks and white-label
+Heading2 | 39.6 E24 AI governance and assistants
+Heading2 | 39.7 E25 Analytics and benchmarking
+Heading2 | 39.8 E26 Omnichannel, accessibility and hearing technology
+Heading2 | 39.9 E27 Advanced security and assurance
+Heading2 | 39.10 E28 Reliability and cost engineering
+Heading2 | 39.11 Effort and price update
+Heading2 | 39.12 New business rules (BR-071 to BR-090)
+Heading2 | 39.13 Data model additions
+Heading2 | 39.14 API additions
+Heading2 | 39.15 Test additions
+Heading2 | 39.16 Version 3 requirement ID index
+ | Section 31
+ | Section 32
+ | Section 33
+ | Section 34
+ | Section 35
+ | Section 36
+ | Section 38
+ | Section 39.12
+ | Section 39
+ | Section 39.15
+Heading1 | 40. Glossary
+Heading1 | Appendix A: Notification and Email Template Catalogue
+Heading1 | Appendix B: Legal and Professional-Conduct Checklist for the Website
+ | Section 8.8
+ | Section 26.10
+ | Section 26.8 and Section 30
+Heading1 | Appendix C. Statutory Reference and Sources Reviewed
+Heading2 | C.1 Primary legislation and rules
+Heading2 | C.2 Judicial and institutional developments
+Heading2 | C.3 Source verification protocol
+Heading1 | Appendix D. Seed Data and Configuration Defaults
+Heading2 | D.1 Roles and default permissions (summary)
+Heading2 | D.2 Default settings
+Heading2 | D.3 Directory and helpline seed (all entries require verification before use)
+Heading2 | D.4 Service catalogue and plan seed
+Heading2 | D.5 Course seed
+Heading2 | D.6 Holiday calendar seed
+Heading2 | D.7 Initial content to be provided by Acorn
+Heading1 | Appendix E. Draft Microcopy and Notice Text
+Heading2 | E.1 Complaint intake screens
+Heading2 | E.2 Respondent communication
+Heading2 | E.3 Content-free notifications
+Heading2 | E.4 Interface warnings for organisation admins and IC members
+Heading2 | E.5 Public website notices
+Heading2 | E.6 Privacy notice (outline for counsel)
+Heading2 | E.7 Security incident notice to a client (template N-SEC)
+Heading1 | Appendix F. Change Log from Version 2.0 to Version 3.0
+ | Section 8 (POSH)
+ | Section 17 and 28.4
+ | Section 20
+ | Section 21
+ | Section 23
+ | Section 24 and 25
+ | Section 26 and 27
+ | Section 29
+Heading2 | New decisions required (continue Section 20)
+Heading1 | Appendix G. AI Evaluation and Red-Team Library (Categories)
+Heading1 | Appendix H. Data Protection Impact Assessment Outline
