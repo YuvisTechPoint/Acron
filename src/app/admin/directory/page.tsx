@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import {
   PhoneCall,
@@ -14,67 +14,11 @@ import {
   MapPin
 } from "lucide-react";
 import { HELPLINE_DIRECTORY } from "@/lib/constants";
-
-interface DirectoryItem {
-  id: string;
-  name: string;
-  category: "STATUTORY_AUTHORITY" | "STATE_HELPLINE" | "LEGAL_AID" | "CYBER_POLICE";
-  number: string;
-  hours: string;
-  description: string;
-  isVerified: boolean;
-}
-
-const INITIAL_DIRECTORY: DirectoryItem[] = [
-  {
-    id: "DIR-01",
-    name: "National Commission for Women (NCW) 24/7 Helpline",
-    category: "STATUTORY_AUTHORITY",
-    number: "7827170170",
-    hours: "24 Hours / 7 Days",
-    description: "National emergency helpline for women facing sexual harassment, domestic violence or distress.",
-    isVerified: true
-  },
-  {
-    id: "DIR-02",
-    name: "West Bengal State Women Helpline",
-    category: "STATE_HELPLINE",
-    number: "181 / 1091",
-    hours: "Toll-Free 24 Hours",
-    description: "Department of Women & Child Development and Social Welfare, Government of West Bengal.",
-    isVerified: true
-  },
-  {
-    id: "DIR-03",
-    name: "Kolkata Police Cyber Crime Division",
-    category: "CYBER_POLICE",
-    number: "033 2214 3000 / 1930",
-    hours: "24/7 Emergency Cyber Desk",
-    description: "Lalbazar Cyber Police Station for cyber stalking, revenge pornography, and non-consensual imagery.",
-    isVerified: true
-  },
-  {
-    id: "DIR-04",
-    name: "West Bengal State Legal Services Authority (WBSLSA)",
-    category: "LEGAL_AID",
-    number: "15100 / 033 2248 3892",
-    hours: "10:00 AM - 5:00 PM (Court Working Days)",
-    description: "Free legal representation and counsel for women and economically disadvantaged citizens under Legal Services Authorities Act.",
-    isVerified: true
-  },
-  {
-    id: "DIR-05",
-    name: "District Officer (Collector & DM Kolkata) - POSH Cell",
-    category: "STATUTORY_AUTHORITY",
-    number: "033 2214 5555",
-    hours: "10:00 AM - 5:00 PM",
-    description: "Office of the District Magistrate Kolkata for filing Section 21 Annual POSH compliance reports and LC referrals.",
-    isVerified: true
-  }
-];
+import { platformStore } from "@/lib/store";
+import { DirectoryItem } from "@/lib/types";
 
 export default function AdminDirectoryPage() {
-  const [items, setItems] = useState<DirectoryItem[]>(INITIAL_DIRECTORY);
+  const [items, setItems] = useState<DirectoryItem[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [newItem, setNewItem] = useState({
@@ -82,29 +26,43 @@ export default function AdminDirectoryPage() {
     category: "STATUTORY_AUTHORITY" as DirectoryItem["category"],
     number: "",
     hours: "24 Hours / 7 Days",
-    description: ""
+    description: "",
+    designation: "",
+    email: "",
   });
+
+  useEffect(() => {
+    setItems(platformStore.getDirectory());
+  }, []);
 
   const handleAdd = (e: React.FormEvent) => {
     e.preventDefault();
-    const created: DirectoryItem = {
-      id: `DIR-0${items.length + 1}`,
+    const created = platformStore.addDirectoryItem({
       name: newItem.name,
       category: newItem.category,
       number: newItem.number,
       hours: newItem.hours,
       description: newItem.description,
-      isVerified: true
-    };
-    setItems([...items, created]);
+      isVerified: true,
+      designation: newItem.designation,
+      email: newItem.email,
+    });
+    setItems(platformStore.getDirectory());
     setShowModal(false);
     setNewItem({
       name: "",
       category: "STATUTORY_AUTHORITY",
       number: "",
       hours: "24 Hours / 7 Days",
-      description: ""
+      description: "",
+      designation: "",
+      email: "",
     });
+  };
+
+  const handleDelete = (id: string) => {
+    platformStore.deleteDirectoryItem(id);
+    setItems(platformStore.getDirectory());
   };
 
   const filtered = items.filter((i) =>
@@ -209,7 +167,7 @@ export default function AdminDirectoryPage() {
                     </td>
                     <td className="py-3.5 px-4 text-right">
                       <button
-                        onClick={() => setItems(items.filter((i) => i.id !== item.id))}
+                        onClick={() => handleDelete(item.id)}
                         className="text-slate-400 hover:text-red-600 p-1 transition"
                       >
                         <Trash2 className="w-3.5 h-3.5" />

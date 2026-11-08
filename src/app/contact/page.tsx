@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import {
   MapPin,
@@ -14,6 +14,7 @@ import {
   ArrowRight,
 } from "lucide-react";
 import { BRAND_CONFIG } from "@/lib/constants";
+import { platformStore } from "@/lib/store";
 import {
   Button,
   Eyebrow,
@@ -27,12 +28,17 @@ import {
 import { ChambersMap } from "@/components/chambers-map";
 
 export default function ContactPage() {
+  const [siteConfig, setSiteConfig] = useState(platformStore.getSiteConfig());
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [message, setMessage] = useState("");
   const [consent, setConsent] = useState(false);
   const [submittedRef, setSubmittedRef] = useState<string | null>(null);
+
+  useEffect(() => {
+    setSiteConfig(platformStore.getSiteConfig());
+  }, []);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -77,9 +83,9 @@ export default function ContactPage() {
             </div>
             <h3 className="font-serif text-2xl font-bold text-ink">Chambers Location</h3>
             <p className="font-sans text-sm text-ink-secondary leading-relaxed">
-              Suite 4B, Camac Court<br />
-              25 Camac Street, Park Street District<br />
-              Kolkata, West Bengal 700016
+              {siteConfig.addressLine1}<br />
+              {siteConfig.addressLine2}<br />
+              {siteConfig.city}, {siteConfig.state} {siteConfig.postalCode}
             </p>
             <div className="pt-2 text-xs text-brass-700 font-semibold">
               In-person visits by prior appointment
@@ -95,13 +101,13 @@ export default function ContactPage() {
             <div className="space-y-1 text-sm font-sans">
               <div>
                 <span className="text-ink-muted text-xs block">Main Chambers Desk</span>
-                <a href={`tel:${BRAND_CONFIG.phone}`} className="font-semibold text-navy-700 hover:underline">
-                  {BRAND_CONFIG.phone}
+                <a href={`tel:${siteConfig.receptionPhone || BRAND_CONFIG.phone}`} className="font-semibold text-navy-700 hover:underline">
+                  {siteConfig.receptionPhone || BRAND_CONFIG.phone}
                 </a>
               </div>
               <div className="pt-2">
                 <span className="text-ink-muted text-xs block">Working Hours</span>
-                <span className="text-ink-secondary text-xs">Mon – Sat: 9:30 AM – 7:30 PM IST</span>
+                <span className="text-ink-secondary text-xs">{siteConfig.operatingHours || "Mon – Sat: 9:30 AM – 7:30 PM IST"}</span>
               </div>
             </div>
           </div>
@@ -115,14 +121,14 @@ export default function ContactPage() {
             <div className="space-y-1 text-sm font-sans">
               <div>
                 <span className="text-ink-muted text-xs block">General Inquiries &amp; Conflict Checks</span>
-                <a href={`mailto:${BRAND_CONFIG.email}`} className="font-semibold text-navy-700 hover:underline">
-                  {BRAND_CONFIG.email}
+                <a href={`mailto:${siteConfig.primaryEmail || BRAND_CONFIG.email}`} className="font-semibold text-navy-700 hover:underline">
+                  {siteConfig.primaryEmail || BRAND_CONFIG.email}
                 </a>
               </div>
               <div className="pt-2">
                 <span className="text-ink-muted text-xs block">POSH Act Compliance Desk</span>
-                <a href={`mailto:${BRAND_CONFIG.poshEmail}`} className="font-semibold text-navy-700 hover:underline">
-                  {BRAND_CONFIG.poshEmail}
+                <a href={`mailto:${siteConfig.poshEmail || BRAND_CONFIG.poshEmail}`} className="font-semibold text-navy-700 hover:underline">
+                  {siteConfig.poshEmail || BRAND_CONFIG.poshEmail}
                 </a>
               </div>
             </div>

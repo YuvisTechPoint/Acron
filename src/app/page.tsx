@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -21,6 +21,7 @@ import {
   Search,
 } from "lucide-react";
 import { BRAND_CONFIG, PRACTICE_AREAS } from "@/lib/constants";
+import { platformStore } from "@/lib/store";
 import {
   Button,
   Eyebrow,
@@ -128,6 +129,11 @@ const FEATURED_INSIGHTS = [
 
 export default function HomePage() {
   const [activeStep, setActiveStep] = useState(0);
+  const [siteConfig, setSiteConfig] = useState(platformStore.getSiteConfig());
+
+  useEffect(() => {
+    setSiteConfig(platformStore.getSiteConfig());
+  }, []);
 
   return (
     <div className="bg-ivory-50 text-ink selection:bg-brass-300/30">
@@ -137,7 +143,7 @@ export default function HomePage() {
         {/* Full-bleed Hero Background Image - Exactly matches user's uploaded master background */}
         <div className="absolute inset-0 z-0 select-none pointer-events-none">
           <Image
-            src="/images/hero.jpg"
+            src={siteConfig.heroBgImage || "/images/hero.jpg"}
             alt="Chambers of Acorn Legal Consultants, Kolkata"
             fill
             priority
@@ -159,36 +165,36 @@ export default function HomePage() {
               <div className="inline-flex items-center gap-2.5">
                 <span className="w-5 h-[1.5px] bg-brass-400" />
                 <span className="font-sans text-[11px] sm:text-xs font-bold uppercase tracking-[0.22em] text-brass-400 drop-shadow-sm">
-                  ACORN LEGAL CONSULTANTS
+                  {siteConfig.firmName || "ACORN LEGAL CONSULTANTS"}
                 </span>
               </div>
 
               {/* Display Headline - Bold & Authoritative */}
               <h1 className="font-serif text-5xl sm:text-6xl lg:text-[72px] font-bold tracking-tight text-white leading-[1.08] drop-shadow-lg">
-                Excellence in Law.<br />
-                <span className="font-serif italic font-normal text-brass-400">Integrity</span> in Practice.
+                {siteConfig.heroHeadline || "Excellence in Law."}<br />
+                <span className="font-serif italic font-normal text-brass-400">{siteConfig.heroSubheadline || "Integrity in Practice."}</span>
               </h1>
 
               {/* Subtitle Paragraph */}
               <p className="font-sans text-base sm:text-[18px] text-slate-200 leading-[1.65] max-w-xl font-normal drop-shadow">
-                A professional legal consultancy delivering thoughtful, precise, and result-oriented solutions for individuals, businesses, and institutions in Kolkata and across India.
+                {siteConfig.heroDescription}
               </p>
 
               {/* Action Buttons */}
               <div className="pt-2 flex flex-wrap items-center gap-4">
                 <Link
-                  href="/request-service"
+                  href={siteConfig.heroPrimaryCtaLink || "/request-service"}
                   className="h-[48px] px-6 rounded-btn bg-brass-500 hover:bg-brass-400 text-ink-950 font-sans font-bold text-sm flex items-center gap-2.5 shadow-raised transition-all duration-200 hover:translate-x-0.5"
                 >
-                  <span>Request a Consultation</span>
+                  <span>{siteConfig.heroPrimaryCtaText || "Request a Consultation"}</span>
                   <ArrowRight className="w-4 h-4" />
                 </Link>
 
                 <Link
-                  href="/services"
+                  href={siteConfig.heroSecondaryCtaLink || "/services"}
                   className="h-[48px] px-6 rounded-btn bg-[#07101F]/40 hover:bg-[#07101F]/70 border border-brass-500/50 hover:border-brass-400 text-brass-200 hover:text-white font-sans font-medium text-sm flex items-center gap-2.5 backdrop-blur-sm transition-all duration-200"
                 >
-                  <span>Explore our services</span>
+                  <span>{siteConfig.heroSecondaryCtaText || "Explore our services"}</span>
                   <ArrowRight className="w-4 h-4 text-brass-400" />
                 </Link>
               </div>
@@ -197,11 +203,11 @@ export default function HomePage() {
               <div className="pt-6 flex flex-wrap items-center gap-x-6 gap-y-2 text-xs sm:text-[13px] font-sans text-slate-300 font-medium">
                 <div className="flex items-center gap-1.5">
                   <span className="text-brass-400 font-bold">•</span>
-                  <span>Kolkata Chambers</span>
+                  <span>{siteConfig.city || "Kolkata"} Chambers</span>
                 </div>
                 <div className="flex items-center gap-1.5">
                   <span className="text-brass-400 font-bold">•</span>
-                  <span>Park Street District</span>
+                  <span>{siteConfig.addressLine2 || "Park Street District"}</span>
                 </div>
                 <div className="flex items-center gap-1.5">
                   <span className="text-brass-400 font-bold">•</span>
@@ -245,10 +251,10 @@ export default function HomePage() {
                     </div>
 
                     <span className="font-serif text-2xl sm:text-[28px] font-bold text-[#F3E5D3] tracking-wide drop-shadow-md leading-tight mt-1">
-                      Chambers of Acorn
+                      {siteConfig.heroArchTitle || "Chambers of Acorn"}
                     </span>
                     <span className="font-sans text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.25em] text-brass-400 mt-1 drop-shadow">
-                      CAMAC STREET &bull; KOLKATA
+                      {siteConfig.heroArchSubtitle || "CAMAC STREET • KOLKATA"}
                     </span>
                   </div>
 
@@ -265,10 +271,10 @@ export default function HomePage() {
                           <Lock className="w-3.5 h-3.5 text-brass-400 shrink-0" />
                         </div>
                         <h3 className="text-xs sm:text-[13px] font-bold text-white tracking-tight mb-1">
-                          Discretion
+                          {siteConfig.heroBadge1Title || "Discretion"}
                         </h3>
                         <p className="text-[10px] sm:text-[11px] text-slate-300 leading-snug">
-                          Absolute privilege &amp; confidentiality
+                          {siteConfig.heroBadge1Desc || "Absolute privilege & confidentiality"}
                         </p>
                       </div>
                     </div>
@@ -280,10 +286,10 @@ export default function HomePage() {
                           <Search className="w-3.5 h-3.5 text-brass-400 shrink-0" />
                         </div>
                         <h3 className="text-xs sm:text-[13px] font-bold text-white tracking-tight mb-1">
-                          Diligence
+                          {siteConfig.heroBadge2Title || "Diligence"}
                         </h3>
                         <p className="text-[10px] sm:text-[11px] text-slate-300 leading-snug">
-                          Exhaustive statutory research
+                          {siteConfig.heroBadge2Desc || "Exhaustive statutory research"}
                         </p>
                       </div>
                     </div>
@@ -295,10 +301,10 @@ export default function HomePage() {
                           <ShieldCheck className="w-3.5 h-3.5 text-brass-400 shrink-0" />
                         </div>
                         <h3 className="text-xs sm:text-[13px] font-bold text-white tracking-tight mb-1">
-                          Transparency
+                          {siteConfig.heroBadge3Title || "Transparency"}
                         </h3>
                         <p className="text-[10px] sm:text-[11px] text-slate-300 leading-snug">
-                          Clear scope &amp; accountable advisory
+                          {siteConfig.heroBadge3Desc || "Clear scope & accountable advisory"}
                         </p>
                       </div>
                     </div>

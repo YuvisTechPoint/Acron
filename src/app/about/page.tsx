@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import {
   Briefcase,
@@ -15,6 +15,8 @@ import {
   Phone,
 } from "lucide-react";
 import { BRAND_CONFIG } from "@/lib/constants";
+import { platformStore } from "@/lib/store";
+import { PageContentItem } from "@/lib/types";
 import {
   Button,
   Eyebrow,
@@ -100,6 +102,12 @@ const TEAM_MEMBERS = [
 ];
 
 export default function AboutPage() {
+  const [pageData, setPageData] = useState(platformStore.getPageContent("about"));
+
+  useEffect(() => {
+    setPageData(platformStore.getPageContent("about"));
+  }, []);
+
   return (
     <div className="bg-ivory-50 text-ink">
       
@@ -108,10 +116,10 @@ export default function AboutPage() {
         <div className="max-w-[1240px] mx-auto px-4 sm:px-6 space-y-6">
           <Eyebrow>ABOUT ACORN LEGAL CONSULTANTS</Eyebrow>
           <h1 className="font-serif text-4xl sm:text-6xl md:text-7xl font-bold tracking-tight text-ink-950 leading-[1.05] max-w-4xl">
-            Where legal expertise meets <span className="font-serif italic font-normal text-brass-700">strategic</span> excellence.
+            {pageData.title || "Where legal expertise meets strategic excellence."}
           </h1>
           <p className="font-sans text-lg sm:text-xl text-ink-secondary max-w-2xl leading-relaxed">
-            Founded on the principles of discretion, statutory rigor, and unyielding professional integrity, Acorn Legal Consultants delivers principled counsel to corporate boards, institutions, and individuals across Kolkata and India.
+            {pageData.content || "Founded on the principles of discretion, statutory rigor, and unyielding professional integrity, Acorn Legal Consultants delivers principled counsel to corporate boards, institutions, and individuals across Kolkata and India."}
           </p>
         </div>
       </section>

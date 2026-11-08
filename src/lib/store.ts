@@ -10,6 +10,11 @@ import {
   AuditLogEntry,
   Hearing,
   EvidenceItem,
+  SiteConfig,
+  CustomService,
+  LegalRule,
+  DirectoryItem,
+  PageContentItem,
 } from "./types";
 import {
   generateServiceRequestRef,
@@ -592,6 +597,256 @@ const SEED_AUDIT_LOGS: AuditLogEntry[] = [
   },
 ];
 
+const SEED_SITE_CONFIG: SiteConfig = {
+  firmName: "Acorn Legal Consultants",
+  tagline: "Where Legal Expertise Meets Strategic Excellence.",
+  brandSubline: "Excellence in Law. Integrity in Practice.",
+  founderName: "Adv. Subhasish Mukherjee",
+  founderTitle: "Managing Partner & Senior Counsel",
+  heroHeadline: "Excellence in Law.",
+  heroSubheadline: "Integrity in Practice.",
+  heroDescription:
+    "A professional legal consultancy delivering thoughtful, precise, and result-oriented solutions for individuals, businesses, and institutions in Kolkata and across India.",
+  heroBgImage: "/images/hero.jpg",
+  heroPrimaryCtaText: "Request a Consultation",
+  heroPrimaryCtaLink: "/request-service",
+  heroSecondaryCtaText: "Explore our services",
+  heroSecondaryCtaLink: "/services",
+  heroBadge1Title: "Discretion",
+  heroBadge1Desc: "Absolute privilege & confidentiality",
+  heroBadge2Title: "Diligence",
+  heroBadge2Desc: "Exhaustive statutory research",
+  heroBadge3Title: "Transparency",
+  heroBadge3Desc: "Clear scope & accountable advisory",
+  heroArchTitle: "Chambers of Acorn",
+  heroArchSubtitle: "CAMAC STREET • KOLKATA",
+  addressLine1: "Suite 4B, Camac Court, 25 Camac Street",
+  addressLine2: "Park Street District",
+  city: "Kolkata",
+  state: "West Bengal",
+  postalCode: "700016",
+  receptionPhone: "+91 (033) 2486-7700",
+  primaryEmail: "contact@acornlegal.in",
+  poshEmail: "posh.desk@acornlegal.in",
+  emergencyPhone: "+91 98300 12345",
+  operatingHours: "Monday – Saturday: 9:30 AM – 7:30 PM IST",
+  courtVacationNotice:
+    "Chambers open throughout High Court long vacation for urgent mentions & POSH inquiries.",
+  googleMapsQuery: "Camac Court, 25 Camac Street, Park Street District, Kolkata 700016",
+  footerRollText:
+    "Excellence in Law • Integrity in Practice • Camac Street Chambers • Kolkata • High Court Practice • POSH Redressal • Corporate Advisory",
+  disclaimer:
+    "As per the rules of the Bar Council of India, law firms are not permitted to solicit work or advertise. By accessing this website, the user acknowledges that the information provided is solely for informational purposes and does not create an advocate-client relationship.",
+  updatedAt: "2026-11-08T00:00:00Z",
+};
+
+const SEED_SERVICES: CustomService[] = [
+  {
+    id: "srv-1",
+    name: "Legal Strategy Consultation",
+    category: "General Legal",
+    shortDesc: "45-minute confidential session with Senior Legal Consultant with clear written roadmap.",
+    pricePaise: 450000,
+    displayPrice: "₹4,500",
+    turnaroundDays: "24 Hours",
+    features: [
+      "45-minute confidential session with Senior Legal Consultant",
+      "Analysis of documents and risk exposure",
+      "Clear written advisory roadmap within 24 hours",
+      "Applicable towards future legal representation",
+    ],
+    isPopular: true,
+    isActive: true,
+    updatedAt: "2026-10-01T00:00:00Z",
+  },
+  {
+    id: "srv-2",
+    name: "POSH Retainer (Basic Tier)",
+    category: "POSH Retainer",
+    shortDesc: "Constitution of statutory Internal Committee (IC) & Acorn External Member representation.",
+    pricePaise: 1800000,
+    displayPrice: "₹18,000 / quarter",
+    turnaroundDays: "Ongoing Retainer",
+    features: [
+      "Constitution of statutory Internal Committee (IC)",
+      "Acorn External Member appointment & representation",
+      "Standard Anti-Sexual Harassment Policy & Notice board drafts",
+      "Quarterly compliance review & statutory registry maintenance",
+      "Assistance in drafting District Officer Annual Report (Sec 21)",
+    ],
+    isPopular: false,
+    isActive: true,
+    updatedAt: "2026-10-01T00:00:00Z",
+  },
+  {
+    id: "srv-3",
+    name: "POSH Enterprise Compliance Suite",
+    category: "POSH Retainer",
+    shortDesc: "Comprehensive institutional compliance with dedicated senior IC external member.",
+    pricePaise: 4500000,
+    displayPrice: "₹45,000 / quarter",
+    turnaroundDays: "Comprehensive Enterprise",
+    features: [
+      "Everything in Basic Tier",
+      "Dedicated Senior External Member for all IC proceedings",
+      "End-to-end 90-day inquiry management & evidence vault",
+      "Annual employee sensitisation & IC orientation workshops",
+      "Automated compliance health scoring & risk audit",
+      "Bespoke multilingual policy rollouts (EN, BN, HI)",
+    ],
+    isPopular: true,
+    isActive: true,
+    updatedAt: "2026-10-01T00:00:00Z",
+  },
+  {
+    id: "srv-4",
+    name: "Commercial Contract Drafting & Vetting",
+    category: "Documentation",
+    shortDesc: "Bespoke commercial contract drafting with complete indemnification and liability protection.",
+    pricePaise: 1250000,
+    displayPrice: "₹12,500",
+    turnaroundDays: "3 Business Days",
+    features: [
+      "Custom Master Services Agreement or Vendor Agreement",
+      "Exhaustive dispute resolution & governing law clauses",
+      "Two rounds of negotiation revisions with counter-party",
+      "Counsel execution advisory note",
+    ],
+    isPopular: false,
+    isActive: true,
+    updatedAt: "2026-10-01T00:00:00Z",
+  },
+];
+
+const SEED_LEGAL_RULES: LegalRule[] = [
+  { param: "complaint_period_months", value: "3", source: "Section 9(1) POSH Act", status: "Active (v1.0)", description: "Limitation period for filing complaint from incident date", updatedAt: "2026-10-01" },
+  { param: "complaint_extension_months", value: "3", source: "Section 9(1) Proviso", status: "Active (v1.0)", description: "Maximum IC extension upon recorded justification", updatedAt: "2026-10-01" },
+  { param: "copy_to_respondent_working_days", value: "7", source: "Rule 7(2) POSH Rules 2013", status: "Active (v1.0)", description: "Working days to furnish notice copy to respondent", updatedAt: "2026-10-01" },
+  { param: "respondent_reply_working_days", value: "10", source: "Rule 7(3) POSH Rules 2013", status: "Active (v1.0)", description: "Statutory window for respondent written statement", updatedAt: "2026-10-01" },
+  { param: "inquiry_days", value: "90", source: "Section 11(4) POSH Act", status: "Active (v1.0)", description: "Mandatory statutory timeline to conclude inquiry", updatedAt: "2026-10-01" },
+  { param: "report_days", value: "10", source: "Section 13(1) POSH Act", status: "Active (v1.0)", description: "Days to provide report to employer & parties post inquiry", updatedAt: "2026-10-01" },
+  { param: "employer_action_days", value: "60", source: "Section 13(4) POSH Act", status: "Active (v1.0)", description: "Employer implementation timeline for IC recommendations", updatedAt: "2026-10-01" },
+  { param: "appeal_days", value: "90", source: "Section 18 POSH Act", status: "Active (v1.0)", description: "Appellate limitation window before Court/Tribunal", updatedAt: "2026-10-01" },
+  { param: "conciliation_allows_monetary", value: "false", source: "Section 10(1) Proviso", status: "LOCKED (Statutory Guard)", description: "Absolute statutory prohibition on monetary settlement in conciliation", updatedAt: "2026-10-01" },
+];
+
+const SEED_DIRECTORY: DirectoryItem[] = [
+  {
+    id: "DIR-01",
+    name: "National Commission for Women (NCW) 24/7 Helpline",
+    category: "STATUTORY_AUTHORITY",
+    number: "7827170170",
+    hours: "24 Hours / 7 Days",
+    description: "National emergency helpline for women facing sexual harassment, domestic violence or distress.",
+    isVerified: true,
+  },
+  {
+    id: "DIR-02",
+    name: "West Bengal State Women Helpline",
+    category: "STATE_HELPLINE",
+    number: "181 / 1091",
+    hours: "Toll-Free 24 Hours",
+    description: "Department of Women & Child Development and Social Welfare, Government of West Bengal.",
+    isVerified: true,
+  },
+  {
+    id: "DIR-03",
+    name: "Kolkata Police Cyber Crime Division",
+    category: "CYBER_POLICE",
+    number: "033 2214 3000 / 1930",
+    hours: "24/7 Emergency Cyber Desk",
+    description: "Lalbazar Cyber Police Station for cyber stalking, revenge pornography, and non-consensual imagery.",
+    isVerified: true,
+  },
+  {
+    id: "DIR-04",
+    name: "West Bengal State Legal Services Authority (WBSLSA)",
+    category: "LEGAL_AID",
+    number: "15100 / 033 2248 3892",
+    hours: "10:00 AM - 5:00 PM (Court Working Days)",
+    description: "Free legal representation and counsel for women and economically disadvantaged citizens under Legal Services Authorities Act.",
+    isVerified: true,
+  },
+  {
+    id: "DIR-05",
+    name: "District Officer (Collector & DM Kolkata) - POSH Cell",
+    category: "STATUTORY_AUTHORITY",
+    number: "033 2214 5555",
+    hours: "10:00 AM - 5:00 PM",
+    description: "Office of the District Magistrate Kolkata for filing Section 21 Annual POSH compliance reports and LC referrals.",
+    isVerified: true,
+  },
+  {
+    id: "DIR-06",
+    name: "Adv. Subhasish Mukherjee",
+    category: "ADVOCATE_COUNSEL",
+    number: "+91 33 2287 4000",
+    hours: "Chambers Hours (By Appointment)",
+    description: "Managing Partner with 25+ years in Calcutta High Court writ, commercial litigation, and regulatory advisory.",
+    isVerified: true,
+    email: "subhasish@acornlegal.in",
+    designation: "Managing Partner & Senior Counsel",
+    barRegistration: "WB/1482/1998",
+  },
+  {
+    id: "DIR-07",
+    name: "Adv. Debjani Sen",
+    category: "ADVOCATE_COUNSEL",
+    number: "+91 33 2287 4001",
+    hours: "Chambers Hours (By Appointment)",
+    description: "Partner specializing in POSH Act 2013 advisory, corporate ethics, and statutory IC external member appointments.",
+    isVerified: true,
+    email: "debjani.sen@acornlegal.in",
+    designation: "Partner & External Member Specialist",
+    barRegistration: "WB/2104/2007",
+  },
+];
+
+const SEED_PAGE_CONTENTS: PageContentItem[] = [
+  {
+    slug: "about",
+    title: "About Acorn Legal Consultants",
+    subtitle: "Excellence in Law. Integrity in Practice.",
+    content:
+      "Acorn Legal Consultants is an independent legal consultancy operating from Camac Street, Kolkata. We combine deep statutory jurisprudence with modern corporate diligence.",
+    sections: [
+      {
+        heading: "Our Heritage & Philosophy",
+        body: "Established with a commitment to principled legal representation, Acorn Legal Consultants bridges traditional legal advocacy with modern commercial standards.",
+      },
+      {
+        heading: "Calm Authority & Discretion",
+        body: "We believe client confidentiality and institutional integrity are sacred trusts. Every inquiry and case is safeguarded with strict legal privilege.",
+      },
+    ],
+    updatedAt: "2026-10-01T00:00:00Z",
+  },
+  {
+    slug: "disclaimer",
+    title: "Bar Council of India Statutory Disclaimer",
+    subtitle: "Rule 36 of Bar Council of India Rules",
+    content:
+      "As per the rules of the Bar Council of India, advocates are prohibited from soliciting work or advertising their practice in any form or manner. By accessing this website, the visitor acknowledges that the information provided is solely for informational purposes.",
+    updatedAt: "2026-10-01T00:00:00Z",
+  },
+  {
+    slug: "privacy",
+    title: "Privacy & Data Protection Charter",
+    subtitle: "Digital Personal Data Protection Act (DPDPA 2023) Compliance",
+    content:
+      "Acorn Legal Consultants implements stringent data protection standards. All client communications, privileged inquiries, and POSH case files are encrypted and scrubbed of PII in public logs.",
+    updatedAt: "2026-10-01T00:00:00Z",
+  },
+  {
+    slug: "terms",
+    title: "Terms of Engagement & Website Usage",
+    subtitle: "Chambers Practice Terms",
+    content:
+      "Use of this website does not constitute an advocate-client relationship. Formal representation begins only after execution of a vakalatnama or engagement letter following conflict clearance.",
+    updatedAt: "2026-10-01T00:00:00Z",
+  },
+];
+
 // Helper to access and mutate localStorage with fallback to in-memory store
 class PlatformStore {
   private isClient = typeof window !== "undefined";
@@ -1036,6 +1291,220 @@ class PlatformStore {
     };
     logs.unshift(entry);
     this.set("audit_logs", logs.slice(0, 100)); // maintain latest 100
+  }
+
+  // Site Configuration & Hero CMS
+  getSiteConfig(): SiteConfig {
+    return this.get("site_config", SEED_SITE_CONFIG);
+  }
+
+  updateSiteConfig(partial: Partial<SiteConfig>): SiteConfig {
+    const current = this.getSiteConfig();
+    const updated: SiteConfig = {
+      ...current,
+      ...partial,
+      updatedAt: new Date().toISOString(),
+    };
+    this.set("site_config", updated);
+    this.addAuditLog("Admin", "super_admin", "SITE_CONFIG_UPDATED", "system", "branding", "Updated site configuration and homepage hero settings");
+    return updated;
+  }
+
+  // Services CMS
+  getServices(): CustomService[] {
+    return this.get("services_catalogue", SEED_SERVICES);
+  }
+
+  addService(service: Omit<CustomService, "id" | "updatedAt">): CustomService {
+    const list = this.getServices();
+    const newService: CustomService = {
+      ...service,
+      id: `srv-${Date.now()}`,
+      updatedAt: new Date().toISOString(),
+    };
+    list.push(newService);
+    this.set("services_catalogue", list);
+    this.addAuditLog("Admin", "super_admin", "SERVICE_ADDED", "system", newService.id, `Created service: ${newService.name}`);
+    return newService;
+  }
+
+  updateService(id: string, partial: Partial<CustomService>): void {
+    const list = this.getServices();
+    const idx = list.findIndex((s) => s.id === id);
+    if (idx !== -1) {
+      list[idx] = {
+        ...list[idx],
+        ...partial,
+        updatedAt: new Date().toISOString(),
+      };
+      this.set("services_catalogue", list);
+      this.addAuditLog("Admin", "super_admin", "SERVICE_UPDATED", "system", id, `Updated service package ${list[idx].name}`);
+    }
+  }
+
+  deleteService(id: string): void {
+    const list = this.getServices();
+    const filtered = list.filter((s) => s.id !== id);
+    this.set("services_catalogue", filtered);
+    this.addAuditLog("Admin", "super_admin", "SERVICE_DELETED", "system", id, `Deleted service package ${id}`);
+  }
+
+  // Legal Rules CMS
+  getLegalRules(): LegalRule[] {
+    return this.get("legal_rules", SEED_LEGAL_RULES);
+  }
+
+  updateLegalRule(param: string, value: string, status?: string): void {
+    const list = this.getLegalRules();
+    const rule = list.find((r) => r.param === param);
+    if (rule) {
+      rule.value = value;
+      if (status) rule.status = status;
+      rule.updatedAt = new Date().toISOString();
+      this.set("legal_rules", list);
+      this.addAuditLog("Admin", "super_admin", "LEGAL_RULE_MODIFIED", "policy", param, `Updated statutory rule ${param} = ${value}`);
+    }
+  }
+
+  addLegalRule(rule: LegalRule): void {
+    const list = this.getLegalRules();
+    list.push(rule);
+    this.set("legal_rules", list);
+    this.addAuditLog("Admin", "super_admin", "LEGAL_RULE_ADDED", "policy", rule.param, `Added new rule ${rule.param}`);
+  }
+
+  // Directory CMS (Helplines & Advocate Profiles)
+  getDirectory(): DirectoryItem[] {
+    return this.get("directory_items", SEED_DIRECTORY);
+  }
+
+  addDirectoryItem(item: Omit<DirectoryItem, "id">): DirectoryItem {
+    const list = this.getDirectory();
+    const newItem: DirectoryItem = {
+      ...item,
+      id: `DIR-${Date.now()}`,
+      updatedAt: new Date().toISOString(),
+    };
+    list.push(newItem);
+    this.set("directory_items", list);
+    this.addAuditLog("Admin", "super_admin", "DIRECTORY_ITEM_ADDED", "system", newItem.id, `Added directory item ${newItem.name}`);
+    return newItem;
+  }
+
+  updateDirectoryItem(id: string, partial: Partial<DirectoryItem>): void {
+    const list = this.getDirectory();
+    const idx = list.findIndex((d) => d.id === id);
+    if (idx !== -1) {
+      list[idx] = {
+        ...list[idx],
+        ...partial,
+        updatedAt: new Date().toISOString(),
+      };
+      this.set("directory_items", list);
+      this.addAuditLog("Admin", "super_admin", "DIRECTORY_ITEM_UPDATED", "system", id, `Updated directory item ${list[idx].name}`);
+    }
+  }
+
+  deleteDirectoryItem(id: string): void {
+    const list = this.getDirectory();
+    const filtered = list.filter((d) => d.id !== id);
+    this.set("directory_items", filtered);
+    this.addAuditLog("Admin", "super_admin", "DIRECTORY_ITEM_DELETED", "system", id, `Removed directory item ${id}`);
+  }
+
+  // Static Pages CMS
+  getAllPages(): PageContentItem[] {
+    return this.get("static_pages", SEED_PAGE_CONTENTS);
+  }
+
+  getPageContent(slug: string): PageContentItem {
+    const pages = this.getAllPages();
+    return pages.find((p) => p.slug === slug) || {
+      slug,
+      title: slug.toUpperCase(),
+      content: "",
+      updatedAt: new Date().toISOString(),
+    };
+  }
+
+  updatePageContent(slug: string, partial: Partial<PageContentItem>): void {
+    const pages = this.getAllPages();
+    const idx = pages.findIndex((p) => p.slug === slug);
+    if (idx !== -1) {
+      pages[idx] = {
+        ...pages[idx],
+        ...partial,
+        updatedAt: new Date().toISOString(),
+      };
+    } else {
+      pages.push({
+        slug,
+        title: partial.title || slug,
+        content: partial.content || "",
+        subtitle: partial.subtitle,
+        sections: partial.sections,
+        updatedAt: new Date().toISOString(),
+      });
+    }
+    this.set("static_pages", pages);
+    this.addAuditLog("Admin", "super_admin", "PAGE_CONTENT_UPDATED", "system", slug, `Updated static content for /${slug}`);
+  }
+
+  // Blog Posts CRUD
+  updateBlogPost(id: string, partial: Partial<BlogPost>): void {
+    const blogs = this.getBlogs();
+    const idx = blogs.findIndex((b) => b.id === id);
+    if (idx !== -1) {
+      blogs[idx] = { ...blogs[idx], ...partial };
+      this.set("blogs", blogs);
+      this.addAuditLog("Admin", "super_admin", "BLOG_POST_UPDATED", "system", id, `Updated blog post: ${blogs[idx].title}`);
+    }
+  }
+
+  deleteBlogPost(id: string): void {
+    const blogs = this.getBlogs();
+    const filtered = blogs.filter((b) => b.id !== id);
+    this.set("blogs", filtered);
+    this.addAuditLog("Admin", "super_admin", "BLOG_POST_DELETED", "system", id, `Deleted blog post ${id}`);
+  }
+
+  // Questions CRUD
+  updateQuestion(id: string, partial: Partial<QuestionAnswer>): void {
+    const questions = this.getQuestions();
+    const idx = questions.findIndex((q) => q.id === id);
+    if (idx !== -1) {
+      questions[idx] = { ...questions[idx], ...partial };
+      this.set("qa_list", questions);
+      this.addAuditLog("Admin", "super_admin", "QA_UPDATED", "system", id, `Updated Q&A item ${id}`);
+    }
+  }
+
+  deleteQuestion(id: string): void {
+    const questions = this.getQuestions();
+    const filtered = questions.filter((q) => q.id !== id);
+    this.set("qa_list", filtered);
+    this.addAuditLog("Admin", "super_admin", "QA_DELETED", "system", id, `Deleted Q&A item ${id}`);
+  }
+
+  // Scripts CRUD
+  addScript(script: Omit<ScriptTag, "id" | "updatedAt">): ScriptTag {
+    const scripts = this.getScripts();
+    const newScript: ScriptTag = {
+      ...script,
+      id: `tag-${Date.now()}`,
+      updatedAt: new Date().toISOString(),
+    };
+    scripts.push(newScript);
+    this.set("scripts", scripts);
+    this.addAuditLog("Admin", "super_admin", "SCRIPT_ADDED", "script", newScript.name, `Added tracking script ${newScript.name}`);
+    return newScript;
+  }
+
+  deleteScript(id: string): void {
+    const scripts = this.getScripts();
+    const filtered = scripts.filter((s) => s.id !== id);
+    this.set("scripts", filtered);
+    this.addAuditLog("Admin", "super_admin", "SCRIPT_DELETED", "script", id, `Deleted script ${id}`);
   }
 }
 

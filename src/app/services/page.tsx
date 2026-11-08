@@ -1,16 +1,24 @@
 "use client";
 
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import Link from "next/link";
-import { ArrowRight, Briefcase, FileText, Compass, Landmark, ShieldCheck, Building, HelpCircle } from "lucide-react";
+import { ArrowRight, Briefcase, FileText, Compass, Landmark, ShieldCheck, Building, HelpCircle, CheckCircle2, Clock } from "lucide-react";
 import { PRACTICE_AREAS, BRAND_CONFIG } from "@/lib/constants";
 import { Eyebrow, SectionHeading, Button, Rule, usePrefersReducedMotion } from "@/components/ui";
+import { platformStore } from "@/lib/store";
+import { CustomService } from "@/lib/types";
+import { formatINR } from "@/lib/utils";
 
 export default function ServicesIndexPage() {
   const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
   const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
+  const [services, setServices] = useState<CustomService[]>([]);
   const reducedMotion = usePrefersReducedMotion();
   const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    setServices(platformStore.getServices().filter((s) => s.isActive));
+  }, []);
 
   const handleMouseMove = (e: React.MouseEvent) => {
     if (reducedMotion) return;
@@ -119,6 +127,78 @@ export default function ServicesIndexPage() {
           </div>
         )}
       </section>
+
+      {/* Dynamic Retainer & Advisory Catalogue (Configurable from Admin) */}
+      {services.length > 0 && (
+        <section className="py-16 sm:py-20 border-t border-border bg-white">
+          <div className="max-w-[1240px] mx-auto px-4 sm:px-6 space-y-10">
+            <div className="text-left space-y-2">
+              <Eyebrow>STRUCTURED ENGAGEMENTS</Eyebrow>
+              <h2 className="font-serif text-3xl sm:text-4xl font-bold text-ink-950">
+                Advisory Retainers &amp; Transparent Packages
+              </h2>
+              <p className="font-sans text-sm text-ink-secondary max-w-xl">
+                Standardized statutory mandates, corporate retainer agreements, and rapid consultation packages.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {services.map((s) => (
+                <div
+                  key={s.id}
+                  className="p-6 rounded-card border border-border bg-ivory-50/40 hover:bg-white hover:border-navy-700 transition flex flex-col justify-between space-y-6 shadow-sm group"
+                >
+                  <div className="space-y-4">
+                    <div className="flex justify-between items-center">
+                      <span className="text-[10px] uppercase font-bold tracking-wider text-brass-700 bg-brass-50 border border-brass-200 px-2 py-0.5 rounded">
+                        {s.category}
+                      </span>
+                      <span className="text-[11px] text-ink-muted flex items-center gap-1">
+                        <Clock className="w-3 h-3 text-brass-500" />
+                        <span>{s.turnaroundDays}</span>
+                      </span>
+                    </div>
+
+                    <h3 className="font-serif text-xl font-bold text-ink-950 group-hover:text-navy-700 transition">
+                      {s.name}
+                    </h3>
+
+                    <p className="font-sans text-xs text-ink-secondary leading-relaxed">
+                      {s.shortDesc}
+                    </p>
+
+                    <div className="pt-2 border-t border-border flex items-baseline gap-2">
+                      <span className="font-serif text-2xl font-bold text-ink-950">
+                        {formatINR(s.pricePaise)}
+                      </span>
+                      <span className="text-[11px] text-ink-secondary">(+ 18% GST)</span>
+                    </div>
+
+                    <ul className="space-y-2 pt-2 border-t border-border-subtle">
+                      {s.features.map((f, idx) => (
+                        <li key={idx} className="flex items-start gap-2 text-xs text-ink">
+                          <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0 mt-0.5" />
+                          <span>{f}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  <div className="pt-4 border-t border-border">
+                    <Link
+                      href="/request-service"
+                      className="w-full py-2.5 px-4 bg-navy-700 hover:bg-blue-600 text-white font-sans text-xs font-bold rounded-btn flex items-center justify-center gap-2 shadow-sm transition"
+                    >
+                      <span>Inquire / Engage Counsel</span>
+                      <ArrowRight className="w-3.5 h-3.5" />
+                    </Link>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* Closing Guidance */}
       <section className="bg-stone-100 py-20 sm:py-24 border-t border-border">

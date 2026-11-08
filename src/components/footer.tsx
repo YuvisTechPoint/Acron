@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
@@ -17,11 +17,17 @@ import {
 } from "lucide-react";
 import { BRAND_CONFIG, PRACTICE_AREAS } from "@/lib/constants";
 import { FooterClock, FooterRollText } from "@/components/footer-roll-text";
+import { platformStore } from "@/lib/store";
 
 export function Footer() {
   const pathname = usePathname();
   // State for folding/unfolding the upper directory drawer
   const [isOpen, setIsOpen] = useState(true);
+  const [siteConfig, setSiteConfig] = useState(platformStore.getSiteConfig());
+
+  useEffect(() => {
+    setSiteConfig(platformStore.getSiteConfig());
+  }, []);
 
   // Suppress footer on administrative and console workspaces
   const isAdminOrConsole =
@@ -162,24 +168,24 @@ export function Footer() {
                   <div className="flex items-start gap-2.5">
                     <MapPin className="w-4 h-4 text-brass-400 shrink-0 mt-0.5" />
                     <span className="leading-relaxed">
-                      Suite 4B, Camac Court, 25 Camac Street, Park Street District, Kolkata 700016
+                      {siteConfig.addressLine1}, {siteConfig.addressLine2}, {siteConfig.city} {siteConfig.postalCode}
                     </span>
                   </div>
                   <div className="flex items-center gap-2.5">
                     <Phone className="w-4 h-4 text-brass-400 shrink-0" />
-                    <a href={`tel:${BRAND_CONFIG.phone}`} className="hover:text-brass-300 transition-colors">
-                      {BRAND_CONFIG.phone}
+                    <a href={`tel:${siteConfig.receptionPhone || BRAND_CONFIG.phone}`} className="hover:text-brass-300 transition-colors">
+                      {siteConfig.receptionPhone || BRAND_CONFIG.phone}
                     </a>
                   </div>
                   <div className="flex items-center gap-2.5">
                     <Mail className="w-4 h-4 text-brass-400 shrink-0" />
-                    <a href={`mailto:${BRAND_CONFIG.email}`} className="hover:text-brass-300 transition-colors">
-                      {BRAND_CONFIG.email}
+                    <a href={`mailto:${siteConfig.primaryEmail || BRAND_CONFIG.email}`} className="hover:text-brass-300 transition-colors">
+                      {siteConfig.primaryEmail || BRAND_CONFIG.email}
                     </a>
                   </div>
                   <div className="flex items-center gap-2.5">
                     <Clock className="w-4 h-4 text-brass-400 shrink-0" />
-                    <span>Mon – Sat: 9:30 AM – 7:30 PM IST</span>
+                    <span>{siteConfig.operatingHours || "Mon – Sat: 9:30 AM – 7:30 PM IST"}</span>
                   </div>
                 </div>
               </div>
@@ -250,7 +256,8 @@ export function Footer() {
               {/* Bar Council Professional Disclaimer Box */}
               <div className="bg-[#091528] p-4 rounded-card border border-navy-800 text-[11px] text-slate-300 leading-relaxed">
                 <p>
-                  <strong className="text-brass-300 font-semibold">Regulatory Notice:</strong> The information on this website is for general information only and does not constitute legal advice or create a lawyer-client relationship. Under the rules of the Bar Council of India, law firms and legal practitioners are not permitted to solicit work or advertise. Chambers engagements are undertaken strictly under formal retainer or letter of engagement.
+                  <strong className="text-brass-300 font-semibold">Regulatory Notice:</strong>{" "}
+                  {siteConfig.disclaimer || "The information on this website is for general information only and does not constitute legal advice or create a lawyer-client relationship. Under the rules of the Bar Council of India, law firms and legal practitioners are not permitted to solicit work or advertise."}
                 </p>
               </div>
 

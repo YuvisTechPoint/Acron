@@ -374,3 +374,92 @@ export interface AuditLogEntry {
   details: string;
 }
 
+export interface SiteConfig {
+  firmName: string;
+  tagline: string;
+  brandSubline: string;
+  founderName: string;
+  founderTitle: string;
+  heroHeadline: string;
+  heroSubheadline: string;
+  heroDescription: string;
+  heroBgImage: string;
+  heroPrimaryCtaText: string;
+  heroPrimaryCtaLink: string;
+  heroSecondaryCtaText: string;
+  heroSecondaryCtaLink: string;
+  heroBadge1Title: string;
+  heroBadge1Desc: string;
+  heroBadge2Title: string;
+  heroBadge2Desc: string;
+  heroBadge3Title: string;
+  heroBadge3Desc: string;
+  heroArchTitle: string;
+  heroArchSubtitle: string;
+  addressLine1: string;
+  addressLine2: string;
+  city: string;
+  state: string;
+  postalCode: string;
+  receptionPhone: string;
+  primaryEmail: string;
+  poshEmail: string;
+  emergencyPhone: string;
+  operatingHours: string;
+  courtVacationNotice: string;
+  googleMapsQuery: string;
+  footerRollText: string;
+  disclaimer: string;
+  updatedAt: string;
+}
+
+export interface CustomService {
+  id: string;
+  name: string;
+  category: string;
+  shortDesc: string;
+  pricePaise: number;
+  displayPrice?: string;
+  turnaroundDays: string;
+  features: string[];
+  isPopular?: boolean;
+  isActive: boolean;
+  updatedAt: string;
+}
+
+export interface LegalRule {
+  param: string;
+  value: string;
+  source: string;
+  status: string;
+  description?: string;
+  updatedAt: string;
+}
+
+export interface DirectoryItem {
+  id: string;
+  name: string;
+  category: "STATUTORY_AUTHORITY" | "STATE_HELPLINE" | "LEGAL_AID" | "CYBER_POLICE" | "ADVOCATE_COUNSEL" | string;
+  number: string;
+  hours: string;
+  description: string;
+  isVerified: boolean;
+  email?: string;
+  designation?: string;
+  barRegistration?: string;
+  updatedAt?: string;
+}
+
+export interface PageContentItem {
+  slug: string;
+  title: string;
+  subtitle?: string;
+  content: string;
+  sections?: Array<{
+    heading: string;
+    body: string;
+  }>;
+  updatedAt: string;
+}
+
+

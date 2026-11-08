@@ -9,6 +9,7 @@ import {
   ArrowRight,
   Eye,
   Plus,
+  Trash2,
 } from "lucide-react";
 import { platformStore } from "@/lib/store";
 import { formatDate } from "@/lib/utils";
@@ -38,6 +39,13 @@ export default function AdminQAQueuePage() {
     const refreshed = updated.find((q) => q.id === selectedQA.id);
     if (refreshed) setSelectedQA({ ...refreshed });
     alert("Answer saved and status updated successfully.");
+  };
+
+  const handleDelete = (id: string) => {
+    if (confirm("Delete this question from moderation queue?")) {
+      platformStore.deleteQuestion(id);
+      setSelectedQA(null);
+    }
   };
 
   return (
@@ -159,12 +167,22 @@ export default function AdminQAQueuePage() {
                   </label>
                 </div>
 
-                <button
-                  type="submit"
-                  className="w-full py-2.5 bg-primary hover:bg-primary-hover text-white font-bold uppercase tracking-wider rounded transition-colors"
-                >
-                  Save Answer &amp; Update Public FAQ
-                </button>
+                <div className="flex gap-2">
+                  <button
+                    type="submit"
+                    className="flex-1 py-2.5 bg-primary hover:bg-primary-hover text-white font-bold uppercase tracking-wider rounded transition-colors"
+                  >
+                    Save Answer &amp; Update Public FAQ
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => handleDelete(selectedQA.id)}
+                    className="p-2.5 border border-border text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded transition"
+                    title="Delete Question"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </button>
+                </div>
               </form>
             ) : (
               <div className="text-center py-16 text-ink-secondary">
