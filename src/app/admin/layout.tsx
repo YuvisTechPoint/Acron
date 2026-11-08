@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
@@ -38,6 +38,7 @@ import {
   CheckCircle2,
   AlertTriangle,
 } from "lucide-react";
+import { AdminThemeToggle } from "@/components/admin/AdminThemeToggle";
 
 interface NavItem {
   label: string;
@@ -119,6 +120,22 @@ export default function AdminLayout({
 }) {
   const pathname = usePathname();
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
+  const [theme, setTheme] = useState<"light" | "dark">("light");
+
+  useEffect(() => {
+    const saved = (localStorage.getItem("acorn_admin_theme") as "light" | "dark") || "light";
+    setTheme(saved);
+
+    const onThemeChange = (e: Event) => {
+      const customEvent = e as CustomEvent<"light" | "dark">;
+      if (customEvent.detail) {
+        setTheme(customEvent.detail);
+      }
+    };
+
+    window.addEventListener("acorn_admin_theme_change", onThemeChange);
+    return () => window.removeEventListener("acorn_admin_theme_change", onThemeChange);
+  }, []);
 
   // If on login screen, render clean standalone view
   if (pathname === "/admin/login") {
@@ -132,7 +149,12 @@ export default function AdminLayout({
   const currentTitle = currentItem?.label || "Admin Console";
 
   return (
-    <div className="min-h-screen bg-ivory-50 text-ink flex flex-col lg:flex-row">
+    <div
+      id="admin-root"
+      className={`min-h-screen flex flex-col lg:flex-row transition-colors duration-200 ${
+        theme === "dark" ? "admin-dark dark bg-ink-950 text-white" : "bg-ivory-50 text-ink"
+      }`}
+    >
       
       {/* Mobile Top Bar */}
       <div className="lg:hidden bg-ink-950 text-white px-4 py-3 flex items-center justify-between border-b border-navy-800 z-30">
@@ -147,13 +169,16 @@ export default function AdminLayout({
           <div className="font-serif font-bold text-base text-white">ACORN ADMIN</div>
         </div>
 
-        <Link
-          href="/"
-          className="text-xs text-brass-300 hover:text-white flex items-center gap-1"
-        >
-          <span>Public Site</span>
-          <ExternalLink className="w-3 h-3" />
-        </Link>
+        <div className="flex items-center gap-2">
+          <AdminThemeToggle compact />
+          <Link
+            href="/"
+            className="text-xs text-brass-300 hover:text-white flex items-center gap-1 p-1.5"
+            title="Open Public Chambers Site"
+          >
+            <ExternalLink className="w-4 h-4" />
+          </Link>
+        </div>
       </div>
 
       {/* Admin Navy Sidebar (Desktop & Drawer on Mobile) */}
@@ -260,6 +285,11 @@ export default function AdminLayout({
               <span className="w-2 h-2 rounded-full bg-status-success animate-pulse" />
               <span>Production Platform v2.0</span>
             </div>
+
+            <div className="w-[1px] h-4 bg-border" />
+
+            {/* Dark & Light Mode Toggle */}
+            <AdminThemeToggle />
 
             <div className="w-[1px] h-4 bg-border" />
 
