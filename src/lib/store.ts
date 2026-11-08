@@ -303,6 +303,112 @@ const SEED_CASES: POSHCase[] = [
     createdAt: "2026-10-30T10:00:00Z",
     updatedAt: "2026-10-30T10:00:00Z",
   },
+  {
+    id: "ACN-POSH-2026-0041",
+    caseNumber: "ACN-POSH-2026-0041",
+    orgId: "org-1",
+    orgName: "Kolkata Cloud Technologies Pvt Ltd",
+    state: "HEARING_SCHEDULED",
+    incidentDates: ["2026-09-12", "2026-09-18"],
+    incidentLocation: "Sector V Office & Client Dinner, Salt Lake",
+    natureOfHarassment: [
+      "Sexually coloured remarks",
+      "Unwelcome physical contact or advances",
+      "Implicit threat about present or future employment status",
+    ],
+    summary: "Repeated inappropriate physical contact and suggestive comments by Project Director during late client reviews.",
+    detailedStatement: "During client project delivery in September 2026, the respondent repeatedly touched the complainant's hand and shoulder without consent, followed by WhatsApp messages hinting that appraisal ratings depended on private dinners.",
+    complainantName: "Sneha Ganguly",
+    complainantDesignation: "Senior UI/UX Designer",
+    complainantDepartment: "Design & Product",
+    complainantEmail: "sneha.g@kolkatacloud.com",
+    complainantPhone: "+91 98319 88123",
+    needsAssistance: false,
+    preferredLanguage: "en",
+    respondentName: "Rakesh Majumdar",
+    respondentDesignation: "Director - Client Delivery",
+    respondentDepartment: "Enterprise Solutions",
+    respondentEmail: "rakesh.m@kolkatacloud.com",
+    respondentPhone: "+91 98305 66778",
+    witnesses: [
+      { name: "Rohit Ghosh", role: "Frontend Developer", contact: "rohit.g@kolkatacloud.com" },
+      { name: "Monalisa Das", role: "Product Manager", contact: "monalisa.d@kolkatacloud.com" },
+    ],
+    interimReliefRequested: {
+      type: "restrain_respondent",
+      details: "Requesting that respondent be barred from reporting line and that respondent be reassigned to separate floor during inquiry.",
+      status: "implemented",
+      recommendedAt: "2026-09-24T10:00:00Z",
+    },
+    filedAt: "2026-09-22T08:30:00Z",
+    limitationStatus: "within_3_months",
+    noticeToRespondentDeadline: "2026-09-29T18:00:00Z",
+    noticeServedAt: "2026-09-24T12:00:00Z",
+    respondentReplyDeadline: "2026-10-08T18:00:00Z",
+    respondentReplyReceivedAt: "2026-10-06T15:30:00Z",
+    respondentDefenseSummary: "Respondent claims interactions were professional team bonding and denied coercive intent.",
+    inquiryDeadline: "2026-12-21T18:00:00Z", // 90 days from filed
+    reportDeadline: "2026-12-31T18:00:00Z",
+    conciliationRequested: false,
+    hearings: [
+      {
+        id: "h-1",
+        hearingNumber: 1,
+        scheduledDate: "2026-10-18",
+        scheduledTime: "11:00 AM IST",
+        locationOrLink: "IC Confidential Conference Room 3B, Sector V",
+        attendees: ["Dr. Ananya Mukherjee", "Adv. Debjani Sen", "Pooja Banerjee", "Sneha Ganguly"],
+        agenda: "Examination of Complainant Statement and Verification of WhatsApp Records",
+        minutesSummary: "Complainant corroborated dates and times of text messages. Expressed distress and requested no direct confrontation.",
+        status: "completed",
+      },
+      {
+        id: "h-2",
+        hearingNumber: 2,
+        scheduledDate: "2026-11-20",
+        scheduledTime: "11:30 AM IST",
+        locationOrLink: "IC Confidential Conference Room 3B / Webex",
+        attendees: ["Dr. Ananya Mukherjee (PO)", "Adv. Debjani Sen (External Member)", "Sharmila Roy (Member)"],
+        agenda: "Cross-Examination of Documentary Exhibits and Respondent Deposition",
+        status: "scheduled",
+      },
+    ],
+    evidence: [
+      {
+        id: "ev-1",
+        exhibitCode: "EX-001",
+        title: "Exported WhatsApp Chat Transcripts (12 Sep - 19 Sep)",
+        fileType: "application/pdf",
+        fileSizeKb: 1420,
+        uploadedBy: "complainant",
+        sha256Hash: "d8e8fca2dc0f896fd7cb4cb0031ba24900e5146e029e13f646523d573269be2b",
+        isRedacted: false,
+        uploadedAt: "2026-09-22T08:35:00Z",
+        chainOfCustody: [
+          { action: "Uploaded by complainant", user: "Sneha Ganguly", timestamp: "2026-09-22 08:35" },
+          { action: "Verified by IC Presiding Officer", user: "Dr. Ananya Mukherjee", timestamp: "2026-09-23 11:15" },
+        ],
+      },
+      {
+        id: "ev-2",
+        exhibitCode: "EX-002",
+        title: "Client Dinner Expense Bill & Team Attendance Log",
+        fileType: "image/jpeg",
+        fileSizeKb: 890,
+        uploadedBy: "respondent",
+        sha256Hash: "ca978112ca1bbdcafac231b39a23dc4da786eff8147c4e72b9807785afee48bb",
+        isRedacted: true,
+        uploadedAt: "2026-10-06T15:35:00Z",
+        chainOfCustody: [
+          { action: "Submitted with Respondent Reply", user: "Rakesh Majumdar", timestamp: "2026-10-06 15:35" },
+        ],
+      },
+    ],
+    assignedICMembers: ["Dr. Ananya Mukherjee", "Adv. Debjani Sen", "Pooja Banerjee", "Siddhartha Bose"],
+    isConfidential: true,
+    createdAt: "2026-09-22T08:30:00Z",
+    updatedAt: "2026-10-20T14:15:00Z",
+  },
 ];
 
 const SEED_REQUESTS: ServiceRequest[] = [
@@ -1178,7 +1284,16 @@ class PlatformStore {
   }
 
   getCaseById(id: string): POSHCase | undefined {
-    return this.getCases().find((c) => c.id === id || c.caseNumber === id);
+    const cases = this.getCases();
+    const found = cases.find(
+      (c) =>
+        c.id === id ||
+        c.caseNumber === id ||
+        c.caseNumber.toLowerCase() === id?.toLowerCase() ||
+        c.id.toLowerCase() === id?.toLowerCase()
+    );
+    if (found) return found;
+    return cases.length > 0 ? cases[0] : undefined;
   }
 
   addPOSHCase(complaintData: {

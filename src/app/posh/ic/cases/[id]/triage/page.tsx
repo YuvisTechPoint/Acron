@@ -14,9 +14,10 @@ import {
   UserCheck,
   Building,
   Scale,
+  ShieldAlert,
 } from "lucide-react";
 import { platformStore } from "@/lib/store";
-import { formatDate } from "@/lib/utils";
+import { formatDate, evaluateLimitationStatus } from "@/lib/utils";
 import { POSHCase } from "@/lib/types";
 
 export default function ICTriagePage() {
@@ -35,27 +36,67 @@ export default function ICTriagePage() {
 
   useEffect(() => {
     const c = platformStore.getCaseById(caseId);
-    if (c) setPoshCase(c);
+    if (c) {
+      setPoshCase(c);
+      const lastDate = c.incidentDates?.[c.incidentDates.length - 1];
+      const evalResult = evaluateLimitationStatus(lastDate, c.filedAt);
+      if (evalResult.status !== "WITHIN_LIMITATION") {
+        setIsWithinLimitation(false);
+        if (evalResult.status === "REQUIRES_CONDONATION") {
+          setTriageAction("CONDONE");
+        } else if (evalResult.status === "STATUTORILY_BARRED") {
+          setTriageAction("REFER_LC");
+        }
+      }
+    }
   }, [caseId]);
+
+  const lastIncidentDate = poshCase?.incidentDates?.[poshCase.incidentDates.length - 1];
+  const limitationEvaluation = evaluateLimitationStatus(lastIncidentDate, poshCase?.filedAt);
 
   const handleSaveTriage = (e: React.FormEvent) => {
     e.preventDefault();
     if (!poshCase) return;
 
     if (triageAction === "PROCEED" || triageAction === "CONDONE") {
+      if (!isAggrievedWoman) {
+        alert("Statutory Threshold Error: Complainant must meet Section 2(a) Aggrieved Woman definition to proceed under POSH.");
+        return;
+      }
+      if (!isWorkplaceJurisdiction) {
+        alert("Jurisdiction Defect: Section 2(o) Workplace Jurisdiction not met. IC cannot admit non-workplace complaints. Must refer to Local Committee (LC) or external authority.");
+        return;
+      }
+      if (!isQuorumValid || !conflictFree) {
+        alert("Quorum / Conflict Defect: Section 4 IC constitution and conflict clearance must be valid prior to initiating formal inquiry.");
+        return;
+      }
+      if (limitationEvaluation.status === "STATUTORILY_BARRED") {
+        alert("Statutory Bar (Section 9(1) Proviso): Complaint filed beyond the maximum 3-month condonation ceiling (more than 6 months total). The IC has no statutory authority to admit or condone this complaint. Must be referred to Local Committee or dismissed as time-barred.");
+        return;
+      }
+      if (!isWithinLimitation && triageAction === "PROCEED") {
+        alert("Limitation Notice: Complaint is beyond initial 3 months. You must choose 'Condone Delay' and record written reasons pursuant to the Proviso to Section 9(1).");
+        return;
+      }
+      if (triageAction === "CONDONE" && !condonationReasons.trim()) {
+        alert("Mandatory Statutory Requirement: Section 9(1) Proviso mandates that the IC record its reasons in writing for condoning delay.");
+        return;
+      }
+
       platformStore.updateCaseState(
         poshCase.id,
         "NOTICE_SERVED",
-        `Triage passed. Jurisdiction and limitation verified. Condonation: ${isWithinLimitation ? "N/A" : condonationReasons || "Approved"}`
+        `Triage passed. Jurisdiction and limitation verified. Condonation: ${isWithinLimitation ? "N/A" : condonationReasons || "Approved under Section 9(1) Proviso"}`
       );
       alert("Triage decision recorded: Proceed to Notice of Inquiry (Section 11).");
     } else if (triageAction === "REFER_LC") {
       platformStore.updateCaseState(
         poshCase.id,
         "REFERRED_TO_LC",
-        "Referred to District Local Committee (LC) due to lack of workplace IC jurisdiction."
+        "Referred to District Local Committee (LC) due to lack of workplace IC jurisdiction or statutory time-bar."
       );
-      alert("Docket routed to Local Committee.");
+      alert("Docket routed to District Local Committee.");
     } else {
       alert("Information request dispatched to complainant.");
     }
@@ -152,6 +193,39 @@ export default function ICTriagePage() {
               </label>
             </div>
 
+            {/* Limitation Calculator Output */}
+            <div className={`p-4 rounded border text-xs space-y-1.5 ${
+              limitationEvaluation.status === "WITHIN_LIMITATION"
+                ? "bg-emerald-50 border-emerald-200 text-emerald-950"
+                : limitationEvaluation.status === "REQUIRES_CONDONATION"
+                ? "bg-amber-50 border-amber-200 text-amber-950"
+                : "bg-red-50 border-red-200 text-red-950"
+            }`}>
+              <div className="flex items-center justify-between font-bold">
+                <span className="flex items-center gap-1.5">
+                  <Scale className="w-4 h-4 text-primary" />
+                  Statutory Limitation Evaluation (Section 9(1) &amp; Proviso)
+                </span>
+                <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider ${
+                  limitationEvaluation.status === "WITHIN_LIMITATION"
+                    ? "bg-emerald-200 text-emerald-900"
+                    : limitationEvaluation.status === "REQUIRES_CONDONATION"
+                    ? "bg-amber-200 text-amber-900"
+                    : "bg-red-200 text-red-900"
+                }`}>
+                  {limitationEvaluation.status.replace(/_/g, " ")}
+                </span>
+              </div>
+              <div className="text-[11px] leading-relaxed">
+                {limitationEvaluation.message}
+              </div>
+              {limitationEvaluation.status === "STATUTORILY_BARRED" && (
+                <div className="text-[11px] font-bold text-red-700 pt-1">
+                  &bull; IC Authority Barred: Section 9(1) Proviso strictly limits condonation to a maximum of 3 additional months. Complaints older than 6 months cannot be admitted for inquiry.
+                </div>
+              )}
+            </div>
+
             {/* Point 3: Limitation */}
             <div className="bg-white p-4 rounded border border-border space-y-3 text-xs">
               <label className="flex items-start gap-3 cursor-pointer">
@@ -220,31 +294,41 @@ export default function ICTriagePage() {
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
               <button
                 type="button"
+                disabled={limitationEvaluation.status === "STATUTORILY_BARRED"}
                 onClick={() => setTriageAction("PROCEED")}
                 className={`p-4 rounded border text-left transition-colors ${
-                  triageAction === "PROCEED"
+                  limitationEvaluation.status === "STATUTORILY_BARRED"
+                    ? "bg-surface-muted text-ink-secondary/50 border-border cursor-not-allowed opacity-50"
+                    : triageAction === "PROCEED"
                     ? "bg-primary text-white border-primary"
                     : "bg-white text-ink border-border hover:bg-surface"
                 }`}
               >
                 <div className="font-bold text-sm">Admit Docket</div>
                 <div className="text-[11px] opacity-80 mt-1">
-                  All statutory criteria satisfied. Proceed to notice &amp; inquiry.
+                  {limitationEvaluation.status === "STATUTORILY_BARRED"
+                    ? "Disabled: Barred by statute (> 6 months)."
+                    : "All statutory criteria satisfied. Proceed to notice & inquiry."}
                 </div>
               </button>
 
               <button
                 type="button"
+                disabled={limitationEvaluation.status === "STATUTORILY_BARRED"}
                 onClick={() => setTriageAction("CONDONE")}
                 className={`p-4 rounded border text-left transition-colors ${
-                  triageAction === "CONDONE"
+                  limitationEvaluation.status === "STATUTORILY_BARRED"
+                    ? "bg-surface-muted text-ink-secondary/50 border-border cursor-not-allowed opacity-50"
+                    : triageAction === "CONDONE"
                     ? "bg-primary text-white border-primary"
                     : "bg-white text-ink border-border hover:bg-surface"
                 }`}
               >
                 <div className="font-bold text-sm">Condone Delay</div>
                 <div className="text-[11px] opacity-80 mt-1">
-                  Admit under Proviso to Sec 9(1) with recorded grounds.
+                  {limitationEvaluation.status === "STATUTORILY_BARRED"
+                    ? "Disabled: Condonation ceiling exceeded."
+                    : "Admit under Proviso to Sec 9(1) with recorded grounds."}
                 </div>
               </button>
 
