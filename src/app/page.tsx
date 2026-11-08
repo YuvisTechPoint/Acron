@@ -130,10 +130,47 @@ const FEATURED_INSIGHTS = [
 export default function HomePage() {
   const [activeStep, setActiveStep] = useState(0);
   const [siteConfig, setSiteConfig] = useState(platformStore.getSiteConfig());
+  const [homepageFaqs, setHomepageFaqs] = useState(platformStore.getHomepageFaqs());
 
   useEffect(() => {
     setSiteConfig(platformStore.getSiteConfig());
+    setHomepageFaqs(platformStore.getHomepageFaqs());
   }, []);
+
+  const steps = siteConfig.pathwaySteps && siteConfig.pathwaySteps.length > 0
+    ? siteConfig.pathwaySteps
+    : HOW_WE_WORK_STEPS;
+
+  const principles = siteConfig.principles && siteConfig.principles.length > 0
+    ? siteConfig.principles
+    : [
+        {
+          num: "Principle I",
+          title: "Integrity",
+          quote: "Upholding the ethical independence and statutory duty of the Bar above all short-term commercial expedience.",
+          desc: "Every opinion rendered is unvarnished, independent, and anchored in statutory authority.",
+        },
+        {
+          num: "Principle II",
+          title: "Strategic Insight",
+          quote: "Anticipating statutory risk and procedural traps before commercial conflict becomes irreparable.",
+          desc: "We formulate proactive dispute-containment strategies that preserve capital and reputational equity.",
+        },
+        {
+          num: "Principle III",
+          title: "Commercial Understanding",
+          quote: "Harmonising strict statutory compliance with the operational realities of modern enterprise.",
+          desc: "Legal solutions designed for real-world execution, cross-border velocity, and institutional scale.",
+        },
+      ];
+
+  const formattedFaqs = homepageFaqs.length > 0
+    ? homepageFaqs.map((f) => ({
+        id: f.id,
+        title: f.question,
+        content: f.answer,
+      }))
+    : HOMEPAGE_FAQS;
 
   return (
     <div className="bg-ivory-50 text-ink selection:bg-brass-300/30">
@@ -520,7 +557,7 @@ export default function HomePage() {
                 <div className="w-full h-1 bg-border rounded-full overflow-hidden">
                   <div
                     className="h-full bg-brass-500 transition-all duration-300"
-                    style={{ width: `${((activeStep + 1) / HOW_WE_WORK_STEPS.length) * 100}%` }}
+                    style={{ width: `${((activeStep + 1) / steps.length) * 100}%` }}
                   />
                 </div>
               </div>
@@ -528,9 +565,9 @@ export default function HomePage() {
 
             {/* Scrolling Right Column (Spans 7 cols) */}
             <div className="lg:col-span-7 space-y-6">
-              {HOW_WE_WORK_STEPS.map((step, idx) => (
+              {steps.map((step, idx) => (
                 <div
-                  key={step.num}
+                  key={step.num || idx}
                   onMouseEnter={() => setActiveStep(idx)}
                   className={`p-6 sm:p-8 rounded-card border transition-all duration-200 ${activeStep === idx
                     ? "bg-white border-brass-500/50 shadow-card"
@@ -570,44 +607,20 @@ export default function HomePage() {
           />
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="bg-white p-8 rounded-card border border-border shadow-card space-y-4">
-              <span className="text-xs uppercase font-semibold tracking-widest text-brass-700">
-                Principle I
-              </span>
-              <h3 className="font-serif text-2xl font-bold text-ink-950">Integrity</h3>
-              <p className="font-serif italic text-lg text-ink leading-relaxed">
-                &ldquo;Upholding the ethical independence and statutory duty of the Bar above all short-term commercial expedience.&rdquo;
-              </p>
-              <p className="font-sans text-xs text-ink-secondary leading-relaxed pt-2 border-t border-border">
-                Every opinion rendered is unvarnished, independent, and anchored in statutory authority.
-              </p>
-            </div>
-
-            <div className="bg-white p-8 rounded-card border border-border shadow-card space-y-4">
-              <span className="text-xs uppercase font-semibold tracking-widest text-brass-700">
-                Principle II
-              </span>
-              <h3 className="font-serif text-2xl font-bold text-ink-950">Strategic Insight</h3>
-              <p className="font-serif italic text-lg text-ink leading-relaxed">
-                &ldquo;Anticipating statutory risk and procedural traps before commercial conflict becomes irreparable.&rdquo;
-              </p>
-              <p className="font-sans text-xs text-ink-secondary leading-relaxed pt-2 border-t border-border">
-                We formulate proactive dispute-containment strategies that preserve capital and reputational equity.
-              </p>
-            </div>
-
-            <div className="bg-white p-8 rounded-card border border-border shadow-card space-y-4">
-              <span className="text-xs uppercase font-semibold tracking-widest text-brass-700">
-                Principle III
-              </span>
-              <h3 className="font-serif text-2xl font-bold text-ink-950">Commercial Understanding</h3>
-              <p className="font-serif italic text-lg text-ink leading-relaxed">
-                &ldquo;Harmonising strict statutory compliance with the operational realities of modern enterprise.&rdquo;
-              </p>
-              <p className="font-sans text-xs text-ink-secondary leading-relaxed pt-2 border-t border-border">
-                Legal solutions designed for real-world execution, cross-border velocity, and institutional scale.
-              </p>
-            </div>
+            {principles.map((prin, idx) => (
+              <div key={prin.num || idx} className="bg-white p-8 rounded-card border border-border shadow-card space-y-4">
+                <span className="text-xs uppercase font-semibold tracking-widest text-brass-700">
+                  {prin.num}
+                </span>
+                <h3 className="font-serif text-2xl font-bold text-ink-950">{prin.title}</h3>
+                <p className="font-serif italic text-lg text-ink leading-relaxed">
+                  &ldquo;{prin.quote}&rdquo;
+                </p>
+                <p className="font-sans text-xs text-ink-secondary leading-relaxed pt-2 border-t border-border">
+                  {prin.desc}
+                </p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
@@ -754,7 +767,7 @@ export default function HomePage() {
                 description="Straightforward answers regarding our practice scope, statutory responsibilities, and consultation intake protocols."
               />
 
-              <Accordion items={HOMEPAGE_FAQS} defaultOpenId="faq-1" />
+              <Accordion items={formattedFaqs} defaultOpenId={formattedFaqs[0]?.id || "faq-1"} />
             </div>
 
             {/* Card on Right (5 cols) */}

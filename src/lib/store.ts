@@ -30,6 +30,10 @@ import {
   MediaVaultItem,
   NotificationLogItem,
   SystemSettings,
+  FaqItem,
+  TeamMemberItem,
+  EngagementStep,
+  ChambersPrinciple,
 } from "./types";
 import {
   generateServiceRequestRef,
@@ -652,8 +656,177 @@ const SEED_SITE_CONFIG: SiteConfig = {
     "Excellence in Law • Integrity in Practice • Camac Street Chambers • Kolkata • High Court Practice • POSH Redressal • Corporate Advisory",
   disclaimer:
     "As per the rules of the Bar Council of India, law firms are not permitted to solicit work or advertise. By accessing this website, the user acknowledges that the information provided is solely for informational purposes and does not create an advocate-client relationship.",
+  pathwaySteps: [
+    {
+      num: "01",
+      title: "Enquire",
+      desc: "Submit your matter securely via our structured consultation form or direct chambers contact. Initial conflict checks are initiated immediately.",
+    },
+    {
+      num: "02",
+      title: "Understand",
+      desc: "Our counsel conducts an exhaustive preliminary statutory review, identifying underlying regulatory risk and commercial implications.",
+    },
+    {
+      num: "03",
+      title: "Advise",
+      desc: "You receive tailored legal opinions, practical pathways, and transparent fee frameworks without ambiguous contingencies.",
+    },
+    {
+      num: "04",
+      title: "Act",
+      desc: "We draft precision documentation, constitute and train committees, or represent your position before regulatory bodies.",
+    },
+    {
+      num: "05",
+      title: "Review",
+      desc: "Continuous post-matter monitoring, statutory compliance audit trails, and long-term governance support.",
+    },
+  ],
+  principles: [
+    {
+      num: "Principle I",
+      title: "Integrity",
+      quote: "Upholding the ethical independence and statutory duty of the Bar above all short-term commercial expedience.",
+      desc: "Every opinion rendered is unvarnished, independent, and anchored in statutory authority.",
+    },
+    {
+      num: "Principle II",
+      title: "Strategic Insight",
+      quote: "Anticipating statutory risk and procedural traps before commercial conflict becomes irreparable.",
+      desc: "We formulate proactive dispute-containment strategies that preserve capital and reputational equity.",
+    },
+    {
+      num: "Principle III",
+      title: "Commercial Understanding",
+      quote: "Harmonising strict statutory compliance with the operational realities of modern enterprise.",
+      desc: "Legal solutions designed for real-world execution, cross-border velocity, and institutional scale.",
+    },
+  ],
   updatedAt: "2026-11-08T00:00:00Z",
 };
+
+const SEED_FAQS: FaqItem[] = [
+  {
+    id: "faq-posh-ic-mandate",
+    category: "POSH Compliance",
+    question: "When is an employer legally required to constitute an Internal Committee (IC)?",
+    answer:
+      "Under Section 4(1) of the POSH Act 2013, every employer employing 10 or more employees (including permanent, contractual, ad-hoc, and interns) across any branch or administrative unit is statutorily required to constitute an Internal Committee. Failure to constitute an IC attracts penalties up to ₹50,000 under Section 26(1), with repeated non-compliance risking cancellation of corporate registration or operating licenses.",
+    showOnHomepage: true,
+    order: 1,
+    updatedAt: "2026-11-01T00:00:00Z",
+  },
+  {
+    id: "faq-posh-external-member",
+    category: "POSH Compliance",
+    question: "What are the legal qualifications for the External Member on the Internal Committee?",
+    answer:
+      "Section 4(2)(c) of the POSH Act requires the appointment of at least one member from an NGO or association committed to the cause of women, or a person familiar with issues relating to sexual harassment, such as an experienced advocate. The External Member ensures institutional neutrality, adheres strictly to principles of natural justice, and prevents management bias.",
+    showOnHomepage: true,
+    order: 2,
+    updatedAt: "2026-11-01T00:00:00Z",
+  },
+  {
+    id: "faq-commercial-contracts-arbitration",
+    category: "Commercial Contracts",
+    question: "How should cross-border or interstate dispute resolution clauses be drafted in commercial agreements?",
+    answer:
+      "Commercial agreements should explicitly specify: (1) Governing law (e.g., Laws of India), (2) Mode of resolution (e.g., Arbitration under the Arbitration and Conciliation Act 1996), (3) Seat and venue (e.g., Kolkata, West Bengal), and (4) Institutional administration rules. Clear seat designation avoids conflicting jurisdictional challenges before state High Courts.",
+    showOnHomepage: false,
+    order: 3,
+    updatedAt: "2026-11-01T00:00:00Z",
+  },
+  {
+    id: "faq-high-court-representation",
+    category: "Dispute Resolution",
+    question: "What is the procedure for seeking urgent interim relief before the Calcutta High Court?",
+    answer:
+      "Urgent interim relief (such as ad-interim injunctions or stay orders) is sought by filing a petition before the appropriate bench (Original or Appellate Side). Matters involving acute commercial urgency can be listed via urgent mentioning before the Hon'ble Court with advance notice served upon the caveator or opposing parties as per Calcutta High Court Rules.",
+    showOnHomepage: false,
+    order: 4,
+    updatedAt: "2026-11-01T00:00:00Z",
+  },
+  {
+    id: "faq-posh-90-days-timeline",
+    category: "POSH Compliance",
+    question: "What is the statutory limitation period for conducting an inquiry under the POSH Act?",
+    answer:
+      "Under Section 11(4) of the Act, an inquiry into a complaint must be completed within 90 days. Within 10 days of completing the inquiry, the committee must provide its findings report to the employer. The employer is then obligated under Section 13(4) to implement the recommendations within 60 days.",
+    showOnHomepage: false,
+    order: 5,
+    updatedAt: "2026-11-01T00:00:00Z",
+  },
+  {
+    id: "faq-corporate-fema-compliance",
+    category: "Corporate Advisory",
+    question: "What due diligence is required for FDI reporting and RBI compliances?",
+    answer:
+      "Foreign direct investment transactions require adherence to FEMA 1999 regulations, sectoral caps under the Consolidated FDI Policy, and timely reporting through the RBI Foreign Investment Reporting and Management System (FIRMS) portal, including FC-GPR and FC-TRS filings within strict statutory windows.",
+    showOnHomepage: false,
+    order: 6,
+    updatedAt: "2026-11-01T00:00:00Z",
+  },
+  {
+    id: "faq-chambers-conflict-protocol",
+    category: "Chambers Practice",
+    question: "How does Acorn Legal Consultants conduct conflict of interest verification?",
+    answer:
+      "Prior to accepting any formal brief or executing an engagement letter, chambers personnel conduct an exhaustive conflict check across active advisory clients, respondent parties, and affiliated corporate groups to preserve independence and advocate-client privilege.",
+    showOnHomepage: true,
+    order: 7,
+    updatedAt: "2026-11-01T00:00:00Z",
+  },
+  {
+    id: "faq-chambers-fee-structures",
+    category: "Chambers Practice",
+    question: "How are consultation fees and advisory scopes billed?",
+    answer:
+      "We provide clear, written Engagement Letters detailing professional scope and milestone-based or retainer billing. In strict compliance with Bar Council of India guidelines, we do not solicit contingent or outcome-based fee arrangements.",
+    showOnHomepage: true,
+    order: 8,
+    updatedAt: "2026-11-01T00:00:00Z",
+  },
+];
+
+const SEED_TEAM_MEMBERS: TeamMemberItem[] = [
+  {
+    id: "team-1",
+    name: "Adv. Subhasish Mukherjee",
+    role: "Senior Partner & Practice Lead",
+    title: "Advocate & Legal Consultant",
+    focus: "Commercial Litigation • Arbitration • Corporate Structuring",
+    bio: "Over two decades of advocacy experience spanning the Calcutta High Court, NCLT, and arbitral tribunals across India.",
+    avatarUrl: "/brand/subhasish-profile.png",
+    email: "subhasish@acornlegal.in",
+    order: 1,
+    updatedAt: "2026-11-01T00:00:00Z",
+  },
+  {
+    id: "team-2",
+    name: "Adv. Debjani Sen",
+    role: "Partner & POSH Practice Head",
+    title: "External Member & Corporate Counsel",
+    focus: "POSH Act 2013 Inquiries • Employment Law • Policy Governance",
+    bio: "Distinguished practitioner serving as independent External Member for premier IT, banking, and manufacturing establishments in Kolkata.",
+    avatarUrl: "/brand/debjani-profile.png",
+    email: "debjani.sen@acornlegal.in",
+    order: 2,
+    updatedAt: "2026-11-01T00:00:00Z",
+  },
+  {
+    id: "team-3",
+    name: "Adv. Anirban Roy Chowdhury",
+    role: "Senior Associate & Documentation Lead",
+    title: "Commercial Contracts Specialist",
+    focus: "Contract Drafting • Regulatory Compliance • Due Diligence",
+    bio: "Specialist in cross-border joint ventures, software licensing, and real estate conveyance documentation.",
+    avatarUrl: "/brand/anirban-profile.png",
+    email: "anirban.rc@acornlegal.in",
+    order: 3,
+    updatedAt: "2026-11-01T00:00:00Z",
+  },
+];
 
 const SEED_SERVICES: CustomService[] = [
   {
@@ -2232,6 +2405,91 @@ class PlatformStore {
     };
     this.set("system_settings", updated);
     this.addAuditLog("Super Admin", "super_admin", "SYSTEM_SETTINGS_UPDATED", "policy", "system-config", `Updated system parameters: mode=${updated.razorpayMode}, retention=${updated.retentionYears}yrs`);
+  }
+
+  // FAQs CRUD
+  getFaqs(): FaqItem[] {
+    return this.get("platform_faqs", SEED_FAQS);
+  }
+
+  getHomepageFaqs(): FaqItem[] {
+    const all = this.getFaqs();
+    return all.filter((f) => f.showOnHomepage).sort((a, b) => a.order - b.order);
+  }
+
+  addFaq(faq: Omit<FaqItem, "id" | "updatedAt">): FaqItem {
+    const list = this.getFaqs();
+    const newFaq: FaqItem = {
+      ...faq,
+      id: `faq-${Date.now()}`,
+      updatedAt: new Date().toISOString(),
+    };
+    list.push(newFaq);
+    this.set("platform_faqs", list);
+    this.addAuditLog("Admin", "editor", "FAQ_CREATED", "system", newFaq.id, `Created FAQ: ${newFaq.question.slice(0, 40)}...`);
+    return newFaq;
+  }
+
+  updateFaq(id: string, partial: Partial<FaqItem>): FaqItem | null {
+    const list = this.getFaqs();
+    const idx = list.findIndex((f) => f.id === id);
+    if (idx === -1) return null;
+    const updated = {
+      ...list[idx],
+      ...partial,
+      updatedAt: new Date().toISOString(),
+    };
+    list[idx] = updated;
+    this.set("platform_faqs", list);
+    this.addAuditLog("Admin", "editor", "FAQ_UPDATED", "system", id, `Updated FAQ: ${updated.question.slice(0, 40)}...`);
+    return updated;
+  }
+
+  deleteFaq(id: string): void {
+    const list = this.getFaqs();
+    const filtered = list.filter((f) => f.id !== id);
+    this.set("platform_faqs", filtered);
+    this.addAuditLog("Admin", "editor", "FAQ_DELETED", "system", id, `Deleted FAQ ${id}`);
+  }
+
+  // Team Members CRUD
+  getTeamMembers(): TeamMemberItem[] {
+    return this.get("team_members", SEED_TEAM_MEMBERS);
+  }
+
+  addTeamMember(member: Omit<TeamMemberItem, "id" | "updatedAt">): TeamMemberItem {
+    const list = this.getTeamMembers();
+    const newMem: TeamMemberItem = {
+      ...member,
+      id: `team-${Date.now()}`,
+      updatedAt: new Date().toISOString(),
+    };
+    list.push(newMem);
+    this.set("team_members", list);
+    this.addAuditLog("Admin", "editor", "TEAM_MEMBER_CREATED", "system", newMem.id, `Added counsel profile: ${newMem.name}`);
+    return newMem;
+  }
+
+  updateTeamMember(id: string, partial: Partial<TeamMemberItem>): TeamMemberItem | null {
+    const list = this.getTeamMembers();
+    const idx = list.findIndex((m) => m.id === id);
+    if (idx === -1) return null;
+    const updated = {
+      ...list[idx],
+      ...partial,
+      updatedAt: new Date().toISOString(),
+    };
+    list[idx] = updated;
+    this.set("team_members", list);
+    this.addAuditLog("Admin", "editor", "TEAM_MEMBER_UPDATED", "system", id, `Updated counsel profile: ${updated.name}`);
+    return updated;
+  }
+
+  deleteTeamMember(id: string): void {
+    const list = this.getTeamMembers();
+    const filtered = list.filter((m) => m.id !== id);
+    this.set("team_members", filtered);
+    this.addAuditLog("Admin", "editor", "TEAM_MEMBER_DELETED", "system", id, `Removed counsel profile ${id}`);
   }
 }
 

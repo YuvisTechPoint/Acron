@@ -374,6 +374,42 @@ export interface AuditLogEntry {
   details: string;
 }
 
+export interface EngagementStep {
+  num: string;
+  title: string;
+  desc: string;
+}
+
+export interface ChambersPrinciple {
+  num: string;
+  title: string;
+  quote: string;
+  desc: string;
+}
+
+export interface FaqItem {
+  id: string;
+  category: string;
+  question: string;
+  answer: string;
+  showOnHomepage: boolean;
+  order: number;
+  updatedAt: string;
+}
+
+export interface TeamMemberItem {
+  id: string;
+  name: string;
+  role: string;
+  title: string;
+  focus: string;
+  bio: string;
+  avatarUrl?: string;
+  email?: string;
+  order: number;
+  updatedAt: string;
+}
+
 export interface SiteConfig {
   firmName: string;
   tagline: string;
@@ -410,6 +446,8 @@ export interface SiteConfig {
   googleMapsQuery: string;
   footerRollText: string;
   disclaimer: string;
+  pathwaySteps?: EngagementStep[];
+  principles?: ChambersPrinciple[];
   updatedAt: string;
 }
 

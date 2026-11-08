@@ -71,6 +71,7 @@ const NAV_GROUPS: NavGroup[] = [
       { label: "Knowledge Base", href: "/admin/kb", icon: BookOpen },
       { label: "LMS Courses", href: "/admin/lms/courses", icon: GraduationCap },
       { label: "Public Q&A", href: "/admin/questions", icon: HelpCircle },
+      { label: "FAQs Manager", href: "/admin/faq", icon: HelpCircle },
       { label: "Services CMS", href: "/admin/services", icon: Briefcase },
     ],
   },

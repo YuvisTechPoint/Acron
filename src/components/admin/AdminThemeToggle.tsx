@@ -94,3 +94,4 @@ export function AdminThemeToggle({ compact = false, className = "" }: AdminTheme
     </button>
   );
 }
+

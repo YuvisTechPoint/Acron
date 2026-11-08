@@ -22,6 +22,8 @@ import {
   Select,
   Checkbox,
 } from "@/components/ui";
+import { platformStore } from "@/lib/store";
+import { FaqItem } from "@/lib/types";
 
 interface FAQItem {
   id: string;
@@ -99,6 +101,7 @@ const CATEGORIES = [
 ];
 
 export default function FAQPage() {
+  const [faqs, setFaqs] = useState<FaqItem[]>([]);
   const [selectedCat, setSelectedCat] = useState("All Categories");
   const [searchQuery, setSearchQuery] = useState("");
   const [copiedId, setCopiedId] = useState<string | null>(null);
@@ -110,7 +113,18 @@ export default function FAQPage() {
   const [formSubmitted, setFormSubmitted] = useState(false);
   const [refId, setRefId] = useState("");
 
-  const filteredFaqs = FAQ_DATA.filter((item) => {
+  useEffect(() => {
+    setFaqs(platformStore.getFaqs());
+  }, []);
+
+  const effectiveFaqs = faqs.length > 0 ? faqs : FAQ_DATA;
+
+  const dynamicCategories = [
+    "All Categories",
+    ...Array.from(new Set(effectiveFaqs.map((f) => f.category))),
+  ];
+
+  const filteredFaqs = effectiveFaqs.filter((item) => {
     const matchesCat =
       selectedCat === "All Categories" || item.category === selectedCat;
     const matchesQuery =
@@ -131,8 +145,13 @@ export default function FAQPage() {
 
   const handleAskSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const generated = `QA-${Math.floor(100000 + Math.random() * 900000)}`;
-    setRefId(generated);
+    const created = platformStore.addQuestion(
+      askName,
+      askEmail,
+      "posh_law",
+      askQuestion
+    );
+    setRefId(created.refNumber || `QA-${Math.floor(100000 + Math.random() * 900000)}`);
     setFormSubmitted(true);
   };
 
@@ -216,7 +235,7 @@ export default function FAQPage() {
               Categories
             </div>
             <nav className="space-y-1 font-sans text-xs">
-              {CATEGORIES.map((cat) => {
+              {dynamicCategories.map((cat) => {
                 const isActive = selectedCat === cat;
                 return (
                   <button

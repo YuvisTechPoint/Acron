@@ -42,8 +42,17 @@ export default function ContactPage() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const generated = `CONT-${Math.floor(100000 + Math.random() * 900000)}`;
-    setSubmittedRef(generated);
+    const req = platformStore.addServiceRequest({
+      fullName: name,
+      email: email,
+      phone: phone,
+      subject: "General Contact Inquiry",
+      description: message,
+      preferredChannel: "email",
+      serviceCategory: "general_counsel",
+      urgency: "standard",
+    });
+    setSubmittedRef(req.refNumber || `CONT-${Math.floor(100000 + Math.random() * 900000)}`);
   };
 
   return (

@@ -95,6 +95,7 @@ const ROUTES = [
   "/admin/pages",
   "/admin/posts",
   "/admin/questions",
+  "/admin/faq",
   "/admin/services",
   "/admin/settings",
   "/sitemap.xml",

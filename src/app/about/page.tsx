@@ -103,10 +103,27 @@ const TEAM_MEMBERS = [
 
 export default function AboutPage() {
   const [pageData, setPageData] = useState(platformStore.getPageContent("about"));
+  const [teamMembers, setTeamMembers] = useState(platformStore.getTeamMembers());
+  const [siteConfig, setSiteConfig] = useState(platformStore.getSiteConfig());
 
   useEffect(() => {
     setPageData(platformStore.getPageContent("about"));
+    setTeamMembers(platformStore.getTeamMembers());
+    setSiteConfig(platformStore.getSiteConfig());
   }, []);
+
+  const valuesToDisplay = VALUES_GRID.map((val) => {
+    const matchedPrin = (siteConfig.principles || []).find(
+      (p) => p.title.toLowerCase() === val.title.toLowerCase()
+    );
+    if (matchedPrin) {
+      return {
+        title: matchedPrin.title,
+        desc: matchedPrin.desc || matchedPrin.quote,
+      };
+    }
+    return val;
+  });
 
   return (
     <div className="bg-ivory-50 text-ink">
@@ -250,7 +267,7 @@ export default function AboutPage() {
 
           {/* 6-item grid with thin dividers, no cards */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-border border-y border-border">
-            {VALUES_GRID.map((val, idx) => (
+            {valuesToDisplay.map((val, idx) => (
               <div key={val.title} className="p-8 sm:p-10 space-y-3">
                 <span className="text-[11px] font-semibold uppercase tracking-widest text-brass-700">
                   Value 0{idx + 1}
@@ -278,18 +295,18 @@ export default function AboutPage() {
           />
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {TEAM_MEMBERS.map((member, index) => (
-              <div key={index} className="space-y-5">
+            {teamMembers.map((member, index) => (
+              <div key={member.id || index} className="space-y-5">
                 {/* Arch-shaped portrait placeholder */}
                 <div className="w-full h-[380px] arch-mask bg-gradient-to-b from-navy-900 via-navy-800 to-ink-950 border border-brass-500/25 flex flex-col items-center justify-center p-6 text-center shadow-card relative group">
                   <div className="w-14 h-14 rounded-full bg-navy-800 border border-brass-500/40 flex items-center justify-center mb-3 text-brass-300">
                     <Briefcase className="w-6 h-6" />
                   </div>
-                  <span className="font-serif text-xl font-bold text-white">
-                    {member.role}
+                  <span className="font-serif text-2xl font-bold text-white">
+                    {member.name}
                   </span>
                   <span className="font-sans text-xs text-brass-300 uppercase tracking-widest mt-1">
-                    {member.note}
+                    {member.role}
                   </span>
                 </div>
 
@@ -297,8 +314,13 @@ export default function AboutPage() {
                   <h3 className="font-serif text-xl font-bold text-ink-950">
                     {member.title}
                   </h3>
+                  {member.bio && (
+                    <p className="font-sans text-xs text-ink-secondary leading-relaxed">
+                      {member.bio}
+                    </p>
+                  )}
                   <div
-                    className="font-sans text-xs text-ink-secondary leading-relaxed"
+                    className="font-sans text-xs text-brass-700 font-medium leading-relaxed pt-1"
                     dangerouslySetInnerHTML={{ __html: member.focus }}
                   />
                 </div>
