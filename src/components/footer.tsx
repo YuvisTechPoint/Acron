@@ -240,16 +240,10 @@ export function Footer() {
       <div className="relative z-10 bg-[#03060E] py-4 px-4 sm:px-6 lg:px-8 border-t border-navy-800/80">
         <div className="max-w-[1280px] mx-auto flex flex-col lg:flex-row items-center justify-between gap-4 text-xs font-sans">
           
-          {/* Left: Copyright & Live Chamber Clock */}
+          {/* Left: Copyright */}
           <div className="flex flex-wrap items-center justify-center lg:justify-start gap-3 text-slate-400">
             <span className="text-slate-300 font-semibold tracking-wide text-[11px] sm:text-xs">
               &copy; {new Date().getFullYear()} ACORN LEGAL CONSULTANTS
-            </span>
-            <span className="text-navy-700 select-none">&bull;</span>
-            <FooterClock />
-            <span className="hidden sm:inline text-navy-700 select-none">&bull;</span>
-            <span className="hidden sm:inline text-[11px] text-slate-400">
-              Calcutta High Court Jurisdiction
             </span>
           </div>
 
