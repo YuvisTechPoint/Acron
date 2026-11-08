@@ -33,6 +33,7 @@ import {
   Accordion,
   Reveal,
   LineReveal,
+  ScrollTextReveal,
 } from "@/components/ui";
 
 const ICON_MAP: Record<string, React.ReactNode> = {
@@ -374,17 +375,16 @@ export default function HomePage() {
           01
         </div>
 
-        <div className="max-w-[1040px] mx-auto px-4 sm:px-6 text-center relative z-10 space-y-6">
+        <div className="max-w-[1040px] mx-auto px-4 sm:px-6 text-center relative z-10 space-y-6 sm:space-y-8">
           <Eyebrow className="justify-center">OUR GOVERNING PRINCIPLE</Eyebrow>
 
-          <LineReveal>
-            <p className="font-serif text-3xl sm:text-5xl md:text-6xl font-medium text-ink-950 leading-[1.18] tracking-tight">
-              &ldquo;To protect what matters, navigate complexity with confidence, and uphold the{" "}
-              <span className="font-serif italic text-brass-700">highest standards</span> of professional integrity.&rdquo;
-            </p>
-          </LineReveal>
+          <ScrollTextReveal
+            text="“To protect what matters, navigate complexity with confidence, and uphold the highest standards of professional integrity.”"
+            accentWords={["highest", "standards"]}
+            className="font-serif text-3xl sm:text-5xl md:text-6xl font-medium text-ink-950 leading-[1.22] tracking-tight"
+          />
 
-          <div className="pt-4 flex justify-center">
+          <div className="pt-2 flex justify-center">
             <div className="w-16 h-[2px] bg-brass-500" />
           </div>
         </div>

@@ -306,3 +306,137 @@ export function ReadingProgress() {
     </div>
   );
 }
+
+/**
+ * ScrollTextReveal: Progressively illuminates / reveals words as the user scrolls
+ * down towards and through the section, creating a calm, high-end editorial scroll reveal.
+ */
+interface ScrollTextRevealProps {
+  text: string;
+  accentWords?: string[];
+  className?: string;
+  containerClassName?: string;
+}
+
+export function ScrollTextReveal({
+  text,
+  accentWords = [],
+  className = "",
+  containerClassName = "",
+}: ScrollTextRevealProps) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [scrollProgress, setScrollProgress] = useState(0);
+  const reducedMotion = usePrefersReducedMotion();
+
+  useEffect(() => {
+    if (reducedMotion) {
+      setScrollProgress(1);
+      return;
+    }
+
+    let rafId: number | null = null;
+
+    const updateProgress = () => {
+      if (!containerRef.current) return;
+      const rect = containerRef.current.getBoundingClientRect();
+      const windowHeight = window.innerHeight || 800;
+
+      // Start revealing when the top of the element enters the lower 88% of viewport
+      // Complete illumination when the element reaches 32% from the top of the viewport
+      const startTrigger = windowHeight * 0.88;
+      const endTrigger = windowHeight * 0.32;
+
+      if (rect.top >= startTrigger) {
+        setScrollProgress(0);
+      } else if (rect.top <= endTrigger) {
+        setScrollProgress(1);
+      } else {
+        const raw = (startTrigger - rect.top) / (startTrigger - endTrigger);
+        setScrollProgress(Math.min(Math.max(raw, 0), 1));
+      }
+    };
+
+    const handleScroll = () => {
+      if (rafId !== null) cancelAnimationFrame(rafId);
+      rafId = requestAnimationFrame(updateProgress);
+    };
+
+    // Calculate initial state immediately
+    updateProgress();
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener("resize", handleScroll, { passive: true });
+
+    return () => {
+      if (rafId !== null) cancelAnimationFrame(rafId);
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", handleScroll);
+    };
+  }, [reducedMotion]);
+
+  // Tokenize text into words preserving attached quotes and punctuation
+  const words = text.split(" ").filter(Boolean);
+  const totalWords = words.length;
+
+  return (
+    <div ref={containerRef} className={`relative ${containerClassName}`}>
+      <p className={`select-none ${className}`}>
+        {words.map((word, index) => {
+          // Identify if word (stripped of punctuation) matches any accentWord
+          const cleanWord = word.replace(/[^a-zA-Z]/g, "").toLowerCase();
+          const isAccent = accentWords.some(
+            (aw) => aw.toLowerCase() === cleanWord
+          );
+
+          // Calculate staggered start and end triggers for each word
+          const step = 1 / totalWords;
+          const wordStart = Math.max(0, index * step * 0.88);
+          const wordEnd = Math.min(1, wordStart + step * 1.35);
+
+          let wordOpacity = 0;
+          if (reducedMotion || scrollProgress >= wordEnd) {
+            wordOpacity = 1;
+          } else if (scrollProgress <= wordStart) {
+            wordOpacity = 0;
+          } else {
+            wordOpacity = (scrollProgress - wordStart) / (wordEnd - wordStart);
+          }
+
+          return (
+            <span
+              key={`${word}-${index}`}
+              className="relative inline-block mx-[0.14em] my-[0.04em]"
+            >
+              {/* Dim Base Ghost Word Layer */}
+              <span
+                className={`transition-colors duration-200 ${
+                  isAccent
+                    ? "text-brass-700/20 italic font-serif"
+                    : "text-ink-950/20"
+                }`}
+                aria-hidden="true"
+              >
+                {word}
+              </span>
+
+              {/* Radiant Foreground Illuminated Word Layer */}
+              <span
+                className={`absolute inset-0 select-none pointer-events-none transition-all duration-200 will-change-transform ${
+                  isAccent
+                    ? "text-brass-700 italic font-serif"
+                    : "text-ink-950"
+                }`}
+                style={{
+                  opacity: wordOpacity,
+                  transform: `translateY(${(1 - wordOpacity) * 4}px)`,
+                }}
+              >
+                {word}
+              </span>
+            </span>
+          );
+        })}
+      </p>
+    </div>
+  );
+}
