@@ -41,3 +41,4 @@ export async function DELETE(req: Request) {
     return NextResponse.json({ error: err.message || "Failed to delete counsel profile" }, { status: 500 });
   }
 }
+

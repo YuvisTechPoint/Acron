@@ -42,19 +42,19 @@ export default function CertificateVerificationPage() {
   };
 
   return (
-    <div className="bg-ivory-50 min-h-screen pt-32 pb-20 sm:pt-40 sm:pb-24 text-ink selection:bg-brass-300/30">
+    <div className="bg-ivory-50 min-h-screen pt-36 pb-20 sm:pt-44 sm:pb-28 text-ink selection:bg-brass-300/30">
       <div className="max-w-2xl mx-auto px-4 sm:px-6 space-y-8">
         
-        {/* Editorial Header with Proper Clearance from Fixed Navbar */}
+        {/* Editorial Header with Generous Clearance from Fixed Navbar */}
         <div className="text-center space-y-4">
-          <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-navy-900 border border-brass-500/40 text-brass-300 shadow-md mx-auto">
-            <Award className="w-7 h-7 text-brass-400" />
+          <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-navy-900 border border-brass-500/40 text-brass-300 shadow-sm mx-auto">
+            <Award className="w-4 h-4 text-brass-400" />
+            <span className="font-sans text-[11px] font-bold uppercase tracking-[0.2em] text-brass-300">
+              Central Statutory Registry
+            </span>
           </div>
 
           <div className="space-y-2">
-            <span className="font-sans text-[11px] font-bold uppercase tracking-[0.2em] text-brass-700 block">
-              CENTRAL STATUTORY REGISTRY
-            </span>
             <h1 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-ink-950">
               Statutory Certificate Verification
             </h1>

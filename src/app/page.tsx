@@ -379,8 +379,8 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 2. PHILOSOPHY STRIP: ivory background, one large centred serif statement */}
-      <section className="bg-ivory-50 py-24 sm:py-32 border-b border-border relative overflow-hidden">
+      {/* 2. PHILOSOPHY STRIP: ivory background, one large centred serif statement with Roland GP-9 scroll text reveal */}
+      <section className="bg-ivory-50 py-28 sm:py-40 border-b border-border relative overflow-hidden">
         {/* Low contrast section numeral watermark */}
         <div
           className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 font-serif text-[clamp(6rem,20vw,16rem)] font-bold text-navy-700/[0.03] select-none pointer-events-none leading-none"

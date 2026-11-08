@@ -1,0 +1,41 @@
+version: "3.8"
+
+services:
+  acorn-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: acorn-legal-platform:v3.0.0
+    container_name: acorn-legal-web
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - HOSTNAME=0.0.0.0
+      - NEXT_PUBLIC_BASE_URL=${NEXT_PUBLIC_BASE_URL:-http://localhost:3000}
+      - SESSION_SECRET=${SESSION_SECRET:-changeme-production-session-secret-min32chars}
+      - RAZORPAY_KEY_ID=${RAZORPAY_KEY_ID:-rzp_test_placeholder}
+      - RAZORPAY_KEY_SECRET=${RAZORPAY_KEY_SECRET:-placeholder_secret}
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3000/api/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+    deploy:
+      resources:
+        limits:
+          cpus: "2.0"
+          memory: 1024M
+        reservations:
+          cpus: "0.5"
+          memory: 256M
+    networks:
+      - acorn-network
+
+networks:
+  acorn-network:
+    driver: bridge
+

@@ -341,10 +341,11 @@ export function ScrollTextReveal({
       const rect = containerRef.current.getBoundingClientRect();
       const windowHeight = window.innerHeight || 800;
 
-      // Start revealing when the top of the element enters the lower 88% of viewport
-      // Complete illumination when the element reaches 32% from the top of the viewport
-      const startTrigger = windowHeight * 0.88;
-      const endTrigger = windowHeight * 0.32;
+      // Roland GP-9 style scroll-driven illumination:
+      // Start revealing when the element enters the bottom 92% of the viewport
+      // Complete illumination as the element settles into the upper-middle reading focal area (35% from top)
+      const startTrigger = windowHeight * 0.92;
+      const endTrigger = windowHeight * 0.35;
 
       if (rect.top >= startTrigger) {
         setScrollProgress(0);
@@ -388,10 +389,10 @@ export function ScrollTextReveal({
             (aw) => aw.toLowerCase() === cleanWord
           );
 
-          // Calculate staggered start and end triggers for each word
+          // Roland GP-9 progressive staggered reveal window for each word
           const step = 1 / totalWords;
-          const wordStart = Math.max(0, index * step * 0.88);
-          const wordEnd = Math.min(1, wordStart + step * 1.35);
+          const wordStart = index * step * 0.88;
+          const wordEnd = Math.min(1, wordStart + step * 1.6);
 
           let wordOpacity = 0;
           if (reducedMotion || scrollProgress >= wordEnd) {
@@ -407,12 +408,12 @@ export function ScrollTextReveal({
               key={`${word}-${index}`}
               className="relative inline-block mx-[0.14em] my-[0.04em]"
             >
-              {/* Dim Base Ghost Word Layer */}
+              {/* Dim Base Ghost Word Layer (Roland GP-9 reference: crisp elegant stone-gray) */}
               <span
-                className={`transition-colors duration-200 ${
+                className={`transition-colors duration-200 select-none ${
                   isAccent
-                    ? "text-brass-700/20 italic font-serif"
-                    : "text-ink-950/20"
+                    ? "text-brass-600/35 italic font-serif"
+                    : "text-stone-300"
                 }`}
                 aria-hidden="true"
               >
@@ -421,14 +422,14 @@ export function ScrollTextReveal({
 
               {/* Radiant Foreground Illuminated Word Layer */}
               <span
-                className={`absolute inset-0 select-none pointer-events-none transition-all duration-200 will-change-transform ${
+                className={`absolute inset-0 select-none pointer-events-none transition-all duration-150 will-change-transform ${
                   isAccent
                     ? "text-brass-700 italic font-serif"
-                    : "text-ink-950"
+                    : "text-ink-950 font-medium"
                 }`}
                 style={{
                   opacity: wordOpacity,
-                  transform: `translateY(${(1 - wordOpacity) * 4}px)`,
+                  transform: `translateY(${(1 - wordOpacity) * 3}px)`,
                 }}
               >
                 {word}

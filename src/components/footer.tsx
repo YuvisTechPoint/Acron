@@ -44,14 +44,14 @@ export function Footer() {
   };
 
   return (
-    <footer className="relative bg-ink-950 text-white border-t border-navy-800/80 overflow-x-clip">
+    <footer className="relative bg-ink-950 text-white border-t border-navy-800/80">
       
       {/* ─────────────────────────────────────────────────────────────
           1. UPPER SECTION: CHAMBERS DIRECTORY (COLLIDABLE OVER LOWER BASE)
           Rolls and scrolls smoothly in document flow above the static lower section,
-          docking precisely at the divider line.
+          colliding and docking precisely at the divider line.
          ───────────────────────────────────────────────────────────── */}
-      <div className="relative z-20 bg-ink-950 border-b border-navy-800/80 shadow-[0_10px_30px_rgba(0,0,0,0.4)]">
+      <div className="relative z-20 bg-ink-950 border-b border-brass-500/30 shadow-[0_20px_45px_rgba(0,0,0,0.85)]">
         <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 pt-16 sm:pt-20 pb-12 sm:pb-14">
           
           {/* 4-COLUMN CHAMBERS DIRECTORY */}
@@ -274,7 +274,7 @@ export function Footer() {
             className="w-full text-center pointer-events-none select-none overflow-hidden pt-4 pb-2"
             aria-hidden="true"
           >
-            <span className="font-serif text-[clamp(4.5rem,13vw,9.5rem)] font-bold tracking-[0.06em] text-white/[0.18] leading-none block select-none drop-shadow-[0_2px_12px_rgba(0,0,0,0.5)]">
+            <span className="font-serif text-[clamp(4.5rem,13vw,9.5rem)] font-extrabold tracking-[0.08em] text-white/35 leading-none block select-none drop-shadow-[0_2px_14px_rgba(0,0,0,0.8)] [text-shadow:_0_0_24px_rgba(201,160,89,0.2)]">
               ACORN
             </span>
           </div>
