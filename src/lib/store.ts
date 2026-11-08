@@ -15,6 +15,21 @@ import {
   LegalRule,
   DirectoryItem,
   PageContentItem,
+  CatalogueFeeItem,
+  KbArticle,
+  LmsCourse,
+  LegalWatchItem,
+  CourtHoliday,
+  PaymentLinkItem,
+  DeliveryTask,
+  SeoRedirectItem,
+  SeoSettings,
+  AdminUserItem,
+  HelpdeskTicket,
+  SurveyItem,
+  MediaVaultItem,
+  NotificationLogItem,
+  SystemSettings,
 } from "./types";
 import {
   generateServiceRequestRef,
@@ -1176,6 +1191,29 @@ class PlatformStore {
     return this.get("organizations", SEED_ORGANIZATIONS);
   }
 
+  addOrganization(org: Omit<Organization, "id" | "createdAt">): Organization {
+    const orgs = this.getOrganizations();
+    const newOrg: Organization = {
+      ...org,
+      id: `org-${Date.now()}`,
+      createdAt: new Date().toISOString(),
+    };
+    orgs.push(newOrg);
+    this.set("organizations", orgs);
+    this.addAuditLog("Admin", "super_admin", "ORGANIZATION_ENROLLED", "policy", newOrg.id, `Enrolled corporate retainer client: ${newOrg.name} (${newOrg.code})`);
+    return newOrg;
+  }
+
+  updateOrganization(id: string, partial: Partial<Organization>): void {
+    const orgs = this.getOrganizations();
+    const idx = orgs.findIndex((o) => o.id === id);
+    if (idx !== -1) {
+      orgs[idx] = { ...orgs[idx], ...partial };
+      this.set("organizations", orgs);
+      this.addAuditLog("Admin", "super_admin", "ORGANIZATION_UPDATED", "policy", id, `Updated organization subscription: ${orgs[idx].name}`);
+    }
+  }
+
   // IC Members
   getICMembers(orgId?: string): ICMember[] {
     const members = this.get("ic_members", SEED_IC_MEMBERS);
@@ -1505,6 +1543,695 @@ class PlatformStore {
     const filtered = scripts.filter((s) => s.id !== id);
     this.set("scripts", filtered);
     this.addAuditLog("Admin", "super_admin", "SCRIPT_DELETED", "script", id, `Deleted script ${id}`);
+  }
+
+  // Catalogue & Fee Schedule CRUD
+  getCatalogueItems(): CatalogueFeeItem[] {
+    return this.get("catalogue_items", [
+      {
+        id: "CAT-001",
+        code: "CONSULT-PARTNER",
+        name: "Partner Initial Legal Consultation (60 Mins)",
+        description: "In-depth case evaluation and legal strategy session with Partner at Kolkata Chambers or via secure VC.",
+        sacCode: "998211",
+        amountPaise: 450000,
+        gstRatePercent: 18,
+        isActive: true,
+        updatedAt: new Date().toISOString(),
+      },
+      {
+        id: "CAT-002",
+        code: "DOC-VETTING-STD",
+        name: "Commercial Agreement Drafting / Vetting",
+        description: "Comprehensive statutory review and mark-up of standard commercial contracts, NDAs, or employment covenants.",
+        sacCode: "998211",
+        amountPaise: 850000,
+        gstRatePercent: 18,
+        isActive: true,
+        updatedAt: new Date().toISOString(),
+      },
+      {
+        id: "CAT-003",
+        code: "POSH-RETAINER-T1",
+        name: "POSH Advisory & External IC Retainer (Tier 1)",
+        description: "Quarterly retainer: Section 4(2)(c) External Member nomination, annual policy review, and email legal helpline.",
+        sacCode: "998211",
+        amountPaise: 1800000,
+        gstRatePercent: 18,
+        isActive: true,
+        updatedAt: new Date().toISOString(),
+      },
+      {
+        id: "CAT-004",
+        code: "POSH-RETAINER-T2",
+        name: "POSH Comprehensive Retainer & Case Handling (Tier 2)",
+        description: "Quarterly retainer: Includes External Member attendance in all IC hearings, digital portal access, and Sec 21 filing.",
+        sacCode: "998211",
+        amountPaise: 4500000,
+        gstRatePercent: 18,
+        isActive: true,
+        updatedAt: new Date().toISOString(),
+      },
+      {
+        id: "CAT-005",
+        code: "TRAIN-IC-HALFDAY",
+        name: "Internal Committee Intensive Workshop (Half-Day)",
+        description: "Statutory capacity building for IC members: natural justice, Section 11 powers, deposition techniques and report writing.",
+        sacCode: "998211",
+        amountPaise: 2500000,
+        gstRatePercent: 18,
+        isActive: true,
+        updatedAt: new Date().toISOString(),
+      },
+    ]);
+  }
+
+  addCatalogueItem(item: Omit<CatalogueFeeItem, "id" | "updatedAt">): CatalogueFeeItem {
+    const list = this.getCatalogueItems();
+    const newItem: CatalogueFeeItem = {
+      ...item,
+      id: `CAT-${String(list.length + 1).padStart(3, "0")}`,
+      updatedAt: new Date().toISOString(),
+    };
+    list.unshift(newItem);
+    this.set("catalogue_items", list);
+    this.addAuditLog("Admin", "super_admin", "CATALOGUE_ITEM_ADDED", "payment", newItem.id, `Added catalogue fee schedule item ${newItem.name}`);
+    return newItem;
+  }
+
+  updateCatalogueItem(id: string, partial: Partial<CatalogueFeeItem>): void {
+    const list = this.getCatalogueItems();
+    const idx = list.findIndex((c) => c.id === id);
+    if (idx !== -1) {
+      list[idx] = { ...list[idx], ...partial, updatedAt: new Date().toISOString() };
+      this.set("catalogue_items", list);
+      this.addAuditLog("Admin", "super_admin", "CATALOGUE_ITEM_UPDATED", "payment", id, `Updated catalogue item ${id}`);
+    }
+  }
+
+  deleteCatalogueItem(id: string): void {
+    const list = this.getCatalogueItems();
+    const filtered = list.filter((c) => c.id !== id);
+    this.set("catalogue_items", filtered);
+    this.addAuditLog("Admin", "super_admin", "CATALOGUE_ITEM_DELETED", "payment", id, `Deleted catalogue item ${id}`);
+  }
+
+  // Knowledge Base Articles CRUD
+  getKbArticles(): KbArticle[] {
+    return this.get("kb_articles", [
+      {
+        id: "KB-01",
+        slug: "what-constitutes-sexual-harassment",
+        title: "What Constitutes Sexual Harassment under Section 2(n) of POSH Act 2013",
+        category: "STATUTORY_RIGHTS",
+        readingTimeMinutes: 5,
+        summary: "Detailed statutory breakdown of verbal, physical, non-verbal conduct, and quid pro quo vs hostile work environment.",
+        isPublished: true,
+        views: 1420,
+        updatedAt: new Date().toISOString(),
+      },
+      {
+        id: "KB-02",
+        slug: "conciliation-vs-inquiry-differences",
+        title: "Section 10 Conciliation vs Section 11 Inquiry: Rights & Key Differences",
+        category: "IC_PROCESS",
+        readingTimeMinutes: 6,
+        summary: "Comparison of settlement mechanisms under POSH: no monetary settlement rule, inquiry triggers, and enforcement.",
+        isPublished: true,
+        views: 890,
+        updatedAt: new Date().toISOString(),
+      },
+      {
+        id: "KB-03",
+        slug: "when-to-approach-local-committee",
+        title: "When to Approach the District Local Committee (LC) instead of an Internal Committee",
+        category: "STATUTORY_RIGHTS",
+        readingTimeMinutes: 4,
+        summary: "Guidelines on complaints against the employer itself, or in establishments having fewer than 10 workers.",
+        isPublished: true,
+        views: 740,
+        updatedAt: new Date().toISOString(),
+      },
+      {
+        id: "KB-04",
+        slug: "employer-mandates-under-section-19",
+        title: "Employer Statutory Duties: Section 19 Policy Display, Workshops & Annual Reporting",
+        category: "EMPLOYER_DUTIES",
+        readingTimeMinutes: 7,
+        summary: "Statutory checklist for employers: order constitution, conspicuous order display, regular employee sensitization.",
+        isPublished: true,
+        views: 610,
+        updatedAt: new Date().toISOString(),
+      },
+    ]);
+  }
+
+  addKbArticle(article: Omit<KbArticle, "id" | "updatedAt">): KbArticle {
+    const articles = this.getKbArticles();
+    const newArticle: KbArticle = {
+      ...article,
+      id: `KB-${String(articles.length + 1).padStart(2, "0")}`,
+      updatedAt: new Date().toISOString(),
+    };
+    articles.unshift(newArticle);
+    this.set("kb_articles", articles);
+    this.addAuditLog("Admin", "super_admin", "KB_ARTICLE_ADDED", "system", newArticle.id, `Created KB article: ${newArticle.title}`);
+    return newArticle;
+  }
+
+  updateKbArticle(id: string, partial: Partial<KbArticle>): void {
+    const articles = this.getKbArticles();
+    const idx = articles.findIndex((a) => a.id === id);
+    if (idx !== -1) {
+      articles[idx] = { ...articles[idx], ...partial, updatedAt: new Date().toISOString() };
+      this.set("kb_articles", articles);
+      this.addAuditLog("Admin", "super_admin", "KB_ARTICLE_UPDATED", "system", id, `Updated KB article: ${articles[idx].title}`);
+    }
+  }
+
+  deleteKbArticle(id: string): void {
+    const articles = this.getKbArticles();
+    const filtered = articles.filter((a) => a.id !== id);
+    this.set("kb_articles", filtered);
+    this.addAuditLog("Admin", "super_admin", "KB_ARTICLE_DELETED", "system", id, `Deleted KB article ${id}`);
+  }
+
+  // LMS Courses CRUD
+  getLmsCourses(): LmsCourse[] {
+    return this.get("lms_courses", [
+      { code: "TRN-101", title: "Understanding the POSH Act and your rights", audience: "All employees", duration: "35 mins", passMark: "80%", modulesCount: 4, status: "PUBLISHED", description: "Foundational module explaining Section 2(n), safe workplaces, and the 90-day redressal timeline.", updatedAt: new Date().toISOString() },
+      { code: "TRN-102", title: "Respectful workplaces: what is and is not acceptable", audience: "All employees", duration: "25 mins", passMark: "80%", modulesCount: 3, status: "PUBLISHED", description: "Interactive scenario-based training addressing workplace banter, consent, and bystander intervention.", updatedAt: new Date().toISOString() },
+      { code: "TRN-201", title: "Managers: responding to disclosures and preventing retaliation", audience: "People managers", duration: "45 mins", passMark: "80%", modulesCount: 5, status: "PUBLISHED", description: "Strict guidance for managers on statutory reporting, avoiding informal inquiries, and anti-retaliation.", updatedAt: new Date().toISOString() },
+      { code: "TRN-301", title: "IC members: procedure, natural justice and confidentiality", audience: "IC members", duration: "3 hours", passMark: "Mock Assessment", modulesCount: 8, status: "PUBLISHED", description: "Rigorous statutory training covering summons, examination of witnesses, finding preparation, and Section 16.", updatedAt: new Date().toISOString() },
+      { code: "TRN-401", title: "Remote and hybrid work: online harassment and evidence", audience: "All employees", duration: "20 mins", passMark: "80%", modulesCount: 3, status: "PUBLISHED", description: "Covers virtual meeting etiquette, chat platforms, cyber misconduct, and digital evidence preservation.", updatedAt: new Date().toISOString() },
+    ]);
+  }
+
+  addLmsCourse(course: Omit<LmsCourse, "updatedAt">): LmsCourse {
+    const list = this.getLmsCourses();
+    const newCourse: LmsCourse = {
+      ...course,
+      updatedAt: new Date().toISOString(),
+    };
+    list.push(newCourse);
+    this.set("lms_courses", list);
+    this.addAuditLog("Admin", "super_admin", "LMS_COURSE_ADDED", "system", newCourse.code, `Added LMS course ${newCourse.title}`);
+    return newCourse;
+  }
+
+  updateLmsCourse(code: string, partial: Partial<LmsCourse>): void {
+    const list = this.getLmsCourses();
+    const idx = list.findIndex((c) => c.code === code);
+    if (idx !== -1) {
+      list[idx] = { ...list[idx], ...partial, updatedAt: new Date().toISOString() };
+      this.set("lms_courses", list);
+      this.addAuditLog("Admin", "super_admin", "LMS_COURSE_UPDATED", "system", code, `Updated LMS course ${code}`);
+    }
+  }
+
+  deleteLmsCourse(code: string): void {
+    const list = this.getLmsCourses();
+    const filtered = list.filter((c) => c.code !== code);
+    this.set("lms_courses", filtered);
+    this.addAuditLog("Admin", "super_admin", "LMS_COURSE_DELETED", "system", code, `Deleted LMS course ${code}`);
+  }
+
+  // Legal Regulatory Watch CRUD
+  getLegalWatchItems(): LegalWatchItem[] {
+    return this.get("legal_watch_items", [
+      {
+        ref: "LAW-05",
+        title: "Supreme Court Directions (Aureliano Fernandes Implementation)",
+        subject: "District Officer notification, Nodal Officer 7-day forwarding, Local Committee status.",
+        owner: "Adv. Debjani Sen",
+        reviewDate: "Quarterly (Q4 2026)",
+        status: "In Compliance & Tracking",
+        impactLevel: "HIGH",
+        updatedAt: new Date().toISOString(),
+      },
+      {
+        ref: "LAW-27",
+        title: "Companies (Accounts) Second Amendment Rules 2025",
+        subject: "Mandatory Board Report disclosures: complaints received, disposed of, pending >90 days, gender counts.",
+        owner: "Adv. Subhasish Mukherjee",
+        reviewDate: "Annual (31 March 2027)",
+        status: "Active (Effective 14 July 2025)",
+        impactLevel: "HIGH",
+        updatedAt: new Date().toISOString(),
+      },
+      {
+        ref: "LAW-29",
+        title: "Digital Personal Data Protection Act 2023 & Rules 2025",
+        subject: "Consent manager rules, retention review, data fiduciary security obligations.",
+        owner: "Technical Lead",
+        reviewDate: "Semi-Annual (May 2027)",
+        status: "Monitored",
+        impactLevel: "MEDIUM",
+        updatedAt: new Date().toISOString(),
+      },
+      {
+        ref: "LAW-32",
+        title: "Bar Council of India Rule 36 & Advisories",
+        subject: "Prohibition on advertising and solicitation for legal practitioners.",
+        owner: "Managing Partner",
+        reviewDate: "Continuous",
+        status: "Strictly Enforced",
+        impactLevel: "HIGH",
+        updatedAt: new Date().toISOString(),
+      },
+      {
+        ref: "LAW-40",
+        title: "SHe-Box Revamped Portal (MWCD)",
+        subject: "Central portal complaint routing and private sector IC registration mandates.",
+        owner: "POSH Administrator",
+        reviewDate: "Monthly",
+        status: "Integrated Helper",
+        impactLevel: "MEDIUM",
+        updatedAt: new Date().toISOString(),
+      },
+    ]);
+  }
+
+  addLegalWatchItem(item: Omit<LegalWatchItem, "updatedAt">): LegalWatchItem {
+    const list = this.getLegalWatchItems();
+    const newItem: LegalWatchItem = {
+      ...item,
+      updatedAt: new Date().toISOString(),
+    };
+    list.unshift(newItem);
+    this.set("legal_watch_items", list);
+    this.addAuditLog("Admin", "super_admin", "LEGAL_WATCH_ADDED", "policy", newItem.ref, `Added regulatory watch item: ${newItem.title}`);
+    return newItem;
+  }
+
+  updateLegalWatchItem(ref: string, partial: Partial<LegalWatchItem>): void {
+    const list = this.getLegalWatchItems();
+    const idx = list.findIndex((w) => w.ref === ref);
+    if (idx !== -1) {
+      list[idx] = { ...list[idx], ...partial, updatedAt: new Date().toISOString() };
+      this.set("legal_watch_items", list);
+      this.addAuditLog("Admin", "super_admin", "LEGAL_WATCH_UPDATED", "policy", ref, `Updated regulatory watch item ${ref}`);
+    }
+  }
+
+  deleteLegalWatchItem(ref: string): void {
+    const list = this.getLegalWatchItems();
+    const filtered = list.filter((w) => w.ref !== ref);
+    this.set("legal_watch_items", filtered);
+    this.addAuditLog("Admin", "super_admin", "LEGAL_WATCH_DELETED", "policy", ref, `Removed regulatory watch item ${ref}`);
+  }
+
+  // Statutory Holiday & Judicial Calendars CRUD
+  getHolidays(): CourtHoliday[] {
+    return this.get("court_holidays", [
+      { id: "HOL-01", date: "2026-01-23", name: "Netaji Subhas Chandra Bose Jayanti", type: "State Gazetted", calendar: "wb", affectsLimitation: true, updatedAt: new Date().toISOString() },
+      { id: "HOL-02", date: "2026-01-26", name: "Republic Day", type: "National Gazetted", calendar: "central", affectsLimitation: true, updatedAt: new Date().toISOString() },
+      { id: "HOL-03", date: "2026-03-04", name: "Holi / Dol Jatra", type: "State Gazetted", calendar: "wb", affectsLimitation: true, updatedAt: new Date().toISOString() },
+      { id: "HOL-04", date: "2026-04-14", name: "Bengali New Year (Poila Boishakh)", type: "State Gazetted", calendar: "wb", affectsLimitation: true, updatedAt: new Date().toISOString() },
+      { id: "HOL-05", date: "2026-05-01", name: "May Day", type: "State Gazetted", calendar: "wb", affectsLimitation: true, updatedAt: new Date().toISOString() },
+      { id: "HOL-06", date: "2026-05-09", name: "Rabindranath Tagore Jayanti", type: "State Gazetted", calendar: "wb", affectsLimitation: true, updatedAt: new Date().toISOString() },
+      { id: "HOL-07", date: "2026-08-15", name: "Independence Day", type: "National Gazetted", calendar: "central", affectsLimitation: true, updatedAt: new Date().toISOString() },
+      { id: "HOL-08", date: "2026-10-02", name: "Mahatma Gandhi Jayanti", type: "National Gazetted", calendar: "central", affectsLimitation: true, updatedAt: new Date().toISOString() },
+      { id: "HOL-09", date: "2026-10-18", name: "Durga Puja (Maha Saptami to Dashami)", type: "State Gazetted (Festive Vacation)", calendar: "wb", affectsLimitation: true, updatedAt: new Date().toISOString() },
+      { id: "HOL-10", date: "2026-11-08", name: "Kali Puja / Diwali", type: "National Gazetted", calendar: "central", affectsLimitation: true, updatedAt: new Date().toISOString() },
+      { id: "HOL-11", date: "2026-12-25", name: "Christmas Day", type: "National Gazetted", calendar: "central", affectsLimitation: true, updatedAt: new Date().toISOString() },
+    ]);
+  }
+
+  addHoliday(holiday: Omit<CourtHoliday, "id" | "updatedAt">): CourtHoliday {
+    const list = this.getHolidays();
+    const newHol: CourtHoliday = {
+      ...holiday,
+      id: `HOL-${Date.now()}`,
+      updatedAt: new Date().toISOString(),
+    };
+    list.push(newHol);
+    this.set("court_holidays", list);
+    this.addAuditLog("Admin", "super_admin", "HOLIDAY_ADDED", "policy", newHol.date, `Added court holiday: ${newHol.name} (${newHol.date})`);
+    return newHol;
+  }
+
+  deleteHoliday(id: string): void {
+    const list = this.getHolidays();
+    const filtered = list.filter((h) => h.id !== id);
+    this.set("court_holidays", filtered);
+    this.addAuditLog("Admin", "super_admin", "HOLIDAY_DELETED", "policy", id, `Removed court holiday ${id}`);
+  }
+
+  // Payment Links CRUD
+  getPaymentLinks(): PaymentLinkItem[] {
+    return this.get("payment_links", [
+      {
+        id: "PLK-2026-041",
+        clientName: "Siddharth Roy (Bengal Met Fab)",
+        clientEmail: "siddharth@bengalmetfab.com",
+        matterRef: "Drafting Consortium Agreement",
+        amountPaise: 1500000,
+        status: "ACTIVE",
+        expiresAt: new Date(Date.now() + 86400000 * 3).toISOString(),
+        url: "/pay?ref=PLK-2026-041&amt=15000",
+        createdAt: "2026-10-25T10:00:00Z",
+        updatedAt: new Date().toISOString(),
+      },
+      {
+        id: "PLK-2026-040",
+        clientName: "Smt. Ananya Bose",
+        clientEmail: "ananya.bose@gmail.com",
+        matterRef: "Special Consultation & Opinion",
+        amountPaise: 450000,
+        status: "PAID",
+        expiresAt: "2026-10-31T23:59:00Z",
+        url: "/pay?ref=PLK-2026-040&amt=4500",
+        createdAt: "2026-10-20T14:30:00Z",
+        updatedAt: new Date().toISOString(),
+      },
+    ]);
+  }
+
+  addPaymentLink(link: Omit<PaymentLinkItem, "id" | "createdAt" | "updatedAt">): PaymentLinkItem {
+    const list = this.getPaymentLinks();
+    const id = `PLK-2026-0${list.length + 42}`;
+    const newLink: PaymentLinkItem = {
+      ...link,
+      id,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    };
+    list.unshift(newLink);
+    this.set("payment_links", list);
+    this.addAuditLog("Admin", "finance", "PAYMENT_LINK_CREATED", "payment", id, `Generated payment link for ${newLink.clientName} (₹${(newLink.amountPaise/100).toLocaleString()})`);
+    return newLink;
+  }
+
+  updatePaymentLinkStatus(id: string, status: PaymentLinkItem["status"]): void {
+    const list = this.getPaymentLinks();
+    const idx = list.findIndex((p) => p.id === id);
+    if (idx !== -1) {
+      list[idx].status = status;
+      list[idx].updatedAt = new Date().toISOString();
+      this.set("payment_links", list);
+      this.addAuditLog("Admin", "finance", "PAYMENT_LINK_STATUS_CHANGED", "payment", id, `Marked link ${id} as ${status}`);
+    }
+  }
+
+  deletePaymentLink(id: string): void {
+    const list = this.getPaymentLinks();
+    const filtered = list.filter((p) => p.id !== id);
+    this.set("payment_links", filtered);
+    this.addAuditLog("Admin", "finance", "PAYMENT_LINK_DELETED", "payment", id, `Deleted payment link ${id}`);
+  }
+
+  // Delivery & Service SLA Tasks CRUD
+  getDeliveryTasks(): DeliveryTask[] {
+    return this.get("delivery_tasks", [
+      { code: "DEL-101", task: "Review & Sign off Q3 Annual Report for Bengal Precision Ltd", client: "BENGALIND", due: "15 Nov 2026", status: "In Progress", owner: "Adv. Debjani Sen", priority: "High", updatedAt: new Date().toISOString() },
+      { code: "DEL-102", task: "Conduct Manager Workshop on Preventing Retaliation (Virtual)", client: "TECHKOL", due: "18 Nov 2026", status: "Scheduled", owner: "Adv. Subhasish Mukherjee", priority: "Normal", updatedAt: new Date().toISOString() },
+      { code: "DEL-103", task: "Audit Notice Board Conspicuous Displays for Hooghly Logistics", client: "HOOGHLY", due: "22 Nov 2026", status: "Pending Inspection", owner: "Intake Counsellor", priority: "Normal", updatedAt: new Date().toISOString() },
+    ]);
+  }
+
+  addDeliveryTask(task: Omit<DeliveryTask, "updatedAt">): DeliveryTask {
+    const list = this.getDeliveryTasks();
+    const newTask: DeliveryTask = {
+      ...task,
+      updatedAt: new Date().toISOString(),
+    };
+    list.unshift(newTask);
+    this.set("delivery_tasks", list);
+    this.addAuditLog("Admin", "super_admin", "DELIVERY_TASK_ADDED", "system", newTask.code, `Assigned fulfillment task: ${newTask.task}`);
+    return newTask;
+  }
+
+  updateDeliveryTaskStatus(code: string, status: DeliveryTask["status"]): void {
+    const list = this.getDeliveryTasks();
+    const idx = list.findIndex((t) => t.code === code);
+    if (idx !== -1) {
+      list[idx].status = status;
+      list[idx].updatedAt = new Date().toISOString();
+      this.set("delivery_tasks", list);
+      this.addAuditLog("Admin", "super_admin", "DELIVERY_TASK_STATUS_CHANGED", "system", code, `Updated task ${code} to ${status}`);
+    }
+  }
+
+  deleteDeliveryTask(code: string): void {
+    const list = this.getDeliveryTasks();
+    const filtered = list.filter((t) => t.code !== code);
+    this.set("delivery_tasks", filtered);
+    this.addAuditLog("Admin", "super_admin", "DELIVERY_TASK_DELETED", "system", code, `Removed deliverable task ${code}`);
+  }
+
+  // SEO Defaults & Redirects CRUD
+  getSeoSettings(): SeoSettings {
+    return this.get("seo_settings", {
+      defaultTitle: "Acorn Legal Consultants | Premier Kolkata Law Firm & POSH Advisory",
+      titleTemplate: "%s | Acorn Legal Consultants",
+      defaultDescription: "Premier legal consultancy in Kolkata specialising in corporate law, commercial litigation, employment law, and POSH Act statutory compliance.",
+      canonicalBase: "https://acornlegal.in",
+      ogImageUrl: "/images/hero.jpg",
+      twitterHandle: "@AcornLegalKolkata",
+      robotsIndex: true,
+      robotsFollow: true,
+      updatedAt: new Date().toISOString(),
+    });
+  }
+
+  updateSeoSettings(partial: Partial<SeoSettings>): void {
+    const current = this.getSeoSettings();
+    const updated: SeoSettings = {
+      ...current,
+      ...partial,
+      updatedAt: new Date().toISOString(),
+    };
+    this.set("seo_settings", updated);
+    this.addAuditLog("Admin", "super_admin", "SEO_SETTINGS_UPDATED", "system", "seo-config", "Updated global SEO tags and OpenGraph configuration");
+  }
+
+  getSeoRedirects(): SeoRedirectItem[] {
+    return this.get("seo_redirects", [
+      { id: "RED-1", sourcePath: "/posh-kolkata", targetPath: "/posh", statusCode: 301, hits: 342, updatedAt: new Date().toISOString() },
+      { id: "RED-2", sourcePath: "/legal-faq", targetPath: "/qa", statusCode: 301, hits: 189, updatedAt: new Date().toISOString() },
+      { id: "RED-3", sourcePath: "/attorneys", targetPath: "/about", statusCode: 301, hits: 94, updatedAt: new Date().toISOString() },
+      { id: "RED-4", sourcePath: "/posh-annual-report", targetPath: "/posh/org", statusCode: 301, hits: 275, updatedAt: new Date().toISOString() },
+    ]);
+  }
+
+  addSeoRedirect(redirect: Omit<SeoRedirectItem, "id" | "updatedAt">): SeoRedirectItem {
+    const list = this.getSeoRedirects();
+    const newRed: SeoRedirectItem = {
+      ...redirect,
+      id: `RED-${list.length + 1}`,
+      updatedAt: new Date().toISOString(),
+    };
+    list.push(newRed);
+    this.set("seo_redirects", list);
+    this.addAuditLog("Admin", "super_admin", "SEO_REDIRECT_ADDED", "system", newRed.id, `Created 301 redirect ${newRed.sourcePath} -> ${newRed.targetPath}`);
+    return newRed;
+  }
+
+  deleteSeoRedirect(id: string): void {
+    const list = this.getSeoRedirects();
+    const filtered = list.filter((r) => r.id !== id);
+    this.set("seo_redirects", filtered);
+    this.addAuditLog("Admin", "super_admin", "SEO_REDIRECT_DELETED", "system", id, `Removed redirect ${id}`);
+  }
+
+  // Admin Users & RBAC
+  getAdminUsers(): AdminUserItem[] {
+    return this.get("admin_users", [
+      { id: "u-1", name: "Adv. Subhasish Mukherjee", email: "subhasish@acornlegal.in", role: "Super Admin / Managing Partner", status: "Active", mfa: true, lastActive: "Just now", updatedAt: new Date().toISOString() },
+      { id: "u-2", name: "Adv. Debjani Sen", email: "debjani.sen@acornlegal.in", role: "Partner & External Member", status: "Active", mfa: true, lastActive: "2 hours ago", updatedAt: new Date().toISOString() },
+      { id: "u-3", name: "Dr. Ananya Mukherjee", email: "ananya.m@kolkatacloud.com", role: "IC Presiding Officer (TechKol)", status: "Active", mfa: true, lastActive: "Yesterday", updatedAt: new Date().toISOString() },
+      { id: "u-4", name: "Operations Support Desk", email: "support@acornlegal.in", role: "Support Executive", status: "Active", mfa: true, lastActive: "10 mins ago", updatedAt: new Date().toISOString() },
+      { id: "u-5", name: "Finance Accounts Desk", email: "finance@acornlegal.in", role: "Finance Administrator", status: "Active", mfa: true, lastActive: "3 days ago", updatedAt: new Date().toISOString() },
+    ]);
+  }
+
+  addAdminUser(user: Omit<AdminUserItem, "id" | "updatedAt">): AdminUserItem {
+    const list = this.getAdminUsers();
+    const newUser: AdminUserItem = {
+      ...user,
+      id: `u-${Date.now()}`,
+      updatedAt: new Date().toISOString(),
+    };
+    list.push(newUser);
+    this.set("admin_users", list);
+    this.addAuditLog("Admin", "super_admin", "USER_ACCOUNT_CREATED", "user", newUser.email, `Created user account for ${newUser.name} with role ${newUser.role}`);
+    return newUser;
+  }
+
+  updateAdminUser(id: string, partial: Partial<AdminUserItem>): void {
+    const list = this.getAdminUsers();
+    const idx = list.findIndex((u) => u.id === id);
+    if (idx !== -1) {
+      list[idx] = { ...list[idx], ...partial, updatedAt: new Date().toISOString() };
+      this.set("admin_users", list);
+      this.addAuditLog("Admin", "super_admin", "USER_ACCOUNT_UPDATED", "user", id, `Updated account ${list[idx].email}`);
+    }
+  }
+
+  deleteAdminUser(id: string): void {
+    const list = this.getAdminUsers();
+    const filtered = list.filter((u) => u.id !== id);
+    this.set("admin_users", filtered);
+    this.addAuditLog("Admin", "super_admin", "USER_ACCOUNT_DELETED", "user", id, `Deleted user account ${id}`);
+  }
+
+  // Helpdesk Tickets CRUD
+  getHelpdeskTickets(): HelpdeskTicket[] {
+    return this.get("helpdesk_tickets", [
+      { id: "TKT-2026-0012", subject: "Request for Acorn External Member for upcoming Q4 IC Review", client: "Kolkata Cloud Technologies Pvt Ltd", priority: "P2 - High", status: "In Progress", sla: "Within SLA (3h remaining)", assignedTo: "Adv. Debjani Sen", updatedAt: new Date().toISOString() },
+      { id: "TKT-2026-0018", subject: "Annual Awareness E-learning Roster Import Issue", client: "Bengal Precision Engineering Ltd", priority: "P3 - Normal", status: "Resolved", sla: "SLA Met", assignedTo: "Operations Support", updatedAt: new Date().toISOString() },
+      { id: "TKT-2026-0021", subject: "Inquiry on SHe-Box IC Registration Procedure", client: "Hooghly Logistics Corp", priority: "P3 - Normal", status: "Open", sla: "Within SLA (1d remaining)", assignedTo: "Intake Counsellor", updatedAt: new Date().toISOString() },
+    ]);
+  }
+
+  addHelpdeskTicket(ticket: Omit<HelpdeskTicket, "id" | "updatedAt">): HelpdeskTicket {
+    const list = this.getHelpdeskTickets();
+    const newTkt: HelpdeskTicket = {
+      ...ticket,
+      id: `TKT-2026-00${list.length + 22}`,
+      updatedAt: new Date().toISOString(),
+    };
+    list.unshift(newTkt);
+    this.set("helpdesk_tickets", list);
+    this.addAuditLog("Admin", "super_admin", "HELPDESK_TICKET_CREATED", "system", newTkt.id, `Logged support ticket for ${newTkt.client}`);
+    return newTkt;
+  }
+
+  updateHelpdeskTicketStatus(id: string, status: HelpdeskTicket["status"]): void {
+    const list = this.getHelpdeskTickets();
+    const idx = list.findIndex((t) => t.id === id);
+    if (idx !== -1) {
+      list[idx].status = status;
+      list[idx].updatedAt = new Date().toISOString();
+      this.set("helpdesk_tickets", list);
+      this.addAuditLog("Admin", "super_admin", "HELPDESK_TICKET_UPDATED", "system", id, `Changed ticket ${id} status to ${status}`);
+    }
+  }
+
+  deleteHelpdeskTicket(id: string): void {
+    const list = this.getHelpdeskTickets();
+    const filtered = list.filter((t) => t.id !== id);
+    this.set("helpdesk_tickets", filtered);
+    this.addAuditLog("Admin", "super_admin", "HELPDESK_TICKET_DELETED", "system", id, `Deleted ticket ${id}`);
+  }
+
+  // Climate Surveys CRUD
+  getSurveys(): SurveyItem[] {
+    return this.get("surveys", [
+      { id: "srv-1", name: "Annual POSH Workplace Climate & Culture Survey 2026", type: "Anonymous Climate Survey", questions: 14, responses: 312, status: "Active", kAnonymityMet: true, updatedAt: new Date().toISOString() },
+      { id: "srv-2", name: "Workplace Risk Assessment & Hotspot Audit", type: "Risk Assessment (HR & IC)", questions: 22, responses: 4, status: "Completed", kAnonymityMet: true, updatedAt: new Date().toISOString() },
+      { id: "srv-3", name: "Post-Inquiry Redressal Experience Feedback", type: "Process Feedback (Anonymized)", questions: 6, responses: 12, status: "Ongoing", kAnonymityMet: true, updatedAt: new Date().toISOString() },
+    ]);
+  }
+
+  addSurvey(survey: Omit<SurveyItem, "id" | "updatedAt">): SurveyItem {
+    const list = this.getSurveys();
+    const newSurvey: SurveyItem = {
+      ...survey,
+      id: `srv-${Date.now()}`,
+      updatedAt: new Date().toISOString(),
+    };
+    list.unshift(newSurvey);
+    this.set("surveys", list);
+    this.addAuditLog("Admin", "super_admin", "SURVEY_CREATED", "system", newSurvey.id, `Created climate survey: ${newSurvey.name}`);
+    return newSurvey;
+  }
+
+  updateSurvey(id: string, partial: Partial<SurveyItem>): void {
+    const list = this.getSurveys();
+    const idx = list.findIndex((s) => s.id === id);
+    if (idx !== -1) {
+      list[idx] = { ...list[idx], ...partial, updatedAt: new Date().toISOString() };
+      this.set("surveys", list);
+      this.addAuditLog("Admin", "super_admin", "SURVEY_UPDATED", "system", id, `Updated survey ${list[idx].name}`);
+    }
+  }
+
+  deleteSurvey(id: string): void {
+    const list = this.getSurveys();
+    const filtered = list.filter((s) => s.id !== id);
+    this.set("surveys", filtered);
+    this.addAuditLog("Admin", "super_admin", "SURVEY_DELETED", "system", id, `Removed survey ${id}`);
+  }
+
+  // Media Vault CRUD
+  getMediaVault(): MediaVaultItem[] {
+    return this.get("media_vault", [
+      { id: "MED-001", name: "adv-subhasish-mukherjee.jpg", category: "PROFILE", size: "240 KB", dimensions: "800x1000", url: "/media/profiles/adv-subhasish-mukherjee.jpg", uploadedAt: "2026-10-15" },
+      { id: "MED-002", name: "adv-debjani-sen.jpg", category: "PROFILE", size: "215 KB", dimensions: "800x1000", url: "/media/profiles/adv-debjani-sen.jpg", uploadedAt: "2026-10-15" },
+      { id: "MED-003", name: "acorn-legal-crest-gold.svg", category: "BADGE", size: "45 KB", dimensions: "Vector", url: "/media/branding/acorn-legal-crest-gold.svg", uploadedAt: "2026-10-12" },
+      { id: "MED-004", name: "posh-annual-report-statutory-spec.pdf", category: "DOCUMENT", size: "1.2 MB", dimensions: "PDF 14 Pages", url: "/media/docs/posh-annual-report-statutory-spec.pdf", uploadedAt: "2026-10-20" },
+      { id: "MED-005", name: "kolkata-high-court-facade.jpg", category: "INSIGHT", size: "480 KB", dimensions: "1920x1080", url: "/media/insights/kolkata-high-court-facade.jpg", uploadedAt: "2026-10-25" },
+      { id: "MED-006", name: "hero.jpg", category: "INSIGHT", size: "520 KB", dimensions: "1920x1080", url: "/images/hero.jpg", uploadedAt: "2026-11-08" },
+      { id: "MED-007", name: "posh.png", category: "INSIGHT", size: "1.4 MB", dimensions: "1920x1080", url: "/images/posh.png", uploadedAt: "2026-11-08" },
+    ]);
+  }
+
+  addMediaVaultItem(item: Omit<MediaVaultItem, "id" | "uploadedAt">): MediaVaultItem {
+    const list = this.getMediaVault();
+    const newItem: MediaVaultItem = {
+      ...item,
+      id: `MED-00${list.length + 1}`,
+      uploadedAt: new Date().toISOString().split("T")[0],
+    };
+    list.unshift(newItem);
+    this.set("media_vault", list);
+    this.addAuditLog("Admin", "super_admin", "MEDIA_ASSET_UPLOADED", "system", newItem.id, `Uploaded media asset: ${newItem.name}`);
+    return newItem;
+  }
+
+  deleteMediaVaultItem(id: string): void {
+    const list = this.getMediaVault();
+    const filtered = list.filter((m) => m.id !== id);
+    this.set("media_vault", filtered);
+    this.addAuditLog("Admin", "super_admin", "MEDIA_ASSET_DELETED", "system", id, `Removed media asset ${id}`);
+  }
+
+  // Notification Logs CRUD
+  getNotificationLogs(): NotificationLogItem[] {
+    return this.get("notification_logs", [
+      { id: "NTF-902", channel: "EMAIL", recipient: "subhasish@acornlegal.in", templateCode: "TMPL-SR-NEW", subject: "New Service Request: ACN-SR-2026-000042 (Corporate Restructuring)", status: "DELIVERED", timestamp: "2026-10-28T11:20:00Z" },
+      { id: "NTF-901", channel: "EMAIL", recipient: "debjani.sen@acornlegal.in", templateCode: "TMPL-POSH-INTAKE", subject: "Statutory Intake Alert: POSH-TECHKOL-2026-0014 (Section 16 Masked)", status: "DELIVERED", timestamp: "2026-10-27T09:15:00Z" },
+      { id: "NTF-900", channel: "SMS", recipient: "+91 98300 *****", templateCode: "TMPL-OTP-SIGN", subject: "Acorn Legal OTP verification code for complaint filing affirmation.", status: "DELIVERED", timestamp: "2026-10-27T09:12:00Z" },
+    ]);
+  }
+
+  addNotificationLog(log: Omit<NotificationLogItem, "id" | "timestamp">): NotificationLogItem {
+    const list = this.getNotificationLogs();
+    const newLog: NotificationLogItem = {
+      ...log,
+      id: `NTF-${Date.now().toString().slice(-4)}`,
+      timestamp: new Date().toISOString(),
+    };
+    list.unshift(newLog);
+    this.set("notification_logs", list);
+    return newLog;
+  }
+
+  // System Settings CRUD
+  getSystemSettings(): SystemSettings {
+    return this.get("system_settings", {
+      razorpayMode: "test",
+      razorpayKeyId: "rzp_test_AcornLegalKolkata2026",
+      razorpayKeySecretMasked: "••••••••••••••••••••",
+      maintenanceMode: false,
+      smtpHost: "email-smtp.ap-south-1.amazonaws.com",
+      smtpFrom: "contact@acornlegal.in",
+      retentionYears: "3",
+      updatedAt: new Date().toISOString(),
+    });
+  }
+
+  updateSystemSettings(partial: Partial<SystemSettings>): void {
+    const current = this.getSystemSettings();
+    const updated: SystemSettings = {
+      ...current,
+      ...partial,
+      updatedAt: new Date().toISOString(),
+    };
+    this.set("system_settings", updated);
+    this.addAuditLog("Super Admin", "super_admin", "SYSTEM_SETTINGS_UPDATED", "policy", "system-config", `Updated system parameters: mode=${updated.razorpayMode}, retention=${updated.retentionYears}yrs`);
   }
 }
 

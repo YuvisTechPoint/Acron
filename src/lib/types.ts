@@ -462,4 +462,173 @@ export interface PageContentItem {
   updatedAt: string;
 }
 
+export interface CatalogueFeeItem {
+  id: string;
+  code: string;
+  name: string;
+  description: string;
+  sacCode: string;
+  amountPaise: number;
+  gstRatePercent: number;
+  isActive: boolean;
+  updatedAt: string;
+}
+
+export interface KbArticle {
+  id: string;
+  slug: string;
+  title: string;
+  category: "STATUTORY_RIGHTS" | "IC_PROCESS" | "EMPLOYER_DUTIES" | "EVIDENCE" | string;
+  readingTimeMinutes: number;
+  summary: string;
+  content?: string;
+  isPublished: boolean;
+  views: number;
+  updatedAt: string;
+}
+
+export interface LmsCourse {
+  code: string;
+  title: string;
+  audience: string;
+  duration: string;
+  passMark: string;
+  modulesCount: number;
+  status: "PUBLISHED" | "DRAFT" | "ARCHIVED";
+  description?: string;
+  updatedAt: string;
+}
+
+export interface LegalWatchItem {
+  ref: string;
+  title: string;
+  subject: string;
+  owner: string;
+  reviewDate: string;
+  status: string;
+  impactLevel?: "HIGH" | "MEDIUM" | "ADVISORY";
+  citation?: string;
+  updatedAt: string;
+}
+
+export interface CourtHoliday {
+  id: string;
+  date: string;
+  name: string;
+  type: string;
+  calendar: "wb" | "central";
+  affectsLimitation: boolean;
+  updatedAt: string;
+}
+
+export interface PaymentLinkItem {
+  id: string;
+  clientName: string;
+  clientEmail: string;
+  matterRef: string;
+  amountPaise: number;
+  status: "ACTIVE" | "PAID" | "EXPIRED" | "CANCELLED";
+  expiresAt: string;
+  url: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface DeliveryTask {
+  code: string;
+  task: string;
+  client: string;
+  due: string;
+  status: "Pending Inspection" | "Scheduled" | "In Progress" | "Completed" | "Review Required" | string;
+  owner: string;
+  priority?: "High" | "Normal" | "Urgent";
+  updatedAt: string;
+}
+
+export interface SeoRedirectItem {
+  id: string;
+  sourcePath: string;
+  targetPath: string;
+  statusCode: 301 | 302;
+  hits: number;
+  updatedAt: string;
+}
+
+export interface SeoSettings {
+  defaultTitle: string;
+  titleTemplate: string;
+  defaultDescription: string;
+  canonicalBase: string;
+  ogImageUrl: string;
+  twitterHandle: string;
+  robotsIndex: boolean;
+  robotsFollow: boolean;
+  updatedAt: string;
+}
+
+export interface AdminUserItem {
+  id: string;
+  name: string;
+  email: string;
+  role: string;
+  status: "Active" | "Suspended" | "Invited";
+  mfa: boolean;
+  lastActive?: string;
+  updatedAt: string;
+}
+
+export interface HelpdeskTicket {
+  id: string;
+  subject: string;
+  client: string;
+  priority: "P1 - Critical" | "P2 - High" | "P3 - Normal" | "P4 - Low" | string;
+  status: "Open" | "In Progress" | "Resolved" | "Closed" | string;
+  sla: string;
+  assignedTo?: string;
+  updatedAt: string;
+}
+
+export interface SurveyItem {
+  id: string;
+  name: string;
+  type: string;
+  questions: number;
+  responses: number;
+  status: "Active" | "Completed" | "Draft" | "Ongoing" | string;
+  kAnonymityMet: boolean;
+  updatedAt: string;
+}
+
+export interface MediaVaultItem {
+  id: string;
+  name: string;
+  category: "PROFILE" | "BADGE" | "INSIGHT" | "DOCUMENT" | string;
+  size: string;
+  dimensions: string;
+  url: string;
+  uploadedAt: string;
+}
+
+export interface NotificationLogItem {
+  id: string;
+  channel: "EMAIL" | "SMS" | "INTERNAL";
+  recipient: string;
+  templateCode: string;
+  subject: string;
+  status: "SENT" | "DELIVERED" | "QUEUED" | "FAILED";
+  timestamp: string;
+}
+
+export interface SystemSettings {
+  razorpayMode: "test" | "live";
+  razorpayKeyId: string;
+  razorpayKeySecretMasked: string;
+  maintenanceMode: boolean;
+  smtpHost: string;
+  smtpFrom: string;
+  retentionYears: string;
+  updatedAt: string;
+}
+
+
 

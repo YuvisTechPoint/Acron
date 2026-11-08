@@ -1,31 +1,32 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { Settings, Shield, CreditCard, Mail, Clock, ArrowLeft, Save, AlertTriangle } from "lucide-react";
+import { Settings, Shield, CreditCard, Mail, Clock, ArrowLeft, Save, AlertTriangle, CheckCircle2 } from "lucide-react";
 import { platformStore } from "@/lib/store";
+import { SystemSettings } from "@/lib/types";
 
 export default function AdminSettingsPage() {
-  const [razorpayMode, setRazorpayMode] = useState<"test" | "live">("test");
-  const [razorpayKeyId, setRazorpayKeyId] = useState("rzp_test_AcornLegalKolkata2026");
-  const [razorpayKeySecret, setRazorpayKeySecret] = useState("••••••••••••••••••••");
-  const [maintenanceMode, setMaintenanceMode] = useState(false);
-  const [smtpHost, setSmtpHost] = useState("email-smtp.ap-south-1.amazonaws.com");
-  const [smtpFrom, setSmtpFrom] = useState("contact@acornlegal.in");
-  const [retentionYears, setRetentionYears] = useState("3");
+  const [settings, setSettings] = useState<SystemSettings>({
+    razorpayMode: "test",
+    razorpayKeyId: "rzp_test_AcornLegalKolkata2026",
+    razorpayKeySecretMasked: "••••••••••••••••••••",
+    maintenanceMode: false,
+    smtpHost: "email-smtp.ap-south-1.amazonaws.com",
+    smtpFrom: "contact@acornlegal.in",
+    retentionYears: "3",
+    updatedAt: new Date().toISOString(),
+  });
   const [savedSuccess, setSavedSuccess] = useState(false);
+
+  useEffect(() => {
+    setSettings(platformStore.getSystemSettings());
+  }, []);
 
   const handleSave = (e: React.FormEvent) => {
     e.preventDefault();
+    platformStore.updateSystemSettings(settings);
     setSavedSuccess(true);
-    platformStore.addAuditLog(
-      "Super Admin",
-      "super_admin",
-      "SYSTEM_SETTINGS_UPDATED",
-      "policy",
-      "system-config",
-      `Updated settings: Razorpay mode=${razorpayMode}, Maintenance=${maintenanceMode}, Retention=${retentionYears}yrs`
-    );
     setTimeout(() => setSavedSuccess(false), 3000);
   };
 
@@ -42,18 +43,27 @@ export default function AdminSettingsPage() {
             </Link>
             <div>
               <div className="text-xs uppercase tracking-widest text-primary font-bold">
-                Platform Infrastructure
+                Platform Infrastructure &bull; Section 28
               </div>
               <h1 className="font-serif text-2xl font-bold text-ink mt-0.5">
                 System Settings &amp; Gateway Configuration
               </h1>
             </div>
           </div>
+
+          <button
+            onClick={handleSave}
+            className="inline-flex items-center gap-2 px-4 py-2 bg-primary hover:bg-primary-light text-white text-xs font-bold rounded transition shadow"
+          >
+            <Save className="w-3.5 h-3.5" />
+            <span>Save Configuration</span>
+          </button>
         </div>
 
         {savedSuccess && (
-          <div className="p-4 bg-emerald-50 border border-emerald-300 rounded text-xs text-emerald-900 font-semibold flex items-center gap-2">
-            <span>&check; Settings saved and active across production environment.</span>
+          <div className="p-4 bg-emerald-50 border border-emerald-300 rounded text-xs text-emerald-900 font-semibold flex items-center gap-2 animate-fadeIn">
+            <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+            <span>&check; Settings saved and active across production environment!</span>
           </div>
         )}
 
@@ -69,25 +79,25 @@ export default function AdminSettingsPage() {
             </p>
 
             <div className="grid grid-cols-2 gap-3 pt-2">
-              <label
-                onClick={() => setRazorpayMode("test")}
+              <div
+                onClick={() => setSettings({ ...settings, razorpayMode: "test" })}
                 className={`p-3.5 rounded border cursor-pointer transition-colors ${
-                  razorpayMode === "test" ? "bg-primary-light/50 border-primary" : "bg-surface border-border"
+                  settings.razorpayMode === "test" ? "bg-primary-light/50 border-primary" : "bg-surface border-border hover:bg-slate-100"
                 }`}
               >
                 <div className="font-bold text-primary">Test / Sandbox Mode</div>
                 <div className="text-[11px] text-ink-secondary mt-0.5">Mock transactions for development &amp; staging</div>
-              </label>
+              </div>
 
-              <label
-                onClick={() => setRazorpayMode("live")}
+              <div
+                onClick={() => setSettings({ ...settings, razorpayMode: "live" })}
                 className={`p-3.5 rounded border cursor-pointer transition-colors ${
-                  razorpayMode === "live" ? "bg-primary-light/50 border-primary" : "bg-surface border-border"
+                  settings.razorpayMode === "live" ? "bg-primary-light/50 border-primary" : "bg-surface border-border hover:bg-slate-100"
                 }`}
               >
                 <div className="font-bold text-emerald-800">Production Live Mode</div>
                 <div className="text-[11px] text-ink-secondary mt-0.5">Settles live payments into Acorn Bank account</div>
-              </label>
+              </div>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
@@ -95,8 +105,8 @@ export default function AdminSettingsPage() {
                 <label className="block font-semibold text-ink mb-1">Razorpay Key ID</label>
                 <input
                   type="text"
-                  value={razorpayKeyId}
-                  onChange={(e) => setRazorpayKeyId(e.target.value)}
+                  value={settings.razorpayKeyId}
+                  onChange={(e) => setSettings({ ...settings, razorpayKeyId: e.target.value })}
                   className="w-full px-3 py-2 border border-border rounded font-mono"
                 />
               </div>
@@ -104,8 +114,8 @@ export default function AdminSettingsPage() {
                 <label className="block font-semibold text-ink mb-1">Razorpay Key Secret</label>
                 <input
                   type="password"
-                  value={razorpayKeySecret}
-                  onChange={(e) => setRazorpayKeySecret(e.target.value)}
+                  value={settings.razorpayKeySecretMasked}
+                  onChange={(e) => setSettings({ ...settings, razorpayKeySecretMasked: e.target.value })}
                   className="w-full px-3 py-2 border border-border rounded font-mono"
                 />
               </div>
@@ -123,8 +133,8 @@ export default function AdminSettingsPage() {
                 <label className="block font-semibold text-ink mb-1">SMTP Host</label>
                 <input
                   type="text"
-                  value={smtpHost}
-                  onChange={(e) => setSmtpHost(e.target.value)}
+                  value={settings.smtpHost}
+                  onChange={(e) => setSettings({ ...settings, smtpHost: e.target.value })}
                   className="w-full px-3 py-2 border border-border rounded font-mono"
                 />
               </div>
@@ -132,9 +142,9 @@ export default function AdminSettingsPage() {
                 <label className="block font-semibold text-ink mb-1">From Sender Address</label>
                 <input
                   type="email"
-                  value={smtpFrom}
-                  onChange={(e) => setSmtpFrom(e.target.value)}
-                  className="w-full px-3 py-2 border border-border rounded"
+                  value={settings.smtpFrom}
+                  onChange={(e) => setSettings({ ...settings, smtpFrom: e.target.value })}
+                  className="w-full px-3 py-2 border border-border rounded font-mono"
                 />
               </div>
             </div>
@@ -149,9 +159,9 @@ export default function AdminSettingsPage() {
               </div>
               <input
                 type="checkbox"
-                checked={maintenanceMode}
-                onChange={(e) => setMaintenanceMode(e.target.checked)}
-                className="w-5 h-5 text-primary rounded"
+                checked={settings.maintenanceMode}
+                onChange={(e) => setSettings({ ...settings, maintenanceMode: e.target.checked })}
+                className="w-5 h-5 text-primary rounded cursor-pointer"
               />
             </div>
 
@@ -159,23 +169,22 @@ export default function AdminSettingsPage() {
               <label className="block font-semibold text-ink mb-1">Default POSH Closed Case Retention Period (Years)</label>
               <input
                 type="number"
-                value={retentionYears}
-                onChange={(e) => setRetentionYears(e.target.value)}
-                className="w-full sm:w-48 px-3 py-2 border border-border rounded"
+                min="1"
+                max="10"
+                value={settings.retentionYears}
+                onChange={(e) => setSettings({ ...settings, retentionYears: e.target.value })}
+                className="w-32 px-3 py-2 border border-border rounded font-mono"
               />
-              <p className="text-[11px] text-ink-secondary mt-1">
-                Cases flagged for retention review after specified duration. Legal hold prevents automatic purge.
-              </p>
+              <span className="text-[11px] text-ink-secondary ml-2">Statutory guideline: Minimum 3 years after closure</span>
             </div>
           </div>
 
           <div className="pt-4 border-t border-border flex justify-end">
             <button
               type="submit"
-              className="px-6 py-2.5 bg-primary hover:bg-primary-hover text-white font-bold uppercase tracking-wider rounded shadow transition-colors flex items-center gap-2"
+              className="px-6 py-2.5 bg-primary hover:bg-primary-light text-white font-bold rounded shadow transition text-xs"
             >
-              <Save className="w-4 h-4" />
-              <span>Save System Settings</span>
+              Save Configuration
             </button>
           </div>
         </form>
@@ -183,4 +192,3 @@ export default function AdminSettingsPage() {
     </div>
   );
 }
-

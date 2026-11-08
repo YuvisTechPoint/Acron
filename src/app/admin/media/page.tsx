@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import {
   Image as ImageIcon,
@@ -12,99 +12,86 @@ import {
   Check,
   ArrowLeft,
   FileText,
-  Eye
+  Eye,
+  CheckCircle2,
+  X,
+  ExternalLink
 } from "lucide-react";
-
-interface MediaItem {
-  id: string;
-  name: string;
-  category: "PROFILE" | "BADGE" | "INSIGHT" | "DOCUMENT";
-  size: string;
-  dimensions: string;
-  url: string;
-  uploadedAt: string;
-}
-
-const INITIAL_MEDIA: MediaItem[] = [
-  {
-    id: "MED-001",
-    name: "adv-subhasish-mukherjee.jpg",
-    category: "PROFILE",
-    size: "240 KB",
-    dimensions: "800x1000",
-    url: "/media/profiles/adv-subhasish-mukherjee.jpg",
-    uploadedAt: "2026-10-15"
-  },
-  {
-    id: "MED-002",
-    name: "adv-debjani-sen.jpg",
-    category: "PROFILE",
-    size: "215 KB",
-    dimensions: "800x1000",
-    url: "/media/profiles/adv-debjani-sen.jpg",
-    uploadedAt: "2026-10-15"
-  },
-  {
-    id: "MED-003",
-    name: "acorn-legal-crest-gold.svg",
-    category: "BADGE",
-    size: "45 KB",
-    dimensions: "Vector",
-    url: "/media/branding/acorn-legal-crest-gold.svg",
-    uploadedAt: "2026-10-12"
-  },
-  {
-    id: "MED-004",
-    name: "posh-annual-report-statutory-spec.pdf",
-    category: "DOCUMENT",
-    size: "1.2 MB",
-    dimensions: "PDF 14 Pages",
-    url: "/media/docs/posh-annual-report-statutory-spec.pdf",
-    uploadedAt: "2026-10-20"
-  },
-  {
-    id: "MED-005",
-    name: "kolkata-high-court-heritage-facade.jpg",
-    category: "INSIGHT",
-    size: "480 KB",
-    dimensions: "1920x1080",
-    url: "/media/insights/kolkata-high-court-facade.jpg",
-    uploadedAt: "2026-10-25"
-  },
-  {
-    id: "MED-006",
-    name: "hero.jpg",
-    category: "INSIGHT",
-    size: "520 KB",
-    dimensions: "1920x1080",
-    url: "/images/hero.jpg",
-    uploadedAt: "2026-11-08"
-  },
-  {
-    id: "MED-007",
-    name: "posh.png",
-    category: "INSIGHT",
-    size: "1.4 MB",
-    dimensions: "1920x1080",
-    url: "/images/posh.png",
-    uploadedAt: "2026-11-08"
-  }
-];
+import { platformStore } from "@/lib/store";
+import { MediaVaultItem } from "@/lib/types";
 
 export default function AdminMediaLibraryPage() {
-  const [mediaList, setMediaList] = useState<MediaItem[]>(INITIAL_MEDIA);
+  const [mediaList, setMediaList] = useState<MediaVaultItem[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("all");
   const [copiedId, setCopiedId] = useState<string | null>(null);
+  const [showModal, setShowModal] = useState(false);
+  const [toastMsg, setToastMsg] = useState<string | null>(null);
+
+  const [formData, setFormData] = useState({
+    name: "",
+    category: "INSIGHT" as MediaVaultItem["category"],
+    size: "450 KB",
+    dimensions: "1920x1080",
+    url: "/images/hero.jpg",
+  });
+
+  const loadData = () => {
+    setMediaList(platformStore.getMediaVault());
+  };
+
+  useEffect(() => {
+    loadData();
+  }, []);
+
+  const triggerToast = (msg: string) => {
+    setToastMsg(msg);
+    setTimeout(() => setToastMsg(null), 3000);
+  };
 
   const handleCopy = (id: string, url: string) => {
     navigator.clipboard.writeText(url);
     setCopiedId(id);
+    triggerToast("Asset URL copied to clipboard!");
     setTimeout(() => setCopiedId(null), 1500);
   };
 
+  const handleCreate = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!formData.name || !formData.url) return;
+
+    platformStore.addMediaVaultItem({
+      name: formData.name,
+      category: formData.category,
+      size: formData.size,
+      dimensions: formData.dimensions,
+      url: formData.url,
+    });
+
+    triggerToast(`Added media asset: ${formData.name}`);
+    setShowModal(false);
+    setFormData({
+      name: "",
+      category: "INSIGHT",
+      size: "450 KB",
+      dimensions: "1920x1080",
+      url: "/images/hero.jpg",
+    });
+    loadData();
+  };
+
+  const handleDelete = (id: string, name: string) => {
+    if (confirm(`Are you sure you want to delete asset "${name}"?`)) {
+      platformStore.deleteMediaVaultItem(id);
+      triggerToast(`Removed asset ${name}`);
+      loadData();
+    }
+  };
+
   const filtered = mediaList.filter((m) => {
-    const matchesSearch = m.name.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesSearch =
+      m.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      m.url.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesCat = categoryFilter === "all" || m.category === categoryFilter;
     return matchesSearch && matchesCat;
   });
@@ -127,6 +114,14 @@ export default function AdminMediaLibraryPage() {
           </span>
         </div>
 
+        {/* Toast */}
+        {toastMsg && (
+          <div className="p-3 bg-emerald-50 border border-emerald-300 rounded text-xs text-emerald-900 font-semibold flex items-center gap-2 animate-fadeIn">
+            <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+            <span>{toastMsg}</span>
+          </div>
+        )}
+
         {/* Header */}
         <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-4 bg-white p-6 rounded-card border border-border shadow-sm">
           <div>
@@ -142,116 +137,220 @@ export default function AdminMediaLibraryPage() {
             </p>
           </div>
 
-          <label className="cursor-pointer inline-flex items-center gap-2 px-4 py-2 bg-primary hover:bg-primary-light text-white text-xs font-bold rounded transition shadow">
+          <button
+            onClick={() => setShowModal(true)}
+            className="inline-flex items-center gap-2 px-4 py-2 bg-primary hover:bg-primary-light text-white text-xs font-bold rounded transition shadow"
+          >
             <Upload className="w-3.5 h-3.5" />
-            <span>Upload New Asset</span>
-            <input
-              type="file"
-              className="hidden"
-              onChange={(e) => {
-                const file = e.target.files?.[0];
-                if (file) {
-                  const newMedia: MediaItem = {
-                    id: `MED-00${mediaList.length + 1}`,
-                    name: file.name,
-                    category: "INSIGHT",
-                    size: `${(file.size / 1024).toFixed(0)} KB`,
-                    dimensions: "Auto-detected",
-                    url: `/media/uploads/${file.name}`,
-                    uploadedAt: new Date().toISOString().split("T")[0]
-                  };
-                  setMediaList([newMedia, ...mediaList]);
-                }
-              }}
-            />
-          </label>
+            <span>Register New Asset</span>
+          </button>
         </div>
 
-        {/* Filter Bar */}
-        <div className="bg-white p-4 rounded-card border border-border shadow-sm flex flex-col sm:flex-row justify-between gap-3 items-center">
-          <div className="relative w-full sm:w-72">
-            <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+        {/* Search & Filter Bar */}
+        <div className="bg-white p-4 rounded-card border border-border shadow-sm flex flex-col sm:flex-row justify-between items-center gap-3 text-xs">
+          <div className="relative w-full sm:w-80">
+            <Search className="w-4 h-4 text-slate-400 absolute left-3 top-2.5" />
             <input
               type="text"
-              placeholder="Search filename..."
+              placeholder="Search assets by file name or path..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-9 pr-3 py-1.5 text-xs border border-border rounded w-full focus:outline-none focus:border-primary"
+              className="w-full pl-9 pr-3 py-1.5 border border-border rounded text-xs focus:outline-none focus:border-primary"
             />
           </div>
 
-          <select
-            value={categoryFilter}
-            onChange={(e) => setCategoryFilter(e.target.value)}
-            className="text-xs border border-border rounded px-3 py-1.5 bg-white text-slate-700 w-full sm:w-auto"
-          >
-            <option value="all">All Asset Categories</option>
-            <option value="PROFILE">Partner Profiles</option>
-            <option value="BADGE">Branding &amp; Badges</option>
-            <option value="INSIGHT">Article Covers</option>
-            <option value="DOCUMENT">PDF Documents</option>
-          </select>
+          <div className="flex items-center gap-2 w-full sm:w-auto">
+            <span className="text-slate-500 text-[11px]">Category:</span>
+            <select
+              value={categoryFilter}
+              onChange={(e) => setCategoryFilter(e.target.value)}
+              className="p-1.5 border border-border rounded text-xs bg-white text-slate-700"
+            >
+              <option value="all">All Media</option>
+              <option value="PROFILE">Partner Profiles</option>
+              <option value="INSIGHT">Article &amp; Hero Banners</option>
+              <option value="BADGE">Logos &amp; Crests</option>
+              <option value="DOCUMENT">Statutory PDFs</option>
+            </select>
+          </div>
         </div>
 
         {/* Media Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {filtered.map((item) => (
-            <div key={item.id} className="bg-white p-4 rounded-card border border-border shadow-sm space-y-3">
-              <div className="h-32 bg-slate-100 rounded flex items-center justify-center border border-slate-200">
-                {item.category === "DOCUMENT" ? (
-                  <FileText className="w-12 h-12 text-slate-400" />
-                ) : (
-                  <ImageIcon className="w-12 h-12 text-slate-400" />
-                )}
-              </div>
-
-              <div>
-                <div className="flex items-center justify-between">
-                  <span className="text-xs font-bold text-ink truncate max-w-[200px]" title={item.name}>
-                    {item.name}
-                  </span>
-                  <span className="text-[10px] font-semibold bg-slate-100 px-1.5 py-0.5 rounded text-slate-600">
+            <div
+              key={item.id}
+              className="bg-white rounded-card border border-border shadow-sm p-3.5 space-y-3 flex flex-col justify-between hover:shadow transition"
+            >
+              <div className="space-y-2">
+                <div className="h-32 bg-slate-100 rounded flex items-center justify-center overflow-hidden border border-border relative">
+                  {item.category === "DOCUMENT" ? (
+                    <FileText className="w-10 h-10 text-slate-400" />
+                  ) : item.category === "BADGE" ? (
+                    <ImageIcon className="w-10 h-10 text-gold" />
+                  ) : (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      src={item.url}
+                      alt={item.name}
+                      className="w-full h-full object-cover"
+                      onError={(e) => {
+                        (e.target as any).style.display = "none";
+                      }}
+                    />
+                  )}
+                  <span className="absolute top-2 left-2 text-[9px] font-bold uppercase tracking-wider bg-black/60 text-white px-1.5 py-0.5 rounded">
                     {item.category}
                   </span>
                 </div>
-                <div className="text-[11px] text-slate-500 mt-1 flex justify-between">
-                  <span>{item.dimensions}</span>
-                  <span>{item.size}</span>
+
+                <div>
+                  <div className="font-bold text-xs text-ink truncate" title={item.name}>
+                    {item.name}
+                  </div>
+                  <div className="text-[10px] text-slate-500 font-mono mt-0.5">
+                    {item.size} &bull; {item.dimensions}
+                  </div>
+                  <div className="text-[10px] text-primary font-mono truncate mt-0.5">
+                    {item.url}
+                  </div>
                 </div>
               </div>
 
-              <div className="pt-2 border-t border-slate-100 flex items-center justify-between text-xs">
+              <div className="flex items-center justify-between pt-2 border-t border-border text-xs">
                 <button
                   onClick={() => handleCopy(item.id, item.url)}
-                  className="px-2.5 py-1 bg-slate-50 hover:bg-slate-100 border border-border rounded text-[11px] font-medium text-slate-700 flex items-center gap-1"
+                  className="inline-flex items-center gap-1 text-slate-600 hover:text-primary transition font-semibold"
                 >
                   {copiedId === item.id ? (
                     <>
                       <Check className="w-3 h-3 text-emerald-600" />
-                      <span className="text-emerald-700 font-bold">Copied</span>
+                      <span className="text-emerald-600 text-[11px]">Copied</span>
                     </>
                   ) : (
                     <>
-                      <Copy className="w-3 h-3 text-slate-400" />
-                      <span>Copy URL</span>
+                      <Copy className="w-3 h-3" />
+                      <span className="text-[11px]">Copy URL</span>
                     </>
                   )}
                 </button>
 
                 <button
-                  onClick={() => setMediaList(mediaList.filter((m) => m.id !== item.id))}
-                  className="p-1 text-slate-400 hover:text-red-600 transition"
-                  title="Delete file"
+                  onClick={() => handleDelete(item.id, item.name)}
+                  className="text-slate-400 hover:text-red-600 p-1 transition rounded"
+                  title="Delete asset"
                 >
-                  <Trash2 className="w-4 h-4" />
+                  <Trash2 className="w-3.5 h-3.5" />
                 </button>
               </div>
             </div>
           ))}
+
+          {filtered.length === 0 && (
+            <div className="col-span-full py-12 text-center text-slate-500 bg-white rounded border border-border text-xs">
+              No media assets match your query.
+            </div>
+          )}
         </div>
+
+        {/* Modal */}
+        {showModal && (
+          <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">
+            <div className="bg-white rounded-card max-w-md w-full p-6 shadow-xl border border-border space-y-4 text-xs animate-fadeIn">
+              <div className="flex justify-between items-center pb-2 border-b border-border">
+                <h3 className="font-serif text-lg font-bold text-ink">Register Media Asset</h3>
+                <button
+                  onClick={() => setShowModal(false)}
+                  className="p-1 rounded text-slate-400 hover:text-ink"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+
+              <form onSubmit={handleCreate} className="space-y-3">
+                <div>
+                  <label className="font-bold text-slate-700 block mb-1">Asset Name / Title *</label>
+                  <input
+                    type="text"
+                    required
+                    value={formData.name}
+                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                    placeholder="e.g. kolkata-chambers-library.jpg"
+                    className="w-full p-2 border border-border rounded"
+                  />
+                </div>
+
+                <div className="grid grid-cols-2 gap-2">
+                  <div>
+                    <label className="font-bold text-slate-700 block mb-1">Asset Category</label>
+                    <select
+                      value={formData.category}
+                      onChange={(e) => setFormData({ ...formData, category: e.target.value as any })}
+                      className="w-full p-2 border border-border rounded bg-white"
+                    >
+                      <option value="INSIGHT">Insight / Hero Banner</option>
+                      <option value="PROFILE">Partner Profile</option>
+                      <option value="BADGE">Branding Crest / Logo</option>
+                      <option value="DOCUMENT">Statutory Document</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="font-bold text-slate-700 block mb-1">Approx Size</label>
+                    <input
+                      type="text"
+                      required
+                      value={formData.size}
+                      onChange={(e) => setFormData({ ...formData, size: e.target.value })}
+                      placeholder="e.g. 520 KB"
+                      className="w-full p-2 border border-border rounded font-mono"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="font-bold text-slate-700 block mb-1">Asset URL / Public Path *</label>
+                  <input
+                    type="text"
+                    required
+                    value={formData.url}
+                    onChange={(e) => setFormData({ ...formData, url: e.target.value })}
+                    placeholder="e.g. /images/hero.jpg or https://cdn..."
+                    className="w-full p-2 border border-border rounded font-mono"
+                  />
+                </div>
+
+                <div>
+                  <label className="font-bold text-slate-700 block mb-1">Dimensions</label>
+                  <input
+                    type="text"
+                    value={formData.dimensions}
+                    onChange={(e) => setFormData({ ...formData, dimensions: e.target.value })}
+                    placeholder="e.g. 1920x1080 or Vector"
+                    className="w-full p-2 border border-border rounded font-mono"
+                  />
+                </div>
+
+                <div className="flex justify-end gap-2 pt-3 border-t border-border">
+                  <button
+                    type="button"
+                    onClick={() => setShowModal(false)}
+                    className="px-4 py-2 border border-border text-slate-600 rounded hover:bg-slate-50"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    className="px-4 py-2 bg-primary text-white rounded font-bold hover:bg-primary-light transition"
+                  >
+                    Register Asset
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        )}
 
       </div>
     </div>
   );
 }
-
