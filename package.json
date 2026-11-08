@@ -1,11 +1,13 @@
 {
   "name": "acorn",
-  "version": "1.0",
+  "version": "3.0.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "start:standalone": "node .next/standalone/server.js",
+    "typecheck": "tsc --noEmit",
     "clean": "node -e \"fs.rmSync('.next', { recursive: true, force: true })\"",
     "lint": "next lint",
     "test:workflows": "node scripts/test-workflows.mjs",
