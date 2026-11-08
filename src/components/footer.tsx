@@ -87,18 +87,19 @@ export function Footer() {
 
             {/* Column 2: Practice Areas with Rollable Text (3 cols) */}
             <div className="lg:col-span-3">
-              <h4 className="font-sans text-[11px] font-semibold uppercase tracking-[0.18em] text-brass-400 mb-4 flex items-center gap-2">
-                <span className="w-3 h-[1px] bg-brass-500" />
-                <span>Practice Areas</span>
+              <h4 className="font-sans text-[11px] font-semibold uppercase tracking-[0.18em] text-brass-400 mb-4 flex items-center gap-1.5">
+                <span>01 / Practice Areas</span>
               </h4>
               <ul className="space-y-2.5 font-sans text-xs text-slate-300">
                 {dynamicPractices.slice(0, 6).map((pa) => (
                   <li key={pa.slug}>
                     <Link
                       href={`/services/${pa.slug}`}
-                      className="hover:text-brass-300 transition-colors inline-flex items-center gap-2 group"
+                      className="hover:text-brass-300 transition-colors inline-flex items-center gap-1.5 group"
                     >
-                      <span className="w-1 h-1 rounded-full bg-navy-600 group-hover:bg-brass-400 transition-colors shrink-0" />
+                      <span className="text-[10px] text-brass-400 font-sans group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform shrink-0">
+                        ↗
+                      </span>
                       <FooterRollText>{pa.title}</FooterRollText>
                     </Link>
                   </li>
@@ -108,43 +109,63 @@ export function Footer() {
 
             {/* Column 3: Chambers Portals with Rollable Text (2 cols) */}
             <div className="lg:col-span-2">
-              <h4 className="font-sans text-[11px] font-semibold uppercase tracking-[0.18em] text-brass-400 mb-4 flex items-center gap-2">
-                <span className="w-3 h-[1px] bg-brass-500" />
-                <span>Portals</span>
+              <h4 className="font-sans text-[11px] font-semibold uppercase tracking-[0.18em] text-brass-400 mb-4 flex items-center gap-1.5">
+                <span>02 / Portals</span>
               </h4>
               <ul className="space-y-2.5 font-sans text-xs text-slate-300">
                 <li>
-                  <Link href="/about" className="hover:text-brass-300 transition-colors inline-flex items-center group">
+                  <Link href="/about" className="hover:text-brass-300 transition-colors inline-flex items-center gap-1.5 group">
+                    <span className="text-[10px] text-brass-400 font-sans group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform shrink-0">
+                      ↗
+                    </span>
                     <FooterRollText>About Our Firm</FooterRollText>
                   </Link>
                 </li>
                 <li>
-                  <Link href="/services" className="hover:text-brass-300 transition-colors inline-flex items-center group">
+                  <Link href="/services" className="hover:text-brass-300 transition-colors inline-flex items-center gap-1.5 group">
+                    <span className="text-[10px] text-brass-400 font-sans group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform shrink-0">
+                      ↗
+                    </span>
                     <FooterRollText>Services Directory</FooterRollText>
                   </Link>
                 </li>
                 <li>
-                  <Link href="/posh" className="hover:text-brass-300 transition-colors inline-flex items-center group">
+                  <Link href="/posh" className="hover:text-brass-300 transition-colors inline-flex items-center gap-1.5 group">
+                    <span className="text-[10px] text-brass-400 font-sans group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform shrink-0">
+                      ↗
+                    </span>
                     <FooterRollText>POSH Act Hub</FooterRollText>
                   </Link>
                 </li>
                 <li>
-                  <Link href="/blog" className="hover:text-brass-300 transition-colors inline-flex items-center group">
+                  <Link href="/blog" className="hover:text-brass-300 transition-colors inline-flex items-center gap-1.5 group">
+                    <span className="text-[10px] text-brass-400 font-sans group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform shrink-0">
+                      ↗
+                    </span>
                     <FooterRollText>Insights &amp; Articles</FooterRollText>
                   </Link>
                 </li>
                 <li>
-                  <Link href="/faq" className="hover:text-brass-300 transition-colors inline-flex items-center group">
+                  <Link href="/faq" className="hover:text-brass-300 transition-colors inline-flex items-center gap-1.5 group">
+                    <span className="text-[10px] text-brass-400 font-sans group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform shrink-0">
+                      ↗
+                    </span>
                     <FooterRollText>Statutory Guidance</FooterRollText>
                   </Link>
                 </li>
                 <li>
-                  <Link href="/request-service" className="hover:text-brass-300 transition-colors inline-flex items-center group">
+                  <Link href="/request-service" className="hover:text-brass-300 transition-colors inline-flex items-center gap-1.5 group">
+                    <span className="text-[10px] text-brass-400 font-sans group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform shrink-0">
+                      ↗
+                    </span>
                     <FooterRollText>Consultation Intake</FooterRollText>
                   </Link>
                 </li>
                 <li>
-                  <Link href="/pay" className="hover:text-brass-300 transition-colors inline-flex items-center group">
+                  <Link href="/pay" className="hover:text-brass-300 transition-colors inline-flex items-center gap-1.5 group">
+                    <span className="text-[10px] text-brass-400 font-sans group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform shrink-0">
+                      ↗
+                    </span>
                     <FooterRollText>Online Settlement</FooterRollText>
                   </Link>
                 </li>
@@ -153,9 +174,8 @@ export function Footer() {
 
             {/* Column 4: Location & Contact (3 cols) */}
             <div className="lg:col-span-3">
-              <h4 className="font-sans text-[11px] font-semibold uppercase tracking-[0.18em] text-brass-400 mb-4 flex items-center gap-2">
-                <span className="w-3 h-[1px] bg-brass-500" />
-                <span>Chambers Location</span>
+              <h4 className="font-sans text-[11px] font-semibold uppercase tracking-[0.18em] text-brass-400 mb-4 flex items-center gap-1.5">
+                <span>03 / Chambers Location</span>
               </h4>
               <div className="space-y-3 font-sans text-xs text-slate-300">
                 <div className="flex items-start gap-2.5">
