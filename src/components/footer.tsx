@@ -196,18 +196,11 @@ export function Footer() {
       <div className="relative z-10 bg-[#050C17] pt-8 pb-6 px-4 sm:px-6 lg:px-8 text-center">
         
         {/* Radiant High-Intensity ACORN Watermark (Naturally visible to naked eyes) */}
-        <div className="w-full text-center pointer-events-none select-none overflow-hidden pb-4" aria-hidden="true">
+        <div className="w-full text-center pointer-events-none select-none overflow-hidden" aria-hidden="true">
           <span className="font-serif text-[clamp(4.5rem,13vw,10.5rem)] font-extrabold tracking-[0.14em] bg-gradient-to-b from-[#FFFDF9] via-[#EBD5AC] to-[#B08D4C] bg-clip-text text-transparent leading-none block select-none drop-shadow-[0_4px_24px_rgba(0,0,0,0.95)] [text-shadow:_0_2px_16px_rgba(201,160,89,0.35)]">
             ACORN
           </span>
         </div>
-
-        {/* Quiet, Clean Bar Council Regulatory Notice */}
-        <p className="text-[11px] font-sans text-slate-400 max-w-3xl mx-auto leading-relaxed">
-          <span className="text-brass-300 font-medium">Regulatory Notice:</span>{" "}
-          {siteConfig.disclaimer || "As per the rules of the Bar Council of India, law firms and legal practitioners are not permitted to solicit work or advertise. The information provided on this website is solely for informational purposes and does not constitute legal advice or create an advocate-client relationship."}
-        </p>
-
       </div>
 
       {/* ─────────────────────────────────────────────────────────────
