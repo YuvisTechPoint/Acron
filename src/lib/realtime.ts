@@ -12,11 +12,12 @@ import {
 } from "./types";
 
 /**
- * Universal Real-time Store Subscriber Hook
+ * Universal Real-time Store & Database Subscriber Hook
  * Listens to:
  * 1. Same-window CustomEvent ('acorn:store_update')
  * 2. Cross-tab BroadcastChannel ('acorn_realtime_sync')
- * 3. Native localStorage 'storage' event fallback
+ * 3. Server-Sent Events (SSE) directly from database ('/api/sync/stream')
+ * 4. Native localStorage 'storage' event fallback
  */
 export function useRealtimeStore<T>(key: string, getter: () => T): T {
   const [data, setData] = useState<T>(getter);
@@ -50,7 +51,18 @@ export function useRealtimeStore<T>(key: string, getter: () => T): T {
       } catch {}
     }
 
-    // 3. Fallback native storage event listener
+    // 3. Server-Sent Events (SSE) live database mutation stream
+    let es: EventSource | null = null;
+    if ("EventSource" in window) {
+      try {
+        es = new EventSource("/api/sync/stream");
+        es.addEventListener("mutation", () => {
+          refresh();
+        });
+      } catch {}
+    }
+
+    // 4. Fallback native storage event listener
     const handleStorage = (e: StorageEvent) => {
       if (!e.key || e.key === `acorn_${key}`) {
         refresh();
@@ -63,6 +75,9 @@ export function useRealtimeStore<T>(key: string, getter: () => T): T {
       window.removeEventListener("storage", handleStorage);
       if (bc) {
         bc.close();
+      }
+      if (es) {
+        es.close();
       }
     };
   }, [key, refresh]);
@@ -125,4 +140,3 @@ export function triggerRealtimeSync(key: string = "all") {
     } catch {}
   }
 }
-

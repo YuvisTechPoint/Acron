@@ -12,6 +12,7 @@ import {
   Scale,
   FileCheck,
   ArrowUp,
+  ChevronDown,
 } from "lucide-react";
 import { BRAND_CONFIG, PRACTICE_AREAS } from "@/lib/constants";
 import { FooterClock, FooterRollText } from "@/components/footer-roll-text";
@@ -21,6 +22,7 @@ export function Footer() {
   const pathname = usePathname();
   const siteConfig = useRealtimeSiteConfig();
   const customServices = useRealtimeServices();
+  const [isFolded, setIsFolded] = useState(false);
 
   const dynamicPractices = customServices.length > 0
     ? customServices.map((s) => ({
@@ -202,7 +204,7 @@ export function Footer() {
 
         <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-6 space-y-6">
           
-          {/* Statutory Disclosures & Regulatory Badges */}
+          {/* Statutory Disclosures Header & Regulatory Badges */}
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div className="space-y-1">
               <span className="font-sans text-[10px] font-semibold tracking-[0.2em] uppercase text-brass-400">
@@ -213,7 +215,7 @@ export function Footer() {
               </h3>
             </div>
 
-            {/* Regulatory Badges */}
+            {/* Regulatory Badges & Fold/Unfold Toggle */}
             <div className="flex flex-wrap items-center gap-2 text-[11px]">
               <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-btn bg-[#101F38] border border-brass-500/25 text-brass-300 shadow-sm">
                 <Scale className="w-3.5 h-3.5 text-brass-400" />
@@ -227,56 +229,86 @@ export function Footer() {
                 <FileCheck className="w-3.5 h-3.5 text-brass-400" />
                 <span>Client Trust Escrow</span>
               </span>
+
+              {/* Foldable Section Toggle (Fold/Unfold Statutory Disclosures) */}
+              <button
+                type="button"
+                onClick={() => setIsFolded((prev) => !prev)}
+                aria-expanded={!isFolded}
+                title={isFolded ? "Unfold chambers policies & statutory disclosures" : "Fold statutory section"}
+                className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-btn bg-[#142646] hover:bg-[#1a335e] border border-brass-400/40 text-brass-200 hover:text-white transition-all text-[11px] font-sans shadow-sm group focus:outline-none"
+              >
+                <span className="font-semibold tracking-wide">
+                  {isFolded ? "Unfold Disclosures" : "Fold Disclosures"}
+                </span>
+                <ChevronDown
+                  className={`w-3.5 h-3.5 text-brass-300 transition-transform duration-300 ${
+                    isFolded ? "rotate-180" : ""
+                  }`}
+                />
+              </button>
             </div>
           </div>
 
-          {/* Legal Navigation Links with Rollable Text */}
-          <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-xs text-slate-300 font-sans">
-            <Link href="/privacy" className="hover:text-brass-300 transition group inline-flex items-center">
-              <FooterRollText>Privacy Policy</FooterRollText>
-            </Link>
-            <span className="text-navy-700 select-none">&bull;</span>
-            <Link href="/terms" className="hover:text-brass-300 transition group inline-flex items-center">
-              <FooterRollText>Terms of Engagement</FooterRollText>
-            </Link>
-            <span className="text-navy-700 select-none">&bull;</span>
-            <Link href="/cookies" className="hover:text-brass-300 transition group inline-flex items-center">
-              <FooterRollText>Cookie Policy</FooterRollText>
-            </Link>
-            <span className="text-navy-700 select-none">&bull;</span>
-            <Link href="/refund-policy" className="hover:text-brass-300 transition group inline-flex items-center">
-              <FooterRollText>Refund Policy</FooterRollText>
-            </Link>
-            <span className="text-navy-700 select-none">&bull;</span>
-            <Link href="/disclaimer" className="hover:text-brass-300 transition group inline-flex items-center">
-              <FooterRollText>Bar Council Disclaimer</FooterRollText>
-            </Link>
-            <span className="text-navy-700 select-none">&bull;</span>
-            <Link href="/design-system" className="hover:text-brass-300 transition group inline-flex items-center">
-              <FooterRollText>Design System</FooterRollText>
-            </Link>
-            <span className="text-navy-700 select-none">&bull;</span>
-            <Link href="/verify" className="hover:text-brass-300 transition group inline-flex items-center">
-              <FooterRollText>Verification Portal</FooterRollText>
-            </Link>
-          </div>
-
-          {/* Bar Council Professional Disclaimer Box */}
-          <div className="bg-[#091528] p-4 rounded-card border border-navy-800 text-[11px] text-slate-300 leading-relaxed shadow-inner">
-            <p>
-              <strong className="text-brass-300 font-semibold">Regulatory Notice:</strong>{" "}
-              {siteConfig.disclaimer || "The information on this website is for general information only and does not constitute legal advice or create a lawyer-client relationship. Under the rules of the Bar Council of India, law firms and legal practitioners are not permitted to solicit work or advertise."}
-            </p>
-          </div>
-
-          {/* High-Intensity ACORN Watermark (Naturally visible to naked eyes) */}
+          {/* ─────────────────────────────────────────────────────────────
+              FOLDABLE STATUTORY DRAWER:
+              Collapses smoothly or unfolds fully with high-intensity ACORN text.
+             ───────────────────────────────────────────────────────────── */}
           <div
-            className="w-full text-center pointer-events-none select-none overflow-hidden pt-4 pb-2"
-            aria-hidden="true"
+            className={`transition-all duration-500 ease-in-out overflow-hidden space-y-6 ${
+              isFolded
+                ? "max-h-0 opacity-0 -translate-y-2 pointer-events-none"
+                : "max-h-[1200px] opacity-100 translate-y-0"
+            }`}
           >
-            <span className="font-serif text-[clamp(4.5rem,13vw,9.5rem)] font-extrabold tracking-[0.08em] text-white/35 leading-none block select-none drop-shadow-[0_2px_14px_rgba(0,0,0,0.8)] [text-shadow:_0_0_24px_rgba(201,160,89,0.2)]">
-              ACORN
-            </span>
+            {/* Legal Navigation Links with Rollable Text */}
+            <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-xs text-slate-300 font-sans pt-1">
+              <Link href="/privacy" className="hover:text-brass-300 transition group inline-flex items-center">
+                <FooterRollText>Privacy Policy</FooterRollText>
+              </Link>
+              <span className="text-navy-700 select-none">&bull;</span>
+              <Link href="/terms" className="hover:text-brass-300 transition group inline-flex items-center">
+                <FooterRollText>Terms of Engagement</FooterRollText>
+              </Link>
+              <span className="text-navy-700 select-none">&bull;</span>
+              <Link href="/cookies" className="hover:text-brass-300 transition group inline-flex items-center">
+                <FooterRollText>Cookie Policy</FooterRollText>
+              </Link>
+              <span className="text-navy-700 select-none">&bull;</span>
+              <Link href="/refund-policy" className="hover:text-brass-300 transition group inline-flex items-center">
+                <FooterRollText>Refund Policy</FooterRollText>
+              </Link>
+              <span className="text-navy-700 select-none">&bull;</span>
+              <Link href="/disclaimer" className="hover:text-brass-300 transition group inline-flex items-center">
+                <FooterRollText>Bar Council Disclaimer</FooterRollText>
+              </Link>
+              <span className="text-navy-700 select-none">&bull;</span>
+              <Link href="/design-system" className="hover:text-brass-300 transition group inline-flex items-center">
+                <FooterRollText>Design System</FooterRollText>
+              </Link>
+              <span className="text-navy-700 select-none">&bull;</span>
+              <Link href="/verify" className="hover:text-brass-300 transition group inline-flex items-center">
+                <FooterRollText>Verification Portal</FooterRollText>
+              </Link>
+            </div>
+
+            {/* Bar Council Professional Disclaimer Box */}
+            <div className="bg-[#091528] p-4 rounded-card border border-navy-800 text-[11px] text-slate-300 leading-relaxed shadow-inner">
+              <p>
+                <strong className="text-brass-300 font-semibold">Regulatory Notice:</strong>{" "}
+                {siteConfig.disclaimer || "The information on this website is for general information only and does not constitute legal advice or create a lawyer-client relationship. Under the rules of the Bar Council of India, law firms and legal practitioners are not permitted to solicit work or advertise."}
+              </p>
+            </div>
+
+            {/* High-Intensity ACORN Watermark (Naturally visible to naked eyes) */}
+            <div
+              className="w-full text-center pointer-events-none select-none overflow-hidden pt-4 pb-2"
+              aria-hidden="true"
+            >
+              <span className="font-serif text-[clamp(4.5rem,13vw,10.5rem)] font-extrabold tracking-[0.14em] bg-gradient-to-b from-[#FFFDF9] via-[#EBD5AC] to-[#B08D4C] bg-clip-text text-transparent leading-none block select-none drop-shadow-[0_4px_24px_rgba(0,0,0,0.95)] [text-shadow:_0_2px_16px_rgba(201,160,89,0.35)]">
+                ACORN
+              </span>
+            </div>
           </div>
 
         </div>

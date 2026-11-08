@@ -1,7 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
+import { db } from "@/lib/db";
 import { platformStore } from "@/lib/store";
 import { generateReferenceNumber } from "@/lib/utils";
 import { QuestionAnswer } from "@/lib/types";
+
+export const dynamic = "force-dynamic";
 
 // POST /api/qa - Submit a new question
 export async function POST(req: NextRequest) {
@@ -39,56 +42,60 @@ export async function POST(req: NextRequest) {
       updatedAt: new Date().toISOString()
     };
 
+    const saved = db.insertQuestion(newQuestion);
     platformStore.addQuestion(newQuestion);
-    platformStore.addAuditLog(
+    db.insertAuditLog(
       "QA_QUESTION_SUBMITTED",
-      body.email,
-      `New legal query ${referenceNumber} submitted for moderation.`
+      email,
+      `New legal query ${referenceNumber} saved in database for moderation.`
     );
 
     return NextResponse.json({
       success: true,
       referenceNumber,
-      message: "Your question has been received. Our legal research team will review and formulate a response.",
-      question: newQuestion
+      id: saved.id,
+      refNumber: referenceNumber,
+      message: "Your query has been recorded in the database and submitted for legal editorial review.",
+      estimatedTurnaround: "1-2 Business Days"
     }, { status: 201 });
   } catch (error: any) {
     return NextResponse.json(
-      { error: "Internal Server Error", details: error.message },
+      { error: "Failed to submit legal query", details: error.message },
       { status: 500 }
     );
   }
 }
 
-// GET /api/qa - List questions (published only by default)
+// GET /api/qa - Get published Q&As
 export async function GET(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url);
-    const statusParam = searchParams.get("status");
-    const categoryParam = searchParams.get("category");
+    const category = searchParams.get("category");
+    const search = searchParams.get("search");
 
-    let questions = platformStore.getQuestions();
+    let questions = db.getQuestions().filter((q) => q.isPublic || q.isPublished);
 
-    if (statusParam === "all") {
-      // Return all for admin
-    } else {
-      questions = questions.filter((q) => q.isPublic || q.isPublished || q.status === "published" || q.status === "answered");
+    if (category && category !== "all") {
+      questions = questions.filter((q) => q.category === category);
     }
 
-    if (categoryParam) {
-      questions = questions.filter((q) => q.category.toLowerCase() === categoryParam.toLowerCase());
+    if (search) {
+      const qLower = search.toLowerCase();
+      questions = questions.filter(
+        (q) => q.question.toLowerCase().includes(qLower) || (q.answer && q.answer.toLowerCase().includes(qLower))
+      );
     }
 
     return NextResponse.json({
       success: true,
       count: questions.length,
-      data: questions
+      questions,
+      database: "connected",
     });
   } catch (error: any) {
     return NextResponse.json(
-      { error: "Internal Server Error", details: error.message },
+      { error: "Failed to fetch legal questions", details: error.message },
       { status: 500 }
     );
   }
 }
-

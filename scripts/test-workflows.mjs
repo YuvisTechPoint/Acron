@@ -448,6 +448,30 @@ async function testWorkflows() {
     failed++;
   }
 
+  // 14. Test Persistent Database Engine & Live Sync Snapshot (/api/sync)
+  try {
+    const syncRes = await fetch(`${BASE_URL}/api/sync`);
+    const syncData = await syncRes.json();
+
+    const isDbSyncValid =
+      syncRes.status === 200 &&
+      syncData.success === true &&
+      syncData.database === "active" &&
+      Array.isArray(syncData.data?.services) &&
+      Array.isArray(syncData.data?.posts);
+
+    if (isDbSyncValid) {
+      console.log(`✔ [PASS] Persistent Database & Live Sync Engine: ACID store active, ${syncData.data.services.length} services & ${syncData.data.posts.length} posts loaded from disk`);
+      passed++;
+    } else {
+      console.error(`✖ [FAIL] Persistent Database Sync failed:`, syncData);
+      failed++;
+    }
+  } catch (err) {
+    console.error(`✖ [ERROR] Database Sync API: ${err.message}`);
+    failed++;
+  }
+
   console.log(`\nWorkflow test results: ${passed} passed, ${failed} failed.`);
   if (serverProc) {
     serverProc.kill();

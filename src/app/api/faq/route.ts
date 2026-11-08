@@ -1,44 +1,36 @@
 import { NextResponse } from "next/server";
+import { db } from "@/lib/db";
 import { platformStore } from "@/lib/store";
 
+export const dynamic = "force-dynamic";
+
 export async function GET() {
-  const faqs = platformStore.getFaqs();
-  return NextResponse.json({ success: true, faqs });
+  const faqList = db.getQuestions().filter((q) => q.isPublic);
+  return NextResponse.json({ success: true, faq: faqList });
 }
 
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    if (!body.question || !body.answer) {
-      return NextResponse.json({ error: "Question and answer are required" }, { status: 400 });
+    if (!body.question) {
+      return NextResponse.json({ error: "Question text is required" }, { status: 400 });
     }
-    let saved;
-    if (body.id) {
-      saved = platformStore.updateFaq(body.id, body);
-    } else {
-      saved = platformStore.addFaq(body);
-    }
+    const newQuestion = {
+      ...body,
+      id: `qa-${Date.now()}`,
+      refNumber: `ACN-QA-${new Date().getFullYear()}-${Math.floor(100000 + Math.random() * 900000)}`,
+      createdAt: new Date().toISOString(),
+      isPublic: true,
+      isPublished: true,
+    };
+    const saved = db.insertQuestion(newQuestion);
+    platformStore.addQuestion(newQuestion);
     return NextResponse.json({
       success: true,
-      message: "FAQ saved and synchronized in real-time",
+      message: "FAQ query saved to database and synchronized",
       faq: saved,
     });
   } catch (err: any) {
-    return NextResponse.json({ error: err.message || "Failed to save FAQ" }, { status: 500 });
+    return NextResponse.json({ error: err.message || "Failed to save question" }, { status: 500 });
   }
 }
-
-export async function DELETE(req: Request) {
-  try {
-    const { searchParams } = new URL(req.url);
-    const id = searchParams.get("id");
-    if (!id) {
-      return NextResponse.json({ error: "Missing FAQ id" }, { status: 400 });
-    }
-    platformStore.deleteFaq(id);
-    return NextResponse.json({ success: true, message: `FAQ ${id} deleted` });
-  } catch (err: any) {
-    return NextResponse.json({ error: err.message || "Failed to delete FAQ" }, { status: 500 });
-  }
-}
-

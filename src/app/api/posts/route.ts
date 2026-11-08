@@ -1,8 +1,11 @@
 import { NextResponse } from "next/server";
+import { db } from "@/lib/db";
 import { platformStore } from "@/lib/store";
 
+export const dynamic = "force-dynamic";
+
 export async function GET() {
-  const blogs = platformStore.getBlogs();
+  const blogs = db.getBlogPosts();
   return NextResponse.json({ success: true, blogs });
 }
 
@@ -14,14 +17,21 @@ export async function POST(req: Request) {
     }
     let saved;
     if (body.id) {
+      saved = db.updateBlogPost(body.id, body);
       platformStore.updateBlogPost(body.id, body);
-      saved = body;
     } else {
-      saved = platformStore.addBlogPost(body);
+      const newPost = {
+        ...body,
+        id: `post-${Date.now()}`,
+        slug: body.slug || body.title.toLowerCase().replace(/[^a-z0-9]+/g, "-"),
+        publishedAt: body.publishedAt || new Date().toISOString().split("T")[0],
+      };
+      saved = db.insertBlogPost(newPost);
+      platformStore.addBlogPost(newPost);
     }
     return NextResponse.json({
       success: true,
-      message: "Post saved and synchronized in real-time",
+      message: "Post saved to database and synchronized in real-time",
       post: saved,
     });
   } catch (err: any) {
@@ -36,8 +46,9 @@ export async function DELETE(req: Request) {
     if (!id) {
       return NextResponse.json({ error: "Missing post id" }, { status: 400 });
     }
+    db.deleteBlogPost(id);
     platformStore.deleteBlogPost(id);
-    return NextResponse.json({ success: true, message: `Post ${id} deleted` });
+    return NextResponse.json({ success: true, message: `Post ${id} deleted from database` });
   } catch (err: any) {
     return NextResponse.json({ error: err.message || "Failed to delete post" }, { status: 500 });
   }

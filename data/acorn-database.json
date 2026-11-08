@@ -1,0 +1,800 @@
+{
+  "version": "3.0.0",
+  "lastUpdated": "2026-11-08T19:45:51.560Z",
+  "siteConfig": {
+    "firmName": "ACORN",
+    "tagline": "Legal Consultants",
+    "brandTagline": "Where Legal Expertise Meets Strategic Excellence.",
+    "disclaimer": "As per the rules of the Bar Council of India, law firms and legal practitioners are not permitted to solicit work or advertise. The information on this website is solely for informational purposes.",
+    "primaryEmail": "contact@acornlegal.in",
+    "receptionPhone": "+91 (033) 2486-7700",
+    "addressLine1": "Suite 4B, Camac Court, 25 Camac Street",
+    "addressLine2": "Park Street District",
+    "city": "Kolkata",
+    "postalCode": "700016",
+    "state": "West Bengal",
+    "operatingHours": "Mon – Sat: 9:30 AM – 7:30 PM IST",
+    "heroHeadline": "Excellence in Law.",
+    "heroSubheadline": "Integrity in Practice.",
+    "heroDescription": "A specialized legal consultancy in Kolkata delivering thoughtful, precise, and result-oriented solutions for corporate governance, commercial contracts, regulatory affairs, and institutional integrity.",
+    "footerRollText": "Acorn Legal Consultants • Excellence in Law • Integrity in Practice • Calcutta High Court • POSH Act Advisory • Corporate Governance • Commercial Contracts • Arbitration & Mediation"
+  },
+  "services": [
+    {
+      "id": "srv-advisory",
+      "slug": "advisory",
+      "name": "Corporate Advisory & Regulatory Compliance",
+      "shortDesc": "Strategic counsel on corporate governance, Companies Act, SEBI mandates, and regulatory oversight.",
+      "description": "Comprehensive corporate advisory services ensuring statutory compliance and strategic risk management.",
+      "features": [
+        "Board Advisory & Governance Frameworks",
+        "Companies Act, 2013 Statutory Filings",
+        "FDI & FEMA Cross-Border Structuring",
+        "Regulatory Inspection Representation"
+      ],
+      "pricePaise": 4500000,
+      "turnaround": "3-5 Working Days",
+      "status": "active",
+      "showOnHomepage": true,
+      "order": 1
+    },
+    {
+      "id": "srv-contracts",
+      "slug": "legal-documentation",
+      "name": "Commercial Contracts & Documentation",
+      "shortDesc": "Precise drafting, vetting, and negotiation of bespoke commercial agreements and master service contracts.",
+      "description": "Rigorous contract lifecycle management safeguarding enterprise interests.",
+      "features": [
+        "Master Service & Vendor Agreements",
+        "Non-Disclosure & Intellectual Property Assignment",
+        "Shareholders & Joint Venture Agreements",
+        "Employment & Executive Service Contracts"
+      ],
+      "pricePaise": 3500000,
+      "turnaround": "2-4 Working Days",
+      "status": "active",
+      "showOnHomepage": true,
+      "order": 2
+    },
+    {
+      "id": "srv-dispute",
+      "slug": "dispute-resolution",
+      "name": "Dispute Resolution & Commercial Arbitration",
+      "shortDesc": "Pre-litigation strategy, statutory mediation, domestic arbitration, and high-stakes negotiation.",
+      "description": "Structured dispute resolution aimed at swift settlement while preserving commercial relationships.",
+      "features": [
+        "Arbitration & Conciliation Act Proceedings",
+        "Section 9 & Section 34 Court Applications",
+        "Commercial Contract Breach Settlement",
+        "Insolvency & Bankruptcy Code Representation"
+      ],
+      "pricePaise": 6500000,
+      "turnaround": "Immediate Priority",
+      "status": "active",
+      "showOnHomepage": true,
+      "order": 3
+    },
+    {
+      "id": "srv-posh",
+      "slug": "posh-compliance",
+      "name": "POSH Act 2013 Compliance & IC Advisory",
+      "shortDesc": "Complete statutory compliance, external IC membership, capacity training, and annual reporting desk.",
+      "description": "End-to-end statutory compliance under the Prevention of Sexual Harassment of Women at Workplace Act, 2013.",
+      "features": [
+        "Empanelled External Member Representation",
+        "90-Day Statutory Inquiry Adjudication",
+        "Annual Report Filing to District Officer",
+        "Confidential Workplace Grievance Audits"
+      ],
+      "pricePaise": 5000000,
+      "turnaround": "Annual Retainer / On-Demand",
+      "status": "active",
+      "showOnHomepage": true,
+      "order": 4
+    }
+  ],
+  "blogPosts": [
+    {
+      "id": "post-01",
+      "slug": "posh-annual-report-district-officer-west-bengal-guide",
+      "title": "Statutory Filing of POSH Annual Reports to the District Officer in West Bengal",
+      "excerpt": "A comprehensive practical guide on Section 21 statutory reporting obligations for corporate employers in Kolkata.",
+      "content": "Section 21 of the Sexual Harassment of Women at Workplace (Prevention, Prohibition and Redressal) Act, 2013 mandates that the Internal Committee shall in each calendar year prepare and submit an annual report to the employer and the District Officer.",
+      "author": "Adv. Debjani Sen",
+      "authorRole": "Senior Counsel & Emptied External Member",
+      "publishedAt": "2026-10-15",
+      "status": "published",
+      "tags": [
+        "POSH Act",
+        "Annual Compliance",
+        "Kolkata Jurisprudence"
+      ],
+      "readTimeMinutes": 6
+    },
+    {
+      "id": "post-02",
+      "slug": "remote-work-hybrid-workplace-posh-jurisdiction",
+      "title": "Extending POSH Act Jurisdiction to Hybrid Work & Virtual Communications",
+      "excerpt": "Navigating Slack, Zoom, and WhatsApp misconduct under the 'notional extension of workplace' doctrine.",
+      "content": "The definition of 'workplace' under Section 2(o) of the POSH Act has been judicially interpreted expansively by Indian High Courts to encompass any virtual or digital space arising out of or during the course of employment.",
+      "author": "Dr. Ananya Mukherjee",
+      "authorRole": "Senior Partner, Regulatory Practice",
+      "publishedAt": "2026-10-28",
+      "status": "published",
+      "tags": [
+        "Hybrid Workplace",
+        "Digital Harassment",
+        "Case Law Analysis"
+      ],
+      "readTimeMinutes": 8
+    },
+    {
+      "id": "post-03",
+      "slug": "real-estate-title-due-diligence-kolkata-rajarhat-wbrera",
+      "title": "Commercial Title Due Diligence & WBRERA Compliance in Rajarhat-New Town",
+      "excerpt": "Mitigating title defects, land ceiling sanctions, and municipal approvals in Bengal commercial transactions.",
+      "content": "Institutional investors and corporate acquirers of commercial real estate in greater Kolkata must conduct rigorous thirty-year title searches coupled with WBRERA statutory verification.",
+      "author": "Adv. Sourav Ganguly",
+      "authorRole": "Partner, Commercial & Property Law",
+      "publishedAt": "2026-11-02",
+      "status": "published",
+      "tags": [
+        "Real Estate",
+        "WBRERA",
+        "Title Search",
+        "Kolkata"
+      ],
+      "readTimeMinutes": 7
+    }
+  ],
+  "cases": [
+    {
+      "id": "CASE-1794167151533",
+      "caseNumber": "POSH-ORG-BCT-01-2026-5683",
+      "orgId": "org-bengal-tech",
+      "orgName": "Bengal Cloud Technologies Pvt Ltd",
+      "complainantCode": "CMP-9611",
+      "respondentCode": "RSP-9817",
+      "state": "SUBMITTED",
+      "priority": "NORMAL",
+      "filedAt": "2026-11-08T19:45:51.533Z",
+      "daysRemaining90": 90,
+      "allegations": [
+        "Automated workflow verification for IC case docket registration."
+      ],
+      "summary": "Automated workflow verification for IC case docket registration.",
+      "detailedStatement": "Automated workflow verification for IC case docket registration.",
+      "evidence": [],
+      "hearings": [],
+      "interimReliefs": [],
+      "presidingOfficerName": "Presiding Officer",
+      "externalMemberName": "Adv. Debjani Sen (Acorn Legal)"
+    },
+    {
+      "id": "CASE-1794167144189",
+      "caseNumber": "POSH-ORG-BCT-01-2026-4091",
+      "orgId": "org-bengal-tech",
+      "orgName": "Bengal Cloud Technologies Pvt Ltd",
+      "complainantCode": "CMP-5223",
+      "respondentCode": "RSP-2690",
+      "state": "SUBMITTED",
+      "priority": "NORMAL",
+      "filedAt": "2026-11-08T19:45:44.189Z",
+      "daysRemaining90": 90,
+      "allegations": [
+        "Automated workflow verification for IC case docket registration."
+      ],
+      "summary": "Automated workflow verification for IC case docket registration.",
+      "detailedStatement": "Automated workflow verification for IC case docket registration.",
+      "evidence": [],
+      "hearings": [],
+      "interimReliefs": [],
+      "presidingOfficerName": "Presiding Officer",
+      "externalMemberName": "Adv. Debjani Sen (Acorn Legal)"
+    },
+    {
+      "id": "CASE-1794167035505",
+      "caseNumber": "POSH-ORG-BCT-01-2026-1055",
+      "orgId": "org-bengal-tech",
+      "orgName": "Bengal Cloud Technologies Pvt Ltd",
+      "complainantCode": "CMP-3117",
+      "respondentCode": "RSP-2845",
+      "state": "SUBMITTED",
+      "priority": "NORMAL",
+      "filedAt": "2026-11-08T19:43:55.505Z",
+      "daysRemaining90": 90,
+      "allegations": [
+        "Automated workflow verification for IC case docket registration."
+      ],
+      "summary": "Automated workflow verification for IC case docket registration.",
+      "detailedStatement": "Automated workflow verification for IC case docket registration.",
+      "evidence": [],
+      "hearings": [],
+      "interimReliefs": [],
+      "presidingOfficerName": "Presiding Officer",
+      "externalMemberName": "Adv. Debjani Sen (Acorn Legal)"
+    },
+    {
+      "id": "ACN-POSH-2026-0041",
+      "caseNumber": "ACN-POSH-2026-0041",
+      "orgId": "org-bengal-tech",
+      "orgName": "Bengal Cloud Technologies Pvt Ltd",
+      "complainantName": "Executive Employee (Masked)",
+      "complainantEmail": "complainant.vault@org-bengal-tech.internal",
+      "complainantPhone": "+91 98300 XXXXX",
+      "respondentName": "Department Head (Engineering)",
+      "respondentEmail": "respondent.vault@org-bengal-tech.internal",
+      "respondentPhone": "+91 98311 XXXXX",
+      "incidentDates": [
+        "2026-09-12",
+        "2026-09-18"
+      ],
+      "incidentLocation": "Kolkata Development Centre & Microsoft Teams",
+      "natureOfHarassment": [
+        "verbal",
+        "electronic",
+        "hostile_work_environment"
+      ],
+      "state": "INQUIRY_IN_PROGRESS",
+      "filedAt": "2026-10-02T10:30:00.000Z",
+      "inquiryDeadline": "2026-12-31T23:59:59.000Z",
+      "limitationStatus": "WITHIN_LIMITATION",
+      "isAnonymous": false,
+      "summary": "Allegations of persistent inappropriate electronic messages via corporate messaging tools outside business hours accompanied by implied professional retaliation.",
+      "detailedStatement": "Encrypted under AES-256-GCM narrative vault. Access restricted strictly to Internal Committee quorum.",
+      "hearings": [
+        {
+          "id": "h-0041-01",
+          "hearingNumber": 1,
+          "scheduledDate": "2026-10-20",
+          "scheduledTime": "11:30 AM IST",
+          "locationOrLink": "In-Camera Confidential Hearing Chamber, Camac Street",
+          "attendees": [
+            "Dr. Ananya Mukherjee (PO)",
+            "Adv. Debjani Sen (External Member)",
+            "Complainant"
+          ],
+          "agenda": "Preliminary Examination of Complainant & Exhibit Identification",
+          "status": "completed",
+          "minutesSummary": "Complainant affirmed written statement under Section 11. Three electronic chat transcripts submitted as Exhibits A-1 through A-3."
+        },
+        {
+          "id": "h-0041-02",
+          "hearingNumber": 2,
+          "scheduledDate": "2026-11-15",
+          "scheduledTime": "02:30 PM IST",
+          "locationOrLink": "Virtual Hearing Room (WebRTC Secure)",
+          "attendees": [
+            "Dr. Ananya Mukherjee (PO)",
+            "Adv. Debjani Sen (External Member)",
+            "Respondent"
+          ],
+          "agenda": "Cross-Examination of Respondent & Defense Exhibit Verification",
+          "status": "scheduled"
+        }
+      ],
+      "evidence": [
+        {
+          "id": "ev-0041-01",
+          "caseId": "ACN-POSH-2026-0041",
+          "exhibitCode": "EX-01",
+          "title": "Export of Microsoft Teams Chat History (Certified under Section 65B)",
+          "fileType": "application/pdf",
+          "fileSizeKb": 1420,
+          "uploadedBy": "complainant",
+          "uploadedAt": "2026-10-02T11:00:00.000Z",
+          "sha256Hash": "6c5e7b2a9d8f1e3c4b5a6f7e8d9c0b1a2f3e4d5c6b7a8f9e0d1c2b3a4f5e6d7c",
+          "isRedacted": true,
+          "chainOfCustody": [
+            {
+              "timestamp": "2026-10-02T11:00:00Z",
+              "actor": "Complainant",
+              "action": "Uploaded digitally"
+            },
+            {
+              "timestamp": "2026-10-03T14:30:00Z",
+              "actor": "Presiding Officer",
+              "action": "Sealed & Admitted"
+            }
+          ]
+        }
+      ],
+      "interimReliefRequested": {
+        "requested": true,
+        "type": "transfer_respondent",
+        "details": "Transfer of reporting relationship during statutory inquiry to prevent interaction.",
+        "granted": true,
+        "grantedAt": "2026-10-05T12:00:00.000Z",
+        "status": "GRANTED"
+      }
+    },
+    {
+      "id": "ACN-POSH-2026-0038",
+      "caseNumber": "ACN-POSH-2026-0038",
+      "orgId": "org-apex-fin",
+      "orgName": "Apex Financial Advisory Services",
+      "complainantName": "Junior Associate (Masked)",
+      "complainantEmail": "associate@apexfin.internal",
+      "complainantPhone": "+91 98322 XXXXX",
+      "respondentName": "Vice President (Advisory)",
+      "respondentEmail": "vp@apexfin.internal",
+      "respondentPhone": "+91 98333 XXXXX",
+      "incidentDates": [
+        "2026-08-20"
+      ],
+      "incidentLocation": "Offsite Corporate Dinner, Park Street",
+      "natureOfHarassment": [
+        "physical",
+        "unwelcome_conduct"
+      ],
+      "state": "REPORT_SUBMITTED",
+      "filedAt": "2026-08-28T09:15:00.000Z",
+      "inquiryDeadline": "2026-11-26T23:59:59.000Z",
+      "limitationStatus": "WITHIN_LIMITATION",
+      "isAnonymous": false,
+      "summary": "Physical boundary violation during client celebration event.",
+      "detailedStatement": "Encrypted under AES-256-GCM. Section 13 inquiry report submitted to Employer with recommendation for written reprimand and compensation.",
+      "hearings": [],
+      "evidence": []
+    },
+    {
+      "id": "ACN-POSH-2026-0029",
+      "caseNumber": "ACN-POSH-2026-0029",
+      "orgId": "org-heritage-tea",
+      "orgName": "Heritage Bengal Tea & Plantations Ltd",
+      "complainantName": "Estate Executive (Masked)",
+      "complainantEmail": "estate@heritagetea.internal",
+      "complainantPhone": "+91 98344 XXXXX",
+      "respondentName": "Assistant General Manager",
+      "respondentEmail": "agm@heritagetea.internal",
+      "respondentPhone": "+91 98355 XXXXX",
+      "incidentDates": [
+        "2026-06-15"
+      ],
+      "incidentLocation": "Siliguri Regional Office",
+      "natureOfHarassment": [
+        "verbal"
+      ],
+      "state": "CLOSED",
+      "filedAt": "2026-06-25T11:45:00.000Z",
+      "inquiryDeadline": "2026-09-23T23:59:59.000Z",
+      "limitationStatus": "WITHIN_LIMITATION",
+      "isAnonymous": false,
+      "summary": "Inappropriate remarks resolved amicably through non-monetary Section 10 conciliation with formal unconditional apology.",
+      "detailedStatement": "Closed following compliance report under Section 10(4).",
+      "hearings": [],
+      "evidence": []
+    }
+  ],
+  "serviceRequests": [
+    {
+      "id": "SR-1794167151407",
+      "refNumber": "ACN-SR-2026-570698",
+      "referenceNumber": "ACN-SR-2026-570698",
+      "fullName": "Test Automated Client",
+      "name": "Test Automated Client",
+      "email": "autoclient@testacorn.com",
+      "phone": "+91 98300 99999",
+      "organization": "",
+      "serviceCategory": "corporate_commercial",
+      "practiceArea": "corporate_commercial",
+      "subject": "Automated Verification Test Intake",
+      "description": "Testing matter submission, validation, and reference code generation.",
+      "status": "NEW",
+      "createdAt": "2026-11-08T19:45:51.407Z",
+      "updatedAt": "2026-11-08T19:45:51.407Z",
+      "urgency": "standard",
+      "preferredChannel": "phone",
+      "preferredMode": "ONLINE_VC"
+    },
+    {
+      "id": "SR-1794167144062",
+      "refNumber": "ACN-SR-2026-840616",
+      "referenceNumber": "ACN-SR-2026-840616",
+      "fullName": "Test Automated Client",
+      "name": "Test Automated Client",
+      "email": "autoclient@testacorn.com",
+      "phone": "+91 98300 99999",
+      "organization": "",
+      "serviceCategory": "corporate_commercial",
+      "practiceArea": "corporate_commercial",
+      "subject": "Automated Verification Test Intake",
+      "description": "Testing matter submission, validation, and reference code generation.",
+      "status": "NEW",
+      "createdAt": "2026-11-08T19:45:44.062Z",
+      "updatedAt": "2026-11-08T19:45:44.062Z",
+      "urgency": "standard",
+      "preferredChannel": "phone",
+      "preferredMode": "ONLINE_VC"
+    },
+    {
+      "id": "SR-1794167034977",
+      "refNumber": "ACN-SR-2026-449154",
+      "referenceNumber": "ACN-SR-2026-449154",
+      "fullName": "Test Automated Client",
+      "name": "Test Automated Client",
+      "email": "autoclient@testacorn.com",
+      "phone": "+91 98300 99999",
+      "organization": "",
+      "serviceCategory": "corporate_commercial",
+      "practiceArea": "corporate_commercial",
+      "subject": "Automated Verification Test Intake",
+      "description": "Testing matter submission, validation, and reference code generation.",
+      "status": "NEW",
+      "createdAt": "2026-11-08T19:43:54.977Z",
+      "updatedAt": "2026-11-08T19:43:54.977Z",
+      "urgency": "standard",
+      "preferredChannel": "phone",
+      "preferredMode": "ONLINE_VC"
+    },
+    {
+      "id": "SR-1731110000001",
+      "refNumber": "ACN-SR-2026-104921",
+      "referenceNumber": "ACN-SR-2026-104921",
+      "fullName": "Priya Mukherjee",
+      "name": "Priya Mukherjee",
+      "email": "p.mukherjee@tartanventures.com",
+      "phone": "+91 98301 23456",
+      "organization": "Tartan Ventures LLP",
+      "preferredChannel": "email",
+      "preferredMode": "ONLINE_VC",
+      "serviceCategory": "corporate_advisory",
+      "practiceArea": "Corporate Advisory",
+      "subject": "Cross-Border FDI Compliance & Share Subscription Vetting",
+      "description": "We are closing an institutional seed round from Singapore investors and require FDI reporting and RBI filings.",
+      "status": "NEW",
+      "createdAt": "2026-11-05T14:20:00.000Z",
+      "updatedAt": "2026-11-05T14:20:00.000Z",
+      "urgency": "urgent"
+    }
+  ],
+  "questions": [
+    {
+      "id": "QA-1794167151467",
+      "refNumber": "ACN-QA-2026-160812",
+      "referenceNumber": "ACN-QA-2026-160812",
+      "authorName": "Ananya Mukherjee",
+      "authorEmail": "ananya@example.com",
+      "askedByName": "Ananya Mukherjee",
+      "askedByEmail": "ananya@example.com",
+      "question": "Is an external member strictly required in the Internal Committee if our workplace has fewer than 20 employees?",
+      "category": "posh_compliance",
+      "status": "pending_review",
+      "isPublic": false,
+      "isPublished": false,
+      "views": 0,
+      "upvotes": 0,
+      "createdAt": "2026-11-08T19:45:51.467Z",
+      "updatedAt": "2026-11-08T19:45:51.467Z"
+    },
+    {
+      "id": "QA-1794167144129",
+      "refNumber": "ACN-QA-2026-844573",
+      "referenceNumber": "ACN-QA-2026-844573",
+      "authorName": "Ananya Mukherjee",
+      "authorEmail": "ananya@example.com",
+      "askedByName": "Ananya Mukherjee",
+      "askedByEmail": "ananya@example.com",
+      "question": "Is an external member strictly required in the Internal Committee if our workplace has fewer than 20 employees?",
+      "category": "posh_compliance",
+      "status": "pending_review",
+      "isPublic": false,
+      "isPublished": false,
+      "views": 0,
+      "upvotes": 0,
+      "createdAt": "2026-11-08T19:45:44.129Z",
+      "updatedAt": "2026-11-08T19:45:44.129Z"
+    },
+    {
+      "id": "QA-1794167035257",
+      "refNumber": "ACN-QA-2026-633745",
+      "referenceNumber": "ACN-QA-2026-633745",
+      "authorName": "Ananya Mukherjee",
+      "authorEmail": "ananya@example.com",
+      "askedByName": "Ananya Mukherjee",
+      "askedByEmail": "ananya@example.com",
+      "question": "Is an external member strictly required in the Internal Committee if our workplace has fewer than 20 employees?",
+      "category": "posh_compliance",
+      "status": "pending_review",
+      "isPublic": false,
+      "isPublished": false,
+      "views": 0,
+      "upvotes": 0,
+      "createdAt": "2026-11-08T19:43:55.257Z",
+      "updatedAt": "2026-11-08T19:43:55.257Z"
+    },
+    {
+      "id": "QA-1731110000001",
+      "refNumber": "ACN-QA-2026-449102",
+      "referenceNumber": "ACN-QA-2026-449102",
+      "authorName": "Rohan Sengupta",
+      "authorEmail": "rohan.s@fintechkolkata.io",
+      "askedByName": "Rohan Sengupta",
+      "askedByEmail": "rohan.s@fintechkolkata.io",
+      "question": "Can an employee file a POSH complaint more than 90 days after the incident if they were on certified medical leave?",
+      "category": "posh_compliance",
+      "status": "answered",
+      "isPublic": true,
+      "isPublished": true,
+      "answer": "Under Section 9(1) of the POSH Act, the primary limitation period is 3 months. However, the proviso grants the Internal Committee statutory discretion to condone a delay of up to an additional 3 months (total 6 months / 180 days) upon recording satisfaction that certified medical incapacitation prevented timely filing.",
+      "answeredBy": "Adv. Debjani Sen",
+      "views": 312,
+      "upvotes": 48,
+      "createdAt": "2026-10-10T16:00:00.000Z",
+      "updatedAt": "2026-10-11T11:00:00.000Z"
+    }
+  ],
+  "organizations": [
+    {
+      "id": "org-bengal-tech",
+      "name": "Bengal Cloud Technologies Pvt Ltd",
+      "code": "ORG-BCT-01",
+      "cin": "U72200WB2020PTC239811",
+      "industry": "Information Technology",
+      "employeeCount": 420,
+      "headcount": 420,
+      "address": "DLF IT Park, Tower 2, Sector V, Salt Lake, Kolkata 700091",
+      "primaryContactName": "Sumantra Bose",
+      "primaryContactEmail": "sumantra.bose@bengalcloud.in",
+      "primaryContactPhone": "+91 (033) 4022-9000",
+      "tier": "Enterprise",
+      "status": "active",
+      "retainerActive": true,
+      "onboardedAt": "2024-03-01"
+    },
+    {
+      "id": "org-apex-fin",
+      "name": "Apex Financial Advisory Services",
+      "code": "ORG-AFA-02",
+      "cin": "U67190WB2018PTC221908",
+      "industry": "Banking & Financial Services",
+      "employeeCount": 165,
+      "headcount": 165,
+      "address": "Avani Signature, 91A Chowringhee Road, Kolkata 700020",
+      "primaryContactName": "Indrani Lahiri",
+      "primaryContactEmail": "indrani.lahiri@apexfin.in",
+      "primaryContactPhone": "+91 (033) 2289-4400",
+      "tier": "Professional",
+      "status": "active",
+      "retainerActive": true,
+      "onboardedAt": "2024-06-15"
+    }
+  ],
+  "users": [
+    {
+      "id": "usr-admin-01",
+      "name": "Adv. Debjani Sen",
+      "email": "debjani.sen@acornlegal.in",
+      "roles": [
+        "super_admin",
+        "legal_consultant",
+        "posh_admin"
+      ],
+      "status": "active",
+      "mfaEnabled": true,
+      "locale": "en",
+      "createdAt": "2024-01-01T00:00:00.000Z"
+    },
+    {
+      "id": "usr-admin-02",
+      "name": "Dr. Ananya Mukherjee",
+      "email": "ananya.mukherjee@acornlegal.in",
+      "roles": [
+        "admin",
+        "legal_consultant",
+        "ic_presiding_officer"
+      ],
+      "status": "active",
+      "mfaEnabled": true,
+      "locale": "en",
+      "createdAt": "2024-01-01T00:00:00.000Z"
+    }
+  ],
+  "auditLogs": [
+    {
+      "id": "audit-1794167151533-kks54",
+      "orgId": "org-bengal-tech",
+      "actor": "CMP-9611",
+      "actorRole": "super_admin",
+      "action": "POSH_INTAKE_SUBMITTED",
+      "entityType": "system",
+      "entityId": "sys-01",
+      "timestamp": "2026-11-08T19:45:51.533Z",
+      "details": "New confidential inquiry docket POSH-ORG-BCT-01-2026-5683 initiated in database.",
+      "ipAddress": "127.0.0.1",
+      "prevHash": "cc93e93a03cce283d90e178125cab62503dc22fe83f6a0e9115466a5ad245621",
+      "hash": "99906d510c37b650bf16b2c7380f35b79fcf12c11ee87c46fea420c4c01dbaff"
+    },
+    {
+      "id": "audit-1794167151467-f0shw",
+      "orgId": "SYSTEM",
+      "actor": "ananya@example.com",
+      "actorRole": "super_admin",
+      "action": "QA_QUESTION_SUBMITTED",
+      "entityType": "system",
+      "entityId": "sys-01",
+      "timestamp": "2026-11-08T19:45:51.467Z",
+      "details": "New legal query ACN-QA-2026-160812 saved in database for moderation.",
+      "ipAddress": "127.0.0.1",
+      "prevHash": "48ba05ff072eb80c29675d3cc3993f4f10cb08bf75bd5bb56d923d44509283d3",
+      "hash": "cc93e93a03cce283d90e178125cab62503dc22fe83f6a0e9115466a5ad245621"
+    },
+    {
+      "id": "audit-1794167151407-f2kng",
+      "orgId": "SYSTEM",
+      "actor": "autoclient@testacorn.com",
+      "actorRole": "super_admin",
+      "action": "SERVICE_REQUEST_SUBMITTED",
+      "entityType": "system",
+      "entityId": "sys-01",
+      "timestamp": "2026-11-08T19:45:51.407Z",
+      "details": "New service request ACN-SR-2026-570698 saved in database for practice area corporate_commercial",
+      "ipAddress": "127.0.0.1",
+      "prevHash": "dbb563d0aefbc52ad2a8e7d2e72f9ad1257526af1ee02e007e1c782c384b9bf3",
+      "hash": "48ba05ff072eb80c29675d3cc3993f4f10cb08bf75bd5bb56d923d44509283d3"
+    },
+    {
+      "id": "audit-1794167144189-4vo9o",
+      "orgId": "org-bengal-tech",
+      "actor": "CMP-5223",
+      "actorRole": "super_admin",
+      "action": "POSH_INTAKE_SUBMITTED",
+      "entityType": "system",
+      "entityId": "sys-01",
+      "timestamp": "2026-11-08T19:45:44.189Z",
+      "details": "New confidential inquiry docket POSH-ORG-BCT-01-2026-4091 initiated in database.",
+      "ipAddress": "127.0.0.1",
+      "prevHash": "7be5e891b3aee95eef4864b0fd5dc3e34268822c25187a49f3a9fd42080fd4cf",
+      "hash": "dbb563d0aefbc52ad2a8e7d2e72f9ad1257526af1ee02e007e1c782c384b9bf3"
+    },
+    {
+      "id": "audit-1794167144130-zrjkv",
+      "orgId": "SYSTEM",
+      "actor": "ananya@example.com",
+      "actorRole": "super_admin",
+      "action": "QA_QUESTION_SUBMITTED",
+      "entityType": "system",
+      "entityId": "sys-01",
+      "timestamp": "2026-11-08T19:45:44.130Z",
+      "details": "New legal query ACN-QA-2026-844573 saved in database for moderation.",
+      "ipAddress": "127.0.0.1",
+      "prevHash": "640b72a07527d7284f7a332918a2cbc95501cfa4b13982544bfe89b9b5fd6d8a",
+      "hash": "7be5e891b3aee95eef4864b0fd5dc3e34268822c25187a49f3a9fd42080fd4cf"
+    },
+    {
+      "id": "audit-1794167144064-2rtob",
+      "orgId": "SYSTEM",
+      "actor": "autoclient@testacorn.com",
+      "actorRole": "super_admin",
+      "action": "SERVICE_REQUEST_SUBMITTED",
+      "entityType": "system",
+      "entityId": "sys-01",
+      "timestamp": "2026-11-08T19:45:44.064Z",
+      "details": "New service request ACN-SR-2026-840616 saved in database for practice area corporate_commercial",
+      "ipAddress": "127.0.0.1",
+      "prevHash": "9331b4b51fcd3684d1606ad59e3353ef7db7c475b1856e0ea52ab8fa81189c93",
+      "hash": "640b72a07527d7284f7a332918a2cbc95501cfa4b13982544bfe89b9b5fd6d8a"
+    },
+    {
+      "id": "audit-1794167035506-ovgng",
+      "orgId": "org-bengal-tech",
+      "actor": "CMP-3117",
+      "actorRole": "super_admin",
+      "action": "POSH_INTAKE_SUBMITTED",
+      "entityType": "system",
+      "entityId": "sys-01",
+      "timestamp": "2026-11-08T19:43:55.506Z",
+      "details": "New confidential inquiry docket POSH-ORG-BCT-01-2026-1055 initiated in database.",
+      "ipAddress": "127.0.0.1",
+      "prevHash": "5d5ce5216b8ede0bac79061a82b8e7603d659bb74deacf6045bd943fe87384cb",
+      "hash": "9331b4b51fcd3684d1606ad59e3353ef7db7c475b1856e0ea52ab8fa81189c93"
+    },
+    {
+      "id": "audit-1794167035257-a9dht",
+      "orgId": "SYSTEM",
+      "actor": "ananya@example.com",
+      "actorRole": "super_admin",
+      "action": "QA_QUESTION_SUBMITTED",
+      "entityType": "system",
+      "entityId": "sys-01",
+      "timestamp": "2026-11-08T19:43:55.257Z",
+      "details": "New legal query ACN-QA-2026-633745 saved in database for moderation.",
+      "ipAddress": "127.0.0.1",
+      "prevHash": "4df20853f08d14812260e755a1115a4cfa48d20df80c2cc6bb044eab4dc668a2",
+      "hash": "5d5ce5216b8ede0bac79061a82b8e7603d659bb74deacf6045bd943fe87384cb"
+    },
+    {
+      "id": "audit-1794167035005-buy8c",
+      "orgId": "SYSTEM",
+      "actor": "autoclient@testacorn.com",
+      "actorRole": "super_admin",
+      "action": "SERVICE_REQUEST_SUBMITTED",
+      "entityType": "system",
+      "entityId": "sys-01",
+      "timestamp": "2026-11-08T19:43:55.005Z",
+      "details": "New service request ACN-SR-2026-449154 saved in database for practice area corporate_commercial",
+      "ipAddress": "127.0.0.1",
+      "prevHash": "8f4a3bc7e9012d4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a",
+      "hash": "4df20853f08d14812260e755a1115a4cfa48d20df80c2cc6bb044eab4dc668a2"
+    },
+    {
+      "id": "audit-000",
+      "orgId": "SYSTEM",
+      "timestamp": "2026-11-08T00:00:00.000Z",
+      "actor": "SYSTEM",
+      "action": "GENESIS_INITIALIZATION",
+      "details": "Acorn Legal Platform production database initialized with Bar Council & POSH Section 16 compliance baseline.",
+      "ipAddress": "127.0.0.1",
+      "prevHash": "0000000000000000000000000000000000000000000000000000000000000000",
+      "hash": "8f4a3bc7e9012d4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a"
+    }
+  ],
+  "signatures": [
+    {
+      "id": "sig-001",
+      "documentType": "IC_ANNUAL_REPORT_2026",
+      "caseId": "ACN-POSH-2026-0041",
+      "orgId": "org-bengal-tech",
+      "signerName": "Dr. Ananya Mukherjee",
+      "signerRole": "Presiding Officer",
+      "sha256Seal": "8f4a3bc7e9012d4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a",
+      "timestamp": "2026-11-01T12:00:00Z",
+      "verified": true
+    }
+  ],
+  "auditPacks": [
+    {
+      "id": "pack-bct-2026",
+      "orgCode": "ORG-BCT-01",
+      "financialYear": "2025-2026",
+      "generatedAt": "2026-11-01T10:00:00Z",
+      "sha256Seal": "4b22c7a91e5d8b3f2a1c0d9e8f7a6b5c4d3e2f1a0b9c8d7e6f5a4b3c2d1e0f9a",
+      "totalDockets": 1,
+      "quorumComplianceRate": 100,
+      "limitationComplianceRate": 100,
+      "downloadUrl": "/api/org/audit-packs/download?code=ORG-BCT-01"
+    }
+  ],
+  "connectors": [
+    {
+      "id": "conn-hr-01",
+      "orgId": "org-bengal-tech",
+      "provider": "Darwinbox HRMS",
+      "type": "SCIM_DIRECTORY",
+      "status": "connected",
+      "lastSyncAt": "2026-11-08T04:00:00Z",
+      "syncCount": 420
+    }
+  ],
+  "subscriptions": [
+    {
+      "id": "sub-bct",
+      "orgId": "org-bengal-tech",
+      "planName": "Enterprise IC Retainer",
+      "monthlyPaise": 2500000,
+      "status": "active",
+      "currentPeriodEnd": "2027-02-28"
+    }
+  ],
+  "earlyWarnings": [
+    {
+      "id": "ew-01",
+      "orgId": "org-bengal-tech",
+      "indicator": "Off-Hours Virtual Communication Spike",
+      "severity": "low",
+      "detectedAt": "2026-11-02",
+      "recommendedAction": "Issue statutory policy reminder on digital communication etiquette."
+    }
+  ],
+  "benchmarks": [
+    {
+      "id": "bm-it-sector",
+      "industry": "Information Technology",
+      "cohortSize": 24,
+      "avgResolutionDays": 48,
+      "conciliationRate": 35,
+      "trainingCoveragePercent": 96,
+      "period": "2025-2026"
+    }
+  ]
+}

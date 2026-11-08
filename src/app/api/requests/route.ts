@@ -1,7 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
+import { db } from "@/lib/db";
 import { platformStore } from "@/lib/store";
 import { generateReferenceNumber } from "@/lib/utils";
 import { ServiceRequest } from "@/lib/types";
+
+export const dynamic = "force-dynamic";
 
 // POST /api/requests - Submit new legal service request
 export async function POST(req: NextRequest) {
@@ -42,41 +45,44 @@ export async function POST(req: NextRequest) {
       preferredMode: body.preferredMode || "ONLINE_VC",
     };
 
+    const saved = db.insertServiceRequest(newRequest);
     platformStore.addServiceRequest(newRequest);
-    platformStore.addAuditLog(
+    db.insertAuditLog(
       "SERVICE_REQUEST_SUBMITTED",
       body.email,
-      `New service request ${referenceNumber} received for practice area ${body.practiceArea}`
+      `New service request ${referenceNumber} saved in database for practice area ${practiceArea}`
     );
 
     return NextResponse.json({
       success: true,
       referenceNumber,
-      message: "Your legal service request has been registered with Acorn Legal Consultants.",
-      request: newRequest
+      id: saved.id,
+      refNumber: referenceNumber,
+      message: "Your consultation request has been successfully recorded in the chambers database.",
+      disclaimer: "Under Bar Council of India rules, submission of this request does not establish an advocate-client relationship."
     }, { status: 201 });
   } catch (error: any) {
     return NextResponse.json(
-      { error: "Internal Server Error", details: error.message },
+      { error: "Failed to process service request", details: error.message },
       { status: 500 }
     );
   }
 }
 
-// GET /api/requests - List all service requests (Admin)
+// GET /api/requests - List service requests
 export async function GET(req: NextRequest) {
   try {
-    const requests = platformStore.getServiceRequests();
+    const requests = db.getServiceRequests();
     return NextResponse.json({
       success: true,
       count: requests.length,
-      data: requests
+      requests,
+      database: "connected",
     });
   } catch (error: any) {
     return NextResponse.json(
-      { error: "Internal Server Error", details: error.message },
+      { error: "Failed to fetch service requests", details: error.message },
       { status: 500 }
     );
   }
 }
-
