@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
@@ -8,11 +8,9 @@ import {
   Phone,
   Mail,
   Clock,
-  ShieldCheck,
-  Scale,
-  FileCheck,
   ArrowUp,
-  ChevronDown,
+  Scale,
+  ShieldCheck,
 } from "lucide-react";
 import { BRAND_CONFIG, PRACTICE_AREAS } from "@/lib/constants";
 import { FooterClock, FooterRollText } from "@/components/footer-roll-text";
@@ -22,14 +20,14 @@ export function Footer() {
   const pathname = usePathname();
   const siteConfig = useRealtimeSiteConfig();
   const customServices = useRealtimeServices();
-  const [isFolded, setIsFolded] = useState(false);
 
-  const dynamicPractices = customServices.length > 0
-    ? customServices.map((s) => ({
-        slug: s.name.toLowerCase().replace(/[^a-z0-9]+/g, "-"),
-        title: s.name,
-      }))
-    : PRACTICE_AREAS;
+  const dynamicPractices =
+    customServices.length > 0
+      ? customServices.map((s) => ({
+          slug: s.name.toLowerCase().replace(/[^a-z0-9]+/g, "-"),
+          title: s.name,
+        }))
+      : PRACTICE_AREAS;
 
   // Suppress footer on administrative and console workspaces
   const isAdminOrConsole =
@@ -46,17 +44,15 @@ export function Footer() {
   };
 
   return (
-    <footer className="relative bg-ink-950 text-white border-t border-navy-800/80">
+    <footer className="relative bg-[#070E1A] text-white border-t border-navy-800/80">
       
       {/* ─────────────────────────────────────────────────────────────
-          1. UPPER SECTION: CHAMBERS DIRECTORY (COLLIDABLE OVER LOWER BASE)
-          Rolls and scrolls smoothly in document flow above the static lower section,
-          colliding and docking precisely at the divider line.
+          1. UPPER SECTION: CHAMBERS DIRECTORY
+          Clean, expansive, and fully scrollable all the way down.
          ───────────────────────────────────────────────────────────── */}
-      <div className="relative z-20 bg-ink-950 border-b border-brass-500/30 shadow-[0_20px_45px_rgba(0,0,0,0.85)]">
-        <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 pt-16 sm:pt-20 pb-12 sm:pb-14">
+      <div className="relative z-10 bg-[#070E1A] border-b border-brass-500/20">
+        <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 pt-16 sm:pt-20 pb-14 sm:pb-16">
           
-          {/* 4-COLUMN CHAMBERS DIRECTORY */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 lg:gap-12">
             
             {/* Column 1: Identity & Chambers Ethos (4 cols) */}
@@ -79,12 +75,12 @@ export function Footer() {
                 A specialized legal consultancy in Kolkata delivering thoughtful, precise, and result-oriented solutions for corporate governance, commercial contracts, regulatory affairs, and institutional integrity.
               </p>
 
-              <div className="pt-2 text-xs text-brass-300 font-serif italic">
+              <div className="pt-1 text-xs text-brass-300/90 font-serif italic">
                 &ldquo;Excellence in Law. Integrity in Practice.&rdquo;
               </div>
 
               <div className="pt-2 flex items-center gap-2 text-[11px] text-slate-400">
-                <span className="w-1.5 h-1.5 rounded-full bg-brass-500" />
+                <span className="w-1.5 h-1.5 rounded-full bg-brass-400" />
                 <span>Calcutta High Court Bar Association Jurisdiction</span>
               </div>
             </div>
@@ -139,7 +135,7 @@ export function Footer() {
                 </li>
                 <li>
                   <Link href="/faq" className="hover:text-brass-300 transition-colors inline-flex items-center group">
-                    <FooterRollText>Statutory Guidance FAQ</FooterRollText>
+                    <FooterRollText>Statutory Guidance</FooterRollText>
                   </Link>
                 </li>
                 <li>
@@ -193,205 +189,121 @@ export function Footer() {
       </div>
 
       {/* ─────────────────────────────────────────────────────────────
-          2. LOWER SECTION: STATIC / STICKY BASE FROM THE DIVIDER LINE
-          As the user scrolls, this section acts as the static foundation,
-          and the upper directory collides gracefully right above it.
+          2. MINIMALIST POLISHED BRAND & STATUTORY SECTION
+          Naturally visible high-intensity ACORN watermark with
+          clean, unobtrusive statutory regulatory disclosure.
          ───────────────────────────────────────────────────────────── */}
-      <div className="relative z-10 md:sticky md:bottom-0 bg-[#060E1B] shadow-[0_-16px_36px_rgba(0,0,0,0.6)]">
+      <div className="relative z-10 bg-[#050C17] pt-8 pb-6 px-4 sm:px-6 lg:px-8 text-center">
         
-        {/* Architectural Divider Line (as indicated in user reference) */}
-        <div className="w-full h-[1px] bg-gradient-to-r from-transparent via-brass-500/50 to-transparent" />
+        {/* Radiant High-Intensity ACORN Watermark (Naturally visible to naked eyes) */}
+        <div className="w-full text-center pointer-events-none select-none overflow-hidden pb-4" aria-hidden="true">
+          <span className="font-serif text-[clamp(4.5rem,13vw,10.5rem)] font-extrabold tracking-[0.14em] bg-gradient-to-b from-[#FFFDF9] via-[#EBD5AC] to-[#B08D4C] bg-clip-text text-transparent leading-none block select-none drop-shadow-[0_4px_24px_rgba(0,0,0,0.95)] [text-shadow:_0_2px_16px_rgba(201,160,89,0.35)]">
+            ACORN
+          </span>
+        </div>
 
-        <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-6 space-y-6">
+        {/* Quiet, Clean Bar Council Regulatory Notice */}
+        <p className="text-[11px] font-sans text-slate-400 max-w-3xl mx-auto leading-relaxed">
+          <span className="text-brass-300 font-medium">Regulatory Notice:</span>{" "}
+          {siteConfig.disclaimer || "As per the rules of the Bar Council of India, law firms and legal practitioners are not permitted to solicit work or advertise. The information provided on this website is solely for informational purposes and does not constitute legal advice or create an advocate-client relationship."}
+        </p>
+
+      </div>
+
+      {/* ─────────────────────────────────────────────────────────────
+          3. KINETIC CONTINUOUS ROLL-TEXT TICKER RIBBON
+         ───────────────────────────────────────────────────────────── */}
+      <div
+        className="footer-ticker-container relative z-10 border-t border-b border-navy-800/80 bg-[#040812] overflow-hidden py-2.5 select-none"
+        aria-label="Chambers Statutory Continuous Roll"
+      >
+        <div className="footer-ticker-track flex items-center">
+          <div className="flex shrink-0 items-center gap-8 px-4 text-xs font-serif italic text-brass-300/90 tracking-wider">
+            <span>{siteConfig.footerRollText || "Acorn Legal Consultants • Excellence in Law • Integrity in Practice • Calcutta High Court • POSH Act Advisory • Corporate Governance • Commercial Contracts • Arbitration & Mediation"}</span>
+            <span className="text-brass-500/60 not-italic">✦</span>
+            <span>{siteConfig.footerRollText || "Acorn Legal Consultants • Excellence in Law • Integrity in Practice • Calcutta High Court • POSH Act Advisory • Corporate Governance • Commercial Contracts • Arbitration & Mediation"}</span>
+            <span className="text-brass-500/60 not-italic">✦</span>
+          </div>
+          <div className="flex shrink-0 items-center gap-8 px-4 text-xs font-serif italic text-brass-300/90 tracking-wider" aria-hidden="true">
+            <span>{siteConfig.footerRollText || "Acorn Legal Consultants • Excellence in Law • Integrity in Practice • Calcutta High Court • POSH Act Advisory • Corporate Governance • Commercial Contracts • Arbitration & Mediation"}</span>
+            <span className="text-brass-500/60 not-italic">✦</span>
+            <span>{siteConfig.footerRollText || "Acorn Legal Consultants • Excellence in Law • Integrity in Practice • Calcutta High Court • POSH Act Advisory • Corporate Governance • Commercial Contracts • Arbitration & Mediation"}</span>
+            <span className="text-brass-500/60 not-italic">✦</span>
+          </div>
+        </div>
+      </div>
+
+      {/* ─────────────────────────────────────────────────────────────
+          4. MINIMALIST POLISHED LOWER BASE BAR
+          Copyright, Live Chamber Clock, Consolidated Legal Links, and Back to Top.
+         ───────────────────────────────────────────────────────────── */}
+      <div className="relative z-10 bg-[#03060E] py-4 px-4 sm:px-6 lg:px-8 border-t border-navy-800/80">
+        <div className="max-w-[1280px] mx-auto flex flex-col lg:flex-row items-center justify-between gap-4 text-xs font-sans">
           
-          {/* Statutory Disclosures Header & Regulatory Badges */}
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-            <div className="space-y-1">
-              <span className="font-sans text-[10px] font-semibold tracking-[0.2em] uppercase text-brass-400">
-                STATUTORY DISCLOSURES &amp; REGULATORY COMPLIANCE
-              </span>
-              <h3 className="font-serif text-lg font-bold text-white">
-                Chambers Governance &amp; Legal Policies
-              </h3>
-            </div>
-
-            {/* Regulatory Badges & Fold/Unfold Toggle */}
-            <div className="flex flex-wrap items-center gap-2 text-[11px]">
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-btn bg-[#101F38] border border-brass-500/25 text-brass-300 shadow-sm">
-                <Scale className="w-3.5 h-3.5 text-brass-400" />
-                <span>Advocates Act, 1961</span>
-              </span>
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-btn bg-[#101F38] border border-brass-500/25 text-brass-300 shadow-sm">
-                <ShieldCheck className="w-3.5 h-3.5 text-brass-400" />
-                <span>Bar Council of West Bengal</span>
-              </span>
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-btn bg-[#101F38] border border-brass-500/25 text-brass-300 shadow-sm">
-                <FileCheck className="w-3.5 h-3.5 text-brass-400" />
-                <span>Client Trust Escrow</span>
-              </span>
-
-              {/* Foldable Section Toggle (Fold/Unfold Statutory Disclosures) */}
-              <button
-                type="button"
-                onClick={() => setIsFolded((prev) => !prev)}
-                aria-expanded={!isFolded}
-                title={isFolded ? "Unfold chambers policies & statutory disclosures" : "Fold statutory section"}
-                className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-btn bg-[#142646] hover:bg-[#1a335e] border border-brass-400/40 text-brass-200 hover:text-white transition-all text-[11px] font-sans shadow-sm group focus:outline-none"
-              >
-                <span className="font-semibold tracking-wide">
-                  {isFolded ? "Unfold Disclosures" : "Fold Disclosures"}
-                </span>
-                <ChevronDown
-                  className={`w-3.5 h-3.5 text-brass-300 transition-transform duration-300 ${
-                    isFolded ? "rotate-180" : ""
-                  }`}
-                />
-              </button>
-            </div>
+          {/* Left: Copyright & Live Chamber Clock */}
+          <div className="flex flex-wrap items-center justify-center lg:justify-start gap-3 text-slate-400">
+            <span className="text-slate-300 font-semibold tracking-wide text-[11px] sm:text-xs">
+              &copy; {new Date().getFullYear()} ACORN LEGAL CONSULTANTS
+            </span>
+            <span className="text-navy-700 select-none">&bull;</span>
+            <FooterClock />
+            <span className="hidden sm:inline text-navy-700 select-none">&bull;</span>
+            <span className="hidden sm:inline text-[11px] text-slate-400">
+              Calcutta High Court Jurisdiction
+            </span>
           </div>
 
-          {/* ─────────────────────────────────────────────────────────────
-              FOLDABLE STATUTORY DRAWER:
-              Collapses smoothly or unfolds fully with high-intensity ACORN text.
-             ───────────────────────────────────────────────────────────── */}
-          <div
-            className={`transition-all duration-500 ease-in-out overflow-hidden space-y-6 ${
-              isFolded
-                ? "max-h-0 opacity-0 -translate-y-2 pointer-events-none"
-                : "max-h-[1200px] opacity-100 translate-y-0"
-            }`}
-          >
-            {/* Legal Navigation Links with Rollable Text */}
-            <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-xs text-slate-300 font-sans pt-1">
-              <Link href="/privacy" className="hover:text-brass-300 transition group inline-flex items-center">
-                <FooterRollText>Privacy Policy</FooterRollText>
-              </Link>
-              <span className="text-navy-700 select-none">&bull;</span>
-              <Link href="/terms" className="hover:text-brass-300 transition group inline-flex items-center">
-                <FooterRollText>Terms of Engagement</FooterRollText>
-              </Link>
-              <span className="text-navy-700 select-none">&bull;</span>
-              <Link href="/cookies" className="hover:text-brass-300 transition group inline-flex items-center">
-                <FooterRollText>Cookie Policy</FooterRollText>
-              </Link>
-              <span className="text-navy-700 select-none">&bull;</span>
-              <Link href="/refund-policy" className="hover:text-brass-300 transition group inline-flex items-center">
-                <FooterRollText>Refund Policy</FooterRollText>
-              </Link>
-              <span className="text-navy-700 select-none">&bull;</span>
-              <Link href="/disclaimer" className="hover:text-brass-300 transition group inline-flex items-center">
-                <FooterRollText>Bar Council Disclaimer</FooterRollText>
-              </Link>
-              <span className="text-navy-700 select-none">&bull;</span>
-              <Link href="/design-system" className="hover:text-brass-300 transition group inline-flex items-center">
-                <FooterRollText>Design System</FooterRollText>
-              </Link>
-              <span className="text-navy-700 select-none">&bull;</span>
-              <Link href="/verify" className="hover:text-brass-300 transition group inline-flex items-center">
-                <FooterRollText>Verification Portal</FooterRollText>
-              </Link>
-            </div>
+          {/* Center: Consolidated Clean Legal Links */}
+          <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-[11px] text-slate-400">
+            <Link href="/privacy" className="hover:text-brass-300 transition group inline-flex items-center">
+              <FooterRollText>Privacy</FooterRollText>
+            </Link>
+            <span className="text-navy-700 select-none">&bull;</span>
+            <Link href="/terms" className="hover:text-brass-300 transition group inline-flex items-center">
+              <FooterRollText>Terms</FooterRollText>
+            </Link>
+            <span className="text-navy-700 select-none">&bull;</span>
+            <Link href="/cookies" className="hover:text-brass-300 transition group inline-flex items-center">
+              <FooterRollText>Cookies</FooterRollText>
+            </Link>
+            <span className="text-navy-700 select-none">&bull;</span>
+            <Link href="/refund-policy" className="hover:text-brass-300 transition group inline-flex items-center">
+              <FooterRollText>Refunds</FooterRollText>
+            </Link>
+            <span className="text-navy-700 select-none">&bull;</span>
+            <Link href="/disclaimer" className="hover:text-brass-300 transition group inline-flex items-center">
+              <FooterRollText>Bar Notice</FooterRollText>
+            </Link>
+            <span className="text-navy-700 select-none">&bull;</span>
+            <Link href="/verify" className="hover:text-brass-300 transition group inline-flex items-center">
+              <FooterRollText>Verification</FooterRollText>
+            </Link>
+          </div>
 
-            {/* Bar Council Professional Disclaimer Box */}
-            <div className="bg-[#091528] p-4 rounded-card border border-navy-800 text-[11px] text-slate-300 leading-relaxed shadow-inner">
-              <p>
-                <strong className="text-brass-300 font-semibold">Regulatory Notice:</strong>{" "}
-                {siteConfig.disclaimer || "The information on this website is for general information only and does not constitute legal advice or create a lawyer-client relationship. Under the rules of the Bar Council of India, law firms and legal practitioners are not permitted to solicit work or advertise."}
-              </p>
-            </div>
+          {/* Right: Regulatory Badges & Back to Top */}
+          <div className="flex items-center gap-3">
+            <span className="hidden md:inline-flex items-center gap-1 text-[11px] text-slate-500">
+              <Scale className="w-3.5 h-3.5 text-brass-500/70" />
+              <span>Advocates Act, 1961</span>
+            </span>
+            <span className="hidden md:inline text-navy-800 select-none">&bull;</span>
+            <span className="hidden md:inline-flex items-center gap-1 text-[11px] text-slate-500">
+              <ShieldCheck className="w-3.5 h-3.5 text-brass-500/70" />
+              <span>WB Bar Council</span>
+            </span>
 
-            {/* High-Intensity ACORN Watermark (Naturally visible to naked eyes) */}
-            <div
-              className="w-full text-center pointer-events-none select-none overflow-hidden pt-4 pb-2"
-              aria-hidden="true"
+            <button
+              type="button"
+              onClick={scrollToTop}
+              title="Return to top of page"
+              aria-label="Scroll back to top of page"
+              className="w-8 h-8 rounded-full bg-[#101F38] border border-brass-500/35 hover:border-brass-400 text-brass-300 hover:text-white flex items-center justify-center transition-all hover:scale-105 shadow-sm group ml-1"
             >
-              <span className="font-serif text-[clamp(4.5rem,13vw,10.5rem)] font-extrabold tracking-[0.14em] bg-gradient-to-b from-[#FFFDF9] via-[#EBD5AC] to-[#B08D4C] bg-clip-text text-transparent leading-none block select-none drop-shadow-[0_4px_24px_rgba(0,0,0,0.95)] [text-shadow:_0_2px_16px_rgba(201,160,89,0.35)]">
-                ACORN
-              </span>
-            </div>
+              <ArrowUp className="w-3.5 h-3.5 group-hover:-translate-y-0.5 transition-transform" />
+            </button>
           </div>
 
         </div>
-
-        {/* ─────────────────────────────────────────────────────────────
-            3. KINETIC CONTINUOUS ROLL-TEXT TICKER RIBBON
-           ───────────────────────────────────────────────────────────── */}
-        <div
-          className="footer-ticker-container relative z-20 border-t border-b border-navy-800/80 bg-[#050C17] overflow-hidden py-2.5 select-none"
-          aria-label="Chambers Statutory Continuous Roll"
-        >
-          <div className="footer-ticker-track flex items-center">
-            <div className="flex shrink-0 items-center gap-8 px-4 text-xs font-serif italic text-brass-300/90 tracking-wider">
-              <span>{siteConfig.footerRollText || "Acorn Legal Consultants • Excellence in Law • Integrity in Practice • Calcutta High Court • POSH Act Advisory • Corporate Governance • Commercial Contracts • Arbitration & Mediation"}</span>
-              <span className="text-brass-500/60 not-italic">✦</span>
-              <span>{siteConfig.footerRollText || "Acorn Legal Consultants • Excellence in Law • Integrity in Practice • Calcutta High Court • POSH Act Advisory • Corporate Governance • Commercial Contracts • Arbitration & Mediation"}</span>
-              <span className="text-brass-500/60 not-italic">✦</span>
-            </div>
-            <div className="flex shrink-0 items-center gap-8 px-4 text-xs font-serif italic text-brass-300/90 tracking-wider" aria-hidden="true">
-              <span>{siteConfig.footerRollText || "Acorn Legal Consultants • Excellence in Law • Integrity in Practice • Calcutta High Court • POSH Act Advisory • Corporate Governance • Commercial Contracts • Arbitration & Mediation"}</span>
-              <span className="text-brass-500/60 not-italic">✦</span>
-              <span>{siteConfig.footerRollText || "Acorn Legal Consultants • Excellence in Law • Integrity in Practice • Calcutta High Court • POSH Act Advisory • Corporate Governance • Commercial Contracts • Arbitration & Mediation"}</span>
-              <span className="text-brass-500/60 not-italic">✦</span>
-            </div>
-          </div>
-        </div>
-
-        {/* ─────────────────────────────────────────────────────────────
-            4. LOWER BASE BAR: DOCKED, CLEAN & FULLY FUNCTIONAL
-            Live Chamber Clock, Copyright, Quick Links, and Scroll-to-Top.
-            (Collapse directory button has been completely removed as requested)
-           ───────────────────────────────────────────────────────────── */}
-        <div className="relative z-30 bg-[#040812] border-t border-navy-800/90 shadow-2xl">
-          <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex flex-col md:flex-row items-center justify-between gap-4 text-xs font-sans">
-            
-            {/* Copyright & Live Chamber Clock */}
-            <div className="flex flex-wrap items-center gap-3 text-slate-400">
-              <span className="text-slate-300 font-semibold tracking-wide text-[11px] sm:text-xs">
-                &copy; {new Date().getFullYear()} ACORN LEGAL CONSULTANTS
-              </span>
-              <span className="text-navy-700 select-none">&bull;</span>
-              <FooterClock />
-              <span className="hidden sm:inline text-navy-700 select-none">&bull;</span>
-              <span className="hidden sm:inline text-[11px] text-slate-400">
-                Calcutta High Court Jurisdiction
-              </span>
-            </div>
-
-            {/* Center Quick Legal Links with Rollable Text */}
-            <div className="hidden lg:flex items-center gap-4 text-[11px] text-slate-400">
-              <Link href="/privacy" className="hover:text-brass-300 transition group inline-flex items-center">
-                <FooterRollText>Privacy</FooterRollText>
-              </Link>
-              <span className="text-navy-700">&bull;</span>
-              <Link href="/terms" className="hover:text-brass-300 transition group inline-flex items-center">
-                <FooterRollText>Terms</FooterRollText>
-              </Link>
-              <span className="text-navy-700">&bull;</span>
-              <Link href="/disclaimer" className="hover:text-brass-300 transition group inline-flex items-center">
-                <FooterRollText>Bar Notice</FooterRollText>
-              </Link>
-              <span className="text-navy-700">&bull;</span>
-              <Link href="/verify" className="hover:text-brass-300 transition group inline-flex items-center">
-                <FooterRollText>Verification</FooterRollText>
-              </Link>
-            </div>
-
-            {/* Right Action: Return to Top */}
-            <div className="flex items-center gap-3">
-              <button
-                type="button"
-                onClick={scrollToTop}
-                title="Return to top of page"
-                aria-label="Scroll back to top of page"
-                className="w-9 h-9 rounded-full bg-[#101F38] border border-brass-500/35 hover:border-brass-400 text-brass-300 hover:text-white flex items-center justify-center transition-all hover:scale-105 shadow-sm group"
-              >
-                <ArrowUp className="w-4 h-4 group-hover:-translate-y-0.5 transition-transform" />
-              </button>
-            </div>
-
-          </div>
-        </div>
-
       </div>
 
     </footer>

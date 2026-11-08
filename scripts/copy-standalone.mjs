@@ -33,3 +33,4 @@ if (fs.existsSync(standaloneDir)) {
 
   console.log("✔ Standalone server is permanently resilient with all assets docked.");
 }
+
