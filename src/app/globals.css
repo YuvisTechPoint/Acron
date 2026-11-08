@@ -293,6 +293,27 @@ button:focus-visible .footer-roll-text__track,
   transform: translate3d(0, -50%, 0);
 }
 
+/* Kinetic Continuous Roll-Text Ticker Ribbon */
+@keyframes footer-ticker-scroll {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+.footer-ticker-track {
+  display: flex;
+  width: max-content;
+  animation: footer-ticker-scroll 38s linear infinite;
+  will-change: transform;
+}
+
+.footer-ticker-container:hover .footer-ticker-track {
+  animation-play-state: paused;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .footer-roll-text__track {
     transition: none;
@@ -303,6 +324,9 @@ button:focus-visible .footer-roll-text__track,
   button:focus-visible .footer-roll-text__track,
   .group:hover .footer-roll-text__track {
     transform: none;
+  }
+  .footer-ticker-track {
+    animation: none;
   }
 }
 

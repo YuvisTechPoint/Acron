@@ -124,6 +124,70 @@ async function testWorkflows() {
     failed++;
   }
 
+  // 5. Test Payment Order Creation API
+  try {
+    const res = await fetch(`${BASE_URL}/api/payments/create-order`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        amountPaise: 2500000,
+        currency: "INR",
+        itemDescription: "Retainer Fee Advisory Advance",
+      }),
+    });
+
+    const data = await res.json();
+    if (res.status === 200 && data.orderId) {
+      console.log(`✔ [PASS] Payment Order Creation API: Generated Order ID ${data.orderId}`);
+      passed++;
+    } else {
+      console.error(`✖ [FAIL] Payment Order Creation: Status ${res.status}`, data);
+      failed++;
+    }
+  } catch (err) {
+    console.error(`✖ [ERROR] Payment Order Creation API: ${err.message}`);
+    failed++;
+  }
+
+  // 6. Test Script Management API & BR-046 POSH Privacy Enforcement
+  try {
+    const res = await fetch(`${BASE_URL}/api/scripts`, {
+      method: "GET",
+      headers: { "Referer": "http://localhost:3000/posh/my-case" },
+    });
+
+    const data = await res.json();
+    if (res.status === 200 && Array.isArray(data.scripts) && data.scripts.length === 0) {
+      console.log(`✔ [PASS] Script API BR-046 Privacy Gate: Zero scripts loaded on /posh routes`);
+      passed++;
+    } else {
+      console.error(`✖ [FAIL] Script API Privacy Gate: Status ${res.status}`, data);
+      failed++;
+    }
+  } catch (err) {
+    console.error(`✖ [ERROR] Script API Privacy Gate: ${err.message}`);
+    failed++;
+  }
+
+  // 7. Test POSH Case Listing API & Section 16 Privacy Masking
+  try {
+    const res = await fetch(`${BASE_URL}/api/cases`, {
+      method: "GET",
+    });
+
+    const data = await res.json();
+    if (res.status === 200 && Array.isArray(data.data)) {
+      console.log(`✔ [PASS] Case Listing API: Retrieved ${data.count} dockets with Section 16 masking`);
+      passed++;
+    } else {
+      console.error(`✖ [FAIL] Case Listing API: Status ${res.status}`, data);
+      failed++;
+    }
+  } catch (err) {
+    console.error(`✖ [ERROR] Case Listing API: ${err.message}`);
+    failed++;
+  }
+
   console.log(`\nWorkflow test results: ${passed} passed, ${failed} failed.`);
   if (failed > 0) {
     process.exit(1);

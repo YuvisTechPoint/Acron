@@ -157,6 +157,35 @@ export default function ICCaseDetailPage() {
           </div>
         </div>
 
+        {/* Dedicated Procedural Step Pages (PRD Section 22.4.3: I-03 to I-10) */}
+        <div className="flex items-center gap-2 overflow-x-auto pb-1 text-xs">
+          <span className="text-[11px] font-bold uppercase tracking-wider text-accent shrink-0">Dedicated Screens:</span>
+          <Link href={`/posh/ic/cases/${poshCase.id}/triage`} className="px-2.5 py-1 bg-surface border border-border rounded hover:bg-white text-ink shrink-0 font-medium">
+            Triage (I-03)
+          </Link>
+          <Link href={`/posh/ic/cases/${poshCase.id}/conciliation`} className="px-2.5 py-1 bg-surface border border-border rounded hover:bg-white text-ink shrink-0 font-medium">
+            Conciliation (I-04)
+          </Link>
+          <Link href={`/posh/ic/cases/${poshCase.id}/notices`} className="px-2.5 py-1 bg-surface border border-border rounded hover:bg-white text-ink shrink-0 font-medium">
+            Notices &amp; Summons (I-05)
+          </Link>
+          <Link href={`/posh/ic/cases/${poshCase.id}/hearings`} className="px-2.5 py-1 bg-surface border border-border rounded hover:bg-white text-ink shrink-0 font-medium">
+            Hearings (I-06)
+          </Link>
+          <Link href={`/posh/ic/cases/${poshCase.id}/evidence`} className="px-2.5 py-1 bg-surface border border-border rounded hover:bg-white text-ink shrink-0 font-medium">
+            Evidence Vault (I-07)
+          </Link>
+          <Link href={`/posh/ic/cases/${poshCase.id}/report`} className="px-2.5 py-1 bg-surface border border-border rounded hover:bg-white text-ink shrink-0 font-medium">
+            Report &amp; Sec 15 (I-08)
+          </Link>
+          <Link href={`/posh/ic/cases/${poshCase.id}/interim`} className="px-2.5 py-1 bg-surface border border-border rounded hover:bg-white text-ink shrink-0 font-medium">
+            Interim Relief (I-09)
+          </Link>
+          <Link href={`/posh/ic/cases/${poshCase.id}/close`} className="px-2.5 py-1 bg-surface border border-border rounded hover:bg-white text-ink shrink-0 font-medium">
+            Closure &amp; Aftercare (I-10)
+          </Link>
+        </div>
+
         {/* 9-Tab Navigation Bar */}
         <div className="flex overflow-x-auto border-b border-border gap-1 text-xs">
           {[

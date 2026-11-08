@@ -1,7 +1,15 @@
 "use client";
 
 import React, { useState } from "react";
-import { MapPin, ExternalLink, Navigation, Compass, Layers } from "lucide-react";
+import {
+  MapPin,
+  ExternalLink,
+  Navigation,
+  Compass,
+  Layers,
+  Copy,
+  Check,
+} from "lucide-react";
 
 interface ChambersMapProps {
   className?: string;
@@ -10,10 +18,13 @@ interface ChambersMapProps {
 export function ChambersMap({ className = "" }: ChambersMapProps) {
   const [mapType, setMapType] = useState<"standard" | "satellite">("standard");
   const [showLiveEmbed, setShowLiveEmbed] = useState(true);
+  const [copied, setCopied] = useState(false);
 
   // Precise coordinates for 25 Camac Street, Park Street District, Kolkata
   const latitude = 22.5497;
   const longitude = 88.3533;
+  const fullAddress =
+    "Suite 4B, Camac Court, 25 Camac Street, Park Street District, Kolkata, West Bengal 700016";
   const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
     "25 Camac Street, Park Street area, Kolkata, West Bengal 700016",
   )}`;
@@ -24,22 +35,36 @@ export function ChambersMap({ className = "" }: ChambersMapProps) {
     mapType === "satellite" ? "k" : "m"
   }&z=16&ie=UTF8&iwloc=B&output=embed`;
 
+  const handleCopyAddress = async () => {
+    try {
+      await navigator.clipboard.writeText(fullAddress);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2400);
+    } catch {
+      // Fallback
+      setCopied(false);
+    }
+  };
+
   return (
-    <div className={`bg-white rounded-card border border-border p-6 sm:p-8 shadow-card space-y-5 ${className}`}>
-      
-      {/* Header matching design reference */}
-      <div className="flex flex-wrap items-center justify-between gap-2 pb-4 border-b border-border">
-        <span className="font-sans text-[11px] sm:text-xs uppercase font-bold text-brass-700 tracking-[0.16em]">
-          CHAMBERS GEOGRAPHY
-        </span>
+    <div
+      className={`bg-white rounded-card border border-border p-5 sm:p-7 md:p-8 shadow-card space-y-4 sm:space-y-5 ${className}`}
+    >
+      {/* Header matching exact user design specification */}
+      <div className="flex flex-wrap items-center justify-between gap-2 pb-3.5 border-b border-border">
+        <div className="flex items-center gap-2">
+          <span className="w-2 h-2 rounded-full bg-brass-500 animate-pulse" />
+          <span className="font-sans text-[11px] sm:text-xs uppercase font-bold text-brass-700 tracking-[0.16em]">
+            CHAMBERS GEOGRAPHY
+          </span>
+        </div>
         <span className="font-sans text-xs text-ink-muted">
           Camac Street &bull; Kolkata
         </span>
       </div>
 
-      {/* Interactive Map Canvas Container */}
-      <div className="relative w-full h-[320px] sm:h-[360px] rounded-card bg-navy-950 border border-navy-800 overflow-hidden shadow-inner group">
-        
+      {/* Interactive Map Canvas Container (Fully Mobile Responsive) */}
+      <div className="relative w-full h-[280px] sm:h-[340px] md:h-[380px] rounded-card bg-navy-950 border border-navy-800 overflow-hidden shadow-inner group">
         {/* Live Interactive Synchronized Google Map iframe */}
         {showLiveEmbed ? (
           <iframe
@@ -58,7 +83,7 @@ export function ChambersMap({ className = "" }: ChambersMapProps) {
           <div className="absolute inset-0 z-10 flex flex-col items-center justify-center p-6 text-center select-none bg-navy-950">
             {/* Architectural Grid Lines */}
             <div className="absolute inset-0 opacity-20 bg-[linear-gradient(to_right,#B08D57_1px,transparent_1px),linear-gradient(to_bottom,#B08D57_1px,transparent_1px)] bg-[size:28px_28px]" />
-            
+
             {/* Outer Compass Pulsing Pin */}
             <div className="relative w-16 h-16 rounded-full bg-navy-800/90 border border-brass-500/40 flex items-center justify-center mb-4 text-brass-300 shadow-xl group-hover:scale-105 transition-transform duration-300">
               <div className="absolute inset-0 rounded-full border border-brass-500/30 animate-ping opacity-30 pointer-events-none" />
@@ -76,10 +101,12 @@ export function ChambersMap({ className = "" }: ChambersMapProps) {
 
         {/* Floating Controls Overlay (Top Right) */}
         <div className="absolute top-3 right-3 z-20 flex items-center gap-2">
-          {/* Map Layer Switcher */}
+          {/* Map Layer Switcher (Standard / Satellite) */}
           <button
             type="button"
-            onClick={() => setMapType((prev) => (prev === "standard" ? "satellite" : "standard"))}
+            onClick={() =>
+              setMapType((prev) => (prev === "standard" ? "satellite" : "standard"))
+            }
             className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-btn text-[11px] font-semibold tracking-wide bg-navy-900/90 hover:bg-navy-800 text-ivory-50 border border-brass-500/40 backdrop-blur-md shadow-md transition"
             title="Toggle between Street Map and Satellite View"
             aria-label="Toggle map view mode"
@@ -102,21 +129,44 @@ export function ChambersMap({ className = "" }: ChambersMapProps) {
         </div>
 
         {/* Floating Quick Navigation Chip (Bottom Left) */}
-        <div className="absolute bottom-3 left-3 z-20 hidden sm:flex items-center gap-2">
-          <div className="px-3 py-1.5 rounded-btn text-[11px] font-medium bg-navy-950/90 text-slate-200 border border-navy-800 backdrop-blur-md shadow-sm">
-            <span className="text-brass-300 font-semibold">Coordinates:</span> 22.5497° N, 88.3533° E
+        <div className="absolute bottom-3 left-3 right-3 sm:right-auto z-20 flex flex-wrap items-center gap-2 pointer-events-none">
+          <div className="px-3 py-1.5 rounded-btn text-[11px] font-medium bg-navy-950/90 text-slate-200 border border-navy-800 backdrop-blur-md shadow-sm pointer-events-auto">
+            <span className="text-brass-300 font-semibold">Coordinates:</span>{" "}
+            22.5497° N, 88.3533° E
+          </div>
+          <div className="sm:hidden px-2.5 py-1 rounded-btn text-[10px] font-medium bg-navy-900/90 text-brass-300 border border-brass-500/30 backdrop-blur-md pointer-events-auto">
+            Pinch to zoom &bull; Drag to pan
           </div>
         </div>
-
       </div>
 
       {/* Footer Meta Row matching user's design */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-1 text-xs">
-        <span className="font-sans text-ink-secondary">
-          Landmark: Near Park Street Crossing
-        </span>
-        
-        <div className="flex items-center gap-4">
+        <div className="flex flex-wrap items-center gap-3">
+          <span className="font-sans text-ink-secondary">
+            Landmark: Near Park Street Crossing
+          </span>
+          <span className="text-border hidden sm:inline select-none">&bull;</span>
+          <button
+            type="button"
+            onClick={handleCopyAddress}
+            className="inline-flex items-center gap-1 font-semibold text-brass-700 hover:text-navy-900 transition underline underline-offset-2"
+          >
+            {copied ? (
+              <>
+                <Check className="w-3.5 h-3.5 text-emerald-600" />
+                <span className="text-emerald-700">Copied</span>
+              </>
+            ) : (
+              <>
+                <Copy className="w-3 h-3 text-brass-600" />
+                <span>Copy Address</span>
+              </>
+            )}
+          </button>
+        </div>
+
+        <div className="flex flex-wrap items-center gap-3 sm:gap-4">
           <a
             href={directionsUrl}
             target="_blank"
@@ -140,8 +190,6 @@ export function ChambersMap({ className = "" }: ChambersMapProps) {
           </a>
         </div>
       </div>
-
     </div>
   );
 }
-

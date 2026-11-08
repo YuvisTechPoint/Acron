@@ -67,6 +67,38 @@ export default function PoshOrgConsolePage() {
           </div>
         </div>
 
+        {/* Dedicated Module Deep Links */}
+        <div className="flex items-center gap-2 overflow-x-auto pb-1 text-xs">
+          <span className="text-[11px] font-bold uppercase tracking-wider text-accent shrink-0">Org Consoles:</span>
+          <Link href="/posh/org/ic" className="px-2.5 py-1 bg-surface border border-border rounded hover:bg-white text-ink shrink-0 font-medium">
+            IC Roster (O-02)
+          </Link>
+          <Link href="/posh/org/policies" className="px-2.5 py-1 bg-surface border border-border rounded hover:bg-white text-ink shrink-0 font-medium">
+            Policies (O-03)
+          </Link>
+          <Link href="/posh/org/notices" className="px-2.5 py-1 bg-surface border border-border rounded hover:bg-white text-ink shrink-0 font-medium">
+            Notices (O-04)
+          </Link>
+          <Link href="/posh/org/training" className="px-2.5 py-1 bg-surface border border-border rounded hover:bg-white text-ink shrink-0 font-medium">
+            Training LMS (O-05)
+          </Link>
+          <Link href="/posh/org/actions" className="px-2.5 py-1 bg-surface border border-border rounded hover:bg-white text-ink shrink-0 font-medium">
+            Employer Actions (O-06)
+          </Link>
+          <Link href="/posh/org/reports" className="px-2.5 py-1 bg-surface border border-border rounded hover:bg-white text-ink shrink-0 font-medium">
+            Annual Report (O-07)
+          </Link>
+          <Link href="/posh/org/prevention" className="px-2.5 py-1 bg-surface border border-border rounded hover:bg-white text-ink shrink-0 font-medium">
+            Surveys (O-08)
+          </Link>
+          <Link href="/posh/org/plan" className="px-2.5 py-1 bg-surface border border-border rounded hover:bg-white text-ink shrink-0 font-medium">
+            Subscription Plan (O-09)
+          </Link>
+          <Link href="/posh/org/support" className="px-2.5 py-1 bg-surface border border-border rounded hover:bg-white text-ink shrink-0 font-medium">
+            Support Desk (O-10)
+          </Link>
+        </div>
+
         {/* Sub-Navigation */}
         <div className="flex overflow-x-auto border-b border-border gap-2 text-xs">
           {[

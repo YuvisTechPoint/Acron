@@ -52,12 +52,26 @@ export default function PoshRespondentDeskPage() {
               In accordance with Section 11 of the POSH Act 2013 and Rule 7, you are provided full opportunity to examine allegations and submit your written statement.
             </p>
           </div>
-          <Link
-            href="/posh/portal"
-            className="text-xs text-primary font-semibold hover:underline"
-          >
-            &larr; Portal Home
-          </Link>
+          <div className="flex items-center gap-3">
+            <Link
+              href="/posh/respondent/reply"
+              className="px-3 py-1.5 bg-primary text-white text-xs font-semibold rounded hover:bg-primary-hover transition-colors"
+            >
+              Dedicated Reply Portal (R-02) &rarr;
+            </Link>
+            <Link
+              href="/posh/respondent/status"
+              className="px-3 py-1.5 border border-border text-xs font-semibold rounded hover:bg-surface text-ink transition-colors"
+            >
+              Case Status (R-03)
+            </Link>
+            <Link
+              href="/posh/portal"
+              className="text-xs text-primary font-semibold hover:underline"
+            >
+              &larr; Portal Home
+            </Link>
+          </div>
         </div>
 
         {poshCase && (

@@ -278,7 +278,33 @@ export function Footer() {
       </div>
 
       {/* ─────────────────────────────────────────────────────────────
-          2. LOWER BASE BAR: ALWAYS VISIBLE, CLEAN & FULLY FUNCTIONAL
+          2. KINETIC CONTINUOUS ROLL-TEXT TICKER RIBBON
+          Configured in Admin Site Settings (footerRollText).
+          Rolls smoothly across the viewport, pauses on hover,
+          and collapses motion when prefers-reduced-motion is active.
+         ───────────────────────────────────────────────────────────── */}
+      <div
+        className="footer-ticker-container relative z-20 border-t border-b border-navy-800/80 bg-[#060E1B] overflow-hidden py-2.5 select-none"
+        aria-label="Chambers Statutory Continuous Roll"
+      >
+        <div className="footer-ticker-track flex items-center">
+          <div className="flex shrink-0 items-center gap-8 px-4 text-xs font-serif italic text-brass-300/90 tracking-wider">
+            <span>{siteConfig.footerRollText || "Acorn Legal Consultants • Excellence in Law • Integrity in Practice • Calcutta High Court • POSH Act Advisory • Corporate Governance • Commercial Contracts • Arbitration & Mediation"}</span>
+            <span className="text-brass-500/60 not-italic">✦</span>
+            <span>{siteConfig.footerRollText || "Acorn Legal Consultants • Excellence in Law • Integrity in Practice • Calcutta High Court • POSH Act Advisory • Corporate Governance • Commercial Contracts • Arbitration & Mediation"}</span>
+            <span className="text-brass-500/60 not-italic">✦</span>
+          </div>
+          <div className="flex shrink-0 items-center gap-8 px-4 text-xs font-serif italic text-brass-300/90 tracking-wider" aria-hidden="true">
+            <span>{siteConfig.footerRollText || "Acorn Legal Consultants • Excellence in Law • Integrity in Practice • Calcutta High Court • POSH Act Advisory • Corporate Governance • Commercial Contracts • Arbitration & Mediation"}</span>
+            <span className="text-brass-500/60 not-italic">✦</span>
+            <span>{siteConfig.footerRollText || "Acorn Legal Consultants • Excellence in Law • Integrity in Practice • Calcutta High Court • POSH Act Advisory • Corporate Governance • Commercial Contracts • Arbitration & Mediation"}</span>
+            <span className="text-brass-500/60 not-italic">✦</span>
+          </div>
+        </div>
+      </div>
+
+      {/* ─────────────────────────────────────────────────────────────
+          3. LOWER BASE BAR: ALWAYS VISIBLE, CLEAN & FULLY FUNCTIONAL
           Includes Live Chamber Clock, Copyright, Quick Links, and
           the Fold/Expand Directory Toggle + Smooth Back-To-Top button.
          ───────────────────────────────────────────────────────────── */}

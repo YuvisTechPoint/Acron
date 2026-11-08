@@ -122,7 +122,61 @@ export default function PoshCentralAdminPage() {
         </div>
 
         {/* Quick Access Grid to Sub-Screens */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+          <Link
+            href="/posh/admin/compliance"
+            className="p-4 bg-white rounded-card border border-border hover:border-primary transition group shadow-sm flex flex-col justify-between"
+          >
+            <div>
+              <div className="flex items-center justify-between mb-2">
+                <ShieldCheck className="w-5 h-5 text-primary group-hover:text-gold transition" />
+                <span className="text-[10px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded font-mono">X-05</span>
+              </div>
+              <h3 className="font-bold text-sm text-ink group-hover:text-primary transition">Compliance Overview</h3>
+              <p className="text-xs text-slate-500 mt-1">Multi-org Section 19 duty scoring & District Officer filing tracker.</p>
+            </div>
+            <div className="flex items-center text-xs font-semibold text-primary mt-3 pt-2 border-t border-slate-100">
+              <span>View Compliance</span>
+              <ArrowRight className="w-3.5 h-3.5 ml-1 group-hover:translate-x-1 transition" />
+            </div>
+          </Link>
+
+          <Link
+            href="/posh/admin/intake"
+            className="p-4 bg-white rounded-card border border-border hover:border-primary transition group shadow-sm flex flex-col justify-between"
+          >
+            <div>
+              <div className="flex items-center justify-between mb-2">
+                <FileText className="w-5 h-5 text-primary group-hover:text-gold transition" />
+                <span className="text-[10px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded font-mono">X-08</span>
+              </div>
+              <h3 className="font-bold text-sm text-ink group-hover:text-primary transition">Intake &amp; Concern Desk</h3>
+              <p className="text-xs text-slate-500 mt-1">Central clearinghouse for bystander reports & assisted filings.</p>
+            </div>
+            <div className="flex items-center text-xs font-semibold text-primary mt-3 pt-2 border-t border-slate-100">
+              <span>Intake Desk</span>
+              <ArrowRight className="w-3.5 h-3.5 ml-1 group-hover:translate-x-1 transition" />
+            </div>
+          </Link>
+
+          <Link
+            href="/posh/admin/analytics"
+            className="p-4 bg-white rounded-card border border-border hover:border-primary transition group shadow-sm flex flex-col justify-between"
+          >
+            <div>
+              <div className="flex items-center justify-between mb-2">
+                <Activity className="w-5 h-5 text-primary group-hover:text-gold transition" />
+                <span className="text-[10px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded font-mono">X-10</span>
+              </div>
+              <h3 className="font-bold text-sm text-ink group-hover:text-primary transition">Platform Analytics</h3>
+              <p className="text-xs text-slate-500 mt-1">Macro telemetry, duration stats & k-anonymity aggregate reports.</p>
+            </div>
+            <div className="flex items-center text-xs font-semibold text-primary mt-3 pt-2 border-t border-slate-100">
+              <span>View Analytics</span>
+              <ArrowRight className="w-3.5 h-3.5 ml-1 group-hover:translate-x-1 transition" />
+            </div>
+          </Link>
+
           <Link
             href="/posh/admin/cases"
             className="p-4 bg-white rounded-card border border-border hover:border-primary transition group shadow-sm flex flex-col justify-between"
