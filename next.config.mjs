@@ -1,9 +1,13 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  output: "standalone",
+  // Only apply standalone output in production builds to guarantee dev server never misroutes static chunks
+  ...(process.env.NODE_ENV === "production" ? { output: "standalone" } : {}),
   poweredByHeader: false,
   compress: true,
+  images: {
+    unoptimized: true,
+  },
   eslint: {
     ignoreDuringBuilds: true,
   },
