@@ -44,8 +44,8 @@ const INITIAL_SEED: DatabaseSchema = {
   lastUpdated: new Date().toISOString(),
   siteConfig: {
     firmName: "ACORN",
-    tagline: "Legal Consultants",
-    brandSubline: "Where Legal Expertise Meets Strategic Excellence.",
+    tagline: "",
+    brandSubline: "",
     founderName: "Adv. Debjani Sen",
     founderTitle: "Managing Counsel",
     disclaimer:

@@ -744,7 +744,7 @@ const SEED_AUDIT_LOGS: AuditLogEntry[] = [
 
 const SEED_SITE_CONFIG: SiteConfig = {
   firmName: "Acorn Legal Consultants",
-  tagline: "Where Legal Expertise Meets Strategic Excellence.",
+  tagline: "",
   brandSubline: "Excellence in Law. Integrity in Practice.",
   founderName: "Adv. Subhasish Mukherjee",
   founderTitle: "Managing Partner & Senior Counsel",
