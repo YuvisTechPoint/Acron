@@ -70,6 +70,24 @@ const INITIAL_MEDIA: MediaItem[] = [
     dimensions: "1920x1080",
     url: "/media/insights/kolkata-high-court-facade.jpg",
     uploadedAt: "2026-10-25"
+  },
+  {
+    id: "MED-006",
+    name: "hero.jpg",
+    category: "INSIGHT",
+    size: "520 KB",
+    dimensions: "1920x1080",
+    url: "/images/hero.jpg",
+    uploadedAt: "2026-11-08"
+  },
+  {
+    id: "MED-007",
+    name: "posh.png",
+    category: "INSIGHT",
+    size: "1.4 MB",
+    dimensions: "1920x1080",
+    url: "/images/posh.png",
+    uploadedAt: "2026-11-08"
   }
 ];
 

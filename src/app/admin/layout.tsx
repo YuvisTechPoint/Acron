@@ -34,6 +34,9 @@ import {
   Menu,
   X,
   LogOut,
+  Activity,
+  CheckCircle2,
+  AlertTriangle,
 } from "lucide-react";
 
 interface NavItem {
@@ -78,6 +81,15 @@ const NAV_GROUPS: NavGroup[] = [
       { label: "Precedent Watch", href: "/admin/legal/watch", icon: Eye },
       { label: "Compliance Calendars", href: "/admin/legal/calendars", icon: CalendarDays },
       { label: "POSH IC Docket", href: "/posh/ic", icon: ShieldCheck },
+    ],
+  },
+  {
+    group: "Operations & Launch",
+    items: [
+      { label: "Ops Command Centre", href: "/admin/ops", icon: Activity },
+      { label: "Go-Live Gate", href: "/admin/ops/gate", icon: CheckCircle2 },
+      { label: "DR Drills & Tamper", href: "/admin/ops/dr", icon: AlertTriangle },
+      { label: "SOP Recurrence", href: "/admin/ops/sop", icon: ClipboardList },
     ],
   },
   {

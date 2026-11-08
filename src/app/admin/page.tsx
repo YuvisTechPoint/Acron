@@ -15,6 +15,10 @@ import {
   TrendingUp,
   Activity,
   AlertCircle,
+  CheckCircle2,
+  ClipboardList,
+  AlertTriangle,
+  Server,
 } from "lucide-react";
 import { platformStore } from "@/lib/store";
 import { formatINR, formatDate } from "@/lib/utils";
@@ -226,6 +230,129 @@ export default function AdminDashboardPage() {
                 <ArrowRight className="w-3.5 h-3.5" />
               </Link>
             </div>
+          </div>
+        </div>
+
+        {/* Operations & Launch Control Strip */}
+        <div className="bg-white rounded-card p-6 border border-border shadow-card space-y-4">
+          <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-2 pb-4 border-b border-border-subtle">
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-status-success animate-pulse" />
+                <span className="text-[10px] uppercase font-bold tracking-widest text-navy-700">
+                  Operations &amp; Launch Infrastructure &bull; PRD Section 28
+                </span>
+              </div>
+              <h2 className="font-serif text-lg font-bold text-ink-950 mt-0.5">
+                Chambers Command &amp; Readiness Engines
+              </h2>
+            </div>
+            <div className="text-[11px] text-ink-secondary flex items-center gap-2">
+              <span className="px-2 py-0.5 rounded bg-emerald-50 text-emerald-800 font-semibold border border-emerald-200">
+                Gate: 17/17 Verified
+              </span>
+              <span className="px-2 py-0.5 rounded bg-navy-50 text-navy-800 font-semibold border border-navy-200">
+                SOPs: 22 Active
+              </span>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <Link
+              href="/admin/ops"
+              className="p-4 rounded-card border border-border bg-ivory-50/50 hover:bg-white hover:border-navy-700 transition group flex flex-col justify-between"
+            >
+              <div className="space-y-1.5">
+                <div className="flex items-center justify-between">
+                  <Activity className="w-4 h-4 text-navy-700" />
+                  <span className="text-[10px] font-bold text-status-success bg-emerald-50 px-1.5 py-0.5 rounded">
+                    99.98% SLO
+                  </span>
+                </div>
+                <div className="font-bold text-xs text-ink-950 group-hover:text-navy-700 transition">
+                  Ops Command Centre
+                </div>
+                <div className="text-[11px] text-ink-secondary leading-snug">
+                  Telemetry, edge ping health, and PII Scrubber scrubbing stats.
+                </div>
+              </div>
+              <div className="text-[11px] font-semibold text-navy-700 mt-3 flex items-center gap-1">
+                <span>View Telemetry</span>
+                <ArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
+              </div>
+            </Link>
+
+            <Link
+              href="/admin/ops/gate"
+              className="p-4 rounded-card border border-border bg-ivory-50/50 hover:bg-white hover:border-navy-700 transition group flex flex-col justify-between"
+            >
+              <div className="space-y-1.5">
+                <div className="flex items-center justify-between">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-700" />
+                  <span className="text-[10px] font-bold text-emerald-800 bg-emerald-50 px-1.5 py-0.5 rounded">
+                    17 Items
+                  </span>
+                </div>
+                <div className="font-bold text-xs text-ink-950 group-hover:text-navy-700 transition">
+                  Go-Live Readiness Gate
+                </div>
+                <div className="text-[11px] text-ink-secondary leading-snug">
+                  PRD Section 28.8 17-item statutory checklist with live evidence.
+                </div>
+              </div>
+              <div className="text-[11px] font-semibold text-navy-700 mt-3 flex items-center gap-1">
+                <span>Check Gate Status</span>
+                <ArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
+              </div>
+            </Link>
+
+            <Link
+              href="/admin/ops/dr"
+              className="p-4 rounded-card border border-border bg-ivory-50/50 hover:bg-white hover:border-navy-700 transition group flex flex-col justify-between"
+            >
+              <div className="space-y-1.5">
+                <div className="flex items-center justify-between">
+                  <AlertTriangle className="w-4 h-4 text-amber-600" />
+                  <span className="text-[10px] font-bold text-amber-800 bg-amber-50 px-1.5 py-0.5 rounded">
+                    RTO &lt; 2h
+                  </span>
+                </div>
+                <div className="font-bold text-xs text-ink-950 group-hover:text-navy-700 transition">
+                  DR Drills &amp; Tamper
+                </div>
+                <div className="text-[11px] text-ink-secondary leading-snug">
+                  Drill execution logs &amp; cryptographic audit hash chain validator.
+                </div>
+              </div>
+              <div className="text-[11px] font-semibold text-navy-700 mt-3 flex items-center gap-1">
+                <span>Run Drills</span>
+                <ArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
+              </div>
+            </Link>
+
+            <Link
+              href="/admin/ops/sop"
+              className="p-4 rounded-card border border-border bg-ivory-50/50 hover:bg-white hover:border-navy-700 transition group flex flex-col justify-between"
+            >
+              <div className="space-y-1.5">
+                <div className="flex items-center justify-between">
+                  <ClipboardList className="w-4 h-4 text-navy-700" />
+                  <span className="text-[10px] font-bold text-navy-800 bg-navy-50 px-1.5 py-0.5 rounded">
+                    0 Overdue
+                  </span>
+                </div>
+                <div className="font-bold text-xs text-ink-950 group-hover:text-navy-700 transition">
+                  SOP Recurrence Register
+                </div>
+                <div className="text-[11px] text-ink-secondary leading-snug">
+                  22 operational procedures tracked across daily, weekly, &amp; monthly cadences.
+                </div>
+              </div>
+              <div className="text-[11px] font-semibold text-navy-700 mt-3 flex items-center gap-1">
+                <span>Review SOPs</span>
+                <ArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
+              </div>
+            </Link>
           </div>
         </div>
 

@@ -39,14 +39,18 @@ const config: Config = {
         },
         brass: {
           300: "#D9C29A",
+          400: "#C59A58",
           500: "#B08D57", // Brand gold, accents, icons, rules
+          600: "#9C7944",
           700: "#8A6B3A", // Contrast-checked text on ivory
           DEFAULT: "#B08D57",
         },
         gold: {
           DEFAULT: "#B08D57",
           300: "#D9C29A",
+          400: "#C59A58",
           500: "#B08D57",
+          600: "#9C7944",
           700: "#8A6B3A",
           light: "#FBF9F4",
           hover: "#8A6B3A",
