@@ -196,11 +196,21 @@ async function main() {
         passed++;
         process.stdout.write(`✔ [${res.status}] ${route}\n`);
         
-        // Extract internal links from HTML
+        // Extract internal links from HTML (pages only, skip API, static assets, streams)
         const matches = html.matchAll(/href="(\/[a-zA-Z0-9_\-\/#]*)"/g);
         for (const match of matches) {
           const href = match[1].split("#")[0]; // remove hash anchor
-          if (href && href !== "" && !href.startsWith("/_next")) {
+          if (
+            href &&
+            href !== "" &&
+            !href.startsWith("/_next") &&
+            !href.startsWith("/api") &&
+            !href.includes("stream") &&
+            !href.endsWith(".png") &&
+            !href.endsWith(".jpg") &&
+            !href.endsWith(".svg") &&
+            !href.endsWith(".ico")
+          ) {
             discoveredLinks.add(href);
           }
         }
@@ -229,6 +239,7 @@ async function main() {
       const res = await fetch(`${BASE_URL}${link}`, {
         method: "GET",
         headers: { "User-Agent": "RouteCrawler/1.0" },
+        signal: AbortSignal.timeout(5000),
       });
       if (res.status === 200 || res.status === 304 || res.status === 307 || res.status === 308) {
         linkPassed++;

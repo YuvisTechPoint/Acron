@@ -14,16 +14,9 @@ import {
   Building,
 } from "lucide-react";
 
-export default function DynamicCertificateVerificationPage({
-  params,
-}: {
-  params?: { code?: string };
-}) {
-  const routerParams = useParams();
-  const rawCode =
-    (params?.code as string) ||
-    (routerParams?.code as string) ||
-    "CERT-ACORN-2026-884";
+export default function DynamicCertificateVerificationPage() {
+  const params = useParams();
+  const rawCode = (params?.code as string) || "CERT-ACORN-2026-884";
   const code = decodeURIComponent(rawCode).trim().toUpperCase();
 
   const isValidCert = code.startsWith("CERT-ACORN-") || code.includes("ACORN");
@@ -44,7 +37,7 @@ export default function DynamicCertificateVerificationPage({
     : null;
 
   return (
-    <div className="bg-ivory-50 min-h-screen pt-32 pb-20 sm:pt-40 sm:pb-24 text-ink">
+    <div className="bg-ivory-50 min-h-screen pt-36 pb-20 sm:pt-44 sm:pb-28 lg:pt-48 text-ink selection:bg-brass-300/30">
       <div className="max-w-xl mx-auto px-4 sm:px-6 space-y-8">
         {/* Navigation Breadcrumb */}
         <div className="flex items-center justify-between border-b border-border pb-4">
