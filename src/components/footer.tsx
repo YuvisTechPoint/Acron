@@ -9,15 +9,12 @@ import {
   Mail,
   Clock,
   ChevronDown,
-  Scale,
-  ShieldCheck,
-  FileCheck,
   ArrowUp,
   ArrowUpRight,
   ExternalLink,
 } from "lucide-react";
 import { BRAND_CONFIG, PRACTICE_AREAS } from "@/lib/constants";
-import { FooterClock, FooterRollText } from "@/components/footer-roll-text";
+import { FooterRollText } from "@/components/footer-roll-text";
 import { ChambersMap } from "@/components/chambers-map";
 import { platformStore } from "@/lib/store";
 
@@ -278,56 +275,13 @@ export function Footer() {
       </div>
 
       {/* ─────────────────────────────────────────────────────────────
-          2. STATUTORY DISCLOSURES & REGULATORY COMPLIANCE
+          2. AESTHETIC LIGHT GREY BRAND WATERMARK
          ───────────────────────────────────────────────────────────── */}
-      <div className="border-t border-navy-800/80 bg-[#050C17]">
-        <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-5">
-
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-            <div className="space-y-1">
-              <span className="font-sans text-[10px] font-semibold tracking-[0.2em] uppercase text-brass-400">
-                REGULATORY GOVERNANCE
-              </span>
-              <h3 className="font-serif text-base font-bold text-white">
-                Statutory Compliance &amp; Professional Standards
-              </h3>
-            </div>
-
-            {/* Regulatory Badges */}
-            <div className="flex flex-wrap items-center gap-2 text-[11px]">
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded bg-[#0E1F3D] border border-brass-500/25 text-brass-300">
-                <Scale className="w-3.5 h-3.5 text-brass-400" />
-                <span>Advocates Act, 1961</span>
-              </span>
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded bg-[#0E1F3D] border border-brass-500/25 text-brass-300">
-                <ShieldCheck className="w-3.5 h-3.5 text-brass-400" />
-                <span>Bar Council of West Bengal</span>
-              </span>
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded bg-[#0E1F3D] border border-brass-500/25 text-brass-300">
-                <FileCheck className="w-3.5 h-3.5 text-brass-400" />
-                <span>Client Trust Escrow</span>
-              </span>
-            </div>
-          </div>
-
-          {/* Bar Council Professional Disclaimer Box */}
-          <div className="bg-[#091528] p-3.5 rounded-lg border border-navy-800 text-[11px] text-slate-300 leading-relaxed">
-            <p>
-              <strong className="text-brass-300 font-semibold">Bar Council of India Rule 36 Notice:</strong>{" "}
-              {siteConfig?.disclaimer || "The information provided on this website is solely for general informational purposes and does not constitute legal advice, solicitation, or create an advocate-client relationship. Visitors requiring counsel should seek formal representation."}
-            </p>
-          </div>
-
-          {/* Aesthetic Light Grey Brand Watermark */}
-          <div
-            className="w-full text-center pointer-events-none select-none overflow-hidden pt-6 pb-1"
-            aria-hidden="true"
-          >
-            <span className="font-serif text-[clamp(4.5rem,13vw,10.5rem)] font-black tracking-[0.16em] text-slate-400/25 sm:text-slate-300/30 leading-none block select-none uppercase drop-shadow-[0_4px_24px_rgba(255,255,255,0.03)]">
-              ACORN
-            </span>
-          </div>
-
+      <div className="border-t border-navy-800/80 bg-[#050C17] overflow-hidden">
+        <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-8 text-center pointer-events-none select-none" aria-hidden="true">
+          <span className="font-serif text-[clamp(4.5rem,13vw,10.5rem)] font-black tracking-[0.16em] text-slate-400/25 sm:text-slate-300/30 leading-none block select-none uppercase drop-shadow-[0_4px_24px_rgba(255,255,255,0.03)]">
+            ACORN
+          </span>
         </div>
       </div>
 
@@ -337,13 +291,11 @@ export function Footer() {
       <div className="border-t border-navy-800 bg-[#040812]">
         <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col md:flex-row items-center justify-between gap-4 text-xs font-sans text-slate-400">
 
-          {/* Copyright & Live Chamber Clock */}
+          {/* Copyright */}
           <div className="flex flex-wrap items-center justify-center md:justify-start gap-3">
             <span className="text-slate-300 font-semibold tracking-wide text-[11px] sm:text-xs">
               &copy; {new Date().getFullYear()} ACORN LEGAL CONSULTANTS
             </span>
-            <span className="text-navy-700 select-none">&bull;</span>
-            <FooterClock />
             <span className="hidden sm:inline text-navy-700 select-none">&bull;</span>
             <span className="hidden sm:inline text-[11px] text-slate-400">
               Calcutta High Court Jurisdiction
