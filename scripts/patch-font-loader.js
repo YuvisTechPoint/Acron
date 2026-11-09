@@ -12,3 +12,4 @@ if (content.includes(target)) {
 } else {
   console.log('Already patched');
 }
+
