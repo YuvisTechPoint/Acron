@@ -261,9 +261,11 @@ export function Navbar() {
                 />
               </button>
 
-              {/* Mega Menu Dropdown with Contiguous Hover Bridge */}
+              {/* Full-Width Edge-to-Edge Sharp Rectangular Mega Menu */}
               <div
-                className={`absolute top-full left-1/2 -translate-x-[36%] pt-2.5 z-50 transition-all duration-200 ${
+                className={`fixed left-0 right-0 w-full z-50 transition-all duration-200 ${
+                  scrolled ? "top-[99px]" : "top-[84px]"
+                } ${
                   megaMenuOpen
                     ? "opacity-100 visible translate-y-0 pointer-events-auto"
                     : "opacity-0 invisible -translate-y-2 pointer-events-none"
@@ -273,158 +275,160 @@ export function Navbar() {
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}
               >
-                <div className="w-[960px] xl:w-[1000px] max-w-[calc(100vw-32px)] bg-white rounded-card shadow-modal border border-border p-6 sm:p-7 text-ink space-y-5">
-                  
-                  {/* Top Bar: Eyebrow & Directory Navigation Link */}
-                  <div className="flex items-center justify-between pb-3.5 border-b border-border">
-                    <div className="flex items-center gap-2">
-                      <span className="w-2 h-2 rounded-full bg-brass-500 animate-pulse" />
-                      <span className="text-[11px] font-bold text-brass-700 uppercase tracking-[0.18em]">
-                        Practice Areas &amp; Advisory Capabilities
-                      </span>
-                    </div>
-                    <Link
-                      href="/services"
-                      onClick={() => setMegaMenuOpen(false)}
-                      className="text-xs font-semibold text-navy-800 hover:text-brass-700 flex items-center gap-1.5 group transition-colors"
-                    >
-                      <span>Explore Complete Practice Directory</span>
-                      <ArrowRight className="w-3.5 h-3.5 text-brass-500 group-hover:translate-x-0.5 transition-transform" />
-                    </Link>
-                  </div>
-
-                  {/* Main Grid: 6 Practice Cards (7 cols) + Focused Scope Card (5 cols) */}
-                  <div className="grid grid-cols-12 gap-6 items-stretch">
+                <div className="w-full bg-[#FAF9F5] border-b-2 border-brass-500 shadow-2xl border-t border-border/60">
+                  <div className="max-w-[1360px] mx-auto px-6 sm:px-10 py-7 text-ink space-y-6">
                     
-                    {/* Left: 6 Core Practice Cards in 2 columns of 3 */}
-                    <div className="col-span-7 grid grid-cols-2 gap-3">
-                      {corePractices.map((pa) => {
-                        const isHovered = hoveredPracticeSlug === pa.slug;
-                        return (
-                          <Link
-                            key={pa.slug}
-                            href={`/services/${pa.slug}`}
-                            onMouseEnter={() => setHoveredPracticeSlug(pa.slug)}
-                            onClick={() => setMegaMenuOpen(false)}
-                            className={`p-3.5 rounded-card border transition-all duration-200 flex items-start gap-3 text-left group ${
-                              isHovered
-                                ? "bg-[#FAF7F2] border-brass-400 shadow-sm"
-                                : "bg-white border-border/80 hover:bg-stone-50/80 hover:border-border"
-                            }`}
-                          >
-                            <div
-                              className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 mt-0.5 transition-colors ${
+                    {/* Top Bar: Eyebrow & Directory Navigation Link */}
+                    <div className="flex items-center justify-between pb-3.5 border-b border-border/80">
+                      <div className="flex items-center gap-2.5">
+                        <span className="w-2 h-2 bg-brass-500 shrink-0" />
+                        <span className="font-sans text-[11px] font-bold text-brass-700 uppercase tracking-[0.2em]">
+                          Practice Areas &amp; Advisory Capabilities
+                        </span>
+                      </div>
+                      <Link
+                        href="/services"
+                        onClick={() => setMegaMenuOpen(false)}
+                        className="text-xs font-semibold text-navy-800 hover:text-brass-700 flex items-center gap-2 group transition-colors"
+                      >
+                        <span>Explore Complete Practice Directory</span>
+                        <ArrowRight className="w-3.5 h-3.5 text-brass-500 group-hover:translate-x-1 transition-transform" />
+                      </Link>
+                    </div>
+
+                    {/* Main Grid: 8 Core Practice Area Cards (7 cols) + Focused Scope Card (5 cols) */}
+                    <div className="grid grid-cols-12 gap-8 items-stretch">
+                      
+                      {/* Left: Practice Cards in 2 columns of 4 with sharp rectangular borders */}
+                      <div className="col-span-12 lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        {corePractices.map((pa) => {
+                          const isHovered = hoveredPracticeSlug === pa.slug;
+                          return (
+                            <Link
+                              key={pa.slug}
+                              href={`/services/${pa.slug}`}
+                              onMouseEnter={() => setHoveredPracticeSlug(pa.slug)}
+                              onClick={() => setMegaMenuOpen(false)}
+                              className={`p-3.5 border transition-all duration-200 flex items-start gap-3 text-left group ${
                                 isHovered
-                                  ? "bg-navy-800 text-brass-300 shadow-sm"
-                                  : "bg-brass-50 border border-brass-200/60 text-brass-700"
+                                  ? "bg-white border-brass-500 shadow-sm"
+                                  : "bg-white/80 border-border hover:bg-white hover:border-brass-400"
                               }`}
                             >
-                              {iconMap[pa.icon] || <Briefcase className="w-4 h-4 text-brass-500" />}
-                            </div>
-                            <div className="flex-1 min-w-0">
-                              <div className="flex items-center justify-between gap-1">
-                                <span className={`text-[13px] font-bold leading-snug transition-colors ${
-                                  isHovered ? "text-navy-900" : "text-ink-950"
-                                }`}>
-                                  {pa.title}
-                                </span>
-                                <ArrowRight
-                                  className={`w-3 h-3 text-brass-500 shrink-0 transition-transform ${
-                                    isHovered ? "translate-x-0.5 opacity-100" : "opacity-0"
-                                  }`}
-                                />
+                              <div
+                                className={`w-8 h-8 flex items-center justify-center shrink-0 mt-0.5 border transition-colors ${
+                                  isHovered
+                                    ? "bg-navy-900 border-brass-400 text-brass-300"
+                                    : "bg-stone-100 border-border text-brass-700"
+                                }`}
+                              >
+                                {iconMap[pa.icon] || <Briefcase className="w-4 h-4 text-brass-500" />}
                               </div>
-                              <p className="text-[11px] text-ink-secondary leading-relaxed line-clamp-2 mt-1">
-                                {pa.shortDesc}
-                              </p>
-                            </div>
+                              <div className="flex-1 min-w-0">
+                                <div className="flex items-center justify-between gap-1">
+                                  <span className={`text-[13px] font-bold leading-snug transition-colors ${
+                                    isHovered ? "text-navy-900" : "text-ink-950"
+                                  }`}>
+                                    {pa.title}
+                                  </span>
+                                  <ArrowRight
+                                    className={`w-3 h-3 text-brass-500 shrink-0 transition-transform ${
+                                      isHovered ? "translate-x-0.5 opacity-100" : "opacity-0"
+                                    }`}
+                                  />
+                                </div>
+                                <p className="text-[11px] text-ink-secondary leading-relaxed line-clamp-2 mt-1">
+                                  {pa.shortDesc}
+                                </p>
+                              </div>
+                            </Link>
+                          );
+                        })}
+                      </div>
+
+                      {/* Right: Sharp Architectural Scope Card (5 cols) */}
+                      <div className="col-span-12 lg:col-span-5 bg-white p-6 border border-border shadow-sm flex flex-col justify-between relative">
+                        <div className="space-y-4">
+                          <div className="flex items-center justify-between pb-3 border-b border-border">
+                            <span className="text-[10px] uppercase font-bold tracking-[0.18em] text-brass-800 bg-brass-100/70 px-2 py-0.5 border border-brass-300/40">
+                              Chambers Scope Focus
+                            </span>
+                            <span className="text-[11px] font-mono text-ink-muted">
+                              Camac Street Chambers
+                            </span>
+                          </div>
+
+                          <div>
+                            <h4 className="font-serif font-bold text-xl text-ink-950 leading-snug">
+                              {activePractice.title}
+                            </h4>
+                            <p className="font-sans text-xs text-ink-secondary mt-2 leading-relaxed">
+                              {activePractice.shortDesc}
+                            </p>
+                          </div>
+
+                          <div className="pt-3 border-t border-border">
+                            <span className="text-[10px] font-bold uppercase tracking-wider text-ink-muted block mb-2.5">
+                              Key Deliverables &amp; Representation Scope:
+                            </span>
+                            <ul className="space-y-2 text-xs text-ink-950">
+                              {activePractice.services?.slice(0, 4).map((item, i) => (
+                                <li key={i} className="flex items-start gap-2.5">
+                                  <CheckCircle2 className="w-3.5 h-3.5 text-brass-600 shrink-0 mt-0.5" />
+                                  <span className="leading-snug text-[12px] text-ink-900">{item}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        </div>
+
+                        <div className="pt-5 mt-4 border-t border-border flex items-center justify-between">
+                          <Link
+                            href={`/services/${activePractice.slug}`}
+                            onClick={() => setMegaMenuOpen(false)}
+                            className="px-5 py-2.5 bg-navy-900 hover:bg-navy-800 text-ivory-50 text-xs font-bold transition-colors shadow-sm inline-flex items-center gap-2 group"
+                          >
+                            <span>Explore Full Practice Scope</span>
+                            <ArrowRight className="w-3.5 h-3.5 text-brass-400 group-hover:translate-x-1 transition-transform" />
                           </Link>
-                        );
-                      })}
-                    </div>
-
-                    {/* Right: Focused Scope Card (5 cols) */}
-                    <div className="col-span-5 bg-gradient-to-b from-[#FAF7F2] via-[#F6F2EB] to-[#EFEAE2] rounded-card p-5 border border-brass-500/25 flex flex-col justify-between shadow-sm relative overflow-hidden">
-                      <div className="space-y-3 relative z-10">
-                        <div className="flex items-center justify-between">
-                          <span className="text-[10px] uppercase font-bold tracking-[0.16em] text-brass-800 bg-brass-100/80 px-2 py-0.5 rounded">
-                            Chambers Scope Focus
-                          </span>
-                          <span className="text-[11px] font-mono text-ink-muted">
-                            Camac Street Chambers
-                          </span>
-                        </div>
-
-                        <div>
-                          <h4 className="font-serif font-bold text-lg text-ink-950 leading-snug">
-                            {activePractice.title}
-                          </h4>
-                          <p className="font-sans text-xs text-ink-secondary mt-1.5 leading-relaxed">
-                            {activePractice.shortDesc}
-                          </p>
-                        </div>
-
-                        <div className="pt-2 border-t border-brass-300/40">
-                          <span className="text-[10px] font-bold uppercase tracking-wider text-ink-muted block mb-2">
-                            Key Deliverables &amp; Representation Scope:
-                          </span>
-                          <ul className="space-y-1.5 text-xs text-ink-950">
-                            {activePractice.services?.slice(0, 4).map((item, i) => (
-                              <li key={i} className="flex items-start gap-2">
-                                <CheckCircle2 className="w-3.5 h-3.5 text-brass-600 shrink-0 mt-0.5" />
-                                <span className="leading-tight text-[11px] text-ink-900">{item}</span>
-                              </li>
-                            ))}
-                          </ul>
+                          <Link
+                            href="/request-service"
+                            onClick={() => setMegaMenuOpen(false)}
+                            className="text-xs font-semibold text-brass-800 hover:text-navy-900 underline underline-offset-2 transition"
+                          >
+                            Book Intake
+                          </Link>
                         </div>
                       </div>
 
-                      <div className="pt-4 mt-3 border-t border-brass-300/40 flex items-center justify-between relative z-10">
+                    </div>
+
+                    {/* Bottom Sub-Bar: Quick Consultation Intake Shortcuts */}
+                    <div className="pt-3.5 border-t border-border/80 flex flex-wrap items-center justify-between gap-3 text-xs text-ink-secondary">
+                      <div className="flex items-center gap-2">
+                        <span className="font-semibold text-ink-950 text-[11px]">Advisory Retainers:</span>
+                        <span className="text-[11px]">Corporate Governance &bull; POSH IC Member Appointment &bull; Contract Vetting</span>
+                      </div>
+                      <div className="flex items-center gap-3 text-[11px]">
                         <Link
-                          href={`/services/${activePractice.slug}`}
+                          href="/posh"
                           onClick={() => setMegaMenuOpen(false)}
-                          className="px-4 py-2 bg-navy-800 hover:bg-navy-900 text-ivory-50 text-xs font-bold rounded-btn transition-colors shadow-sm inline-flex items-center gap-2 group"
+                          className="font-semibold text-navy-800 hover:text-brass-700 hover:underline"
                         >
-                          <span>Explore Full Practice Scope</span>
-                          <ArrowRight className="w-3.5 h-3.5 text-brass-400 group-hover:translate-x-0.5 transition-transform" />
+                          POSH Redressal Hub &rarr;
                         </Link>
+                        <span className="text-border select-none">&bull;</span>
                         <Link
                           href="/request-service"
                           onClick={() => setMegaMenuOpen(false)}
-                          className="text-[11px] font-semibold text-brass-800 hover:text-navy-900 underline underline-offset-2 transition"
+                          className="font-bold text-brass-700 hover:text-navy-900 hover:underline"
                         >
-                          Book Intake
+                          Schedule Confidential Consultation &rarr;
                         </Link>
                       </div>
                     </div>
 
                   </div>
-
-                  {/* Bottom Sub-Bar: Quick Consultation Intake Shortcuts */}
-                  <div className="pt-3 border-t border-border flex flex-wrap items-center justify-between gap-3 text-xs text-ink-secondary">
-                    <div className="flex items-center gap-2">
-                      <span className="font-semibold text-ink-950 text-[11px]">Advisory Retainers:</span>
-                      <span className="text-[11px]">Corporate Governance &bull; POSH IC Member Appointment &bull; Contract Vetting</span>
-                    </div>
-                    <div className="flex items-center gap-3 text-[11px]">
-                      <Link
-                        href="/posh"
-                        onClick={() => setMegaMenuOpen(false)}
-                        className="font-semibold text-navy-800 hover:text-brass-700 hover:underline"
-                      >
-                        POSH Redressal Hub &rarr;
-                      </Link>
-                      <span className="text-border select-none">&bull;</span>
-                      <Link
-                        href="/request-service"
-                        onClick={() => setMegaMenuOpen(false)}
-                        className="font-bold text-brass-700 hover:text-navy-900 hover:underline"
-                      >
-                        Schedule Confidential Consultation &rarr;
-                      </Link>
-                    </div>
-                  </div>
-
                 </div>
               </div>
             </div>

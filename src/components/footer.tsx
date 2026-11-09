@@ -101,8 +101,7 @@ export function Footer() {
               className="w-full flex items-center justify-between text-left group lg:pointer-events-none mb-3 lg:mb-4 focus:outline-none"
               aria-expanded={openAccordions["01"]}
             >
-              <h4 className="font-sans text-[11px] font-semibold uppercase tracking-[0.18em] text-brass-400 flex items-center gap-2">
-                <span className="w-3 h-[1px] bg-brass-500" />
+              <h4 className="font-sans text-[11px] font-semibold uppercase tracking-[0.18em] text-brass-400 flex items-center gap-1.5">
                 <span className="font-mono text-[10px] text-brass-500/80">01 /</span>
                 <span>Practice Areas</span>
               </h4>
@@ -140,8 +139,7 @@ export function Footer() {
               className="w-full flex items-center justify-between text-left group lg:pointer-events-none mb-3 lg:mb-4 focus:outline-none"
               aria-expanded={openAccordions["02"]}
             >
-              <h4 className="font-sans text-[11px] font-semibold uppercase tracking-[0.18em] text-brass-400 flex items-center gap-2">
-                <span className="w-3 h-[1px] bg-brass-500" />
+              <h4 className="font-sans text-[11px] font-semibold uppercase tracking-[0.18em] text-brass-400 flex items-center gap-1.5">
                 <span className="font-mono text-[10px] text-brass-500/80">02 /</span>
                 <span>Portals</span>
               </h4>
@@ -210,8 +208,7 @@ export function Footer() {
               className="w-full flex items-center justify-between text-left group lg:pointer-events-none mb-3 lg:mb-4 focus:outline-none"
               aria-expanded={openAccordions["03"]}
             >
-              <h4 className="font-sans text-[11px] font-semibold uppercase tracking-[0.18em] text-brass-400 flex items-center gap-2">
-                <span className="w-3 h-[1px] bg-brass-500" />
+              <h4 className="font-sans text-[11px] font-semibold uppercase tracking-[0.18em] text-brass-400 flex items-center gap-1.5">
                 <span className="font-mono text-[10px] text-brass-500/80">03 /</span>
                 <span>Chambers Location</span>
               </h4>
@@ -295,7 +292,7 @@ export function Footer() {
             </span>
             <span className="hidden sm:inline text-navy-700 select-none">&bull;</span>
             <span className="hidden sm:inline text-[11px] text-slate-400">
-              Calcutta High Court Jurisdiction
+              Acron
             </span>
           </div>
 

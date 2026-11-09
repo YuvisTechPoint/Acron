@@ -223,9 +223,17 @@ export default function HomePage() {
             {/* Left Column (7 cols): Editorial Headline, Sub-headline, CTAs, Metadata */}
             <div className="lg:col-span-7 space-y-6 sm:space-y-7 text-left max-w-2xl">
 
-              {/* Eyebrow */}
+              {/* Eyebrow with Strong Premium Emblem */}
               <div className="inline-flex items-center gap-2.5">
-                <span className="w-5 h-[1.5px] bg-brass-400" />
+                <span className="flex items-center justify-center w-5 h-5 rounded bg-brass-400/15 border border-brass-400/40 text-brass-400 shadow-sm shrink-0">
+                  <svg viewBox="0 0 24 24" fill="none" className="w-3.5 h-3.5 text-brass-400" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                    <path d="M12 3v17M7 21h10" />
+                    <path d="M4 7l8-3 8 3" />
+                    <path d="M4 7l-2.5 6h5L4 7z" fill="currentColor" fillOpacity="0.25" />
+                    <path d="M20 7l-2.5 6h5L20 7z" fill="currentColor" fillOpacity="0.25" />
+                    <circle cx="12" cy="4" r="1.2" fill="currentColor" />
+                  </svg>
+                </span>
                 <span className="font-sans text-[11px] sm:text-xs font-bold uppercase tracking-[0.22em] text-brass-400 drop-shadow-sm">
                   {siteConfig.firmName || "ACORN LEGAL CONSULTANTS"}
                 </span>
