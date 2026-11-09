@@ -62,13 +62,13 @@ export function Footer() {
 
   return (
     <footer className="relative bg-[#07101F] text-white border-t border-navy-800">
-      
+
       {/* ─────────────────────────────────────────────────────────────
           1. MAIN DIRECTORY GRID (4 COLUMNS)
          ───────────────────────────────────────────────────────────── */}
       <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 pt-16 sm:pt-20 pb-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 lg:gap-12">
-          
+
           {/* Column 1: Firm Identity & Chambers Ethos (4 cols) */}
           <div className="lg:col-span-4 space-y-4">
             <Link href="/" className="inline-flex items-center gap-3 group focus:outline-none">
@@ -113,16 +113,14 @@ export function Footer() {
                 <span>Practice Areas</span>
               </h4>
               <ChevronDown
-                className={`w-4 h-4 text-brass-400 lg:hidden transition-transform duration-300 ${
-                  openAccordions["01"] ? "rotate-180" : ""
-                }`}
+                className={`w-4 h-4 text-brass-400 lg:hidden transition-transform duration-300 ${openAccordions["01"] ? "rotate-180" : ""
+                  }`}
               />
             </button>
 
             <div
-              className={`transition-all duration-300 ease-in-out overflow-hidden ${
-                openAccordions["01"] ? "max-h-[500px] opacity-100" : "max-h-0 lg:max-h-none opacity-0 lg:opacity-100"
-              }`}
+              className={`transition-all duration-300 ease-in-out overflow-hidden ${openAccordions["01"] ? "max-h-[500px] opacity-100" : "max-h-0 lg:max-h-none opacity-0 lg:opacity-100"
+                }`}
             >
               <ul className="space-y-2.5 font-sans text-xs text-slate-300 pt-1 lg:pt-0">
                 {PRACTICE_AREAS.slice(0, 6).map((pa) => (
@@ -154,16 +152,14 @@ export function Footer() {
                 <span>Portals</span>
               </h4>
               <ChevronDown
-                className={`w-4 h-4 text-brass-400 lg:hidden transition-transform duration-300 ${
-                  openAccordions["02"] ? "rotate-180" : ""
-                }`}
+                className={`w-4 h-4 text-brass-400 lg:hidden transition-transform duration-300 ${openAccordions["02"] ? "rotate-180" : ""
+                  }`}
               />
             </button>
 
             <div
-              className={`transition-all duration-300 ease-in-out overflow-hidden ${
-                openAccordions["02"] ? "max-h-[500px] opacity-100" : "max-h-0 lg:max-h-none opacity-0 lg:opacity-100"
-              }`}
+              className={`transition-all duration-300 ease-in-out overflow-hidden ${openAccordions["02"] ? "max-h-[500px] opacity-100" : "max-h-0 lg:max-h-none opacity-0 lg:opacity-100"
+                }`}
             >
               <ul className="space-y-2.5 font-sans text-xs text-slate-300 pt-1 lg:pt-0">
                 <li>
@@ -226,16 +222,14 @@ export function Footer() {
                 <span>Chambers Location</span>
               </h4>
               <ChevronDown
-                className={`w-4 h-4 text-brass-400 lg:hidden transition-transform duration-300 ${
-                  openAccordions["03"] ? "rotate-180" : ""
-                }`}
+                className={`w-4 h-4 text-brass-400 lg:hidden transition-transform duration-300 ${openAccordions["03"] ? "rotate-180" : ""
+                  }`}
               />
             </button>
 
             <div
-              className={`transition-all duration-300 ease-in-out overflow-hidden ${
-                openAccordions["03"] ? "max-h-[500px] opacity-100" : "max-h-0 lg:max-h-none opacity-0 lg:opacity-100"
-              }`}
+              className={`transition-all duration-300 ease-in-out overflow-hidden ${openAccordions["03"] ? "max-h-[500px] opacity-100" : "max-h-0 lg:max-h-none opacity-0 lg:opacity-100"
+                }`}
             >
               <div className="space-y-3 font-sans text-xs text-slate-300 pt-1 lg:pt-0">
                 <div className="flex items-start gap-2.5">
@@ -271,7 +265,7 @@ export function Footer() {
                   >
                     <div className="flex items-center gap-2">
                       <span className="w-2 h-2 rounded-full bg-brass-400 animate-pulse" />
-                      <span className="text-[11px] font-sans">Live Chambers Map Sync</span>
+                      <span className="text-[11px] font-sans">Chambers Map</span>
                     </div>
                     <ExternalLink className="w-3.5 h-3.5 text-brass-400 group-hover:translate-x-0.5 transition-transform" />
                   </button>
@@ -288,7 +282,7 @@ export function Footer() {
          ───────────────────────────────────────────────────────────── */}
       <div className="border-t border-navy-800/80 bg-[#050C17]">
         <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-5">
-          
+
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div className="space-y-1">
               <span className="font-sans text-[10px] font-semibold tracking-[0.2em] uppercase text-brass-400">
@@ -342,7 +336,7 @@ export function Footer() {
          ───────────────────────────────────────────────────────────── */}
       <div className="border-t border-navy-800 bg-[#040812]">
         <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col md:flex-row items-center justify-between gap-4 text-xs font-sans text-slate-400">
-          
+
           {/* Copyright & Live Chamber Clock */}
           <div className="flex flex-wrap items-center justify-center md:justify-start gap-3">
             <span className="text-slate-300 font-semibold tracking-wide text-[11px] sm:text-xs">

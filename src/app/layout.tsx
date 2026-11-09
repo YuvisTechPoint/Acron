@@ -9,6 +9,7 @@ import { QuickExit } from "@/components/quick-exit";
 import { CookieBanner } from "@/components/cookie-banner";
 import { SkipToContent } from "@/components/skip-to-content";
 import { BackToTop } from "@/components/back-to-top";
+import { CleanCopyHandler } from "@/components/clean-copy-handler";
 
 const cormorant = Cormorant_Garamond({
   subsets: ["latin"],
@@ -101,6 +102,7 @@ export default function RootLayout({
         />
       </head>
       <body className="min-h-screen flex flex-col bg-ivory-50 text-ink antialiased font-sans selection:bg-brass-300/30">
+        <CleanCopyHandler />
         <SkipToContent />
         <DisclaimerBanner />
         <QuickExit />

@@ -279,6 +279,12 @@ button, a, input, select, textarea {
   white-space: nowrap;
 }
 
+.footer-roll-text__track > *:nth-child(2) {
+  user-select: none;
+  -webkit-user-select: none;
+  pointer-events: none;
+}
+
 a:hover .footer-roll-text__track,
 a:focus-visible .footer-roll-text__track,
 button:hover .footer-roll-text__track,
