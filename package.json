@@ -11,9 +11,10 @@
     "clean": "node -e \"fs.rmSync('.next', { recursive: true, force: true })\"",
     "lint": "next lint",
     "test:unit": "node scripts/test-unit.mjs",
+    "test:admin": "node scripts/test-admin-realtime.mjs",
     "test:workflows": "node scripts/test-workflows.mjs",
     "test:verify": "node scripts/verify-all.mjs",
-    "test": "node scripts/test-workflows.mjs && node scripts/verify-all.mjs"
+    "test": "node scripts/test-unit.mjs && node scripts/test-admin-realtime.mjs && node scripts/test-workflows.mjs && node scripts/verify-all.mjs"
   },
   "dependencies": {
     "clsx": "^2.1.1",

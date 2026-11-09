@@ -17,11 +17,12 @@ import {
   Clock,
 } from "lucide-react";
 import { platformStore } from "@/lib/store";
+import { useRealtimeServices } from "@/lib/realtime";
 import { CustomService } from "@/lib/types";
 import { formatINR } from "@/lib/utils";
 
 export default function AdminServicesCataloguePage() {
-  const [services, setServices] = useState<CustomService[]>([]);
+  const realtimeServices = useRealtimeServices(true);
   const [categoryFilter, setCategoryFilter] = useState<string>("ALL");
   const [editingService, setEditingService] = useState<CustomService | null>(null);
   const [isCreating, setIsCreating] = useState(false);
@@ -35,15 +36,9 @@ export default function AdminServicesCataloguePage() {
   const [newTurnaround, setNewTurnaround] = useState("2 Business Days");
   const [newIsPopular, setNewIsPopular] = useState(false);
 
-  useEffect(() => {
-    setServices(platformStore.getServices());
-  }, []);
+  const services = realtimeServices;
 
-  const refreshList = () => {
-    setServices(platformStore.getServices());
-  };
-
-  const handleCreate = (e: React.FormEvent) => {
+  const handleCreate = async (e: React.FormEvent) => {
     e.preventDefault();
     const pricePaise = Math.round((parseFloat(newPriceINR) || 0) * 100);
     const features = newFeaturesText
@@ -51,7 +46,7 @@ export default function AdminServicesCataloguePage() {
       .map((f) => f.trim())
       .filter(Boolean);
 
-    platformStore.addService({
+    const newSrv = platformStore.addService({
       name: newName,
       category: newCategory,
       shortDesc: newShortDesc,
@@ -63,26 +58,43 @@ export default function AdminServicesCataloguePage() {
       isActive: true,
     });
 
+    try {
+      await fetch("/api/services", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(newSrv),
+      });
+    } catch {}
+
     setIsCreating(false);
     setNewName("");
     setNewShortDesc("");
     setNewFeaturesText("");
-    refreshList();
   };
 
-  const handleSaveEdit = (e: React.FormEvent) => {
+  const handleSaveEdit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!editingService) return;
 
     platformStore.updateService(editingService.id, editingService);
+
+    try {
+      await fetch("/api/services", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(editingService),
+      });
+    } catch {}
+
     setEditingService(null);
-    refreshList();
   };
 
-  const handleDelete = (id: string, name: string) => {
+  const handleDelete = async (id: string, name: string) => {
     if (confirm(`Are you sure you want to delete service "${name}" from the catalogue?`)) {
       platformStore.deleteService(id);
-      refreshList();
+      try {
+        await fetch(`/api/services?id=${id}`, { method: "DELETE" });
+      } catch {}
     }
   };
 

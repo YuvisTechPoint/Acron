@@ -16,6 +16,7 @@ import {
   ArrowRight,
 } from "lucide-react";
 import { platformStore } from "@/lib/store";
+import { useRealtimeRequests } from "@/lib/realtime";
 import { formatDate, formatDateTime } from "@/lib/utils";
 import { ServiceRequest } from "@/lib/types";
 
@@ -26,7 +27,7 @@ export default function AdminServiceRequestsPage() {
   const [newNote, setNewNote] = useState("");
   const [statusUpdate, setStatusUpdate] = useState<any>("IN_REVIEW");
 
-  const requests = platformStore.getServiceRequests();
+  const requests = useRealtimeRequests();
 
   const filtered = requests.filter((r) => {
     const matchesFilter = filter === "ALL" || r.status === filter;
@@ -37,7 +38,7 @@ export default function AdminServiceRequestsPage() {
     return matchesFilter && matchesSearch;
   });
 
-  const handleUpdate = (e: React.FormEvent) => {
+  const handleUpdate = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!selectedRequest) return;
 
@@ -46,6 +47,18 @@ export default function AdminServiceRequestsPage() {
       statusUpdate,
       newNote ? newNote : undefined
     );
+
+    try {
+      await fetch("/api/requests", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          id: selectedRequest.id,
+          status: statusUpdate,
+          note: newNote,
+        }),
+      });
+    } catch {}
 
     // Refresh
     const updatedList = platformStore.getServiceRequests();

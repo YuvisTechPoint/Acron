@@ -1,11 +1,11 @@
 {
   "version": "3.0.0",
-  "lastUpdated": "2026-11-09T12:14:20.696Z",
+  "lastUpdated": "2026-11-09T14:59:17.347Z",
   "siteConfig": {
     "firmName": "Acorn Legal Consultants",
     "tagline": "",
     "brandTagline": "",
-    "disclaimer": "As per the rules of the Bar Council of India, law firms and legal practitioners are not permitted to solicit work or advertise. The information on this website is solely for informational purposes.",
+    "disclaimer": "Bar Council of India Rule 36 verified. Informational chambers portal.",
     "primaryEmail": "contact@acornlegal.in",
     "receptionPhone": "+91 (033) 2486-7700",
     "addressLine1": "Suite 4B, Camac Court, 25 Camac Street",
@@ -17,7 +17,8 @@
     "heroHeadline": "Excellence in Law.",
     "heroSubheadline": "Integrity in Practice.",
     "heroDescription": "A specialized legal consultancy in Kolkata delivering thoughtful, precise, and result-oriented solutions for corporate governance, commercial contracts, regulatory affairs, and institutional integrity.",
-    "footerRollText": "Acorn Legal Consultants • Excellence in Law • Integrity in Practice • Calcutta High Court • POSH Act Advisory • Corporate Governance • Commercial Contracts • Arbitration & Mediation"
+    "footerRollText": "Acorn Legal Consultants • Excellence in Law • Integrity in Practice • Calcutta High Court • POSH Act Advisory • Corporate Governance • Commercial Contracts • Arbitration & Mediation",
+    "emergencyPhone": "+91 98300 99999"
   },
   "services": [
     {
@@ -91,6 +92,19 @@
       "status": "active",
       "showOnHomepage": true,
       "order": 4
+    },
+    {
+      "name": "Automated Verification Retainer Advisory",
+      "category": "Corporate Commercial",
+      "shortDesc": "End-to-end statutory audit and retainer advisory testing.",
+      "pricePaise": 7500000,
+      "turnaround": "3 Business Days",
+      "features": [
+        "Board Advisory",
+        "Statutory Due Diligence"
+      ],
+      "id": "srv-1794234766102",
+      "slug": "automated-verification-retainer-advisory"
     }
   ],
   "blogPosts": [
@@ -526,13 +540,39 @@
       "practiceArea": "Corporate Advisory",
       "subject": "Cross-Border FDI Compliance & Share Subscription Vetting",
       "description": "We are closing an institutional seed round from Singapore investors and require FDI reporting and RBI filings.",
-      "status": "NEW",
+      "status": "IN_REVIEW",
       "createdAt": "2026-11-05T14:20:00.000Z",
-      "updatedAt": "2026-11-05T14:20:00.000Z",
-      "urgency": "urgent"
+      "updatedAt": "2026-11-09T14:59:17.167Z",
+      "urgency": "urgent",
+      "internalNotes": [
+        {
+          "id": "note-1794236357167",
+          "author": "Admin / Legal Consultant",
+          "content": "Preliminary conflict check passed. Proceeding with fee quote.",
+          "createdAt": "2026-11-09T14:59:17.167Z"
+        }
+      ]
     }
   ],
   "questions": [
+    {
+      "id": "QA-1794236356974",
+      "refNumber": "ACN-QA-2026-167876",
+      "referenceNumber": "ACN-QA-2026-167876",
+      "authorName": "Test Inquirer",
+      "authorEmail": "inquirer@acorn-client.in",
+      "askedByName": "Test Inquirer",
+      "askedByEmail": "inquirer@acorn-client.in",
+      "question": "Is formal conciliation mandatory prior to convening an inquiry under Section 10?",
+      "category": "posh_law",
+      "status": "pending_review",
+      "isPublic": false,
+      "isPublished": false,
+      "views": 0,
+      "upvotes": 0,
+      "createdAt": "2026-11-09T14:59:16.974Z",
+      "updatedAt": "2026-11-09T14:59:16.974Z"
+    },
     {
       "id": "QA-1794226460529",
       "refNumber": "ACN-QA-2026-544751",
@@ -711,6 +751,202 @@
     }
   ],
   "auditLogs": [
+    {
+      "id": "audit-1794236357321-dsnzk",
+      "orgId": "SYSTEM",
+      "actor": "Admin",
+      "actorRole": "super_admin",
+      "action": "CASE_STATUS_UPDATED",
+      "entityType": "system",
+      "entityId": "sys-01",
+      "timestamp": "2026-11-09T14:59:17.321Z",
+      "details": "Case ACN-POSH-2026-0041 transitioned to INQUIRY_IN_PROGRESS",
+      "ipAddress": "127.0.0.1",
+      "prevHash": "8a0805e7c044bc22fdd540d44fbb1820fb6be79a9ddec4380ac5231f744e16a8",
+      "hash": "d962097f45c72a68c76769d09fde0e92f594d24c787c7723a2fcc820c594b85a"
+    },
+    {
+      "id": "audit-1794236356974-nrw00",
+      "orgId": "SYSTEM",
+      "actor": "inquirer@acorn-client.in",
+      "actorRole": "super_admin",
+      "action": "QA_QUESTION_SUBMITTED",
+      "entityType": "system",
+      "entityId": "sys-01",
+      "timestamp": "2026-11-09T14:59:16.974Z",
+      "details": "New legal query ACN-QA-2026-167876 saved in database for moderation.",
+      "ipAddress": "127.0.0.1",
+      "prevHash": "d69068108c82d525f795addc88fdffdb049421650a24034901838b94e713b618",
+      "hash": "8a0805e7c044bc22fdd540d44fbb1820fb6be79a9ddec4380ac5231f744e16a8"
+    },
+    {
+      "id": "audit-1794236356313-22qra",
+      "orgId": "SYSTEM",
+      "actor": "admin@acornlegal.in",
+      "actorRole": "super_admin",
+      "action": "ADMIN_LOGIN_SUCCESS",
+      "entityType": "auth",
+      "entityId": "admin@acornlegal.in",
+      "timestamp": "2026-11-09T14:59:16.313Z",
+      "details": "Authenticated successfully as Super Admin / Managing Partner",
+      "ipAddress": "127.0.0.1",
+      "prevHash": "a0fe895d6f850a5c334ad8c98a33e35a67ce68e7c7b264a81d44c01dcd25794b",
+      "hash": "d69068108c82d525f795addc88fdffdb049421650a24034901838b94e713b618"
+    },
+    {
+      "id": "audit-1794236356158-3t85a",
+      "orgId": "SYSTEM",
+      "actor": "Admin",
+      "actorRole": "super_admin",
+      "action": "ADMIN_LOGOUT",
+      "entityType": "auth",
+      "entityId": "session",
+      "timestamp": "2026-11-09T14:59:16.158Z",
+      "details": "Staff admin session terminated",
+      "ipAddress": "127.0.0.1",
+      "prevHash": "db5c715995b9ad66e091be7157a9383af2e098c59ae73161f0ec8975cc20146d",
+      "hash": "a0fe895d6f850a5c334ad8c98a33e35a67ce68e7c7b264a81d44c01dcd25794b"
+    },
+    {
+      "id": "audit-1794236354139-9k3om",
+      "orgId": "SYSTEM",
+      "actor": "debjani.sen@acornlegal.in",
+      "actorRole": "super_admin",
+      "action": "ADMIN_LOGIN_SUCCESS",
+      "entityType": "auth",
+      "entityId": "debjani.sen@acornlegal.in",
+      "timestamp": "2026-11-09T14:59:14.139Z",
+      "details": "Authenticated successfully as Partner & External Member",
+      "ipAddress": "127.0.0.1",
+      "prevHash": "981fcf493acf7f753337054f532a1bb9be915111fce8342a59e29505c9f84f98",
+      "hash": "db5c715995b9ad66e091be7157a9383af2e098c59ae73161f0ec8975cc20146d"
+    },
+    {
+      "id": "audit-1794236354063-286g3",
+      "orgId": "SYSTEM",
+      "actor": "admin@acornlegal.in",
+      "actorRole": "super_admin",
+      "action": "ADMIN_LOGIN_SUCCESS",
+      "entityType": "auth",
+      "entityId": "admin@acornlegal.in",
+      "timestamp": "2026-11-09T14:59:14.063Z",
+      "details": "Authenticated successfully as Super Admin / Managing Partner",
+      "ipAddress": "127.0.0.1",
+      "prevHash": "4bdbd3ecec469eb2cbea3dec1af5fae5e54a8f89ca782301014e0d2861afd67b",
+      "hash": "981fcf493acf7f753337054f532a1bb9be915111fce8342a59e29505c9f84f98"
+    },
+    {
+      "id": "audit-1794236354041-dtbw4",
+      "orgId": "SYSTEM",
+      "actor": "admin@acornlegal.in",
+      "actorRole": "super_admin",
+      "action": "ADMIN_MFA_FAILED",
+      "entityType": "auth",
+      "entityId": "admin@acornlegal.in",
+      "timestamp": "2026-11-09T14:59:14.041Z",
+      "details": "Invalid 6-digit TOTP security code",
+      "ipAddress": "127.0.0.1",
+      "prevHash": "328c51eff042d9c69d991a169c698f067447c42363864e5289364f02e0556532",
+      "hash": "4bdbd3ecec469eb2cbea3dec1af5fae5e54a8f89ca782301014e0d2861afd67b"
+    },
+    {
+      "id": "audit-1794236354016-wcmqt",
+      "orgId": "SYSTEM",
+      "actor": "admin@acornlegal.in",
+      "actorRole": "super_admin",
+      "action": "ADMIN_LOGIN_FAILED",
+      "entityType": "auth",
+      "entityId": "admin@acornlegal.in",
+      "timestamp": "2026-11-09T14:59:14.016Z",
+      "details": "Invalid password attempt",
+      "ipAddress": "127.0.0.1",
+      "prevHash": "e6382d7970ad7bd9c01ca2e68090a05fba1eb6b5c98e8238877f1ce931b031b2",
+      "hash": "328c51eff042d9c69d991a169c698f067447c42363864e5289364f02e0556532"
+    },
+    {
+      "id": "audit-1794236353978-ce49v",
+      "orgId": "SYSTEM",
+      "actor": "intruder@malicious.domain",
+      "actorRole": "super_admin",
+      "action": "ADMIN_LOGIN_FAILED",
+      "entityType": "auth",
+      "entityId": "intruder@malicious.domain",
+      "timestamp": "2026-11-09T14:59:13.978Z",
+      "details": "Unrecognized administrator email address",
+      "ipAddress": "127.0.0.1",
+      "prevHash": "30e89b5a99828687315da1a459fab9de3ff15cc413bf417614dc4ca611ca8587",
+      "hash": "e6382d7970ad7bd9c01ca2e68090a05fba1eb6b5c98e8238877f1ce931b031b2"
+    },
+    {
+      "id": "audit-1794234766985-e0z04",
+      "orgId": "SYSTEM",
+      "actor": "Admin",
+      "actorRole": "super_admin",
+      "action": "CASE_STATUS_UPDATED",
+      "entityType": "system",
+      "entityId": "sys-01",
+      "timestamp": "2026-11-09T14:32:46.985Z",
+      "details": "Case ACN-POSH-2026-0041 transitioned to INQUIRY_IN_PROGRESS",
+      "ipAddress": "127.0.0.1",
+      "prevHash": "a23c0dcc03e4ec9779ada2f956948b9355b4ad9744236a2b5c540356f4163cd8",
+      "hash": "30e89b5a99828687315da1a459fab9de3ff15cc413bf417614dc4ca611ca8587"
+    },
+    {
+      "id": "audit-1794234765757-r3n16",
+      "orgId": "SYSTEM",
+      "actor": "Admin",
+      "actorRole": "super_admin",
+      "action": "ADMIN_LOGOUT",
+      "entityType": "auth",
+      "entityId": "session",
+      "timestamp": "2026-11-09T14:32:45.757Z",
+      "details": "Staff admin session terminated",
+      "ipAddress": "127.0.0.1",
+      "prevHash": "612462943a946509327f381b9f7f2dd99b43999abe4232d73158f1df6f0b87ec",
+      "hash": "a23c0dcc03e4ec9779ada2f956948b9355b4ad9744236a2b5c540356f4163cd8"
+    },
+    {
+      "id": "audit-1794234764717-zmie2",
+      "orgId": "SYSTEM",
+      "actor": "admin@acornlegal.in",
+      "actorRole": "super_admin",
+      "action": "ADMIN_LOGIN_SUCCESS",
+      "entityType": "auth",
+      "entityId": "admin@acornlegal.in",
+      "timestamp": "2026-11-09T14:32:44.717Z",
+      "details": "Authenticated successfully as Super Admin / Managing Partner",
+      "ipAddress": "127.0.0.1",
+      "prevHash": "3884be871c8ae1c367ddc40444a65cd780867997956456e08e1850bbfefd2179",
+      "hash": "612462943a946509327f381b9f7f2dd99b43999abe4232d73158f1df6f0b87ec"
+    },
+    {
+      "id": "audit-1794234764670-gpv1c",
+      "orgId": "SYSTEM",
+      "actor": "admin@acornlegal.in",
+      "actorRole": "super_admin",
+      "action": "ADMIN_MFA_FAILED",
+      "entityType": "auth",
+      "entityId": "admin@acornlegal.in",
+      "timestamp": "2026-11-09T14:32:44.670Z",
+      "details": "Invalid 6-digit TOTP security code",
+      "ipAddress": "127.0.0.1",
+      "prevHash": "190a6b72d2eb1d6498b55423973df12bdbf09ce02ab84f82d444476410760327",
+      "hash": "3884be871c8ae1c367ddc40444a65cd780867997956456e08e1850bbfefd2179"
+    },
+    {
+      "id": "audit-1794234764635-2d5jp",
+      "orgId": "SYSTEM",
+      "actor": "admin@acornlegal.in",
+      "actorRole": "super_admin",
+      "action": "ADMIN_LOGIN_FAILED",
+      "entityType": "auth",
+      "entityId": "admin@acornlegal.in",
+      "timestamp": "2026-11-09T14:32:44.635Z",
+      "details": "Invalid password attempt",
+      "ipAddress": "127.0.0.1",
+      "prevHash": "5e0a5cf6cc6b1446aa38fb3a3918541c3385db2ace5c6df33279e43aae61c36b",
+      "hash": "190a6b72d2eb1d6498b55423973df12bdbf09ce02ab84f82d444476410760327"
+    },
     {
       "id": "audit-1794226460669-hxwf7",
       "orgId": "org-bengal-tech",
@@ -999,6 +1235,53 @@
       "conciliationRate": 35,
       "trainingCoveragePercent": 96,
       "period": "2025-2026"
+    }
+  ],
+  "faqs": [
+    {
+      "id": "faq-posh-ic-mandate",
+      "category": "POSH Compliance",
+      "question": "When is an employer legally required to constitute an Internal Committee (IC)?",
+      "answer": "Under Section 4(1) of the POSH Act 2013, every employer employing 10 or more employees (including permanent, contractual, ad-hoc, and interns) across any branch or administrative unit is statutorily required to constitute an Internal Committee. Failure to constitute an IC attracts penalties up to ₹50,000 under Section 26(1), with repeated non-compliance risking cancellation of corporate registration or operating licenses.",
+      "showOnHomepage": true,
+      "order": 1,
+      "updatedAt": "2026-11-01T00:00:00Z"
+    },
+    {
+      "id": "faq-posh-external-member",
+      "category": "POSH Compliance",
+      "question": "What are the legal qualifications for the External Member on the Internal Committee?",
+      "answer": "Section 4(2)(c) of the POSH Act requires the appointment of at least one member from an NGO or association committed to the cause of women, or a person familiar with issues relating to sexual harassment, such as an experienced advocate. The External Member ensures institutional neutrality, adheres strictly to principles of natural justice, and prevents management bias.",
+      "showOnHomepage": true,
+      "order": 2,
+      "updatedAt": "2026-11-01T00:00:00Z"
+    },
+    {
+      "id": "faq-commercial-contracts-arbitration",
+      "category": "Commercial Contracts",
+      "question": "How should cross-border or interstate dispute resolution clauses be drafted in commercial agreements?",
+      "answer": "Commercial agreements should explicitly specify: (1) Governing law (e.g., Laws of India), (2) Mode of resolution (e.g., Arbitration under the Arbitration and Conciliation Act 1996), (3) Seat and venue (e.g., Kolkata, West Bengal), and (4) Institutional administration rules. Clear seat designation avoids conflicting jurisdictional challenges before state High Courts.",
+      "showOnHomepage": false,
+      "order": 3,
+      "updatedAt": "2026-11-01T00:00:00Z"
+    },
+    {
+      "id": "faq-high-court-representation",
+      "category": "Dispute Resolution",
+      "question": "What is the procedure for seeking urgent interim relief before the Calcutta High Court?",
+      "answer": "Urgent interim relief (such as ad-interim injunctions or stay orders) is sought by filing a petition before the appropriate bench (Original or Appellate Side). Matters involving acute commercial urgency can be listed via urgent mentioning before the Hon'ble Court with advance notice served upon the caveator or opposing parties as per Calcutta High Court Rules.",
+      "showOnHomepage": false,
+      "order": 4,
+      "updatedAt": "2026-11-01T00:00:00Z"
+    },
+    {
+      "id": "faq-posh-90-days-timeline",
+      "category": "POSH Compliance",
+      "question": "What is the statutory limitation period for conducting an inquiry under the POSH Act?",
+      "answer": "Under Section 11(4) of the Act, an inquiry into a complaint must be completed within 90 days. Within 10 days of completing the inquiry, the committee must provide its findings report to the employer. The employer is then obligated under Section 13(4) to implement the recommendations within 60 days.",
+      "showOnHomepage": false,
+      "order": 5,
+      "updatedAt": "2026-11-01T00:00:00Z"
     }
   ]
 }

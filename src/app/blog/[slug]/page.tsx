@@ -15,6 +15,7 @@ import {
   Phone,
 } from "lucide-react";
 import { platformStore } from "@/lib/store";
+import { useRealtimePosts } from "@/lib/realtime";
 import { formatDate } from "@/lib/utils";
 import { BRAND_CONFIG } from "@/lib/constants";
 import {
@@ -33,7 +34,7 @@ export default function SingleBlogPostPage() {
   const [copied, setCopied] = useState(false);
   const [activeSection, setActiveSection] = useState("statutory-background");
 
-  const blogs = platformStore.getBlogs();
+  const blogs = useRealtimePosts();
   const post = blogs.find((b) => b.slug === slug) || blogs[0];
   const relatedPosts = blogs.filter((b) => b.slug !== post.slug).slice(0, 3);
 

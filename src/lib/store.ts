@@ -1232,6 +1232,24 @@ class PlatformStore {
     }
   }
 
+  hydrateFromDatabase(payload: any): void {
+    if (!payload || typeof payload !== "object") return;
+    if (payload.siteConfig) this.set("site_config", payload.siteConfig);
+    if (payload.services && Array.isArray(payload.services)) this.set("custom_services", payload.services);
+    if (payload.posts && Array.isArray(payload.posts)) this.set("blogs", payload.posts);
+    if (payload.questions && Array.isArray(payload.questions)) this.set("qa_list", payload.questions);
+    if (payload.faqs && Array.isArray(payload.faqs)) this.set("platform_faqs", payload.faqs);
+    if (payload.serviceRequests && Array.isArray(payload.serviceRequests)) this.set("service_requests", payload.serviceRequests);
+    if (payload.cases && Array.isArray(payload.cases)) this.set("cases", payload.cases);
+    if (payload.team && Array.isArray(payload.team)) this.set("team_members", payload.team);
+    if (payload.legalRules && Array.isArray(payload.legalRules)) this.set("legal_rules", payload.legalRules);
+    if (payload.systemSettings && typeof payload.systemSettings === "object") this.set("system_settings", payload.systemSettings);
+
+    if (typeof window !== "undefined") {
+      window.dispatchEvent(new CustomEvent("acorn:store_update", { detail: { key: "all" } }));
+    }
+  }
+
   // Service Requests
   getServiceRequests(): ServiceRequest[] {
     return this.get("service_requests", SEED_REQUESTS);

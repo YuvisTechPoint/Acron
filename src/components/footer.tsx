@@ -17,11 +17,12 @@ import { BRAND_CONFIG, PRACTICE_AREAS } from "@/lib/constants";
 import { FooterRollText } from "@/components/footer-roll-text";
 import { ChambersMap } from "@/components/chambers-map";
 import { platformStore } from "@/lib/store";
+import { useRealtimeSiteConfig } from "@/lib/realtime";
 
 export function Footer() {
   const pathname = usePathname();
   const safePath = typeof pathname === "string" ? pathname : "";
-  const [siteConfig, setSiteConfig] = useState(() => platformStore.getSiteConfig());
+  const siteConfig = useRealtimeSiteConfig();
   const [showMapModal, setShowMapModal] = useState(false);
 
   // Foldable accordion state for mobile/tablet screens
@@ -37,10 +38,6 @@ export function Footer() {
       [id]: !prev[id],
     }));
   };
-
-  useEffect(() => {
-    setSiteConfig(platformStore.getSiteConfig());
-  }, []);
 
   // Suppress footer on administrative and console workspaces
   const isAdminOrConsole =

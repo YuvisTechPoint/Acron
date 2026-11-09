@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import { platformStore } from "./store";
 import {
   SiteConfig,
@@ -9,14 +9,77 @@ import {
   BlogPost,
   TeamMemberItem,
   ChambersPrinciple,
+  ServiceRequest,
+  POSHCase,
+  QuestionAnswer,
+  PaymentTransaction,
+  ScriptTag,
+  LegalRule,
+  SystemSettings,
 } from "./types";
+
+let syncDebounceTimer: NodeJS.Timeout | null = null;
+export function syncBackendDatabase() {
+  if (syncDebounceTimer) return;
+  syncDebounceTimer = setTimeout(async () => {
+    syncDebounceTimer = null;
+    try {
+      const res = await fetch("/api/sync");
+      if (res.ok) {
+        const json = await res.json();
+        if (json && json.data) {
+          platformStore.hydrateFromDatabase(json.data);
+        }
+      }
+    } catch {}
+  }, 50);
+}
+
+// Universal Tab Singleton SSE Manager to prevent HTTP/1.1 connection limit exhaustion (max 6 connections)
+let globalEventSource: EventSource | null = null;
+let sseSubscriberCount = 0;
+let initialSyncDone = false;
+
+function ensureGlobalSSE() {
+  if (typeof window === "undefined" || !("EventSource" in window)) return;
+
+  // Proactive initial sync to guarantee fresh database state on cold page loads
+  if (!initialSyncDone) {
+    initialSyncDone = true;
+    syncBackendDatabase();
+  }
+
+  sseSubscriberCount++;
+  if (globalEventSource) return;
+
+  try {
+    globalEventSource = new EventSource("/api/sync/stream");
+    globalEventSource.addEventListener("mutation", () => {
+      syncBackendDatabase();
+    });
+    globalEventSource.onerror = () => {
+      // Native browser EventSource automatically attempts exponential reconnection
+    };
+  } catch {}
+}
+
+function releaseGlobalSSE() {
+  sseSubscriberCount--;
+  if (sseSubscriberCount <= 0) {
+    sseSubscriberCount = 0;
+    if (globalEventSource) {
+      globalEventSource.close();
+      globalEventSource = null;
+    }
+  }
+}
 
 /**
  * Universal Real-time Store & Database Subscriber Hook
  * Listens to:
  * 1. Same-window CustomEvent ('acorn:store_update')
  * 2. Cross-tab BroadcastChannel ('acorn_realtime_sync')
- * 3. Server-Sent Events (SSE) directly from database ('/api/sync/stream')
+ * 3. Shared Singleton Server-Sent Events (SSE) live database mutation stream
  * 4. Native localStorage 'storage' event fallback
  */
 export function useRealtimeStore<T>(key: string, getter: () => T): T {
@@ -29,7 +92,7 @@ export function useRealtimeStore<T>(key: string, getter: () => T): T {
   useEffect(() => {
     refresh();
 
-    // 1. Same-window event listener
+    // 1. Same-window event listener (fired immediately after database hydration & local mutations)
     const handleLocalUpdate = (e: Event) => {
       const customEvent = e as CustomEvent<{ key: string; value: unknown }>;
       if (!customEvent.detail || customEvent.detail.key === key || customEvent.detail.key === "all") {
@@ -51,16 +114,8 @@ export function useRealtimeStore<T>(key: string, getter: () => T): T {
       } catch {}
     }
 
-    // 3. Server-Sent Events (SSE) live database mutation stream
-    let es: EventSource | null = null;
-    if ("EventSource" in window) {
-      try {
-        es = new EventSource("/api/sync/stream");
-        es.addEventListener("mutation", () => {
-          refresh();
-        });
-      } catch {}
-    }
+    // 3. Shared Singleton SSE Connection
+    ensureGlobalSSE();
 
     // 4. Fallback native storage event listener
     const handleStorage = (e: StorageEvent) => {
@@ -76,9 +131,7 @@ export function useRealtimeStore<T>(key: string, getter: () => T): T {
       if (bc) {
         bc.close();
       }
-      if (es) {
-        es.close();
-      }
+      releaseGlobalSSE();
     };
   }, [key, refresh]);
 
@@ -97,8 +150,11 @@ export function useRealtimeSiteConfig(): SiteConfig {
 /**
  * Real-time Practice Areas & Custom Services Hook
  */
-export function useRealtimeServices(): CustomService[] {
-  const getter = useCallback(() => platformStore.getServices().filter((s) => s.isActive), []);
+export function useRealtimeServices(includeInactive = false): CustomService[] {
+  const getter = useCallback(
+    () => (includeInactive ? platformStore.getServices() : platformStore.getServices().filter((s) => s.isActive)),
+    [includeInactive]
+  );
   return useRealtimeStore<CustomService[]>("custom_services", getter);
 }
 
@@ -127,16 +183,57 @@ export function useRealtimeTeam(): TeamMemberItem[] {
 }
 
 /**
- * Broadcast an update manually if required
+ * Real-time Client Service Requests Hook
  */
-export function triggerRealtimeSync(key: string = "all") {
-  if (typeof window === "undefined") return;
-  window.dispatchEvent(new CustomEvent("acorn:store_update", { detail: { key } }));
-  if ("BroadcastChannel" in window) {
-    try {
-      const bc = new BroadcastChannel("acorn_realtime_sync");
-      bc.postMessage({ key, timestamp: Date.now() });
-      bc.close();
-    } catch {}
-  }
+export function useRealtimeRequests(): ServiceRequest[] {
+  const getter = useCallback(() => platformStore.getServiceRequests(), []);
+  return useRealtimeStore<ServiceRequest[]>("service_requests", getter);
+}
+
+/**
+ * Real-time POSH Cases & Dockets Hook
+ */
+export function useRealtimeCases(): POSHCase[] {
+  const getter = useCallback(() => platformStore.getCases(), []);
+  return useRealtimeStore<POSHCase[]>("cases", getter);
+}
+
+/**
+ * Real-time Q&A Queue Hook
+ */
+export function useRealtimeQuestions(): QuestionAnswer[] {
+  const getter = useCallback(() => platformStore.getQuestions(), []);
+  return useRealtimeStore<QuestionAnswer[]>("qa_list", getter);
+}
+
+/**
+ * Real-time Payment Transactions Hook
+ */
+export function useRealtimePayments(): PaymentTransaction[] {
+  const getter = useCallback(() => platformStore.getPayments(), []);
+  return useRealtimeStore<PaymentTransaction[]>("payments", getter);
+}
+
+/**
+ * Real-time Injected Third-party Scripts & Pixel Tags Hook
+ */
+export function useRealtimeScripts(): ScriptTag[] {
+  const getter = useCallback(() => platformStore.getScripts(), []);
+  return useRealtimeStore<ScriptTag[]>("scripts", getter);
+}
+
+/**
+ * Real-time Statutory Legal Rules Hook
+ */
+export function useRealtimeLegalRules(): LegalRule[] {
+  const getter = useCallback(() => platformStore.getLegalRules(), []);
+  return useRealtimeStore<LegalRule[]>("legal_rules", getter);
+}
+
+/**
+ * Real-time System Infrastructure & Gateway Settings Hook
+ */
+export function useRealtimeSystemSettings(): SystemSettings {
+  const getter = useCallback(() => platformStore.getSystemSettings(), []);
+  return useRealtimeStore<SystemSettings>("system_settings", getter);
 }

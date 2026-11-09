@@ -4,21 +4,14 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { ArrowLeft, Edit2, Save, X, CheckCircle2, Scale, Plus } from "lucide-react";
 import { platformStore } from "@/lib/store";
+import { useRealtimeLegalRules } from "@/lib/realtime";
 import { LegalRule } from "@/lib/types";
 
 export default function LegalRulesConsolePage() {
-  const [rules, setRules] = useState<LegalRule[]>([]);
+  const rules = useRealtimeLegalRules();
   const [editingParam, setEditingParam] = useState<string | null>(null);
   const [editValue, setEditValue] = useState("");
   const [savedSuccess, setSavedSuccess] = useState(false);
-
-  useEffect(() => {
-    setRules(platformStore.getLegalRules());
-  }, []);
-
-  const refreshRules = () => {
-    setRules(platformStore.getLegalRules());
-  };
 
   const handleStartEdit = (rule: LegalRule) => {
     if (rule.param === "conciliation_allows_monetary") {
@@ -29,10 +22,16 @@ export default function LegalRulesConsolePage() {
     setEditValue(rule.value);
   };
 
-  const handleSaveEdit = (param: string) => {
+  const handleSaveEdit = async (param: string) => {
     platformStore.updateLegalRule(param, editValue);
+    try {
+      await fetch("/api/rules", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ param, value: editValue }),
+      });
+    } catch {}
     setEditingParam(null);
-    refreshRules();
     setSavedSuccess(true);
     setTimeout(() => setSavedSuccess(false), 2500);
   };

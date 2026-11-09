@@ -24,7 +24,7 @@ export async function POST(req: NextRequest) {
 
     const referenceNumber = generateReferenceNumber("QA");
     const newQuestion: QuestionAnswer = {
-      id: `QA-${Date.now()}`,
+      id: body.id || `QA-${Date.now()}`,
       refNumber: referenceNumber,
       referenceNumber,
       authorName: name,
@@ -39,7 +39,7 @@ export async function POST(req: NextRequest) {
       views: 0,
       upvotes: 0,
       createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString()
+      updatedAt: new Date().toISOString(),
     };
 
     const saved = db.insertQuestion(newQuestion);
@@ -56,7 +56,7 @@ export async function POST(req: NextRequest) {
       id: saved.id,
       refNumber: referenceNumber,
       message: "Your query has been recorded in the database and submitted for legal editorial review.",
-      estimatedTurnaround: "1-2 Business Days"
+      estimatedTurnaround: "1-2 Business Days",
     }, { status: 201 });
   } catch (error: any) {
     return NextResponse.json(
@@ -72,8 +72,12 @@ export async function GET(req: NextRequest) {
     const { searchParams } = new URL(req.url);
     const category = searchParams.get("category");
     const search = searchParams.get("search");
+    const all = searchParams.get("all") === "true";
 
-    let questions = db.getQuestions().filter((q) => q.isPublic || q.isPublished);
+    let questions = db.getQuestions();
+    if (!all) {
+      questions = questions.filter((q) => q.isPublic || q.isPublished);
+    }
 
     if (category && category !== "all") {
       questions = questions.filter((q) => q.category === category);
@@ -95,6 +99,82 @@ export async function GET(req: NextRequest) {
   } catch (error: any) {
     return NextResponse.json(
       { error: "Failed to fetch legal questions", details: error.message },
+      { status: 500 }
+    );
+  }
+}
+
+// PATCH /api/qa - Moderation: Answer, edit, or toggle publication
+export async function PATCH(req: NextRequest) {
+  try {
+    const body = await req.json();
+    const id = body.id;
+    if (!id) {
+      return NextResponse.json({ error: "Missing question id" }, { status: 400 });
+    }
+
+    const updates: Partial<QuestionAnswer> = {};
+    if (body.answer !== undefined) updates.answer = body.answer;
+    if (body.answeredBy !== undefined) updates.answeredBy = body.answeredBy;
+    if (body.isPublic !== undefined) {
+      updates.isPublic = Boolean(body.isPublic);
+      updates.isPublished = Boolean(body.isPublic);
+    }
+    if (body.status !== undefined) {
+      updates.status = body.status;
+    } else if (body.answer) {
+      updates.status = "answered";
+    }
+
+    const saved = db.updateQuestion(id, updates);
+    if (body.answer) {
+      platformStore.answerQuestion(
+        id,
+        body.answer,
+        body.answeredBy || "Adv. Debjani Sen",
+        body.isPublic ?? true
+      );
+    }
+
+    db.insertAuditLog(
+      "QA_QUESTION_ANSWERED",
+      body.answeredBy || "Admin",
+      `Moderation update applied to question query ${id}.`
+    );
+
+    return NextResponse.json({
+      success: true,
+      message: "Question answer and publication status updated in real-time.",
+      question: saved,
+    });
+  } catch (error: any) {
+    return NextResponse.json(
+      { error: "Failed to update question", details: error.message },
+      { status: 500 }
+    );
+  }
+}
+
+// DELETE /api/qa - Remove question from moderation queue
+export async function DELETE(req: NextRequest) {
+  try {
+    const { searchParams } = new URL(req.url);
+    const id = searchParams.get("id");
+    if (!id) {
+      return NextResponse.json({ error: "Missing question id" }, { status: 400 });
+    }
+
+    db.deleteQuestion(id);
+    platformStore.deleteQuestion(id);
+    db.insertAuditLog("QA_QUESTION_DELETED", "Admin", `Question query ${id} removed from queue.`);
+
+    return NextResponse.json({
+      success: true,
+      message: `Question ${id} successfully removed.`,
+    });
+  } catch (error: any) {
+    return NextResponse.json(
+      { error: "Failed to delete question", details: error.message },
       { status: 500 }
     );
   }

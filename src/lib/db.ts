@@ -10,6 +10,10 @@ import {
   Organization,
   AuditLogEntry,
   SiteConfig,
+  FaqItem,
+  TeamMemberItem,
+  LegalRule,
+  SystemSettings,
 } from "./types";
 import { computeAuditHash } from "./crypto";
 
@@ -36,6 +40,10 @@ export interface DatabaseSchema {
   subscriptions: any[];
   earlyWarnings: any[];
   benchmarks: any[];
+  faqs?: FaqItem[];
+  team?: TeamMemberItem[];
+  legalRules?: LegalRule[];
+  systemSettings?: SystemSettings;
 }
 
 // Initial Chambers Default Seed (Statutory & Chambers Foundation)
@@ -520,6 +528,112 @@ const INITIAL_SEED: DatabaseSchema = {
       period: "2025-2026",
     },
   ],
+  faqs: [
+    {
+      id: "faq-posh-ic-mandate",
+      category: "POSH Compliance",
+      question: "When is an employer legally required to constitute an Internal Committee (IC)?",
+      answer: "Under Section 4(1) of the POSH Act 2013, every employer employing 10 or more employees (including permanent, contractual, ad-hoc, and interns) across any branch or administrative unit is statutorily required to constitute an Internal Committee. Failure to constitute an IC attracts penalties up to ₹50,000 under Section 26(1), with repeated non-compliance risking cancellation of corporate registration or operating licenses.",
+      showOnHomepage: true,
+      order: 1,
+      updatedAt: "2026-11-01T00:00:00Z",
+    },
+    {
+      id: "faq-posh-external-member",
+      category: "POSH Compliance",
+      question: "What are the legal qualifications for the External Member on the Internal Committee?",
+      answer: "Section 4(2)(c) of the POSH Act requires the appointment of at least one member from an NGO or association committed to the cause of women, or a person familiar with issues relating to sexual harassment, such as an experienced advocate. The External Member ensures institutional neutrality, adheres strictly to principles of natural justice, and prevents management bias.",
+      showOnHomepage: true,
+      order: 2,
+      updatedAt: "2026-11-01T00:00:00Z",
+    },
+    {
+      id: "faq-commercial-contracts-arbitration",
+      category: "Commercial Contracts",
+      question: "How should cross-border or interstate dispute resolution clauses be drafted in commercial agreements?",
+      answer: "Commercial agreements should explicitly specify: (1) Governing law (e.g., Laws of India), (2) Mode of resolution (e.g., Arbitration under the Arbitration and Conciliation Act 1996), (3) Seat and venue (e.g., Kolkata, West Bengal), and (4) Institutional administration rules. Clear seat designation avoids conflicting jurisdictional challenges before state High Courts.",
+      showOnHomepage: false,
+      order: 3,
+      updatedAt: "2026-11-01T00:00:00Z",
+    },
+    {
+      id: "faq-high-court-representation",
+      category: "Dispute Resolution",
+      question: "What is the procedure for seeking urgent interim relief before the Calcutta High Court?",
+      answer: "Urgent interim relief (such as ad-interim injunctions or stay orders) is sought by filing a petition before the appropriate bench (Original or Appellate Side). Matters involving acute commercial urgency can be listed via urgent mentioning before the Hon'ble Court with advance notice served upon the caveator or opposing parties as per Calcutta High Court Rules.",
+      showOnHomepage: false,
+      order: 4,
+      updatedAt: "2026-11-01T00:00:00Z",
+    },
+    {
+      id: "faq-posh-90-days-timeline",
+      category: "POSH Compliance",
+      question: "What is the statutory limitation period for conducting an inquiry under the POSH Act?",
+      answer: "Under Section 11(4) of the Act, an inquiry into a complaint must be completed within 90 days. Within 10 days of completing the inquiry, the committee must provide its findings report to the employer. The employer is then obligated under Section 13(4) to implement the recommendations within 60 days.",
+      showOnHomepage: false,
+      order: 5,
+      updatedAt: "2026-11-01T00:00:00Z",
+    },
+  ],
+  team: [
+    {
+      id: "team-1",
+      name: "Adv. Subhasish Mukherjee",
+      role: "Senior Partner & Practice Lead",
+      title: "Advocate & Legal Consultant",
+      focus: "Commercial Litigation • Arbitration • Corporate Structuring",
+      bio: "Over two decades of advocacy experience spanning the Calcutta High Court, NCLT, and arbitral tribunals across India.",
+      avatarUrl: "/brand/subhasish-profile.png",
+      email: "subhasish@acornlegal.in",
+      order: 1,
+      updatedAt: "2026-11-01T00:00:00Z",
+    },
+    {
+      id: "team-2",
+      name: "Adv. Debjani Sen",
+      role: "Partner & POSH Practice Head",
+      title: "External Member & Corporate Counsel",
+      focus: "POSH Act 2013 Inquiries • Employment Law • Policy Governance",
+      bio: "Distinguished practitioner serving as independent External Member for premier IT, banking, and manufacturing establishments in Kolkata.",
+      avatarUrl: "/brand/debjani-profile.png",
+      email: "debjani.sen@acornlegal.in",
+      order: 2,
+      updatedAt: "2026-11-01T00:00:00Z",
+    },
+    {
+      id: "team-3",
+      name: "Adv. Anirban Roy Chowdhury",
+      role: "Senior Associate & Documentation Lead",
+      title: "Commercial Contracts Specialist",
+      focus: "Contract Drafting • Regulatory Compliance • Due Diligence",
+      bio: "Specialist in cross-border joint ventures, software licensing, and real estate conveyance documentation.",
+      avatarUrl: "/brand/anirban-profile.png",
+      email: "anirban.rc@acornlegal.in",
+      order: 3,
+      updatedAt: "2026-11-01T00:00:00Z",
+    },
+  ],
+  legalRules: [
+    { param: "complaint_period_months", value: "3", source: "Section 9(1) POSH Act", status: "Active (v1.0)", description: "Limitation period for filing complaint from incident date", updatedAt: "2026-10-01" },
+    { param: "complaint_extension_months", value: "3", source: "Section 9(1) Proviso", status: "Active (v1.0)", description: "Maximum IC extension upon recorded justification", updatedAt: "2026-10-01" },
+    { param: "copy_to_respondent_working_days", value: "7", source: "Rule 7(2) POSH Rules 2013", status: "Active (v1.0)", description: "Working days to furnish notice copy to respondent", updatedAt: "2026-10-01" },
+    { param: "respondent_reply_working_days", value: "10", source: "Rule 7(3) POSH Rules 2013", status: "Active (v1.0)", description: "Statutory window for respondent written statement", updatedAt: "2026-10-01" },
+    { param: "inquiry_days", value: "90", source: "Section 11(4) POSH Act", status: "Active (v1.0)", description: "Mandatory statutory timeline to conclude inquiry", updatedAt: "2026-10-01" },
+    { param: "report_days", value: "10", source: "Section 13(1) POSH Act", status: "Active (v1.0)", description: "Days to provide report to employer & parties post inquiry", updatedAt: "2026-10-01" },
+    { param: "employer_action_days", value: "60", source: "Section 13(4) POSH Act", status: "Active (v1.0)", description: "Employer implementation timeline for IC recommendations", updatedAt: "2026-10-01" },
+    { param: "appeal_days", value: "90", source: "Section 18 POSH Act", status: "Active (v1.0)", description: "Appellate limitation window before Court/Tribunal", updatedAt: "2026-10-01" },
+    { param: "conciliation_allows_monetary", value: "false", source: "Section 10(1) Proviso", status: "LOCKED (Statutory Guard)", description: "Absolute statutory prohibition on monetary settlement in conciliation", updatedAt: "2026-10-01" },
+  ],
+  systemSettings: {
+    razorpayMode: "test",
+    razorpayKeyId: "rzp_test_AcornLegalKolkata2026",
+    razorpayKeySecretMasked: "••••••••••••••••••••",
+    maintenanceMode: false,
+    smtpHost: "email-smtp.ap-south-1.amazonaws.com",
+    smtpFrom: "contact@acornlegal.in",
+    retentionYears: "3",
+    updatedAt: new Date().toISOString(),
+  },
 };
 
 /**
@@ -553,6 +667,18 @@ class ProductionDatabase extends EventEmitter {
         if (raw && raw.trim().length > 0) {
           const parsed = JSON.parse(raw);
           if (parsed && parsed.version) {
+            if (!parsed.faqs || !Array.isArray(parsed.faqs)) {
+              parsed.faqs = INITIAL_SEED.faqs || [];
+            }
+            if (!parsed.team || !Array.isArray(parsed.team)) {
+              parsed.team = INITIAL_SEED.team || [];
+            }
+            if (!parsed.legalRules || !Array.isArray(parsed.legalRules)) {
+              parsed.legalRules = INITIAL_SEED.legalRules || [];
+            }
+            if (!parsed.systemSettings || typeof parsed.systemSettings !== "object") {
+              parsed.systemSettings = INITIAL_SEED.systemSettings;
+            }
             return parsed;
           }
         }
@@ -658,6 +784,28 @@ class ProductionDatabase extends EventEmitter {
     }, "REQUEST_INSERTED");
   }
 
+  updateServiceRequest(id: string, updates: Partial<ServiceRequest>, note?: any): ServiceRequest | undefined {
+    return this.mutate("serviceRequests", (items: ServiceRequest[]) => {
+      const idx = items.findIndex((r) => r.id === id || r.refNumber === id);
+      if (idx !== -1) {
+        const item = items[idx];
+        const updated = { ...item, ...updates, updatedAt: new Date().toISOString() };
+        if (note) {
+          if (!updated.internalNotes) updated.internalNotes = [];
+          updated.internalNotes.unshift({
+            id: `note-${Date.now()}`,
+            author: "Admin / Legal Consultant",
+            content: typeof note === "string" ? note : note.content || "",
+            createdAt: new Date().toISOString(),
+          });
+        }
+        items[idx] = updated;
+        return updated;
+      }
+      return undefined;
+    }, "REQUEST_UPDATED");
+  }
+
   // -------------------------------------------------------------
   // Public Q&A Queries Collection
   // -------------------------------------------------------------
@@ -670,6 +818,25 @@ class ProductionDatabase extends EventEmitter {
       items.unshift(q);
       return q;
     }, "QUESTION_INSERTED");
+  }
+
+  updateQuestion(id: string, updates: Partial<QuestionAnswer>): QuestionAnswer | undefined {
+    return this.mutate("questions", (items: QuestionAnswer[]) => {
+      const idx = items.findIndex((q) => q.id === id || q.refNumber === id);
+      if (idx !== -1) {
+        items[idx] = { ...items[idx], ...updates, updatedAt: new Date().toISOString() };
+        return items[idx];
+      }
+      return undefined;
+    }, "QUESTION_UPDATED");
+  }
+
+  deleteQuestion(id: string): boolean {
+    return this.mutate("questions", (items: QuestionAnswer[]) => {
+      const initial = items.length;
+      this.data.questions = items.filter((q) => q.id !== id && q.refNumber !== id);
+      return this.data.questions.length < initial;
+    }, "QUESTION_DELETED");
   }
 
   // -------------------------------------------------------------
@@ -686,14 +853,16 @@ class ProductionDatabase extends EventEmitter {
     }, "POST_INSERTED");
   }
 
-  updateBlogPost(id: string, updates: Partial<BlogPost>): BlogPost | undefined {
+  updateBlogPost(id: string, updates: Partial<BlogPost>): BlogPost {
     return this.mutate("blogPosts", (items: BlogPost[]) => {
       const idx = items.findIndex((p) => p.id === id || p.slug === id);
       if (idx !== -1) {
         items[idx] = { ...items[idx], ...updates };
         return items[idx];
       }
-      return undefined;
+      const newPost = { id, ...updates } as BlogPost;
+      items.unshift(newPost);
+      return newPost;
     }, "POST_UPDATED");
   }
 
@@ -726,8 +895,185 @@ class ProductionDatabase extends EventEmitter {
         items[idx] = { ...items[idx], ...updates };
         return items[idx];
       }
-      return undefined;
+      const newSrv = { id, ...updates };
+      items.push(newSrv);
+      return newSrv;
     }, "SERVICE_UPDATED");
+  }
+
+  deleteService(id: string): boolean {
+    return this.mutate("services", (items: any[]) => {
+      const initial = items.length;
+      this.data.services = items.filter((s) => s.id !== id && s.slug !== id);
+      return this.data.services.length < initial;
+    }, "SERVICE_DELETED");
+  }
+
+  // -------------------------------------------------------------
+  // Frequently Asked Questions (FAQs) Collection
+  // -------------------------------------------------------------
+  getFaqs(): FaqItem[] {
+    if (!this.data.faqs) {
+      this.data.faqs = [...(INITIAL_SEED.faqs || [])];
+    }
+    return [...this.data.faqs];
+  }
+
+  insertFaq(faq: FaqItem): FaqItem {
+    return this.mutate("faqs", (items: FaqItem[]) => {
+      if (!items) {
+        this.data.faqs = [];
+        items = this.data.faqs;
+      }
+      items.push(faq);
+      return faq;
+    }, "FAQ_INSERTED");
+  }
+
+  updateFaq(id: string, updates: Partial<FaqItem>): FaqItem {
+    return this.mutate("faqs", (items: FaqItem[]) => {
+      if (!items) {
+        this.data.faqs = [];
+        items = this.data.faqs;
+      }
+      const idx = items.findIndex((f) => f.id === id);
+      if (idx !== -1) {
+        items[idx] = { ...items[idx], ...updates, updatedAt: new Date().toISOString() };
+        return items[idx];
+      }
+      const newFaq = { id, ...updates, updatedAt: new Date().toISOString() } as FaqItem;
+      items.push(newFaq);
+      return newFaq;
+    }, "FAQ_UPDATED");
+  }
+
+  deleteFaq(id: string): boolean {
+    return this.mutate("faqs", (items: FaqItem[]) => {
+      if (!items) return false;
+      const initial = items.length;
+      this.data.faqs = items.filter((f) => f.id !== id);
+      return this.data.faqs.length < initial;
+    }, "FAQ_DELETED");
+  }
+
+  // -------------------------------------------------------------
+  // Counsel Team Profiles Collection
+  // -------------------------------------------------------------
+  getTeamMembers(): TeamMemberItem[] {
+    if (!this.data.team) {
+      this.data.team = [...(INITIAL_SEED.team || [])];
+    }
+    return [...this.data.team];
+  }
+
+  insertTeamMember(member: TeamMemberItem): TeamMemberItem {
+    return this.mutate("team", (items: TeamMemberItem[]) => {
+      if (!items) {
+        this.data.team = [];
+        items = this.data.team;
+      }
+      items.push(member);
+      return member;
+    }, "TEAM_MEMBER_INSERTED");
+  }
+
+  updateTeamMember(id: string, updates: Partial<TeamMemberItem>): TeamMemberItem {
+    return this.mutate("team", (items: TeamMemberItem[]) => {
+      if (!items) {
+        this.data.team = [];
+        items = this.data.team;
+      }
+      const idx = items.findIndex((m) => m.id === id);
+      if (idx !== -1) {
+        items[idx] = { ...items[idx], ...updates };
+        return items[idx];
+      }
+      const newMember = { id, ...updates } as TeamMemberItem;
+      items.push(newMember);
+      return newMember;
+    }, "TEAM_MEMBER_UPDATED");
+  }
+
+  deleteTeamMember(id: string): boolean {
+    return this.mutate("team", (items: TeamMemberItem[]) => {
+      if (!items) return false;
+      const initial = items.length;
+      this.data.team = items.filter((m) => m.id !== id);
+      return this.data.team.length < initial;
+    }, "TEAM_MEMBER_DELETED");
+  }
+
+  // -------------------------------------------------------------
+  // Statutory Legal Rules Collection
+  // -------------------------------------------------------------
+  getLegalRules(): LegalRule[] {
+    if (!this.data.legalRules) {
+      this.data.legalRules = [...(INITIAL_SEED.legalRules || [])];
+    }
+    return [...this.data.legalRules];
+  }
+
+  updateLegalRule(param: string, value: string, status?: string): LegalRule | undefined {
+    return this.mutate("legalRules", (items: LegalRule[]) => {
+      if (!items) {
+        this.data.legalRules = [];
+        items = this.data.legalRules;
+      }
+      const idx = items.findIndex((r) => r.param === param);
+      if (idx !== -1) {
+        items[idx] = { ...items[idx], value, status: status || items[idx].status, updatedAt: new Date().toISOString().split("T")[0] };
+        return items[idx];
+      }
+      const newRule: LegalRule = {
+        param,
+        value,
+        source: "POSH Act 2013",
+        status: status || "Active (v1.0)",
+        description: "Configured statutory parameter",
+        updatedAt: new Date().toISOString().split("T")[0],
+      };
+      items.push(newRule);
+      return newRule;
+    }, "LEGAL_RULE_UPDATED");
+  }
+
+  // -------------------------------------------------------------
+  // System Settings & Infrastructure Collection
+  // -------------------------------------------------------------
+  getSystemSettings(): SystemSettings {
+    if (!this.data.systemSettings) {
+      this.data.systemSettings = {
+        razorpayMode: "test",
+        razorpayKeyId: "rzp_test_AcornLegalKolkata2026",
+        razorpayKeySecretMasked: "••••••••••••••••••••",
+        maintenanceMode: false,
+        smtpHost: "email-smtp.ap-south-1.amazonaws.com",
+        smtpFrom: "contact@acornlegal.in",
+        retentionYears: "3",
+        updatedAt: new Date().toISOString(),
+      };
+    }
+    return { ...this.data.systemSettings };
+  }
+
+  updateSystemSettings(updates: Partial<SystemSettings>): SystemSettings {
+    return this.mutate("systemSettings", () => {
+      this.data.systemSettings = {
+        ...(this.data.systemSettings || {
+          razorpayMode: "test",
+          razorpayKeyId: "rzp_test_AcornLegalKolkata2026",
+          razorpayKeySecretMasked: "••••••••••••••••••••",
+          maintenanceMode: false,
+          smtpHost: "email-smtp.ap-south-1.amazonaws.com",
+          smtpFrom: "contact@acornlegal.in",
+          retentionYears: "3",
+          updatedAt: new Date().toISOString(),
+        }),
+        ...updates,
+        updatedAt: new Date().toISOString(),
+      };
+      return this.data.systemSettings;
+    }, "SYSTEM_SETTINGS_UPDATED");
   }
 
   // -------------------------------------------------------------

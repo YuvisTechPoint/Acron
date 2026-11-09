@@ -21,15 +21,23 @@ import {
   Server,
 } from "lucide-react";
 import { platformStore } from "@/lib/store";
+import {
+  useRealtimeRequests,
+  useRealtimeQuestions,
+  useRealtimeCases,
+  useRealtimePayments,
+  useRealtimePosts,
+  useRealtimeScripts,
+} from "@/lib/realtime";
 import { formatINR, formatDate } from "@/lib/utils";
 
 export default function AdminDashboardPage() {
-  const requests = platformStore.getServiceRequests();
-  const questions = platformStore.getQuestions();
-  const cases = platformStore.getCases();
-  const payments = platformStore.getPayments();
-  const blogs = platformStore.getBlogs();
-  const scripts = platformStore.getScripts();
+  const requests = useRealtimeRequests();
+  const questions = useRealtimeQuestions();
+  const cases = useRealtimeCases();
+  const payments = useRealtimePayments();
+  const blogs = useRealtimePosts();
+  const scripts = useRealtimeScripts();
 
   const totalRevenuePaise = payments.reduce((acc, p) => acc + (p.status === "paid" ? p.totalPaise : 0), 0);
   const pendingRequests = requests.filter((r) => r.status === "NEW").length;

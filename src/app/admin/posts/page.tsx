@@ -15,11 +15,12 @@ import {
   X,
 } from "lucide-react";
 import { platformStore } from "@/lib/store";
+import { useRealtimePosts } from "@/lib/realtime";
 import { formatDate } from "@/lib/utils";
 import { BlogPost } from "@/lib/types";
 
 export default function AdminBlogCMSPage() {
-  const [blogs, setBlogs] = useState<BlogPost[]>([]);
+  const blogs = useRealtimePosts();
   const [isCreating, setIsCreating] = useState(false);
   const [editingPost, setEditingPost] = useState<BlogPost | null>(null);
 
@@ -32,17 +33,9 @@ export default function AdminBlogCMSPage() {
   const [authorName, setAuthorName] = useState("Adv. Debjani Sen");
   const [tags, setTags] = useState("POSH, Compliance, West Bengal");
 
-  useEffect(() => {
-    setBlogs(platformStore.getBlogs());
-  }, []);
-
-  const refreshList = () => {
-    setBlogs(platformStore.getBlogs());
-  };
-
-  const handleCreatePost = (e: React.FormEvent) => {
+  const handleCreatePost = async (e: React.FormEvent) => {
     e.preventDefault();
-    platformStore.addBlogPost({
+    const newPost = platformStore.addBlogPost({
       title,
       slug: slug || title.toLowerCase().replace(/[^a-z0-9]+/g, "-"),
       summary,
@@ -58,7 +51,14 @@ export default function AdminBlogCMSPage() {
       },
     });
 
-    refreshList();
+    try {
+      await fetch("/api/posts", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(newPost),
+      });
+    } catch {}
+
     setIsCreating(false);
     setTitle("");
     setSummary("");
@@ -69,18 +69,28 @@ export default function AdminBlogCMSPage() {
     setEditingPost({ ...b });
   };
 
-  const handleSaveEdit = (e: React.FormEvent) => {
+  const handleSaveEdit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!editingPost) return;
     platformStore.updateBlogPost(editingPost.id, editingPost);
+
+    try {
+      await fetch("/api/posts", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(editingPost),
+      });
+    } catch {}
+
     setEditingPost(null);
-    refreshList();
   };
 
-  const handleDelete = (id: string, postTitle: string) => {
+  const handleDelete = async (id: string, postTitle: string) => {
     if (confirm(`Are you sure you want to delete "${postTitle}"?`)) {
       platformStore.deleteBlogPost(id);
-      refreshList();
+      try {
+        await fetch(`/api/posts?id=${id}`, { method: "DELETE" });
+      } catch {}
     }
   };
 

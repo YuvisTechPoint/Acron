@@ -140,7 +140,7 @@ export default function FAQPage() {
     }
   };
 
-  const handleAskSubmit = (e: React.FormEvent) => {
+  const handleAskSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const created = platformStore.addQuestion(
       askName,
@@ -148,6 +148,19 @@ export default function FAQPage() {
       "posh_law",
       askQuestion
     );
+    try {
+      await fetch("/api/qa", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: askName,
+          email: askEmail,
+          category: "posh_law",
+          question: askQuestion,
+          id: created.id,
+        }),
+      });
+    } catch {}
     setRefId(created.refNumber || `QA-${Math.floor(100000 + Math.random() * 900000)}`);
     setFormSubmitted(true);
   };

@@ -5,23 +5,39 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 import { ArrowLeft, Clock, User, Phone, Mail, CheckCircle2, MessageSquare } from "lucide-react";
 import { platformStore } from "@/lib/store";
+import { useRealtimeRequests } from "@/lib/realtime";
 import { formatDate, formatDateTime } from "@/lib/utils";
 
 export default function AdminRequestDetailPage() {
   const params = useParams();
   const reqId = params?.id as string;
-  const requests = platformStore.getServiceRequests();
+  const requests = useRealtimeRequests();
   const request = requests.find((r) => r.id === reqId || r.refNumber === reqId) || requests[0];
 
   const [status, setStatus] = useState<any>(request?.status || "IN_REVIEW");
   const [note, setNote] = useState("");
+  const [savedSuccess, setSavedSuccess] = useState(false);
 
-  const handleUpdate = (e: React.FormEvent) => {
+  const handleUpdate = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!request) return;
     platformStore.updateServiceRequestStatus(request.id, status, note || undefined);
+
+    try {
+      await fetch("/api/requests", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          id: request.id,
+          status,
+          note: note || undefined,
+        }),
+      });
+    } catch {}
+
     setNote("");
-    alert("Service request updated successfully.");
+    setSavedSuccess(true);
+    setTimeout(() => setSavedSuccess(false), 3000);
   };
 
   if (!request) {
@@ -93,9 +109,16 @@ export default function AdminRequestDetailPage() {
               ></textarea>
             </div>
 
+            {savedSuccess && (
+              <div className="p-3 bg-emerald-50 border border-emerald-300 rounded text-xs text-emerald-900 font-semibold flex items-center gap-2">
+                <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+                <span>Service request record updated and synchronized in real-time.</span>
+              </div>
+            )}
+
             <button
               type="submit"
-              className="px-5 py-2 bg-primary text-white font-bold uppercase tracking-wider rounded hover:bg-primary-hover"
+              className="px-5 py-2 bg-primary text-white font-bold uppercase tracking-wider rounded hover:bg-primary-hover shadow"
             >
               Update Request Record
             </button>

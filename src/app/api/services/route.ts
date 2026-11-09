@@ -37,3 +37,18 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: err.message || "Failed to save service" }, { status: 500 });
   }
 }
+
+export async function DELETE(req: Request) {
+  try {
+    const { searchParams } = new URL(req.url);
+    const id = searchParams.get("id");
+    if (!id) {
+      return NextResponse.json({ error: "Missing service id" }, { status: 400 });
+    }
+    db.deleteService(id);
+    platformStore.deleteService(id);
+    return NextResponse.json({ success: true, message: `Service ${id} deleted` });
+  } catch (err: any) {
+    return NextResponse.json({ error: err.message || "Failed to delete service" }, { status: 500 });
+  }
+}

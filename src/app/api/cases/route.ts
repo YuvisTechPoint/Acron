@@ -165,3 +165,30 @@ export async function GET(req: NextRequest) {
     );
   }
 }
+
+// PATCH /api/cases - Update case state and procedural notes
+export async function PATCH(req: NextRequest) {
+  try {
+    const body = await req.json();
+    const { id, state, note, updates } = body;
+    if (!id) {
+      return NextResponse.json({ error: "Missing case id" }, { status: 400 });
+    }
+    const updatePayload = { ...(updates || {}), ...(state ? { state } : {}) };
+    const updated = db.updateCase(id, updatePayload);
+    if (state) {
+      platformStore.updateCaseState(id, state, note);
+    }
+    db.insertAuditLog("CASE_STATUS_UPDATED", "Admin", `Case ${id} transitioned to ${state || "updated"}`);
+    return NextResponse.json({
+      success: true,
+      message: "Case docket updated in database and synchronized in real-time",
+      case: updated,
+    });
+  } catch (error: any) {
+    return NextResponse.json(
+      { error: "Failed to update case docket", details: error.message },
+      { status: 500 }
+    );
+  }
+}

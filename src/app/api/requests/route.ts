@@ -86,3 +86,28 @@ export async function GET(req: NextRequest) {
     );
   }
 }
+
+// PATCH /api/requests - Update service request status and notes
+export async function PATCH(req: NextRequest) {
+  try {
+    const body = await req.json();
+    const { id, status, note } = body;
+    if (!id) {
+      return NextResponse.json({ error: "Missing request id" }, { status: 400 });
+    }
+    const updated = db.updateServiceRequest(id, { status }, note);
+    if (status) {
+      platformStore.updateServiceRequestStatus(id, status, note);
+    }
+    return NextResponse.json({
+      success: true,
+      message: "Request status updated in database and synchronized",
+      request: updated,
+    });
+  } catch (error: any) {
+    return NextResponse.json(
+      { error: "Failed to update service request", details: error.message },
+      { status: 500 }
+    );
+  }
+}

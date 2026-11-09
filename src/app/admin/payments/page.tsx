@@ -13,12 +13,13 @@ import {
   DollarSign,
 } from "lucide-react";
 import { platformStore } from "@/lib/store";
+import { useRealtimePayments } from "@/lib/realtime";
 import { formatINR, formatDate, formatDateTime } from "@/lib/utils";
 import { PaymentTransaction } from "@/lib/types";
 
 export default function AdminPaymentsPage() {
   const [selectedPayment, setSelectedPayment] = useState<PaymentTransaction | null>(null);
-  const payments = platformStore.getPayments();
+  const payments = useRealtimePayments();
 
   const totalPaise = payments.reduce((acc, p) => acc + (p.status === "paid" ? p.totalPaise : 0), 0);
   const totalTaxPaise = payments.reduce((acc, p) => acc + (p.status === "paid" ? p.taxPaise : 0), 0);

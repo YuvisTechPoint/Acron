@@ -5,8 +5,8 @@ import { platformStore } from "@/lib/store";
 export const dynamic = "force-dynamic";
 
 export async function GET() {
-  const faqList = db.getQuestions().filter((q) => q.isPublic);
-  return NextResponse.json({ success: true, faq: faqList });
+  const faqs = db.getFaqs();
+  return NextResponse.json({ success: true, faqs, faq: faqs });
 }
 
 export async function POST(req: Request) {
@@ -15,22 +15,44 @@ export async function POST(req: Request) {
     if (!body.question) {
       return NextResponse.json({ error: "Question text is required" }, { status: 400 });
     }
-    const newQuestion = {
-      ...body,
-      id: `qa-${Date.now()}`,
-      refNumber: `ACN-QA-${new Date().getFullYear()}-${Math.floor(100000 + Math.random() * 900000)}`,
-      createdAt: new Date().toISOString(),
-      isPublic: true,
-      isPublished: true,
-    };
-    const saved = db.insertQuestion(newQuestion);
-    platformStore.addQuestion(newQuestion);
+    let saved;
+    if (body.id) {
+      saved = db.updateFaq(body.id, body);
+      platformStore.updateFaq(body.id, body);
+    } else {
+      const newFaq = {
+        id: `faq-${Date.now()}`,
+        category: body.category || "General",
+        question: body.question,
+        answer: body.answer || "",
+        showOnHomepage: Boolean(body.showOnHomepage),
+        order: Number(body.order) || 1,
+        updatedAt: new Date().toISOString(),
+      };
+      saved = db.insertFaq(newFaq);
+      platformStore.addFaq(newFaq);
+    }
     return NextResponse.json({
       success: true,
-      message: "FAQ query saved to database and synchronized",
+      message: "FAQ query saved to database and synchronized in real-time",
       faq: saved,
     });
   } catch (err: any) {
-    return NextResponse.json({ error: err.message || "Failed to save question" }, { status: 500 });
+    return NextResponse.json({ error: err.message || "Failed to save FAQ" }, { status: 500 });
+  }
+}
+
+export async function DELETE(req: Request) {
+  try {
+    const { searchParams } = new URL(req.url);
+    const id = searchParams.get("id");
+    if (!id) {
+      return NextResponse.json({ error: "Missing FAQ id" }, { status: 400 });
+    }
+    db.deleteFaq(id);
+    platformStore.deleteFaq(id);
+    return NextResponse.json({ success: true, message: `FAQ ${id} deleted` });
+  } catch (err: any) {
+    return NextResponse.json({ error: err.message || "Failed to delete FAQ" }, { status: 500 });
   }
 }

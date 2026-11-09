@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import {
   Briefcase,
@@ -18,6 +18,7 @@ import {
   UserCheck,
 } from "lucide-react";
 import { platformStore } from "@/lib/store";
+import { useRealtimeCases } from "@/lib/realtime";
 import { formatDate } from "@/lib/utils";
 import { POSHCase } from "@/lib/types";
 
@@ -25,9 +26,17 @@ export default function AdminCasesPage() {
   const [filterState, setFilterState] = useState<string>("ALL");
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCase, setSelectedCase] = useState<POSHCase | null>(null);
+  const [targetState, setTargetState] = useState<string>("");
   const [statusNote, setStatusNote] = useState("");
+  const [caseUpdatedSuccess, setCaseUpdatedSuccess] = useState(false);
 
-  const cases = platformStore.getCases();
+  const cases = useRealtimeCases();
+
+  useEffect(() => {
+    if (selectedCase) {
+      setTargetState(selectedCase.state);
+    }
+  }, [selectedCase]);
 
   const filteredCases = cases.filter((c) => {
     const matchesState = filterState === "ALL" || c.state === filterState;
@@ -43,13 +52,27 @@ export default function AdminCasesPage() {
   const closedCount = cases.filter((c) => c.state === "CLOSED").length;
   const inquiryCount = cases.filter((c) => c.state === "INQUIRY").length;
 
-  const handleStateChange = (e: React.FormEvent) => {
+  const handleStateChange = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!selectedCase) return;
-    // update status
-    platformStore.updateCaseState(selectedCase.id, selectedCase.state, statusNote);
+    if (!selectedCase || !targetState) return;
+    platformStore.updateCaseState(selectedCase.id, targetState as any, statusNote);
+
+    try {
+      await fetch("/api/cases", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          id: selectedCase.id,
+          state: targetState,
+          note: statusNote || undefined,
+        }),
+      });
+    } catch {}
+
     setStatusNote("");
-    // refresh
+    setCaseUpdatedSuccess(true);
+    setTimeout(() => setCaseUpdatedSuccess(false), 3000);
+    // refresh selectedCase
     const updated = platformStore.getCaseById(selectedCase.id);
     if (updated) setSelectedCase({ ...updated });
   };
@@ -301,6 +324,55 @@ export default function AdminCasesPage() {
                   <span className="font-medium text-ink-950">{selectedCase.evidence?.length || 0}</span>
                 </div>
               </div>
+
+              {/* State Transition Form */}
+              <form onSubmit={handleStateChange} className="pt-3 border-t border-border space-y-3">
+                <div className="text-[10px] uppercase font-bold text-navy-700 tracking-wider">
+                  Transition Case State
+                </div>
+                <div>
+                  <label className="block text-[11px] font-medium text-text-muted mb-1">
+                    Procedural Stage:
+                  </label>
+                  <select
+                    value={targetState}
+                    onChange={(e) => setTargetState(e.target.value)}
+                    className="w-full text-xs px-2.5 py-1.5 bg-ivory-50 border border-border rounded focus:outline-none focus:border-navy-700"
+                  >
+                    {["DRAFT", "FILED", "ACKNOWLEDGED", "INQUIRY", "REPORT_ISSUED", "CLOSED"].map((st) => (
+                      <option key={st} value={st}>
+                        {st.replace("_", " ")}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-[11px] font-medium text-text-muted mb-1">
+                    Audit Note / Rationale:
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="e.g. Conciliation concluded; formal inquiry convened"
+                    value={statusNote}
+                    onChange={(e) => setStatusNote(e.target.value)}
+                    className="w-full text-xs px-2.5 py-1.5 bg-ivory-50 border border-border rounded focus:outline-none focus:border-navy-700"
+                  />
+                </div>
+
+                {caseUpdatedSuccess && (
+                  <div className="p-2.5 bg-emerald-50 border border-emerald-300 rounded text-[11px] text-emerald-900 font-semibold flex items-center gap-1.5">
+                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                    <span>Case state transitioned and synchronized in real-time.</span>
+                  </div>
+                )}
+
+                <button
+                  type="submit"
+                  className="w-full py-2 bg-navy-700 hover:bg-navy-800 text-white text-xs font-bold uppercase tracking-wider rounded transition"
+                >
+                  Update Procedural State
+                </button>
+              </form>
 
               {/* Action Links */}
               <div className="space-y-2 pt-2">

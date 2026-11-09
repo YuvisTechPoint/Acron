@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
+import { verifySessionToken } from "@/lib/session";
 
 // Standard editorial CSP policy compliant with PRD Section 25 & Bar Council restrictions
 const CSP_POLICY = [
@@ -15,26 +16,43 @@ const CSP_POLICY = [
   "form-action 'self'",
 ].join("; ");
 
-export function middleware(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const userAgent = request.headers.get("user-agent") || "";
   const isCrawlerOrTest =
     userAgent.includes("RouteCrawler") ||
-    process.env.NODE_ENV !== "production" ||
     request.headers.get("x-bypass-auth") === "true";
 
-  // 1. Edge Session Verification for Dense Staff Admin (/admin/*)
-  if (pathname.startsWith("/admin") && !pathname.startsWith("/admin/login")) {
-    const hasAdminSession =
-      request.cookies.has("acorn_admin_session") ||
-      request.cookies.has("acorn_session") ||
-      request.headers.has("authorization");
+  // Check session tokens from cookies or Authorization header
+  const adminCookieToken =
+    request.cookies.get("acorn_admin_session")?.value ||
+    request.cookies.get("acorn_session")?.value;
+  const authHeader = request.headers.get("authorization");
+  const bearerToken = authHeader?.startsWith("Bearer ") ? authHeader.slice(7) : null;
+  const candidateToken = adminCookieToken || bearerToken;
 
-    // If unauthenticated in strict production (and not crawler/test suite), redirect to login
-    if (!hasAdminSession && !isCrawlerOrTest) {
-      const loginUrl = new URL("/admin/login", request.url);
-      loginUrl.searchParams.set("callbackUrl", pathname);
-      return NextResponse.redirect(loginUrl);
+  let hasAdminSession = false;
+  if (candidateToken && candidateToken.trim().length > 0) {
+    const verified = await verifySessionToken(candidateToken);
+    if (verified.valid) {
+      hasAdminSession = true;
+    }
+  }
+
+  // 1. Edge Session Verification for Dense Staff Admin (/admin/*)
+  if (pathname.startsWith("/admin")) {
+    if (pathname === "/admin/login") {
+      // If already logged in, redirect directly to admin console
+      if (hasAdminSession && !isCrawlerOrTest) {
+        return NextResponse.redirect(new URL("/admin", request.url));
+      }
+    } else {
+      // If unauthenticated, redirect to admin login
+      if (!hasAdminSession && !isCrawlerOrTest) {
+        const loginUrl = new URL("/admin/login", request.url);
+        loginUrl.searchParams.set("callbackUrl", pathname);
+        return NextResponse.redirect(loginUrl);
+      }
     }
   }
 
@@ -45,11 +63,14 @@ export function middleware(request: NextRequest) {
     pathname.startsWith("/posh/ic");
 
   if (isProtectedPoshConsole) {
-    const hasPoshSession =
-      request.cookies.has("acorn_posh_session") ||
-      request.cookies.has("acorn_admin_session") ||
-      request.cookies.has("acorn_session") ||
-      request.headers.has("authorization");
+    const poshCookieToken = request.cookies.get("acorn_posh_session")?.value;
+    let hasPoshSession = hasAdminSession;
+    if (!hasPoshSession && poshCookieToken && poshCookieToken.trim().length > 0) {
+      const verified = await verifySessionToken(poshCookieToken);
+      if (verified.valid) {
+        hasPoshSession = true;
+      }
+    }
 
     if (!hasPoshSession && !isCrawlerOrTest) {
       const loginUrl = new URL("/admin/login", request.url);

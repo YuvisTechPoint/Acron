@@ -12,7 +12,13 @@ export async function GET() {
     const siteConfig = db.getSiteConfig();
     const services = db.getServices();
     const posts = db.getBlogPosts();
-    const questions = db.getQuestions().filter((q) => q.isPublic);
+    const questions = db.getQuestions();
+    const faqs = db.getFaqs();
+    const serviceRequests = db.getServiceRequests();
+    const cases = db.getCases();
+    const team = db.getTeamMembers();
+    const legalRules = db.getLegalRules();
+    const systemSettings = db.getSystemSettings();
 
     return NextResponse.json({
       success: true,
@@ -23,10 +29,15 @@ export async function GET() {
         services,
         posts,
         questions,
+        faqs,
+        serviceRequests,
+        cases,
+        team,
+        legalRules,
+        systemSettings,
       },
     });
   } catch (err: any) {
     return NextResponse.json({ error: err.message || "Failed to retrieve sync state" }, { status: 500 });
   }
 }
-

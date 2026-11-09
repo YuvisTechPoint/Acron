@@ -18,6 +18,7 @@ import {
   Check,
 } from "lucide-react";
 import { platformStore } from "@/lib/store";
+import { useRealtimeFaqs } from "@/lib/realtime";
 import { FaqItem } from "@/lib/types";
 
 const CATEGORIES = [
@@ -30,7 +31,7 @@ const CATEGORIES = [
 ];
 
 export default function AdminFaqPage() {
-  const [faqs, setFaqs] = useState<FaqItem[]>([]);
+  const faqs = useRealtimeFaqs();
   const [searchTerm, setSearchTerm] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("All Categories");
   const [showModal, setShowModal] = useState(false);
@@ -44,14 +45,6 @@ export default function AdminFaqPage() {
     showOnHomepage: false,
     order: 1,
   });
-
-  const loadData = () => {
-    setFaqs(platformStore.getFaqs());
-  };
-
-  useEffect(() => {
-    loadData();
-  }, []);
 
   const triggerToast = (msg: string) => {
     setToastMsg(msg);
@@ -82,13 +75,20 @@ export default function AdminFaqPage() {
     setShowModal(true);
   };
 
-  const handleToggleHomepage = (faq: FaqItem) => {
+  const handleToggleHomepage = async (faq: FaqItem) => {
+    const updated = { ...faq, showOnHomepage: !faq.showOnHomepage };
     platformStore.updateFaq(faq.id, { showOnHomepage: !faq.showOnHomepage });
-    loadData();
+    try {
+      await fetch("/api/faq", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(updated),
+      });
+    } catch {}
     triggerToast(`FAQ homepage visibility toggled to ${!faq.showOnHomepage ? "Featured" : "Hidden"}`);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.question.trim() || !formData.answer.trim()) {
       alert("Question and Answer are required.");
@@ -96,33 +96,51 @@ export default function AdminFaqPage() {
     }
 
     if (editingFaq) {
-      platformStore.updateFaq(editingFaq.id, {
+      const payload = {
+        ...editingFaq,
         category: formData.category,
         question: formData.question.trim(),
         answer: formData.answer.trim(),
         showOnHomepage: formData.showOnHomepage,
         order: Number(formData.order) || 1,
-      });
+      };
+      platformStore.updateFaq(editingFaq.id, payload);
+      try {
+        await fetch("/api/faq", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        });
+      } catch {}
       triggerToast("FAQ successfully updated.");
     } else {
-      platformStore.addFaq({
+      const newFaqPayload = {
         category: formData.category,
         question: formData.question.trim(),
         answer: formData.answer.trim(),
         showOnHomepage: formData.showOnHomepage,
         order: Number(formData.order) || 1,
-      });
+      };
+      const created = platformStore.addFaq(newFaqPayload);
+      try {
+        await fetch("/api/faq", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(created),
+        });
+      } catch {}
       triggerToast("New FAQ created and published.");
     }
 
     setShowModal(false);
-    loadData();
   };
 
-  const handleDelete = (faq: FaqItem) => {
+  const handleDelete = async (faq: FaqItem) => {
     if (confirm(`Are you sure you want to delete this FAQ: "${faq.question.slice(0, 50)}..."?`)) {
       platformStore.deleteFaq(faq.id);
-      loadData();
+      try {
+        await fetch(`/api/faq?id=${faq.id}`, { method: "DELETE" });
+      } catch {}
       triggerToast("FAQ deleted successfully.");
     }
   };

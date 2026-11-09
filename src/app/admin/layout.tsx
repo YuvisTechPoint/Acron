@@ -1,8 +1,8 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import {
   LayoutDashboard,
   Inbox,
@@ -120,8 +120,39 @@ export default function AdminLayout({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
+  const router = useRouter();
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
   const [theme, setTheme] = useState<"light" | "dark">("light");
+  const [currentUser, setCurrentUser] = useState({
+    name: "Adv. Subhasish Mukherjee",
+    role: "Super Admin / Managing Partner",
+    chamber: "Kolkata Chambers • Park Street District",
+    email: "admin@acornlegal.in",
+  });
+
+  useEffect(() => {
+    fetch("/api/admin/session")
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (data?.authenticated && data.user) {
+          setCurrentUser(data.user);
+        }
+      })
+      .catch(() => {});
+  }, []);
+
+  const handleLogout = useCallback(async () => {
+    try {
+      await fetch("/api/admin/logout", { method: "POST" });
+    } catch {}
+    if (typeof window !== "undefined") {
+      localStorage.removeItem("acorn_admin_session");
+      document.cookie = "acorn_admin_session=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+      document.cookie = "acorn_session=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+      document.cookie = "acorn_posh_session=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+    }
+    router.push("/admin/login");
+  }, [router]);
 
   useEffect(() => {
     const saved = (localStorage.getItem("acorn_admin_theme") as "light" | "dark") || "light";
@@ -251,18 +282,18 @@ export default function AdminLayout({
         {/* User Identity Footer */}
         <div className="p-4 border-t border-navy-800/80 bg-navy-900/40">
           <div className="flex items-center justify-between text-xs">
-            <div className="truncate">
-              <div className="font-semibold text-white truncate">Adv. Subhasish Mukherjee</div>
-              <div className="text-[10px] text-slate-400">Managing Partner &bull; Kolkata</div>
+            <div className="truncate pr-2">
+              <div className="font-semibold text-white truncate">{currentUser.name}</div>
+              <div className="text-[10px] text-slate-400 truncate">{currentUser.role}</div>
             </div>
-            <Link
-              href="/admin/login"
-              title="Logout"
-              className="p-1.5 rounded hover:bg-navy-800 text-slate-400 hover:text-brass-300 transition"
+            <button
+              onClick={handleLogout}
+              title="Logout from Admin Console"
+              className="p-1.5 rounded hover:bg-navy-800 text-slate-400 hover:text-brass-300 transition shrink-0"
               aria-label="Logout"
             >
               <LogOut className="w-4 h-4" />
-            </Link>
+            </button>
           </div>
         </div>
       </aside>
@@ -301,6 +332,17 @@ export default function AdminLayout({
               <span>Chambers Public Site</span>
               <ExternalLink className="w-3.5 h-3.5 text-brass-500" />
             </Link>
+
+            <div className="w-[1px] h-4 bg-border" />
+
+            <button
+              onClick={handleLogout}
+              className="text-xs font-semibold text-slate-500 hover:text-red-700 flex items-center gap-1.5 transition"
+              title="Sign Out of Session"
+            >
+              <LogOut className="w-3.5 h-3.5" />
+              <span>Sign Out</span>
+            </button>
           </div>
         </header>
 

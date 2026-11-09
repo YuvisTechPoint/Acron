@@ -13,6 +13,7 @@ import {
   ShieldCheck,
 } from "lucide-react";
 import { platformStore } from "@/lib/store";
+import { useRealtimeQuestions } from "@/lib/realtime";
 import { formatDate } from "@/lib/utils";
 import { QuestionAnswer } from "@/lib/types";
 
@@ -28,7 +29,8 @@ export default function PublicQAPage() {
   const [questionText, setQuestionText] = useState("");
   const [submittedRef, setSubmittedRef] = useState<string | null>(null);
 
-  const questions = platformStore.getQuestions().filter((q) => q.isPublic);
+  const allQuestions = useRealtimeQuestions();
+  const questions = allQuestions.filter((q) => q.isPublic);
 
   const filtered = questions.filter((q) => {
     const matchesCategory = selectedCategory === "ALL" || q.category === selectedCategory;
@@ -38,7 +40,7 @@ export default function PublicQAPage() {
     return matchesCategory && matchesSearch;
   });
 
-  const handleSubmitQuestion = (e: React.FormEvent) => {
+  const handleSubmitQuestion = async (e: React.FormEvent) => {
     e.preventDefault();
     const created = platformStore.addQuestion(
       authorName,
@@ -46,6 +48,18 @@ export default function PublicQAPage() {
       category,
       questionText
     );
+    try {
+      await fetch("/api/qa", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          authorName,
+          authorEmail,
+          category,
+          question: questionText,
+        }),
+      });
+    } catch {}
     setSubmittedRef(created.refNumber);
   };
 

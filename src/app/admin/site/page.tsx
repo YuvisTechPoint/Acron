@@ -168,7 +168,8 @@ export default function AdminSiteSettingsPage() {
     }
 
     if (editingMember) {
-      platformStore.updateTeamMember(editingMember.id, {
+      const payload = {
+        id: editingMember.id,
         name: memberFormData.name,
         role: memberFormData.role,
         title: memberFormData.title,
@@ -177,9 +178,15 @@ export default function AdminSiteSettingsPage() {
         avatarUrl: memberFormData.avatarUrl,
         email: memberFormData.email,
         order: Number(memberFormData.order) || 1,
-      });
+      };
+      platformStore.updateTeamMember(editingMember.id, payload);
+      fetch("/api/team", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      }).catch(() => {});
     } else {
-      platformStore.addTeamMember({
+      const newPayload = {
         name: memberFormData.name,
         role: memberFormData.role,
         title: memberFormData.title,
@@ -188,7 +195,13 @@ export default function AdminSiteSettingsPage() {
         avatarUrl: memberFormData.avatarUrl,
         email: memberFormData.email,
         order: Number(memberFormData.order) || 1,
-      });
+      };
+      const created = platformStore.addTeamMember(newPayload);
+      fetch("/api/team", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(created),
+      }).catch(() => {});
     }
 
     setShowTeamModal(false);
@@ -200,6 +213,7 @@ export default function AdminSiteSettingsPage() {
   const handleDeleteTeamMember = (id: string, name: string) => {
     if (confirm(`Remove counsel profile for ${name}?`)) {
       platformStore.deleteTeamMember(id);
+      fetch(`/api/team?id=${id}`, { method: "DELETE" }).catch(() => {});
       loadData();
     }
   };

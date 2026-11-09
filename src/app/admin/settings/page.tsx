@@ -4,28 +4,30 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { Settings, Shield, CreditCard, Mail, Clock, ArrowLeft, Save, AlertTriangle, CheckCircle2 } from "lucide-react";
 import { platformStore } from "@/lib/store";
+import { useRealtimeSystemSettings } from "@/lib/realtime";
 import { SystemSettings } from "@/lib/types";
 
 export default function AdminSettingsPage() {
-  const [settings, setSettings] = useState<SystemSettings>({
-    razorpayMode: "test",
-    razorpayKeyId: "rzp_test_AcornLegalKolkata2026",
-    razorpayKeySecretMasked: "••••••••••••••••••••",
-    maintenanceMode: false,
-    smtpHost: "email-smtp.ap-south-1.amazonaws.com",
-    smtpFrom: "contact@acornlegal.in",
-    retentionYears: "3",
-    updatedAt: new Date().toISOString(),
-  });
+  const realtimeSettings = useRealtimeSystemSettings();
+  const [settings, setSettings] = useState<SystemSettings>(realtimeSettings);
   const [savedSuccess, setSavedSuccess] = useState(false);
 
   useEffect(() => {
-    setSettings(platformStore.getSystemSettings());
-  }, []);
+    if (realtimeSettings) {
+      setSettings(realtimeSettings);
+    }
+  }, [realtimeSettings]);
 
-  const handleSave = (e: React.FormEvent) => {
+  const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
     platformStore.updateSystemSettings(settings);
+    try {
+      await fetch("/api/settings", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(settings),
+      });
+    } catch {}
     setSavedSuccess(true);
     setTimeout(() => setSavedSuccess(false), 3000);
   };

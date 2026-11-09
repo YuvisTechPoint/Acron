@@ -1,8 +1,11 @@
 import { NextResponse } from "next/server";
+import { db } from "@/lib/db";
 import { platformStore } from "@/lib/store";
 
+export const dynamic = "force-dynamic";
+
 export async function GET() {
-  const team = platformStore.getTeamMembers();
+  const team = db.getTeamMembers();
   return NextResponse.json({ success: true, team });
 }
 
@@ -14,9 +17,16 @@ export async function POST(req: Request) {
     }
     let saved;
     if (body.id) {
-      saved = platformStore.updateTeamMember(body.id, body);
+      saved = db.updateTeamMember(body.id, body);
+      platformStore.updateTeamMember(body.id, body);
     } else {
-      saved = platformStore.addTeamMember(body);
+      const newMember = {
+        ...body,
+        id: `team-${Date.now()}`,
+        updatedAt: new Date().toISOString(),
+      };
+      saved = db.insertTeamMember(newMember);
+      platformStore.addTeamMember(newMember);
     }
     return NextResponse.json({
       success: true,
@@ -35,10 +45,10 @@ export async function DELETE(req: Request) {
     if (!id) {
       return NextResponse.json({ error: "Missing member id" }, { status: 400 });
     }
+    db.deleteTeamMember(id);
     platformStore.deleteTeamMember(id);
     return NextResponse.json({ success: true, message: `Counsel profile ${id} deleted` });
   } catch (err: any) {
     return NextResponse.json({ error: err.message || "Failed to delete counsel profile" }, { status: 500 });
   }
 }
-

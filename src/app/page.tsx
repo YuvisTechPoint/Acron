@@ -22,6 +22,8 @@ import {
 } from "lucide-react";
 import { BRAND_CONFIG, PRACTICE_AREAS } from "@/lib/constants";
 import { platformStore } from "@/lib/store";
+import { useRealtimeSiteConfig, useRealtimeFaqs, useRealtimePosts } from "@/lib/realtime";
+import { formatDate } from "@/lib/utils";
 import {
   Button,
   Eyebrow,
@@ -129,13 +131,20 @@ const FEATURED_INSIGHTS = [
 
 export default function HomePage() {
   const [activeStep, setActiveStep] = useState(0);
-  const [siteConfig, setSiteConfig] = useState(platformStore.getSiteConfig());
-  const [homepageFaqs, setHomepageFaqs] = useState(platformStore.getHomepageFaqs());
+  const siteConfig = useRealtimeSiteConfig();
+  const rawFaqs = useRealtimeFaqs();
+  const rawPosts = useRealtimePosts();
+  const homepageFaqs = rawFaqs.filter((f) => f.showOnHomepage).sort((a, b) => a.order - b.order);
 
-  useEffect(() => {
-    setSiteConfig(platformStore.getSiteConfig());
-    setHomepageFaqs(platformStore.getHomepageFaqs());
-  }, []);
+  const effectiveInsights = rawPosts.length > 0
+    ? rawPosts.slice(0, 3).map((p) => ({
+        slug: p.slug,
+        category: p.category,
+        date: formatDate(p.publishedAt),
+        title: p.title,
+        excerpt: p.excerpt || p.summary,
+      }))
+    : FEATURED_INSIGHTS;
 
   const steps = siteConfig.pathwaySteps && siteConfig.pathwaySteps.length > 0
     ? siteConfig.pathwaySteps
@@ -693,22 +702,22 @@ export default function HomePage() {
 
             {/* Large Featured Article (7 cols) */}
             <div className="lg:col-span-7">
-              <Link href={`/blog/${FEATURED_INSIGHTS[0].slug}`} className="block h-full group focus:outline-none">
+              <Link href={`/blog/${effectiveInsights[0].slug}`} className="block h-full group focus:outline-none">
                 <div className="bg-white rounded-card border border-border p-8 h-full flex flex-col justify-between shadow-card card-hover">
                   <div className="space-y-4">
                     <div className="flex items-center justify-between text-xs">
                       <span className="font-semibold uppercase tracking-wider text-brass-700">
-                        {FEATURED_INSIGHTS[0].category}
+                        {effectiveInsights[0].category}
                       </span>
-                      <span className="text-ink-muted">{FEATURED_INSIGHTS[0].date}</span>
+                      <span className="text-ink-muted">{effectiveInsights[0].date}</span>
                     </div>
 
                     <h3 className="font-serif text-2xl sm:text-4xl font-bold text-ink-950 group-hover:text-navy-700 transition-colors leading-[1.2]">
-                      {FEATURED_INSIGHTS[0].title}
+                      {effectiveInsights[0].title}
                     </h3>
 
                     <p className="font-sans text-base text-ink-secondary leading-relaxed">
-                      {FEATURED_INSIGHTS[0].excerpt}
+                      {effectiveInsights[0].excerpt}
                     </p>
                   </div>
 
@@ -722,7 +731,7 @@ export default function HomePage() {
 
             {/* 2 Smaller Articles (5 cols) */}
             <div className="lg:col-span-5 flex flex-col gap-6 justify-between">
-              {FEATURED_INSIGHTS.slice(1, 3).map((art) => (
+              {effectiveInsights.slice(1, 3).map((art) => (
                 <Link key={art.slug} href={`/blog/${art.slug}`} className="block group focus:outline-none flex-1">
                   <div className="bg-white rounded-card border border-border p-6 h-full flex flex-col justify-between shadow-card card-hover">
                     <div className="space-y-2">

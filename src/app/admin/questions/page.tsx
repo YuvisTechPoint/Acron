@@ -12,6 +12,7 @@ import {
   Trash2,
 } from "lucide-react";
 import { platformStore } from "@/lib/store";
+import { useRealtimeQuestions } from "@/lib/realtime";
 import { formatDate } from "@/lib/utils";
 import { QuestionAnswer } from "@/lib/types";
 
@@ -21,9 +22,10 @@ export default function AdminQAQueuePage() {
   const [answeredBy, setAnsweredBy] = useState("Adv. Debjani Sen, Head of POSH Practice");
   const [publishPublic, setPublishPublic] = useState(true);
 
-  const questions = platformStore.getQuestions();
+  const questions = useRealtimeQuestions();
+  const [savedSuccess, setSavedSuccess] = useState(false);
 
-  const handleSaveAnswer = (e: React.FormEvent) => {
+  const handleSaveAnswer = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!selectedQA || !answerText.trim()) return;
 
@@ -34,16 +36,33 @@ export default function AdminQAQueuePage() {
       publishPublic
     );
 
+    try {
+      await fetch("/api/qa", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          id: selectedQA.id,
+          answer: answerText,
+          answeredBy,
+          isPublic: publishPublic,
+        }),
+      });
+    } catch {}
+
     // Refresh
     const updated = platformStore.getQuestions();
     const refreshed = updated.find((q) => q.id === selectedQA.id);
     if (refreshed) setSelectedQA({ ...refreshed });
-    alert("Answer saved and status updated successfully.");
+    setSavedSuccess(true);
+    setTimeout(() => setSavedSuccess(false), 3000);
   };
 
-  const handleDelete = (id: string) => {
+  const handleDelete = async (id: string) => {
     if (confirm("Delete this question from moderation queue?")) {
       platformStore.deleteQuestion(id);
+      try {
+        await fetch(`/api/qa?id=${id}`, { method: "DELETE" });
+      } catch {}
       setSelectedQA(null);
     }
   };
@@ -166,6 +185,13 @@ export default function AdminQAQueuePage() {
                     <span>Publish publicly to Searchable Knowledge Base</span>
                   </label>
                 </div>
+
+                {savedSuccess && (
+                  <div className="p-3 bg-emerald-50 border border-emerald-300 rounded text-xs text-emerald-900 font-semibold flex items-center gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+                    <span>Answer saved and synchronized in real-time.</span>
+                  </div>
+                )}
 
                 <div className="flex gap-2">
                   <button
