@@ -30,6 +30,21 @@ const CATEGORIES = [
   "Commercial Contracts",
 ];
 
+function formatCategory(cat?: string): string {
+  if (!cat) return "Statutory Commentary";
+  const mapped: Record<string, string> = {
+    posh_compliance: "POSH Compliance",
+    posh: "POSH Compliance",
+    real_estate: "Real Estate & RERA",
+    corporate_advisory: "Corporate Advisory",
+    dispute_resolution: "Dispute Resolution",
+    commercial_contracts: "Commercial Law",
+    corporate_law: "Corporate Law",
+  };
+  if (mapped[cat.toLowerCase()]) return mapped[cat.toLowerCase()];
+  return cat.replace(/[_-]/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
+}
+
 export default function BlogIndexPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All Insights");
@@ -37,9 +52,14 @@ export default function BlogIndexPage() {
   const rawBlogs = useRealtimePosts();
 
   const filtered = rawBlogs.filter((b) => {
+    const normCategory = (b.category || "").toLowerCase().replace(/[_-]/g, " ");
+    const normSelected = selectedCategory.toLowerCase().replace(/[_-]/g, " ");
     const matchesCat =
       selectedCategory === "All Insights" ||
-      b.category.toLowerCase().includes(selectedCategory.toLowerCase());
+      normCategory.includes(normSelected) ||
+      normSelected.includes(normCategory) ||
+      (selectedCategory === "POSH Compliance" && normCategory.includes("posh"));
+
     const matchesSearch =
       b.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
       (b.excerpt || b.summary || "").toLowerCase().includes(searchTerm.toLowerCase());
@@ -124,7 +144,7 @@ export default function BlogIndexPage() {
               <div className="lg:col-span-7 p-8 sm:p-12 flex flex-col justify-between space-y-6">
                 <div className="space-y-4">
                   <div className="flex items-center gap-3">
-                    <Badge variant="brass">{featured.category}</Badge>
+                    <Badge variant="brass">{formatCategory(featured.category)}</Badge>
                     <span className="text-xs text-ink-muted flex items-center gap-1">
                       <Clock className="w-3.5 h-3.5" />
                       <span>{featured.readTimeMinutes || featured.readingTimeMinutes || 6} min read</span>
@@ -195,7 +215,7 @@ export default function BlogIndexPage() {
                   >
                     <div className="space-y-3">
                       <div className="flex items-center justify-between text-xs">
-                        <Badge variant="stone">{art.category}</Badge>
+                        <Badge variant="stone">{formatCategory(art.category)}</Badge>
                         <span className="text-ink-muted">
                           {formatDate(art.publishedAt)}
                         </span>

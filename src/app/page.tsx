@@ -130,6 +130,21 @@ const FEATURED_INSIGHTS = [
   },
 ];
 
+function formatCategory(cat?: string): string {
+  if (!cat) return "Statutory Commentary";
+  const mapped: Record<string, string> = {
+    posh_compliance: "POSH Compliance",
+    posh: "POSH Compliance",
+    real_estate: "Real Estate & RERA",
+    corporate_advisory: "Corporate Advisory",
+    dispute_resolution: "Dispute Resolution",
+    commercial_contracts: "Commercial Law",
+    corporate_law: "Corporate Law",
+  };
+  if (mapped[cat.toLowerCase()]) return mapped[cat.toLowerCase()];
+  return cat.replace(/[_-]/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
+}
+
 export default function HomePage() {
   const [activeStep, setActiveStep] = useState(0);
   const siteConfig = useRealtimeSiteConfig();
@@ -140,7 +155,7 @@ export default function HomePage() {
   const effectiveInsights = rawPosts.length > 0
     ? rawPosts.slice(0, 3).map((p) => ({
         slug: p.slug,
-        category: p.category,
+        category: formatCategory(p.category),
         date: formatDate(p.publishedAt),
         title: p.title,
         excerpt: p.excerpt || p.summary,
@@ -246,20 +261,20 @@ export default function HomePage() {
                 </Link>
               </div>
 
-              {/* Metadata Badges Line */}
+              {/* Metadata Badges Line - Fully Wired & Clickable */}
               <div className="pt-6 flex flex-wrap items-center gap-x-6 gap-y-2 text-xs sm:text-[13px] font-sans text-slate-300 font-medium">
-                <div className="flex items-center gap-1.5">
-                  <span className="text-brass-400 font-bold">•</span>
+                <Link href="/contact" className="flex items-center gap-1.5 hover:text-brass-300 transition-colors cursor-pointer group">
+                  <span className="text-brass-400 font-bold group-hover:scale-125 transition-transform">•</span>
                   <span>{siteConfig.city || "Kolkata"} Chambers</span>
-                </div>
-                <div className="flex items-center gap-1.5">
-                  <span className="text-brass-400 font-bold">•</span>
+                </Link>
+                <Link href="/contact" className="flex items-center gap-1.5 hover:text-brass-300 transition-colors cursor-pointer group">
+                  <span className="text-brass-400 font-bold group-hover:scale-125 transition-transform">•</span>
                   <span>{siteConfig.addressLine2 || "Park Street District"}</span>
-                </div>
-                <div className="flex items-center gap-1.5">
-                  <span className="text-brass-400 font-bold">•</span>
+                </Link>
+                <Link href="/request-service" className="flex items-center gap-1.5 hover:text-brass-300 transition-colors cursor-pointer group">
+                  <span className="text-brass-400 font-bold group-hover:scale-125 transition-transform">•</span>
                   <span>Confidential Privileged Intake</span>
-                </div>
+                </Link>
               </div>
 
             </div>
@@ -274,11 +289,11 @@ export default function HomePage() {
                   {/* Inner Arch Stroke (Double line effect from reference image) */}
                   <div className="absolute inset-2 sm:inset-2.5 rounded-t-full border border-brass-500/35 pointer-events-none" />
 
-                  {/* Top Dome with Crest & Typography */}
-                  <div className="relative z-10 pt-7 pb-8 px-4 rounded-t-full bg-gradient-to-b from-[#07101F]/85 via-[#07101F]/50 to-transparent flex flex-col items-center text-center">
+                  {/* Top Dome with Crest & Typography - Clickable to Chambers Contact */}
+                  <Link href="/contact" className="relative z-10 pt-7 pb-8 px-4 rounded-t-full bg-gradient-to-b from-[#07101F]/85 via-[#07101F]/50 to-transparent flex flex-col items-center text-center cursor-pointer group focus:outline-none">
 
                     {/* Oak Leaf Crest Motif */}
-                    <div className="w-11 h-11 flex items-center justify-center text-brass-400 mb-1 drop-shadow">
+                    <div className="w-11 h-11 flex items-center justify-center text-brass-400 mb-1 drop-shadow group-hover:scale-105 transition-transform">
                       <svg viewBox="0 0 48 48" fill="none" className="w-10 h-10" aria-hidden="true">
                         {/* Right Leaf */}
                         <path d="M25 24 C24 21 26 18 28 17 C27 15 26 13 28 11 C29 9 32 8 34 6 C36 7 37 8 37 10 C39 11 40 13 39 15 C41 17 41 19 39 21 C40 23 39 25 36 26 C34 27 32 26 30 28 C28 29 26 27 25 24 Z" fill="currentColor" />
@@ -297,64 +312,73 @@ export default function HomePage() {
                       </svg>
                     </div>
 
-                    <span className="font-serif text-2xl sm:text-[28px] font-bold text-[#F3E5D3] tracking-wide drop-shadow-md leading-tight mt-1">
+                    <span className="font-serif text-2xl sm:text-[28px] font-bold text-[#F3E5D3] tracking-wide drop-shadow-md leading-tight mt-1 group-hover:text-white transition-colors">
                       {siteConfig.heroArchTitle || "Chambers of Acorn"}
                     </span>
                     <span className="font-sans text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.25em] text-brass-400 mt-1 drop-shadow">
                       {siteConfig.heroArchSubtitle || "CAMAC STREET • KOLKATA"}
                     </span>
-                  </div>
+                  </Link>
 
                   {/* Open Middle Area: Transparently frames the senior advocate at desk in heritage library */}
                   <div className="flex-1 min-h-[160px] sm:min-h-[190px]" />
 
-                  {/* Bottom: 3 Horizontal Glassmorphic Cards (Matching Attached Image) */}
+                  {/* Bottom: 3 Horizontal Glassmorphic Cards (Fully Wired & Clickable) */}
                   <div className="relative z-10 grid grid-cols-3 gap-2 sm:gap-2.5 pb-2 px-1">
 
                     {/* Card 1: Discretion */}
-                    <div className="bg-[#07101F]/75 border border-brass-500/35 rounded-lg p-3 sm:p-3.5 flex flex-col justify-between shadow-2xl backdrop-blur-md transition-all duration-200 hover:border-brass-400 hover:bg-[#07101F]/90">
+                    <Link
+                      href="/about"
+                      className="bg-[#07101F]/75 border border-brass-500/35 rounded-lg p-3 sm:p-3.5 flex flex-col justify-between shadow-2xl backdrop-blur-md transition-all duration-200 hover:border-brass-400 hover:bg-[#07101F]/90 cursor-pointer group focus:outline-none"
+                    >
                       <div>
-                        <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-white/5 border border-brass-500/30 flex items-center justify-center text-brass-400 mb-2">
+                        <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-white/5 border border-brass-500/30 flex items-center justify-center text-brass-400 mb-2 group-hover:border-brass-400 transition-colors">
                           <Lock className="w-3.5 h-3.5 text-brass-400 shrink-0" />
                         </div>
-                        <h3 className="text-xs sm:text-[13px] font-bold text-white tracking-tight mb-1">
+                        <h3 className="text-xs sm:text-[13px] font-bold text-white tracking-tight mb-1 group-hover:text-brass-300 transition-colors">
                           {siteConfig.heroBadge1Title || "Discretion"}
                         </h3>
                         <p className="text-[10px] sm:text-[11px] text-slate-300 leading-snug">
                           {siteConfig.heroBadge1Desc || "Absolute privilege & confidentiality"}
                         </p>
                       </div>
-                    </div>
+                    </Link>
 
                     {/* Card 2: Diligence */}
-                    <div className="bg-[#07101F]/75 border border-brass-500/35 rounded-lg p-3 sm:p-3.5 flex flex-col justify-between shadow-2xl backdrop-blur-md transition-all duration-200 hover:border-brass-400 hover:bg-[#07101F]/90">
+                    <Link
+                      href="/services"
+                      className="bg-[#07101F]/75 border border-brass-500/35 rounded-lg p-3 sm:p-3.5 flex flex-col justify-between shadow-2xl backdrop-blur-md transition-all duration-200 hover:border-brass-400 hover:bg-[#07101F]/90 cursor-pointer group focus:outline-none"
+                    >
                       <div>
-                        <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-white/5 border border-brass-500/30 flex items-center justify-center text-brass-400 mb-2">
+                        <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-white/5 border border-brass-500/30 flex items-center justify-center text-brass-400 mb-2 group-hover:border-brass-400 transition-colors">
                           <Search className="w-3.5 h-3.5 text-brass-400 shrink-0" />
                         </div>
-                        <h3 className="text-xs sm:text-[13px] font-bold text-white tracking-tight mb-1">
+                        <h3 className="text-xs sm:text-[13px] font-bold text-white tracking-tight mb-1 group-hover:text-brass-300 transition-colors">
                           {siteConfig.heroBadge2Title || "Diligence"}
                         </h3>
                         <p className="text-[10px] sm:text-[11px] text-slate-300 leading-snug">
                           {siteConfig.heroBadge2Desc || "Exhaustive statutory research"}
                         </p>
                       </div>
-                    </div>
+                    </Link>
 
                     {/* Card 3: Transparency */}
-                    <div className="bg-[#07101F]/75 border border-brass-500/35 rounded-lg p-3 sm:p-3.5 flex flex-col justify-between shadow-2xl backdrop-blur-md transition-all duration-200 hover:border-brass-400 hover:bg-[#07101F]/90">
+                    <Link
+                      href="/request-service"
+                      className="bg-[#07101F]/75 border border-brass-500/35 rounded-lg p-3 sm:p-3.5 flex flex-col justify-between shadow-2xl backdrop-blur-md transition-all duration-200 hover:border-brass-400 hover:bg-[#07101F]/90 cursor-pointer group focus:outline-none"
+                    >
                       <div>
-                        <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-white/5 border border-brass-500/30 flex items-center justify-center text-brass-400 mb-2">
+                        <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-white/5 border border-brass-500/30 flex items-center justify-center text-brass-400 mb-2 group-hover:border-brass-400 transition-colors">
                           <ShieldCheck className="w-3.5 h-3.5 text-brass-400 shrink-0" />
                         </div>
-                        <h3 className="text-xs sm:text-[13px] font-bold text-white tracking-tight mb-1">
+                        <h3 className="text-xs sm:text-[13px] font-bold text-white tracking-tight mb-1 group-hover:text-brass-300 transition-colors">
                           {siteConfig.heroBadge3Title || "Transparency"}
                         </h3>
                         <p className="text-[10px] sm:text-[11px] text-slate-300 leading-snug">
                           {siteConfig.heroBadge3Desc || "Clear scope & accountable advisory"}
                         </p>
                       </div>
-                    </div>
+                    </Link>
 
                   </div>
 
@@ -568,13 +592,14 @@ export default function HomePage() {
               </div>
             </div>
 
-            {/* Scrolling Right Column (Spans 7 cols) */}
+            {/* Scrolling Right Column (Spans 7 cols) - Interactive & Clickable */}
             <div className="lg:col-span-7 space-y-6">
               {steps.map((step, idx) => (
                 <div
                   key={step.num || idx}
+                  onClick={() => setActiveStep(idx)}
                   onMouseEnter={() => setActiveStep(idx)}
-                  className={`p-6 sm:p-8 rounded-card border transition-all duration-200 ${activeStep === idx
+                  className={`p-6 sm:p-8 rounded-card border transition-all duration-200 cursor-pointer ${activeStep === idx
                     ? "bg-white border-brass-500/50 shadow-card"
                     : "bg-surface/60 border-border hover:bg-white"
                     }`}
@@ -600,7 +625,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 5. WHY ACORN: Stone background, 3 columns, principle sentences, NO statistics */}
+      {/* 5. WHY ACORN: Stone background, 3 columns, principle sentences, NO statistics - Fully Clickable */}
       <section className="bg-stone-100 py-24 sm:py-32 border-b border-border">
         <div className="max-w-[1240px] mx-auto px-4 sm:px-6 space-y-16">
           <SectionHeading
@@ -613,18 +638,26 @@ export default function HomePage() {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {principles.map((prin, idx) => (
-              <div key={prin.num || idx} className="bg-white p-8 rounded-card border border-border shadow-card space-y-4">
+              <Link
+                key={prin.num || idx}
+                href="/about"
+                className="bg-white p-8 rounded-card border border-border shadow-card space-y-4 block group focus:outline-none card-hover cursor-pointer hover:border-brass-400/80 transition-all"
+              >
                 <span className="text-xs uppercase font-semibold tracking-widest text-brass-700">
                   {prin.num}
                 </span>
-                <h3 className="font-serif text-2xl font-bold text-ink-950">{prin.title}</h3>
+                <h3 className="font-serif text-2xl font-bold text-ink-950 group-hover:text-navy-700 transition-colors">{prin.title}</h3>
                 <p className="font-serif italic text-lg text-ink leading-relaxed">
                   &ldquo;{prin.quote}&rdquo;
                 </p>
                 <p className="font-sans text-xs text-ink-secondary leading-relaxed pt-2 border-t border-border">
                   {prin.desc}
                 </p>
-              </div>
+                <div className="pt-2 flex items-center gap-1.5 text-xs text-navy-700 font-semibold opacity-0 group-hover:opacity-100 transition-opacity">
+                  <span>Read chambers charter</span>
+                  <ArrowRight className="w-3.5 h-3.5 text-brass-500" />
+                </div>
+              </Link>
             ))}
           </div>
         </div>
@@ -658,8 +691,8 @@ export default function HomePage() {
                 </div>
               </div>
 
-              <div className="lg:col-span-5 flex justify-center">
-                <div className="relative w-full max-w-[360px] sm:max-w-[420px] aspect-[1856/2304] rounded-2xl overflow-hidden shadow-2xl border border-brass-500/30 bg-navy-950 group">
+              <Link href="/posh" className="lg:col-span-5 flex justify-center cursor-pointer group focus:outline-none">
+                <div className="relative w-full max-w-[360px] sm:max-w-[420px] aspect-[1856/2304] rounded-2xl overflow-hidden shadow-2xl border border-brass-500/30 bg-navy-950 group-hover:border-brass-400 transition-colors">
                   <Image
                     src="/images/posh.png"
                     alt="POSH Compliance Desk - External Member Consultation at Chambers"
@@ -671,14 +704,14 @@ export default function HomePage() {
                   {/* Subtle inner gold border overlay */}
                   <div className="absolute inset-0 rounded-2xl border border-brass-500/20 pointer-events-none" />
                 </div>
-              </div>
+              </Link>
 
             </div>
           </div>
         </div>
       </section>
 
-      {/* 7. INSIGHTS: 1 large featured article + 2 smaller ones */}
+      {/* 7. INSIGHTS: 1 large featured article + 2 smaller ones - Fully Wired & Clickable */}
       <section className="bg-stone-100 py-24 sm:py-32 border-b border-border">
         <div className="max-w-[1240px] mx-auto px-4 sm:px-6 space-y-16">
 
@@ -699,7 +732,7 @@ export default function HomePage() {
             {/* Large Featured Article (7 cols) */}
             <div className="lg:col-span-7">
               <Link href={`/blog/${effectiveInsights[0].slug}`} className="block h-full group focus:outline-none">
-                <div className="bg-white rounded-card border border-border p-8 h-full flex flex-col justify-between shadow-card card-hover">
+                <div className="bg-white rounded-card border border-border p-8 h-full flex flex-col justify-between shadow-card card-hover cursor-pointer group-hover:border-brass-400/80 transition-all">
                   <div className="space-y-4">
                     <div className="flex items-center justify-between text-xs">
                       <span className="font-semibold uppercase tracking-wider text-brass-700">
@@ -729,7 +762,7 @@ export default function HomePage() {
             <div className="lg:col-span-5 flex flex-col gap-6 justify-between">
               {effectiveInsights.slice(1, 3).map((art) => (
                 <Link key={art.slug} href={`/blog/${art.slug}`} className="block group focus:outline-none flex-1">
-                  <div className="bg-white rounded-card border border-border p-6 h-full flex flex-col justify-between shadow-card card-hover">
+                  <div className="bg-white rounded-card border border-border p-6 h-full flex flex-col justify-between shadow-card card-hover cursor-pointer group-hover:border-brass-400/80 transition-all">
                     <div className="space-y-2">
                       <div className="flex items-center justify-between text-xs">
                         <span className="font-semibold uppercase tracking-wider text-brass-700">
