@@ -242,9 +242,15 @@ button, a, input, select, textarea {
   }
 }
 
-/* Sticky Collidable Footer Architecture (Vibe Music luxury editorial aesthetic) */
-.footer-ticker-container {
-  will-change: transform;
+/* Vibe Music Style Foldable & Rolling Footer Architecture */
+.footer-static-dock {
+  position: sticky;
+  bottom: 0;
+  z-index: 20;
+}
+
+.footer-accordion-panel {
+  will-change: max-height, opacity;
 }
 
 /* Rolling Text Micro-interaction (Vibe Music style kinetic typography for links) */

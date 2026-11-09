@@ -364,7 +364,6 @@ export interface ScriptTag {
 
 export interface AuditLogEntry {
   id: string;
-  orgId: string;
   actor: string;
   actorRole: string;
   action: string;
@@ -373,8 +372,9 @@ export interface AuditLogEntry {
   ipAddress: string;
   timestamp: string;
   details: string;
-  prevHash: string;
-  hash: string;
+  orgId?: string;
+  prevHash?: string;
+  hash?: string;
 }
 
 export interface EngagementStep {
@@ -670,158 +670,6 @@ export interface SystemSettings {
   retentionYears: string;
   updatedAt: string;
 }
-
-// ==========================================================================
-// ACORN PLATFORM VERSION 3.0 ENTERPRISE EXTENSIONS (PRD v3.0 Sections 31-40)
-// ==========================================================================
-
-export interface DomainOutboxEvent {
-  id: string;
-  aggregateType: "CASE" | "NOTICE" | "HEARING" | "DECISION" | "REPORT" | "USER";
-  aggregateId: string;
-  eventType: string;
-  tenantId: string;
-  payload: Record<string, unknown>; // Labels and masked IDs only per BR-082
-  status: "QUEUED" | "PROCESSED" | "FAILED";
-  retryCount: number;
-  createdAt: string;
-  deliveredAt?: string;
-}
-
-export interface SSOConfiguration {
-  id: string;
-  orgCode: string;
-  protocol: "SAML2" | "OIDC";
-  entityId: string;
-  ssoUrl: string;
-  certificateFingerprint?: string;
-  metadataUrl?: string;
-  domainTxtRecord: string;
-  verified: boolean;
-  scimTokenMasked: string;
-  scimEnabled: boolean;
-  scimLeaverAction: "DEACTIVATE_IMMEDIATELY" | "NOTIFY_PO_REASSIGN";
-  groupMappings: Array<{ idpGroup: string; internalRole: "ORG_ADMIN" | "ORG_HR" | "IC_OBSERVER" }>;
-}
-
-export interface IntegrationConnector {
-  id: string;
-  orgCode: string;
-  provider: "ZOHO_PEOPLE" | "KEKA" | "GOOGLE_WORKSPACE" | "MICROSOFT_TEAMS" | "SLACK" | "WEBHOOK_GATEWAY";
-  name: string;
-  category: "HRMS" | "CALENDAR" | "COLLABORATION" | "CUSTOM_WEBHOOK";
-  status: "CONNECTED" | "DISCONNECTED" | "ERROR" | "SYNCING";
-  syncFrequency: "HOURLY" | "DAILY" | "ON_DEMAND";
-  lastSyncAt: string;
-  errorCount: number;
-  config: Record<string, string | undefined>;
-}
-
-export interface AIFeatureDefinition {
-  featureKey: string;
-  name: string;
-  description: string;
-  riskTier: "TIER_1_LOW" | "TIER_2_MEDIUM" | "TIER_3_HIGH";
-  model: string;
-  humanReviewRequired: boolean;
-  partyConsentRequired: boolean;
-  killSwitchActive: boolean;
-  lastEvalPassRate: number; // e.g. 99.4
-}
-
-export interface PeerBenchmark {
-  id: string;
-  segment: "INFORMATION_TECHNOLOGY" | "FINANCIAL_SERVICES" | "HEALTHCARE" | "MANUFACTURING" | "PROFESSIONAL_SERVICES";
-  employeeTier: "50-250" | "251-1000" | "1000+";
-  orgCount: number; // Must be >= 10 per BR-090
-  medianResolutionDays: number;
-  conciliationRatePct: number;
-  annualTrainingPct: number;
-  retaliationIndex: number;
-}
-
-export interface EarlyWarningSignal {
-  id: string;
-  orgCode: string;
-  department: string;
-  metricName: string;
-  riskLevel: "LOW" | "MEDIUM" | "HIGH";
-  threshold: string;
-  currentVal: string;
-  suggestedIntervention: string;
-}
-
-export interface AnonymousThread {
-  tokenHash: string;
-  docketNo: string;
-  orgCode: string;
-  status: "ACTIVE" | "CONVERTED_FORMAL" | "CLOSED";
-  lastMessageAt: string;
-  expiresAt: string;
-  messages: Array<{
-    id: string;
-    sender: "COMPLAINANT" | "IC_EXTERNAL_MEMBER";
-    text: string;
-    sentAt: string;
-  }>;
-}
-
-export interface VirtualHearingRoom {
-  id: string;
-  docketNo: string;
-  hearingNumber: number;
-  title: string;
-  scheduledAt: string;
-  durationMinutes: number;
-  status: "SCHEDULED" | "IN_SESSION" | "CONCLUDED" | "CANCELLED";
-  presidingOfficerPresent: boolean;
-  quorumMet: boolean;
-  audioRecordingRef?: string;
-  minutesSigned: boolean;
-  roomUrl: string;
-}
-
-export interface SignatureRequest {
-  id: string;
-  documentCode: string;
-  documentTitle: string;
-  trustLevel: "AADHAAR_ESIGN" | "CLASS_3_DSC" | "CRYPTOGRAPHIC_HASH";
-  signers: Array<{
-    role: string;
-    name: string;
-    status: "PENDING" | "SIGNED" | "DECLINED";
-    signedAt?: string;
-  }>;
-  status: "PENDING" | "PARTIALLY_SIGNED" | "COMPLETED";
-  sha256Checksum: string;
-}
-
-export interface AuditInspectionPack {
-  id: string;
-  orgCode: string;
-  fiscalYear: string;
-  complianceScore: number;
-  icGazetteVerified: boolean;
-  section19Status: {
-    noticesDisplayed: boolean;
-    policyAcknowledged: boolean;
-    workshopsConducted: boolean;
-    annualReportFiled: boolean;
-  };
-  generatedAt: string;
-  sha256Seal: string;
-}
-
-export interface SLOMonitorMetric {
-  sloKey: string;
-  name: string;
-  targetPct: number;
-  currentPct: number;
-  errorBudgetRemainingPct: number;
-  window: "30_DAYS" | "7_DAYS";
-  status: "HEALTHY" | "DEGRADED" | "BREACHED";
-}
-
 
 
 
