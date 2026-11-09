@@ -5,7 +5,6 @@ import {
   MapPin,
   ExternalLink,
   Navigation,
-  Compass,
   Layers,
   Copy,
   Check,
@@ -18,10 +17,9 @@ interface ChambersMapProps {
 
 export function ChambersMap({
   className = "",
-  defaultMode = "blueprint",
+  defaultMode = "live",
 }: ChambersMapProps) {
   const [mapType, setMapType] = useState<"standard" | "satellite">("standard");
-  const [showLiveEmbed, setShowLiveEmbed] = useState(defaultMode === "live");
   const [copied, setCopied] = useState(false);
 
   // Precise coordinates for 25 Camac Street, Park Street District, Kolkata
@@ -30,14 +28,14 @@ export function ChambersMap({
   const fullAddress =
     "Suite 4B, Camac Court, 25 Camac Street, Park Street District, Kolkata, West Bengal 700016";
   const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
-    "25 Camac Street, Park Street area, Kolkata, West Bengal 700016",
+    "Camac Court, 25 Camac Street, Park Street area, Kolkata, West Bengal 700016",
   )}`;
   const directionsUrl = `https://www.google.com/maps/dir/?api=1&destination=${latitude},${longitude}`;
 
   // Real-time synced Google Maps embed with satellite/standard parameter toggle
-  const embedSrc = `https://maps.google.com/maps?q=${latitude},${longitude}+(Acorn+Legal+Consultants+Chambers)&t=${
-    mapType === "satellite" ? "k" : "m"
-  }&z=16&ie=UTF8&iwloc=B&output=embed`;
+  const embedSrc = `https://maps.google.com/maps?q=${encodeURIComponent(
+    "Camac Court, 25 Camac Street, Kolkata, West Bengal 700016"
+  )}&t=${mapType === "satellite" ? "k" : "m"}&z=16&ie=UTF8&iwloc=&output=embed`;
 
   const handleCopyAddress = async () => {
     try {
@@ -67,84 +65,45 @@ export function ChambersMap({
       </div>
 
       {/* Interactive Map Canvas Container (Fully Mobile Responsive) */}
-      <div className="relative w-full h-[280px] sm:h-[340px] md:h-[380px] rounded-card bg-navy-950 border border-navy-800 overflow-hidden shadow-inner group">
+      <div className="relative w-full h-[280px] sm:h-[340px] md:h-[380px] rounded-card bg-stone-100 border border-border overflow-hidden shadow-inner group">
         {/* Live Interactive Synchronized Google Map iframe */}
-        {showLiveEmbed ? (
-          <iframe
-            title="Acorn Legal Consultants Chambers Geography Realtime Sync"
-            src={embedSrc}
-            width="100%"
-            height="100%"
-            style={{ border: 0, filter: "contrast(1.04) saturate(1.05)" }}
-            loading="lazy"
-            allowFullScreen
-            referrerPolicy="no-referrer-when-downgrade"
-            className="w-full h-full relative z-10 transition-opacity duration-300"
-          />
-        ) : (
-          /* Stylized blueprint fallback matching exact design in user screenshot */
-          <div className="absolute inset-0 z-10 flex flex-col items-center justify-center p-6 text-center select-none bg-[#09152C]">
-            {/* Fine Architectural Grid Lines */}
-            <div className="absolute inset-0 opacity-15 bg-[linear-gradient(to_right,#B08D57_1px,transparent_1px),linear-gradient(to_bottom,#B08D57_1px,transparent_1px)] bg-[size:28px_28px]" />
-
-            {/* Outer Compass Pulsing Pin */}
-            <div className="relative w-16 h-16 rounded-full bg-[#112347]/90 border border-brass-500/40 flex items-center justify-center mb-4 text-brass-300 shadow-xl group-hover:scale-105 transition-transform duration-300">
-              <div className="absolute inset-0 rounded-full border border-brass-500/25 animate-ping opacity-25 pointer-events-none" />
-              <MapPin className="w-6 h-6 text-brass-300" />
-            </div>
-
-            <h3 className="font-serif text-xl sm:text-2xl md:text-3xl font-bold text-white relative z-10 tracking-tight">
-              Camac Court, 25 Camac Street
-            </h3>
-            <p className="font-sans text-xs sm:text-sm text-brass-300 mt-2 relative z-10 tracking-wide">
-              Park Street Commercial Hub &bull; Kolkata 700016
-            </p>
-          </div>
-        )}
+        <iframe
+          title="Acorn Legal Consultants Chambers Geography Realtime Sync"
+          src={embedSrc}
+          width="100%"
+          height="100%"
+          style={{ border: 0 }}
+          loading="lazy"
+          allowFullScreen
+          referrerPolicy="no-referrer-when-downgrade"
+          className="w-full h-full relative z-10"
+        />
 
         {/* Floating Controls Overlay (Top Right) */}
         <div className="absolute top-3 right-3 z-20 flex items-center gap-2">
-          {/* Map Layer Switcher (Standard / Satellite) - visible in live mode */}
-          {showLiveEmbed && (
-            <button
-              type="button"
-              onClick={() =>
-                setMapType((prev) => (prev === "standard" ? "satellite" : "standard"))
-              }
-              className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-btn text-[11px] font-semibold tracking-wide bg-navy-900/90 hover:bg-navy-800 text-ivory-50 border border-brass-500/40 backdrop-blur-md shadow-md transition"
-              title="Toggle between Street Map and Satellite View"
-              aria-label="Toggle map view mode"
-            >
-              <Layers className="w-3.5 h-3.5 text-brass-400" />
-              <span className="capitalize">{mapType}</span>
-            </button>
-          )}
-
-          {/* Toggle Interactive View / Blueprint Pin Card */}
+          {/* Map Layer Switcher (Standard / Satellite) */}
           <button
             type="button"
-            onClick={() => setShowLiveEmbed((prev) => !prev)}
+            onClick={() =>
+              setMapType((prev) => (prev === "standard" ? "satellite" : "standard"))
+            }
             className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-btn text-[11px] font-semibold tracking-wide bg-navy-900/90 hover:bg-navy-800 text-ivory-50 border border-brass-500/40 backdrop-blur-md shadow-md transition"
-            title="Toggle Live Map preview"
-            aria-label="Toggle live map preview"
+            title="Toggle between Street Map and Satellite View"
+            aria-label="Toggle map view mode"
           >
-            <Compass className="w-3.5 h-3.5 text-brass-400" />
-            <span>{showLiveEmbed ? "Blueprint" : "Live Map"}</span>
+            <Layers className="w-3.5 h-3.5 text-brass-400" />
+            <span className="capitalize">{mapType}</span>
           </button>
         </div>
 
-        {/* Live interaction hint chip */}
-        {showLiveEmbed && (
-          <div className="absolute bottom-3 left-3 z-20 flex flex-wrap items-center gap-2 pointer-events-none">
-            <div className="px-3 py-1.5 rounded-btn text-[11px] font-medium bg-navy-950/90 text-slate-200 border border-navy-800 backdrop-blur-md shadow-sm pointer-events-auto">
-              <span className="text-brass-300 font-semibold">Coordinates:</span>{" "}
-              22.5497° N, 88.3533° E
-            </div>
-            <div className="sm:hidden px-2.5 py-1 rounded-btn text-[10px] font-medium bg-navy-900/90 text-brass-300 border border-brass-500/30 backdrop-blur-md pointer-events-auto">
-              Pinch to zoom &bull; Drag to pan
-            </div>
+        {/* Location Badge Overlay (Bottom Left) */}
+        <div className="absolute bottom-3 left-3 z-20 flex flex-wrap items-center gap-2 pointer-events-none">
+          <div className="px-3 py-1.5 rounded-btn text-[11px] font-medium bg-navy-950/90 text-slate-200 border border-navy-800 backdrop-blur-md shadow-sm pointer-events-auto flex items-center gap-1.5">
+            <MapPin className="w-3.5 h-3.5 text-brass-400" />
+            <span className="text-white font-semibold">Camac Court</span>
+            <span className="text-slate-400">&bull; 25 Camac St</span>
           </div>
-        )}
+        </div>
       </div>
 
       {/* Footer Meta Row matching exact user design */}

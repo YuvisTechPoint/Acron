@@ -9,7 +9,7 @@ const CSP_POLICY = [
   "font-src 'self' https://fonts.gstatic.com data:",
   "img-src 'self' data: https: blob:",
   "connect-src 'self' https://api.razorpay.com",
-  "frame-src 'self' https://api.razorpay.com",
+  "frame-src 'self' https://api.razorpay.com https://maps.google.com https://www.google.com",
   "object-src 'none'",
   "base-uri 'self'",
   "form-action 'self'",
