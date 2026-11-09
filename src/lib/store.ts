@@ -1184,7 +1184,18 @@ class PlatformStore {
     }
     try {
       const data = localStorage.getItem(`acorn_${key}`);
-      return data ? JSON.parse(data) : seed;
+      if (!data) return seed;
+      const parsed = JSON.parse(data);
+      if (parsed === null || parsed === undefined) return seed;
+      // If seed is an array, ensure parsed is an array
+      if (Array.isArray(seed)) {
+        return Array.isArray(parsed) ? (parsed as unknown as T) : seed;
+      }
+      // If seed is an object, merge with seed defaults so newly added fields never throw undefined
+      if (typeof seed === "object" && seed !== null && typeof parsed === "object") {
+        return { ...seed, ...parsed };
+      }
+      return (parsed as T) ?? seed;
     } catch {
       return seed;
     }

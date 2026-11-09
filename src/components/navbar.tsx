@@ -33,6 +33,7 @@ const iconMap: Record<string, React.ReactNode> = {
 
 export function Navbar() {
   const pathname = usePathname();
+  const safePath = typeof pathname === "string" ? pathname : "";
   const siteConfig = useRealtimeSiteConfig();
   const customServices = useRealtimeServices();
 
@@ -55,11 +56,12 @@ export function Navbar() {
   const megaMenuRef = useRef<HTMLDivElement>(null);
 
   const isAdminOrConsole =
-    pathname.startsWith("/admin") ||
-    pathname.startsWith("/posh/admin") ||
-    pathname.startsWith("/posh/ic");
+    safePath.startsWith("/admin") ||
+    safePath.startsWith("/posh/admin") ||
+    safePath.startsWith("/posh/ic") ||
+    safePath.startsWith("/posh/org");
 
-  const isDarkHeroPage = pathname === "/";
+  const isDarkHeroPage = safePath === "/";
   const isTransparent = isDarkHeroPage && !scrolled;
 
   const activePractice =
@@ -110,15 +112,15 @@ export function Navbar() {
       >
         <div className="footer-ticker-track flex items-center h-full">
           <div className="flex shrink-0 items-center gap-8 px-4 text-[11px] font-serif italic text-brass-300 tracking-wider">
-            <span>{siteConfig.footerRollText || "Acorn Legal Consultants • Excellence in Law • Integrity in Practice • Camac Street Chambers • Kolkata • High Court Practice • POSH Redressal • Corporate Advisory"}</span>
+            <span>{siteConfig?.footerRollText || "Acorn Legal Consultants • Excellence in Law • Integrity in Practice • Camac Street Chambers • Kolkata • High Court Practice • POSH Redressal • Corporate Advisory"}</span>
             <span className="text-brass-500/60 not-italic">✦</span>
-            <span>{siteConfig.footerRollText || "Acorn Legal Consultants • Excellence in Law • Integrity in Practice • Camac Street Chambers • Kolkata • High Court Practice • POSH Redressal • Corporate Advisory"}</span>
+            <span>{siteConfig?.footerRollText || "Acorn Legal Consultants • Excellence in Law • Integrity in Practice • Camac Street Chambers • Kolkata • High Court Practice • POSH Redressal • Corporate Advisory"}</span>
             <span className="text-brass-500/60 not-italic">✦</span>
           </div>
           <div className="flex shrink-0 items-center gap-8 px-4 text-[11px] font-serif italic text-brass-300 tracking-wider" aria-hidden="true">
-            <span>{siteConfig.footerRollText || "Acorn Legal Consultants • Excellence in Law • Integrity in Practice • Camac Street Chambers • Kolkata • High Court Practice • POSH Redressal • Corporate Advisory"}</span>
+            <span>{siteConfig?.footerRollText || "Acorn Legal Consultants • Excellence in Law • Integrity in Practice • Camac Street Chambers • Kolkata • High Court Practice • POSH Redressal • Corporate Advisory"}</span>
             <span className="text-brass-500/60 not-italic">✦</span>
-            <span>{siteConfig.footerRollText || "Acorn Legal Consultants • Excellence in Law • Integrity in Practice • Camac Street Chambers • Kolkata • High Court Practice • POSH Redressal • Corporate Advisory"}</span>
+            <span>{siteConfig?.footerRollText || "Acorn Legal Consultants • Excellence in Law • Integrity in Practice • Camac Street Chambers • Kolkata • High Court Practice • POSH Redressal • Corporate Advisory"}</span>
             <span className="text-brass-500/60 not-italic">✦</span>
           </div>
         </div>
@@ -160,7 +162,7 @@ export function Navbar() {
               >
                 Acorn Legal Consultants
               </span>
-              {siteConfig.tagline ? (
+              {siteConfig?.tagline ? (
                 <span
                   className={`font-sans text-[10px] font-semibold tracking-[0.2em] uppercase mt-1 transition-colors duration-200 ${
                     isTransparent ? "text-brass-300 drop-shadow-sm" : "text-brass-700"
@@ -377,8 +379,8 @@ export function Navbar() {
           {/* Right Action: Chambers Telephone & Primary Consultation Button */}
           <div className="hidden sm:flex items-center gap-3">
             <a
-              href={`tel:${siteConfig.receptionPhone || BRAND_CONFIG.phone}`}
-              title={`Call Chambers: ${siteConfig.receptionPhone || BRAND_CONFIG.phone}`}
+              href={`tel:${siteConfig?.receptionPhone || BRAND_CONFIG.phone}`}
+              title={`Call Chambers: ${siteConfig?.receptionPhone || BRAND_CONFIG.phone}`}
               className={`w-10 h-10 rounded-full transition border flex items-center justify-center ${
                 isTransparent
                   ? "bg-[#101F38]/60 border-white/20 text-brass-300 hover:text-white hover:border-brass-400 backdrop-blur-sm"

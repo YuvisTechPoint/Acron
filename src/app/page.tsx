@@ -151,11 +151,11 @@ export default function HomePage() {
       }))
     : PRACTICE_AREAS;
 
-  const steps = siteConfig.pathwaySteps && siteConfig.pathwaySteps.length > 0
+  const steps = siteConfig?.pathwaySteps && siteConfig.pathwaySteps.length > 0
     ? siteConfig.pathwaySteps
     : HOW_WE_WORK_STEPS;
 
-  const principles = siteConfig.principles && siteConfig.principles.length > 0
+  const principles = siteConfig?.principles && siteConfig.principles.length > 0
     ? siteConfig.principles
     : [
         {

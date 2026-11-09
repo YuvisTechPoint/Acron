@@ -21,7 +21,8 @@ import { platformStore } from "@/lib/store";
 
 export function Footer() {
   const pathname = usePathname();
-  const [siteConfig, setSiteConfig] = useState(platformStore.getSiteConfig());
+  const safePath = typeof pathname === "string" ? pathname : "";
+  const [siteConfig, setSiteConfig] = useState(() => platformStore.getSiteConfig());
 
   // Accordion state for mobile/tablet Vibe-style foldable sections
   const [openAccordions, setOpenAccordions] = useState<Record<string, boolean>>({
@@ -43,9 +44,10 @@ export function Footer() {
 
   // Suppress footer on administrative and console workspaces
   const isAdminOrConsole =
-    pathname.startsWith("/admin") ||
-    pathname.startsWith("/posh/admin") ||
-    pathname.startsWith("/posh/ic");
+    safePath.startsWith("/admin") ||
+    safePath.startsWith("/posh/admin") ||
+    safePath.startsWith("/posh/ic") ||
+    safePath.startsWith("/posh/org");
 
   if (isAdminOrConsole) {
     return null;
@@ -237,24 +239,24 @@ export function Footer() {
                 <div className="flex items-start gap-2.5">
                   <MapPin className="w-4 h-4 text-brass-400 shrink-0 mt-0.5" />
                   <span className="leading-relaxed">
-                    {siteConfig.addressLine1}, {siteConfig.addressLine2}, {siteConfig.city} {siteConfig.postalCode}
+                    {siteConfig?.addressLine1 || BRAND_CONFIG.address.line1}{siteConfig?.addressLine2 || BRAND_CONFIG.address.line2 ? `, ${siteConfig?.addressLine2 || BRAND_CONFIG.address.line2}` : ""}, {siteConfig?.city || BRAND_CONFIG.address.city} {siteConfig?.postalCode || BRAND_CONFIG.address.postalCode}
                   </span>
                 </div>
                 <div className="flex items-center gap-2.5">
                   <Phone className="w-4 h-4 text-brass-400 shrink-0" />
-                  <a href={`tel:${siteConfig.receptionPhone || BRAND_CONFIG.phone}`} className="hover:text-brass-300 transition-colors">
-                    {siteConfig.receptionPhone || BRAND_CONFIG.phone}
+                  <a href={`tel:${siteConfig?.receptionPhone || BRAND_CONFIG.phone}`} className="hover:text-brass-300 transition-colors">
+                    {siteConfig?.receptionPhone || BRAND_CONFIG.phone}
                   </a>
                 </div>
                 <div className="flex items-center gap-2.5">
                   <Mail className="w-4 h-4 text-brass-400 shrink-0" />
-                  <a href={`mailto:${siteConfig.primaryEmail || BRAND_CONFIG.email}`} className="hover:text-brass-300 transition-colors">
-                    {siteConfig.primaryEmail || BRAND_CONFIG.email}
+                  <a href={`mailto:${siteConfig?.primaryEmail || BRAND_CONFIG.email}`} className="hover:text-brass-300 transition-colors">
+                    {siteConfig?.primaryEmail || BRAND_CONFIG.email}
                   </a>
                 </div>
                 <div className="flex items-center gap-2.5">
                   <Clock className="w-4 h-4 text-brass-400 shrink-0" />
-                  <span>{siteConfig.operatingHours || "Mon – Sat: 9:30 AM – 7:30 PM IST"}</span>
+                  <span>{siteConfig?.operatingHours || "Mon – Sat: 9:30 AM – 7:30 PM IST"}</span>
                 </div>
               </div>
             </div>
@@ -355,7 +357,7 @@ export function Footer() {
           <div className="bg-[#091528] p-3 sm:p-3.5 rounded-card border border-navy-800 text-[11px] text-slate-300 leading-relaxed">
             <p>
               <strong className="text-brass-300 font-semibold">Regulatory Notice:</strong>{" "}
-              {siteConfig.disclaimer || "The information on this website is for general information only and does not constitute legal advice or create a lawyer-client relationship. Under the rules of the Bar Council of India, law firms and legal practitioners are not permitted to solicit work or advertise."}
+              {siteConfig?.disclaimer || "The information on this website is for general information only and does not constitute legal advice or create a lawyer-client relationship. Under the rules of the Bar Council of India, law firms and legal practitioners are not permitted to solicit work or advertise."}
             </p>
           </div>
 
@@ -368,7 +370,7 @@ export function Footer() {
             className="w-full text-center pointer-events-none select-none overflow-hidden pt-3 -mb-2"
             aria-hidden="true"
           >
-            <span className="font-serif text-[clamp(4.5rem,13vw,9.5rem)] font-black tracking-[0.14em] text-brass-400/25 sm:text-brass-400/30 leading-none block select-none uppercase drop-shadow-[0_4px_30px_rgba(197,160,89,0.22)]">
+            <span className="font-serif text-[clamp(4.5rem,13vw,9.5rem)] font-black tracking-[0.14em] text-brass-400/35 sm:text-brass-400/40 leading-none block select-none uppercase drop-shadow-[0_4px_30px_rgba(197,160,89,0.32)]">
               ACORN
             </span>
           </div>
@@ -384,15 +386,15 @@ export function Footer() {
         >
           <div className="footer-ticker-track flex items-center">
             <div className="flex shrink-0 items-center gap-8 px-4 text-xs font-serif italic text-brass-300/90 tracking-wider">
-              <span>{siteConfig.footerRollText || "Acorn Legal Consultants • Excellence in Law • Integrity in Practice • Calcutta High Court • POSH Act Advisory • Corporate Governance • Commercial Contracts • Arbitration & Mediation"}</span>
+              <span>{siteConfig?.footerRollText || "Acorn Legal Consultants • Excellence in Law • Integrity in Practice • Calcutta High Court • POSH Act Advisory • Corporate Governance • Commercial Contracts • Arbitration & Mediation"}</span>
               <span className="text-brass-500/60 not-italic">✦</span>
-              <span>{siteConfig.footerRollText || "Acorn Legal Consultants • Excellence in Law • Integrity in Practice • Calcutta High Court • POSH Act Advisory • Corporate Governance • Commercial Contracts • Arbitration & Mediation"}</span>
+              <span>{siteConfig?.footerRollText || "Acorn Legal Consultants • Excellence in Law • Integrity in Practice • Calcutta High Court • POSH Act Advisory • Corporate Governance • Commercial Contracts • Arbitration & Mediation"}</span>
               <span className="text-brass-500/60 not-italic">✦</span>
             </div>
             <div className="flex shrink-0 items-center gap-8 px-4 text-xs font-serif italic text-brass-300/90 tracking-wider" aria-hidden="true">
-              <span>{siteConfig.footerRollText || "Acorn Legal Consultants • Excellence in Law • Integrity in Practice • Calcutta High Court • POSH Act Advisory • Corporate Governance • Commercial Contracts • Arbitration & Mediation"}</span>
+              <span>{siteConfig?.footerRollText || "Acorn Legal Consultants • Excellence in Law • Integrity in Practice • Calcutta High Court • POSH Act Advisory • Corporate Governance • Commercial Contracts • Arbitration & Mediation"}</span>
               <span className="text-brass-500/60 not-italic">✦</span>
-              <span>{siteConfig.footerRollText || "Acorn Legal Consultants • Excellence in Law • Integrity in Practice • Calcutta High Court • POSH Act Advisory • Corporate Governance • Commercial Contracts • Arbitration & Mediation"}</span>
+              <span>{siteConfig?.footerRollText || "Acorn Legal Consultants • Excellence in Law • Integrity in Practice • Calcutta High Court • POSH Act Advisory • Corporate Governance • Commercial Contracts • Arbitration & Mediation"}</span>
               <span className="text-brass-500/60 not-italic">✦</span>
             </div>
           </div>

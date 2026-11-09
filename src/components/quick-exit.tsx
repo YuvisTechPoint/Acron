@@ -6,7 +6,7 @@ import { ExternalLink, Shield } from "lucide-react";
 
 export function QuickExit() {
   const pathname = usePathname();
-  const isPoshRoute = pathname.startsWith("/posh");
+  const isPoshRoute = typeof pathname === "string" ? pathname.startsWith("/posh") : false;
 
   const triggerQuickExit = () => {
     // Replace current browser history entry with a neutral weather search

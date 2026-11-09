@@ -376,8 +376,9 @@ export function ScrollTextReveal({
   }, [reducedMotion]);
 
   // Tokenize text into words preserving attached quotes and punctuation
-  const words = text.split(" ").filter(Boolean);
-  const totalWords = words.length;
+  const safeText = typeof text === "string" ? text : "";
+  const words = safeText.split(" ").filter(Boolean);
+  const totalWords = words.length || 1;
 
   return (
     <div ref={containerRef} className={`relative ${containerClassName}`}>
