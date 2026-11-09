@@ -316,6 +316,16 @@ export function Footer() {
             </p>
           </div>
 
+          {/* Aesthetic Light Grey Brand Watermark */}
+          <div
+            className="w-full text-center pointer-events-none select-none overflow-hidden pt-6 pb-1"
+            aria-hidden="true"
+          >
+            <span className="font-serif text-[clamp(4.5rem,13vw,10.5rem)] font-black tracking-[0.16em] text-slate-400/25 sm:text-slate-300/30 leading-none block select-none uppercase drop-shadow-[0_4px_24px_rgba(255,255,255,0.03)]">
+              ACORN
+            </span>
+          </div>
+
         </div>
       </div>
 
