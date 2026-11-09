@@ -1,6 +1,16 @@
 "use client";
 
-// Banned per Master Design System brief Section 7: "No chat widgets, no newsletter pop-ups, no exit-intent pop-ups, no sticky banners except the cookie card."
+import React from "react";
+import { LegalGuidanceAssistant } from "./legal-guidance-assistant";
+
+/**
+ * PRD v3.0 US-247: Public Statutory Guidance Assistant
+ * Complies with strict statutory safety rules:
+ * - Informational only (Bar Council Rule 36 compliant)
+ * - Zero personal legal advice
+ * - Zero storage of user factual narratives
+ * - Red-team narrative detection with safe redirect to confidential intake
+ */
 export function AssistantWidget() {
-  return null;
+  return <LegalGuidanceAssistant />;
 }

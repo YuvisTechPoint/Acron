@@ -25,7 +25,7 @@ export default function PoshRetaliationPage() {
   };
 
   return (
-    <div className="bg-white min-h-screen py-12">
+    <div className="bg-white min-h-screen pt-32 pb-20 sm:pt-40 sm:pb-24">
       <div className="max-w-xl mx-auto px-4 sm:px-6 space-y-6">
         <div className="border-b border-border pb-4">
           <div className="inline-flex items-center gap-1.5 text-xs uppercase tracking-widest text-status-danger font-bold">

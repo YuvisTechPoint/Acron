@@ -37,7 +37,7 @@ export default function DynamicCertificateVerificationPage() {
     : null;
 
   return (
-    <div className="bg-ivory-50 min-h-screen py-12 text-ink">
+    <div className="bg-ivory-50 min-h-screen pt-32 pb-20 sm:pt-40 sm:pb-24 text-ink">
       <div className="max-w-xl mx-auto px-4 sm:px-6 space-y-8">
         {/* Navigation Breadcrumb */}
         <div className="flex items-center justify-between border-b border-border pb-4">

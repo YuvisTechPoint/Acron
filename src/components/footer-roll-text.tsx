@@ -41,8 +41,14 @@ interface FooterRollTextProps {
 
 export function FooterRollText({ children, className = "" }: FooterRollTextProps) {
   return (
-    <span className={`transition-colors duration-200 ${className}`}>
-      {children}
+    <span className={`footer-roll-text ${className}`}>
+      <span className="footer-roll-text__track">
+        <span className="footer-roll-text__line">{children}</span>
+        <span className="footer-roll-text__line text-brass-300" aria-hidden="true">
+          {children}
+        </span>
+      </span>
     </span>
   );
 }
+

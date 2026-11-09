@@ -168,6 +168,12 @@ const ROUTES = [
   "/posh/org/audit-packs",
   "/admin/legal/register",
   "/admin/ops/reliability",
+  "/posh/assisted-intake",
+  "/posh/org/api-keys",
+  "/posh/org/webhooks",
+  "/posh/org/branding",
+  "/posh/org/surveys",
+  "/admin/trust",
   "/sitemap.xml",
   "/robots.txt",
 ];

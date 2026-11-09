@@ -36,7 +36,7 @@ export default function PoshHelpCentrePage() {
   ];
 
   return (
-    <div className="bg-white min-h-screen py-12">
+    <div className="bg-white min-h-screen pt-32 pb-20 sm:pt-40 sm:pb-24">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
         <div className="border-b border-border pb-6 space-y-2">
           <div className="text-xs uppercase tracking-widest text-accent font-bold">

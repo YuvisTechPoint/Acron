@@ -32,7 +32,7 @@ export default function PoshConcernReportPage() {
   };
 
   return (
-    <div className="bg-white min-h-screen py-12">
+    <div className="bg-white min-h-screen pt-32 pb-20 sm:pt-40 sm:pb-24">
       <div className="max-w-2xl mx-auto px-4 sm:px-6 space-y-6">
         <div className="border-b border-border pb-4">
           <div className="text-xs uppercase tracking-widest text-accent font-bold">

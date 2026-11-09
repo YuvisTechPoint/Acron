@@ -472,6 +472,71 @@ async function testWorkflows() {
     failed++;
   }
 
+  // 15. Test Version 3.0 Enterprise APIs: SCIM 2.0 (US-226, BR-081) & Omnichannel Intake (US-268)
+  try {
+    // 15a. SCIM 2.0 List
+    const scimGetRes = await fetch(`${BASE_URL}/api/scim/v2/Users`);
+    const scimGetData = await scimGetRes.json();
+
+    // 15b. SCIM 2.0 Provision
+    const scimPostRes = await fetch(`${BASE_URL}/api/scim/v2/Users`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        userName: "test.scim.employee@techkolkata.io",
+        name: { formatted: "Test SCIM Employee" },
+        emails: [{ value: "test.scim.employee@techkolkata.io", primary: true }],
+        active: true,
+      }),
+    });
+    const scimPostData = await scimPostRes.json();
+
+    // 15c. SCIM 2.0 Deactivate (BR-081)
+    const scimPatchRes = await fetch(`${BASE_URL}/api/scim/v2/Users?id=${scimPostData.id || "usr-test"}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        Operations: [{ op: "replace", path: "active", value: false }],
+      }),
+    });
+    const scimPatchData = await scimPatchRes.json();
+
+    // 15d. Omnichannel Start (US-268)
+    const omniRes = await fetch(`${BASE_URL}/api/channels/start`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        channel: "WHATSAPP",
+        phoneNumber: "+91 98310 12345",
+        preferredLanguage: "EN",
+        requestType: "COUNSELLOR_CALLBACK",
+      }),
+    });
+    const omniData = await omniRes.json();
+
+    const isScimValid =
+      scimGetRes.status === 200 &&
+      Array.isArray(scimGetData.Resources) &&
+      scimPostRes.status === 201 &&
+      scimPatchRes.status === 200;
+
+    const isOmniValid =
+      omniRes.status === 200 &&
+      omniData.success === true &&
+      omniData.recipientMasked.includes("••••");
+
+    if (isScimValid && isOmniValid) {
+      console.log(`✔ [PASS] Version 3.0 Enterprise APIs: SCIM 2.0 (RFC 7644 & BR-081) and Omnichannel Gateway (US-268) fully operational`);
+      passed++;
+    } else {
+      console.error(`✖ [FAIL] V3.0 Enterprise APIs failed validation:`, { isScimValid, isOmniValid });
+      failed++;
+    }
+  } catch (err) {
+    console.error(`✖ [ERROR] V3.0 Enterprise APIs: ${err.message}`);
+    failed++;
+  }
+
   console.log(`\nWorkflow test results: ${passed} passed, ${failed} failed.`);
   if (serverProc) {
     serverProc.kill();

@@ -822,6 +822,110 @@ export interface SLOMonitorMetric {
   status: "HEALTHY" | "DEGRADED" | "BREACHED";
 }
 
+// ============================================================================
+// VERSION 3.0 ENTERPRISE PLATFORM TYPES (Sections 31–39)
+// ============================================================================
+
+export interface APIClientCredential {
+  id: string;
+  orgId: string;
+  clientName: string;
+  clientId: string;
+  secretHash: string;
+  secretMasked: string;
+  scopes: Array<"roster.read" | "compliance.read" | "training.write" | "events.subscribe" | string>;
+  ipAllowlist: string[];
+  status: "ACTIVE" | "REVOKED" | "EXPIRED";
+  expiresAt: string;
+  createdAt: string;
+  lastUsedAt?: string;
+}
+
+export interface WebhookEndpoint {
+  id: string;
+  orgId: string;
+  url: string;
+  description: string;
+  subscribedEvents: string[];
+  status: "ACTIVE" | "PAUSED" | "FAILED";
+  secretMasked: string;
+  payloadScrubberEnabled: boolean;
+  createdAt: string;
+  deliveries: Array<{
+    id: string;
+    event: string;
+    status: "DELIVERED" | "FAILED" | "RETRYING";
+    responseCode: number;
+    deliveredAt: string;
+    latencyMs: number;
+  }>;
+}
+
+export interface BrandingConfig {
+  orgId: string;
+  companyName: string;
+  customDomain: string;
+  customDomainVerified: boolean;
+  primaryColor: string;
+  accentColor: string;
+  logoUrl: string;
+  supportEmail: string;
+  confidentialHotline: string;
+  sslStatus: "PROVISIONED" | "PENDING_DNS" | "FAILED";
+}
+
+export interface ClimateSurveyCampaign {
+  id: string;
+  orgId: string;
+  title: string;
+  targetDepartment: string;
+  totalInvited: number;
+  responsesCount: number;
+  isSuppressed: boolean; // Suppressed if responses < 5 per BR-076
+  safetyScore: number;
+  status: "ACTIVE" | "CLOSED" | "SCHEDULED";
+  startDate: string;
+  endDate: string;
+  keyFindings: string[];
+  preventiveActionAssigned?: string;
+}
+
+export interface TrustDPIARecord {
+  id: string;
+  title: string;
+  dataClass: "case" | "roster" | "analytics" | "telemetry";
+  assessedRisks: string[];
+  mitigations: string[];
+  dpoApprovalDate: string;
+  legalReviewer: string;
+  status: "APPROVED" | "PERIODIC_REVIEW" | "CONDITIONAL";
+  lastAuditDate: string;
+}
+
+export interface SubProcessorItem {
+  id: string;
+  name: string;
+  purpose: string;
+  dataResidency: "India" | "Designated Region";
+  complianceCert: string;
+  dpiaRef: string;
+  verifiedAt: string;
+}
+
+export interface AssistedIntakeRecord {
+  id: string;
+  counsellorName: string;
+  callerChannel: "PHONE" | "WALK_IN" | "VIDEO_BRIDGE";
+  callerPhoneMasked: string;
+  callerPreferredChannel: "WHATSAPP" | "EMAIL" | "SEALED_COVER";
+  incidentSummary: string;
+  readBackConfirmed: boolean;
+  docketGenerated?: string;
+  status: "PENDING_IC_ALLOCATION" | "SCHEDULED_REVIEW" | "COMPLAINANT_CONFIRMED";
+  loggedAt: string;
+}
+
+
 
 
 

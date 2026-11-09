@@ -44,6 +44,13 @@ import {
   SignatureRequest,
   AuditInspectionPack,
   SLOMonitorMetric,
+  APIClientCredential,
+  WebhookEndpoint,
+  BrandingConfig,
+  ClimateSurveyCampaign,
+  TrustDPIARecord,
+  SubProcessorItem,
+  AssistedIntakeRecord,
 } from "./types";
 import {
   generateServiceRequestRef,
@@ -3090,6 +3097,316 @@ class PlatformStore {
         status: "HEALTHY",
       },
     ];
+  }
+
+  // ========================================================================
+  // VERSION 3.0 ENTERPRISE PLATFORM STORE METHODS (Sections 31–39)
+  // ========================================================================
+
+  // API Client Credentials (US-239, US-240)
+  getAPIClients(orgId: string = "org-1"): APIClientCredential[] {
+    return this.get(`api_clients_${orgId}`, [
+      {
+        id: "cli-2026-001",
+        orgId: orgId,
+        clientName: "Workday HRMS Data Relay",
+        clientId: "acorn_live_cli_techkol_7718",
+        secretHash: "sha256: 4fa9912c98dbe8fca2dc0f896fd7cb4cb0031ba24900e5146e029e13f646523d",
+        secretMasked: "ak_live_••••••••••••••••3a9f",
+        scopes: ["roster.read", "training.write", "events.subscribe"],
+        ipAllowlist: ["14.143.44.0/24", "103.21.244.0/22"],
+        status: "ACTIVE",
+        expiresAt: "2027-10-31T23:59:59Z",
+        createdAt: "2026-10-15T09:30:00Z",
+        lastUsedAt: "2026-11-09T08:14:00Z",
+      },
+      {
+        id: "cli-2026-002",
+        orgId: orgId,
+        clientName: "Darwinbox Employee Sync",
+        clientId: "acorn_live_cli_techkol_9941",
+        secretHash: "sha256: ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad",
+        secretMasked: "ak_live_••••••••••••••••7c12",
+        scopes: ["roster.read"],
+        ipAllowlist: ["52.140.112.0/20"],
+        status: "ACTIVE",
+        expiresAt: "2027-04-30T23:59:59Z",
+        createdAt: "2026-10-20T11:00:00Z",
+        lastUsedAt: "2026-11-08T19:45:00Z",
+      },
+    ]);
+  }
+
+  addAPIClient(orgId: string, client: Omit<APIClientCredential, "id" | "createdAt">): APIClientCredential {
+    const list = this.getAPIClients(orgId);
+    const newClient: APIClientCredential = {
+      ...client,
+      id: `cli-${Date.now().toString().slice(-6)}`,
+      createdAt: new Date().toISOString(),
+    };
+    list.push(newClient);
+    this.set(`api_clients_${orgId}`, list);
+    this.addAuditLog(orgId, "api_gateway", "API_CLIENT_PROVISIONED", "system", newClient.id, `Generated client credentials for ${newClient.clientName}`);
+    return newClient;
+  }
+
+  revokeAPIClient(orgId: string, id: string): void {
+    const list = this.getAPIClients(orgId);
+    const updated = list.map((c) => (c.id === id ? { ...c, status: "REVOKED" as const } : c));
+    this.set(`api_clients_${orgId}`, updated);
+    this.addAuditLog(orgId, "api_gateway", "API_CLIENT_REVOKED", "system", id, `Revoked client credentials ID ${id}`);
+  }
+
+  // Outbound Webhooks (US-241)
+  getWebhooks(orgId: string = "org-1"): WebhookEndpoint[] {
+    return this.get(`webhooks_${orgId}`, [
+      {
+        id: "wh-001",
+        orgId: orgId,
+        url: "https://integrations.techkolkata.io/posh/events",
+        description: "Corporate SIEM & HRMS Compliance Relay",
+        subscribedEvents: ["case.transitioned", "duty.status_changed", "training.completed"],
+        status: "ACTIVE",
+        secretMasked: "whsec_••••••••••••••••••••••••89fe",
+        payloadScrubberEnabled: true,
+        createdAt: "2026-10-18T10:00:00Z",
+        deliveries: [
+          {
+            id: "del-881",
+            event: "case.transitioned",
+            status: "DELIVERED",
+            responseCode: 200,
+            deliveredAt: "2026-11-08T14:22:10Z",
+            latencyMs: 142,
+          },
+          {
+            id: "del-882",
+            event: "training.completed",
+            status: "DELIVERED",
+            responseCode: 200,
+            deliveredAt: "2026-11-09T09:05:30Z",
+            latencyMs: 98,
+          },
+        ],
+      },
+    ]);
+  }
+
+  addWebhook(orgId: string, webhook: Omit<WebhookEndpoint, "id" | "createdAt" | "deliveries">): WebhookEndpoint {
+    const list = this.getWebhooks(orgId);
+    const newHook: WebhookEndpoint = {
+      ...webhook,
+      id: `wh-${Date.now().toString().slice(-4)}`,
+      createdAt: new Date().toISOString(),
+      deliveries: [],
+    };
+    list.push(newHook);
+    this.set(`webhooks_${orgId}`, list);
+    this.addAuditLog(orgId, "webhook_engine", "WEBHOOK_ENDPOINT_CONFIGURED", "system", newHook.id, `Created webhook target ${newHook.url}`);
+    return newHook;
+  }
+
+  testWebhook(orgId: string, id: string): boolean {
+    const list = this.getWebhooks(orgId);
+    const hook = list.find((h) => h.id === id);
+    if (!hook) return false;
+    hook.deliveries.unshift({
+      id: `del-${Date.now().toString().slice(-4)}`,
+      event: "ping.test",
+      status: "DELIVERED",
+      responseCode: 200,
+      deliveredAt: new Date().toISOString(),
+      latencyMs: Math.floor(80 + Math.random() * 90),
+    });
+    this.set(`webhooks_${orgId}`, list);
+    return true;
+  }
+
+  // White-Label Branding (US-243)
+  getBrandingConfig(orgId: string = "org-1"): BrandingConfig {
+    return this.get(`branding_${orgId}`, {
+      orgId,
+      companyName: "Kolkata Cloud Technologies Pvt Ltd",
+      customDomain: "posh.kolkatacloud.com",
+      customDomainVerified: true,
+      primaryColor: "#0E1F3D",
+      accentColor: "#B08D57",
+      logoUrl: "/brand/acorn-logo.png",
+      supportEmail: "compliance@kolkatacloud.com",
+      confidentialHotline: "+91 33 2287 4000",
+      sslStatus: "PROVISIONED",
+    });
+  }
+
+  saveBrandingConfig(orgId: string, config: Partial<BrandingConfig>): BrandingConfig {
+    const current = this.getBrandingConfig(orgId);
+    const updated = { ...current, ...config, orgId };
+    this.set(`branding_${orgId}`, updated);
+    this.addAuditLog(orgId, "branding_service", "BRANDING_UPDATED", "system", orgId, `Updated corporate white-label branding for domain ${updated.customDomain}`);
+    return updated;
+  }
+
+  // Workplace Climate Surveys (US-263)
+  getClimateSurveys(orgId: string = "org-1"): ClimateSurveyCampaign[] {
+    return this.get(`climate_surveys_${orgId}`, [
+      {
+        id: "surv-2026-01",
+        orgId,
+        title: "Late Shift & Hybrid Travel Safety Audit (Q3)",
+        targetDepartment: "Engineering & Night Shift Operations",
+        totalInvited: 120,
+        responsesCount: 94,
+        isSuppressed: false,
+        safetyScore: 92,
+        status: "ACTIVE",
+        startDate: "2026-10-01",
+        endDate: "2026-11-15",
+        keyFindings: [
+          "98% satisfaction with cab escort and live GPS tracking for Sector V drops.",
+          "8% expressed uncertainty regarding after-hours WhatsApp messaging etiquette.",
+        ],
+        preventiveActionAssigned: "Issue official Slack communication boundary advisory.",
+      },
+      {
+        id: "surv-2026-02",
+        orgId,
+        title: "Workplace Civility & Non-Discrimination Index",
+        targetDepartment: "Enterprise Solutions & Sales",
+        totalInvited: 45,
+        responsesCount: 42,
+        isSuppressed: false,
+        safetyScore: 88,
+        status: "CLOSED",
+        startDate: "2026-08-01",
+        endDate: "2026-08-31",
+        keyFindings: [
+          "Zero reported incidents of unwelcome physical contact.",
+          "High awareness (>95%) of Acorn External Member IC representation.",
+        ],
+        preventiveActionAssigned: "Conducted manager refresher on subtle hostile workplace language.",
+      },
+    ]);
+  }
+
+  addClimateSurvey(orgId: string, survey: Omit<ClimateSurveyCampaign, "id">): ClimateSurveyCampaign {
+    const list = this.getClimateSurveys(orgId);
+    const newSurvey: ClimateSurveyCampaign = {
+      ...survey,
+      id: `surv-${Date.now().toString().slice(-4)}`,
+    };
+    list.push(newSurvey);
+    this.set(`climate_surveys_${orgId}`, list);
+    this.addAuditLog(orgId, "survey_engine", "CLIMATE_SURVEY_LAUNCHED", "system", newSurvey.id, `Launched climate survey ${newSurvey.title}`);
+    return newSurvey;
+  }
+
+  // Trust, DPIA & BYOK (US-280, US-282)
+  getTrustDPIARecords(): TrustDPIARecord[] {
+    return this.get("trust_dpia_records", [
+      {
+        id: "DPIA-2026-01",
+        title: "Section 16 Inquiry Docket Processing & In-Memory Encryption",
+        dataClass: "case",
+        assessedRisks: [
+          "Risk of accidental witness re-identification via metadata cross-referencing.",
+          "Risk of client-side browser caching of sensitive witness depositions.",
+        ],
+        mitigations: [
+          "Enforced Section 16 automated redaction engine and SHA-256 chain-of-custody tokens.",
+          "Zero-store policy on local storage without explicit encrypted session token and quick-exit purge.",
+        ],
+        dpoApprovalDate: "2026-09-15",
+        legalReviewer: "Adv. Debjani Sen (Managing Partner)",
+        status: "APPROVED",
+        lastAuditDate: "2026-10-25",
+      },
+      {
+        id: "DPIA-2026-02",
+        title: "Cross-Tenant Small-Cell Suppression & Aggregated Benchmarking",
+        dataClass: "analytics",
+        assessedRisks: [
+          "Risk of deductive linkage attack in small cohorts (<5 employees).",
+        ],
+        mitigations: [
+          "Strict cryptographic k-anonymity gate enforcing suppression (<5 rendered as '< 5').",
+          "Peer benchmark minimum cohort size enforced to 10+ participating organisations.",
+        ],
+        dpoApprovalDate: "2026-09-20",
+        legalReviewer: "Dr. Ananya Mukherjee (Principal Counsel)",
+        status: "APPROVED",
+        lastAuditDate: "2026-10-28",
+      },
+    ]);
+  }
+
+  getSubProcessors(): SubProcessorItem[] {
+    return this.get("sub_processors", [
+      {
+        id: "sp-01",
+        name: "Razorpay Software Pvt Ltd",
+        purpose: "Payment Gateway & Escrow Settlement Tokenization",
+        dataResidency: "India",
+        complianceCert: "PCI-DSS Level 1 • ISO/IEC 27001:2013",
+        dpiaRef: "DPIA-2026-FIN-01",
+        verifiedAt: "2026-10-01",
+      },
+      {
+        id: "sp-02",
+        name: "Amazon Web Services India (ap-south-1 Mumbai)",
+        purpose: "Encrypted Cloud Hosting, KMS & S3 WORM Storage",
+        dataResidency: "India",
+        complianceCert: "SOC 1/2/3 • ISO 27001/27017/27018",
+        dpiaRef: "DPIA-2026-INFRA-01",
+        verifiedAt: "2026-09-10",
+      },
+    ]);
+  }
+
+  getBYOKStatus(orgId: string = "org-1"): {
+    enabled: boolean;
+    provider: "AWS_KMS" | "AZURE_KEYVAULT";
+    keyArnMasked: string;
+    keyState: "HEALTHY" | "ROTATING" | "DEGRADED";
+    lastShreddingDrill: string;
+  } {
+    return this.get(`byok_${orgId}`, {
+      enabled: true,
+      provider: "AWS_KMS",
+      keyArnMasked: "arn:aws:kms:ap-south-1:882910481239:key/••••••••-4412-99ab",
+      keyState: "HEALTHY",
+      lastShreddingDrill: "2026-10-20 (Verified 0 Byte Remanence)",
+    });
+  }
+
+  // Assisted Intake (US-269)
+  getAssistedIntakes(): AssistedIntakeRecord[] {
+    return this.get("assisted_intakes", [
+      {
+        id: "AST-2026-081",
+        counsellorName: "Pooja Banerjee, MSW (Senior Intake Counsellor)",
+        callerChannel: "PHONE",
+        callerPhoneMasked: "+91 9831••••12",
+        callerPreferredChannel: "WHATSAPP",
+        incidentSummary: "Caller reported repeated unwelcome verbal comments in office elevator during late shift.",
+        readBackConfirmed: true,
+        docketGenerated: "POSH-TECHKOL-2026-0014",
+        status: "COMPLAINANT_CONFIRMED",
+        loggedAt: "2026-09-22T08:15:00Z",
+      },
+    ]);
+  }
+
+  addAssistedIntake(record: Omit<AssistedIntakeRecord, "id" | "loggedAt">): AssistedIntakeRecord {
+    const list = this.getAssistedIntakes();
+    const newRec: AssistedIntakeRecord = {
+      ...record,
+      id: `AST-${Date.now().toString().slice(-4)}`,
+      loggedAt: new Date().toISOString(),
+    };
+    list.push(newRec);
+    this.set("assisted_intakes", list);
+    this.addAuditLog("Intake Desk", "posh_admin", "ASSISTED_INTAKE_RECORDED", "case", newRec.id, `Logged assisted phone intake with read-back verification confirmed.`);
+    return newRec;
   }
 }
 

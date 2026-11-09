@@ -23,12 +23,6 @@ import {
 import { BRAND_CONFIG, PRACTICE_AREAS } from "@/lib/constants";
 import { platformStore } from "@/lib/store";
 import {
-  useRealtimeSiteConfig,
-  useRealtimeFaqs,
-  useRealtimeServices,
-  useRealtimePosts,
-} from "@/lib/realtime";
-import {
   Button,
   Eyebrow,
   SectionHeading,
@@ -39,7 +33,6 @@ import {
   Accordion,
   Reveal,
   LineReveal,
-  ScrollTextReveal,
 } from "@/components/ui";
 
 const ICON_MAP: Record<string, React.ReactNode> = {
@@ -136,26 +129,19 @@ const FEATURED_INSIGHTS = [
 
 export default function HomePage() {
   const [activeStep, setActiveStep] = useState(0);
-  const siteConfig = useRealtimeSiteConfig();
-  const rawFaqs = useRealtimeFaqs();
-  const customServices = useRealtimeServices();
-  const rawPosts = useRealtimePosts();
+  const [siteConfig, setSiteConfig] = useState(platformStore.getSiteConfig());
+  const [homepageFaqs, setHomepageFaqs] = useState(platformStore.getHomepageFaqs());
 
-  const dynamicPractices = customServices.length > 0
-    ? customServices.map((s) => ({
-        slug: s.name.toLowerCase().replace(/[^a-z0-9]+/g, "-"),
-        title: s.name,
-        shortDesc: s.shortDesc,
-        icon: "Briefcase",
-        services: s.features,
-      }))
-    : PRACTICE_AREAS;
+  useEffect(() => {
+    setSiteConfig(platformStore.getSiteConfig());
+    setHomepageFaqs(platformStore.getHomepageFaqs());
+  }, []);
 
-  const steps = siteConfig?.pathwaySteps && siteConfig.pathwaySteps.length > 0
+  const steps = siteConfig.pathwaySteps && siteConfig.pathwaySteps.length > 0
     ? siteConfig.pathwaySteps
     : HOW_WE_WORK_STEPS;
 
-  const principles = siteConfig?.principles && siteConfig.principles.length > 0
+  const principles = siteConfig.principles && siteConfig.principles.length > 0
     ? siteConfig.principles
     : [
         {
@@ -178,7 +164,6 @@ export default function HomePage() {
         },
       ];
 
-  const homepageFaqs = rawFaqs.filter((f) => f.showOnHomepage);
   const formattedFaqs = homepageFaqs.length > 0
     ? homepageFaqs.map((f) => ({
         id: f.id,
@@ -379,8 +364,8 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 2. PHILOSOPHY STRIP: ivory background, one large centred serif statement with scroll-driven text reveal */}
-      <section className="bg-ivory-50 py-28 sm:py-36 md:py-44 border-b border-border relative overflow-hidden">
+      {/* 2. PHILOSOPHY STRIP: ivory background, one large centred serif statement */}
+      <section className="bg-ivory-50 py-24 sm:py-32 border-b border-border relative overflow-hidden">
         {/* Low contrast section numeral watermark */}
         <div
           className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 font-serif text-[clamp(6rem,20vw,16rem)] font-bold text-navy-700/[0.03] select-none pointer-events-none leading-none"
@@ -389,30 +374,15 @@ export default function HomePage() {
           01
         </div>
 
-        <div className="max-w-[1040px] mx-auto px-4 sm:px-6 text-center relative z-10 space-y-7">
+        <div className="max-w-[1040px] mx-auto px-4 sm:px-6 text-center relative z-10 space-y-6">
           <Eyebrow className="justify-center">OUR GOVERNING PRINCIPLE</Eyebrow>
 
-          <ScrollTextReveal
-            className="font-serif text-3xl sm:text-5xl md:text-6xl font-medium text-ink-950 leading-[1.18] tracking-tight justify-center"
-            words={[
-              { text: "“To" },
-              { text: "protect" },
-              { text: "what" },
-              { text: "matters," },
-              { text: "navigate" },
-              { text: "complexity" },
-              { text: "with" },
-              { text: "confidence," },
-              { text: "and" },
-              { text: "uphold" },
-              { text: "the" },
-              { text: "highest", isAccent: true },
-              { text: "standards", isAccent: true },
-              { text: "of" },
-              { text: "professional" },
-              { text: "integrity.”" },
-            ]}
-          />
+          <LineReveal>
+            <p className="font-serif text-3xl sm:text-5xl md:text-6xl font-medium text-ink-950 leading-[1.18] tracking-tight">
+              &ldquo;To protect what matters, navigate complexity with confidence, and uphold the{" "}
+              <span className="font-serif italic text-brass-700">highest standards</span> of professional integrity.&rdquo;
+            </p>
+          </LineReveal>
 
           <div className="pt-4 flex justify-center">
             <div className="w-16 h-[2px] bg-brass-500" />
@@ -444,14 +414,14 @@ export default function HomePage() {
               <Card
                 variant="white"
                 arrowOnHover
-                href={`/services/${dynamicPractices[0]?.slug || "advisory"}`}
+                href={`/services/${PRACTICE_AREAS[0]?.slug || "advisory"}`}
                 className="h-full flex flex-col justify-between"
               >
                 <div>
                   <div className="flex items-center justify-between pb-6 border-b border-border">
                     <span className="font-serif text-3xl font-bold text-navy-700/25">01</span>
                     <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-navy-700">
-                      {ICON_MAP[dynamicPractices[0]?.icon || "Briefcase"]}
+                      {ICON_MAP[PRACTICE_AREAS[0]?.icon || "Briefcase"]}
                     </div>
                   </div>
 
@@ -460,14 +430,14 @@ export default function HomePage() {
                       Flagship Practice
                     </span>
                     <h3 className="font-serif text-3xl sm:text-4xl font-bold text-ink-950">
-                      {dynamicPractices[0]?.title}
+                      {PRACTICE_AREAS[0]?.title}
                     </h3>
                     <p className="font-sans text-base text-ink-secondary leading-relaxed">
-                      {dynamicPractices[0]?.shortDesc}
+                      {PRACTICE_AREAS[0]?.shortDesc}
                     </p>
 
                     <div className="pt-4 grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-ink font-medium">
-                      {dynamicPractices[0]?.services?.slice(0, 4).map((s, idx) => (
+                      {PRACTICE_AREAS[0]?.services?.slice(0, 4).map((s, idx) => (
                         <div key={idx} className="flex items-center gap-2">
                           <CheckCircle2 className="w-3.5 h-3.5 text-brass-500 shrink-0" />
                           <span className="truncate">{s}</span>
@@ -489,23 +459,23 @@ export default function HomePage() {
               <Card
                 variant="white"
                 arrowOnHover
-                href={`/services/${dynamicPractices[1]?.slug || "legal-documentation"}`}
+                href={`/services/${PRACTICE_AREAS[1]?.slug || "legal-documentation"}`}
                 className="h-full flex flex-col justify-between"
               >
                 <div>
                   <div className="flex items-center justify-between pb-4 border-b border-border">
                     <span className="font-serif text-3xl font-bold text-navy-700/25">02</span>
                     <div className="w-9 h-9 rounded-full bg-blue-100 flex items-center justify-center text-navy-700">
-                      {ICON_MAP[dynamicPractices[1]?.icon || "FileText"]}
+                      {ICON_MAP[PRACTICE_AREAS[1]?.icon || "FileText"]}
                     </div>
                   </div>
 
                   <div className="mt-5 space-y-3">
                     <h3 className="font-serif text-2xl font-bold text-ink-950">
-                      {dynamicPractices[1]?.title}
+                      {PRACTICE_AREAS[1]?.title}
                     </h3>
                     <p className="font-sans text-sm text-ink-secondary leading-relaxed line-clamp-3">
-                      {dynamicPractices[1]?.shortDesc}
+                      {PRACTICE_AREAS[1]?.shortDesc}
                     </p>
                   </div>
                 </div>
@@ -518,7 +488,7 @@ export default function HomePage() {
             </div>
 
             {/* Smaller Cards 3, 4, 5, 6 (Spans 3 cols each on lg, 6 cols on md) */}
-            {dynamicPractices.slice(2).map((pa, i) => (
+            {PRACTICE_AREAS.slice(2).map((pa, i) => (
               <div key={pa.slug} className="md:col-span-6 lg:col-span-3">
                 <Card
                   variant="white"

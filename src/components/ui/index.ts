@@ -7,4 +7,3 @@ export * from "./accordion";
 export * from "./badge-and-stepper";
 export * from "./motion";
 export * from "./toast";
-export * from "../scroll-text-reveal";
