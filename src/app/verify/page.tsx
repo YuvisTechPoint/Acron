@@ -4,7 +4,6 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { Award, CheckCircle2, ShieldCheck, Search, ArrowRight, AlertCircle, FileCheck, Building2, Calendar, Shield } from "lucide-react";
 import { formatDate } from "@/lib/utils";
-import { Eyebrow } from "@/components/ui";
 
 export default function CertificateVerificationPage() {
   const [certCode, setCertCode] = useState("CERT-ACORN-2026-884");
@@ -48,7 +47,12 @@ export default function CertificateVerificationPage() {
         
         {/* Editorial Header with Generous Clearance from Fixed Navbar */}
         <div className="text-center space-y-4">
-          <Eyebrow className="justify-center">CENTRAL STATUTORY REGISTRY</Eyebrow>
+          <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-navy-900 border border-brass-500/40 text-brass-300 shadow-sm mx-auto">
+            <Award className="w-4 h-4 text-brass-400" />
+            <span className="font-sans text-[11px] font-bold uppercase tracking-[0.2em] text-brass-300">
+              Central Statutory Registry
+            </span>
+          </div>
 
           <div className="space-y-2">
             <h1 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-ink-950">

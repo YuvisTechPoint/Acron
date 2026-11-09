@@ -379,8 +379,8 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 2. PHILOSOPHY STRIP: ivory background, one large centred serif statement with Roland GP-9 scroll text reveal */}
-      <section className="bg-ivory-50 py-28 sm:py-40 border-b border-border relative overflow-hidden">
+      {/* 2. PHILOSOPHY STRIP: ivory background, one large centred serif statement with scroll-driven text reveal */}
+      <section className="bg-ivory-50 py-28 sm:py-36 md:py-44 border-b border-border relative overflow-hidden">
         {/* Low contrast section numeral watermark */}
         <div
           className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 font-serif text-[clamp(6rem,20vw,16rem)] font-bold text-navy-700/[0.03] select-none pointer-events-none leading-none"
@@ -389,16 +389,32 @@ export default function HomePage() {
           01
         </div>
 
-        <div className="max-w-[1040px] mx-auto px-4 sm:px-6 text-center relative z-10 space-y-6 sm:space-y-8">
+        <div className="max-w-[1040px] mx-auto px-4 sm:px-6 text-center relative z-10 space-y-7">
           <Eyebrow className="justify-center">OUR GOVERNING PRINCIPLE</Eyebrow>
 
           <ScrollTextReveal
-            text="“To protect what matters, navigate complexity with confidence, and uphold the highest standards of professional integrity.”"
-            accentWords={["highest", "standards"]}
-            className="font-serif text-3xl sm:text-5xl md:text-6xl font-medium text-ink-950 leading-[1.22] tracking-tight"
+            className="font-serif text-3xl sm:text-5xl md:text-6xl font-medium text-ink-950 leading-[1.18] tracking-tight justify-center"
+            words={[
+              { text: "“To" },
+              { text: "protect" },
+              { text: "what" },
+              { text: "matters," },
+              { text: "navigate" },
+              { text: "complexity" },
+              { text: "with" },
+              { text: "confidence," },
+              { text: "and" },
+              { text: "uphold" },
+              { text: "the" },
+              { text: "highest", isAccent: true },
+              { text: "standards", isAccent: true },
+              { text: "of" },
+              { text: "professional" },
+              { text: "integrity.”" },
+            ]}
           />
 
-          <div className="pt-2 flex justify-center">
+          <div className="pt-4 flex justify-center">
             <div className="w-16 h-[2px] bg-brass-500" />
           </div>
         </div>
