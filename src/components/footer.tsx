@@ -13,6 +13,7 @@ import {
   ShieldCheck,
   FileCheck,
   ArrowUp,
+  ArrowUpRight,
   ExternalLink,
 } from "lucide-react";
 import { BRAND_CONFIG, PRACTICE_AREAS } from "@/lib/constants";
@@ -128,10 +129,10 @@ export function Footer() {
                   <li key={pa.slug}>
                     <Link
                       href={`/services/${pa.slug}`}
-                      className="hover:text-brass-300 transition-colors inline-flex items-center gap-2 group"
+                      className="hover:text-brass-300 transition-colors inline-flex items-center gap-1.5 group"
                     >
-                      <span className="w-1 h-1 rounded-full bg-navy-600 group-hover:bg-brass-400 transition-colors shrink-0" />
                       <FooterRollText>{pa.title}</FooterRollText>
+                      <ArrowUpRight className="w-3.5 h-3.5 text-brass-500/50 group-hover:text-brass-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-200 shrink-0" />
                     </Link>
                   </li>
                 ))}
@@ -166,38 +167,45 @@ export function Footer() {
             >
               <ul className="space-y-2.5 font-sans text-xs text-slate-300 pt-1 lg:pt-0">
                 <li>
-                  <Link href="/about" className="hover:text-brass-300 transition-colors inline-flex items-center group">
+                  <Link href="/about" className="hover:text-brass-300 transition-colors inline-flex items-center gap-1.5 group">
                     <FooterRollText>About Our Firm</FooterRollText>
+                    <ArrowUpRight className="w-3.5 h-3.5 text-brass-500/50 group-hover:text-brass-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-200 shrink-0" />
                   </Link>
                 </li>
                 <li>
-                  <Link href="/services" className="hover:text-brass-300 transition-colors inline-flex items-center group">
+                  <Link href="/services" className="hover:text-brass-300 transition-colors inline-flex items-center gap-1.5 group">
                     <FooterRollText>Services Directory</FooterRollText>
+                    <ArrowUpRight className="w-3.5 h-3.5 text-brass-500/50 group-hover:text-brass-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-200 shrink-0" />
                   </Link>
                 </li>
                 <li>
-                  <Link href="/posh" className="hover:text-brass-300 transition-colors inline-flex items-center group">
+                  <Link href="/posh" className="hover:text-brass-300 transition-colors inline-flex items-center gap-1.5 group">
                     <FooterRollText>POSH Act Hub</FooterRollText>
+                    <ArrowUpRight className="w-3.5 h-3.5 text-brass-500/50 group-hover:text-brass-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-200 shrink-0" />
                   </Link>
                 </li>
                 <li>
-                  <Link href="/blog" className="hover:text-brass-300 transition-colors inline-flex items-center group">
+                  <Link href="/blog" className="hover:text-brass-300 transition-colors inline-flex items-center gap-1.5 group">
                     <FooterRollText>Insights &amp; Articles</FooterRollText>
+                    <ArrowUpRight className="w-3.5 h-3.5 text-brass-500/50 group-hover:text-brass-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-200 shrink-0" />
                   </Link>
                 </li>
                 <li>
-                  <Link href="/faq" className="hover:text-brass-300 transition-colors inline-flex items-center group">
+                  <Link href="/faq" className="hover:text-brass-300 transition-colors inline-flex items-center gap-1.5 group">
                     <FooterRollText>Statutory Guidance FAQ</FooterRollText>
+                    <ArrowUpRight className="w-3.5 h-3.5 text-brass-500/50 group-hover:text-brass-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-200 shrink-0" />
                   </Link>
                 </li>
                 <li>
-                  <Link href="/request-service" className="hover:text-brass-300 transition-colors inline-flex items-center group">
+                  <Link href="/request-service" className="hover:text-brass-300 transition-colors inline-flex items-center gap-1.5 group">
                     <FooterRollText>Consultation Intake</FooterRollText>
+                    <ArrowUpRight className="w-3.5 h-3.5 text-brass-500/50 group-hover:text-brass-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-200 shrink-0" />
                   </Link>
                 </li>
                 <li>
-                  <Link href="/pay" className="hover:text-brass-300 transition-colors inline-flex items-center group">
+                  <Link href="/pay" className="hover:text-brass-300 transition-colors inline-flex items-center gap-1.5 group">
                     <FooterRollText>Online Settlement</FooterRollText>
+                    <ArrowUpRight className="w-3.5 h-3.5 text-brass-500/50 group-hover:text-brass-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-200 shrink-0" />
                   </Link>
                 </li>
               </ul>

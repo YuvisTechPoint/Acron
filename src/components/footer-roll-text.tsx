@@ -44,7 +44,7 @@ export function FooterRollText({ children, className = "" }: FooterRollTextProps
     <span className={`footer-roll-text ${className}`}>
       <span className="footer-roll-text__track">
         <span className="footer-roll-text__line">{children}</span>
-        <span className="footer-roll-text__line text-brass-300" aria-hidden="true">
+        <span className="footer-roll-text__line text-brass-300 select-none pointer-events-none" aria-hidden="true">
           {children}
         </span>
       </span>
