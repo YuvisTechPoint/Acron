@@ -244,9 +244,8 @@ button, a, input, select, textarea {
 
 /* Vibe Music Style Foldable & Rolling Footer Architecture */
 .footer-static-dock {
-  position: sticky;
-  bottom: 0;
-  z-index: 20;
+  position: relative;
+  width: 100%;
 }
 
 .footer-accordion-panel {
