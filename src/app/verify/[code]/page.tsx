@@ -14,9 +14,16 @@ import {
   Building,
 } from "lucide-react";
 
-export default function DynamicCertificateVerificationPage() {
-  const params = useParams();
-  const rawCode = (params?.code as string) || "CERT-ACORN-2026-884";
+export default function DynamicCertificateVerificationPage({
+  params,
+}: {
+  params?: { code?: string };
+}) {
+  const routerParams = useParams();
+  const rawCode =
+    (params?.code as string) ||
+    (routerParams?.code as string) ||
+    "CERT-ACORN-2026-884";
   const code = decodeURIComponent(rawCode).trim().toUpperCase();
 
   const isValidCert = code.startsWith("CERT-ACORN-") || code.includes("ACORN");
