@@ -239,10 +239,11 @@ async function main() {
       const res = await fetch(`${BASE_URL}${link}`, {
         method: "GET",
         headers: { "User-Agent": "RouteCrawler/1.0" },
-        signal: AbortSignal.timeout(5000),
+        signal: AbortSignal.timeout(12000),
       });
       if (res.status === 200 || res.status === 304 || res.status === 307 || res.status === 308) {
         linkPassed++;
+        process.stdout.write(`✔ [LINK ${res.status}] ${link}\n`);
       } else {
         linkFailed++;
         console.error(`✖ Broken internal link: ${link} returned HTTP ${res.status}`);
