@@ -18,9 +18,11 @@ import {
 import { platformStore } from "@/lib/store";
 import { formatDate } from "@/lib/utils";
 import { POSHCase } from "@/lib/types";
+import { useToast } from "@/components/ui/toast";
 
 export default function ICCloseCasePage() {
   const params = useParams();
+  const { toast } = useToast();
   const caseId = (params?.id as string) || "case-01";
   const [poshCase, setPoshCase] = useState<POSHCase | undefined>(() => platformStore.getCaseById(caseId));
 
@@ -50,7 +52,11 @@ export default function ICCloseCasePage() {
 
     const updated = platformStore.getCaseById(poshCase.id);
     if (updated) setPoshCase({ ...updated });
-    alert("Inquiry docket formally closed and archived into 7-year statutory retention vault.");
+    toast({
+      title: "Case Docket Closed",
+      description: "Inquiry docket formally closed and archived into 7-year statutory retention vault.",
+      variant: "success",
+    });
   };
 
   if (!poshCase) {

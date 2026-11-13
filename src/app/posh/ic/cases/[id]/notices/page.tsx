@@ -17,11 +17,13 @@ import {
   ShieldCheck,
 } from "lucide-react";
 import { platformStore } from "@/lib/store";
-import { formatDate } from "@/lib/utils";
+import { formatDate, downloadFile } from "@/lib/utils";
 import { POSHCase } from "@/lib/types";
+import { useToast } from "@/components/ui/toast";
 
 export default function ICNoticesPage() {
   const params = useParams();
+  const { toast } = useToast();
   const caseId = (params?.id as string) || "case-01";
   const [poshCase, setPoshCase] = useState<POSHCase | undefined>(() => platformStore.getCaseById(caseId));
 
@@ -68,7 +70,11 @@ export default function ICNoticesPage() {
     };
 
     setIssuedNotices([newNotice, ...issuedNotices]);
-    alert(`Notice dispatched successfully. Reference: ${newNotice.trackingRef}`);
+    toast({
+      title: "Notice Dispatched",
+      description: `Formal statutory notice dispatched. Tracking reference: ${newNotice.trackingRef}`,
+      variant: "success",
+    });
   };
 
   if (!poshCase) {
@@ -262,7 +268,29 @@ export default function ICNoticesPage() {
                 </div>
 
                 <button
-                  onClick={() => alert(`Downloading signed certificate of service for ${n.trackingRef}...`)}
+                  onClick={() => {
+                    const certContent = [
+                      "===========================================================",
+                      "   ACORN LEGAL CONSULTANTS - CERTIFICATE OF SERVICE",
+                      "===========================================================",
+                      `Case Number: ${poshCase.caseNumber}`,
+                      `Tracking Ref: ${n.trackingRef}`,
+                      `Template Type: ${n.template}`,
+                      `Recipient: ${n.recipient}`,
+                      `Delivery Channel: ${n.channel}`,
+                      `Service Date: ${n.dateIssued}`,
+                      `Status: SERVED & CONFIRMED`,
+                      "===========================================================",
+                      "Certified under Rule 7(1) of POSH Rules 2013.",
+                      "Signed by Registrar of Chambers, Acorn Legal Consultants.",
+                    ].join("\n");
+                    downloadFile(`Certificate-of-Service-${n.trackingRef.replace(/[\/\\:]/g, "-")}.txt`, certContent);
+                    toast({
+                      title: "Certificate Downloaded",
+                      description: `Signed Certificate of Service for ${n.trackingRef} downloaded.`,
+                      variant: "info",
+                    });
+                  }}
                   className="px-3 py-1.5 border border-border rounded text-xs hover:bg-surface inline-flex items-center gap-1.5 shrink-0"
                 >
                   <Download className="w-3.5 h-3.5" />

@@ -19,9 +19,11 @@ import {
 import { platformStore } from "@/lib/store";
 import { formatDate, formatINR } from "@/lib/utils";
 import { POSHCase } from "@/lib/types";
+import { useToast } from "@/components/ui/toast";
 
 export default function ICReportPage() {
   const params = useParams();
+  const { toast } = useToast();
   const caseId = (params?.id as string) || "case-01";
   const [poshCase, setPoshCase] = useState<POSHCase | undefined>(() => platformStore.getCaseById(caseId));
 
@@ -72,7 +74,11 @@ export default function ICReportPage() {
       `Section 13 Inquiry Report issued to Employer and Parties. Recommendation: ${findingsDecision}. Compensation assessed: ${findingsDecision === "charges_substantiated" ? formatINR(totalCompensationRupees * 100) : "None (Section 13(2))"}`
     );
 
-    alert("Statutory Section 13 Inquiry Report submitted to Employer and Parties.");
+    toast({
+      title: "Inquiry Report Submitted",
+      description: "Statutory Section 13 Inquiry Report submitted to Employer and Parties per law.",
+      variant: "success",
+    });
   };
 
   if (!poshCase) {

@@ -14,8 +14,11 @@ import {
   Sparkles,
   Accessibility
 } from "lucide-react";
+import { platformStore } from "@/lib/store";
+import { useToast } from "@/components/ui/toast";
 
 export default function ComplainantSupportAccommodationsPage() {
+  const { toast } = useToast();
   const [supportPersonName, setSupportPersonName] = useState("");
   const [supportPersonRelation, setSupportPersonRelation] = useState("");
   const [needInterpreter, setNeedInterpreter] = useState(false);
@@ -27,7 +30,16 @@ export default function ComplainantSupportAccommodationsPage() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    platformStore.addCaseMotion("POSH-TECHKOL-2026-0014", {
+      type: "PROCEDURAL_MOTION",
+      details: `Support Accommodations requested: Support Person=${supportPersonName || "N/A"}, Interpreter=${needInterpreter ? interpreterLang : "None"}, Screen Barrier=${needScreenBarrier}, Remote=${needRemoteHearing}`,
+    });
     setSubmitted(true);
+    toast({
+      title: "Accommodations Registered",
+      description: "Support measures recorded. Presiding Officer notified for hearing logistics.",
+      variant: "success",
+    });
   };
 
   return (

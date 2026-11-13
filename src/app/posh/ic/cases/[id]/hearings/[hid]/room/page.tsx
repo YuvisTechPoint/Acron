@@ -19,9 +19,12 @@ import {
   Radio,
   CheckCircle2,
 } from "lucide-react";
+import { useToast } from "@/components/ui/toast";
+import { platformStore } from "@/lib/store";
 
 export default function VirtualHearingRoomPage() {
   const params = useParams();
+  const { toast } = useToast();
   const caseId = (params?.id as string) || "ACN-POSH-2026-0041";
   const hearingId = (params?.hid as string) || "vhr-0041-01";
 
@@ -147,7 +150,21 @@ export default function VirtualHearingRoomPage() {
             </div>
 
             <button
-              onClick={() => alert("Session adjourned by Presiding Officer. Deposition minutes saved to docket.")}
+              onClick={() => {
+                platformStore.addAuditLog(
+                  "IC Presiding Officer",
+                  "ic_presiding_officer",
+                  "HEARING_ADJOURNED",
+                  "case",
+                  caseId,
+                  `In-camera session ${hearingId} adjourned by Presiding Officer. Minutes saved.`
+                );
+                toast({
+                  title: "Hearing Adjourned",
+                  description: "Session adjourned by Presiding Officer. Deposition minutes saved to docket.",
+                  variant: "info",
+                });
+              }}
               className="px-3.5 py-1.5 bg-rose-800 hover:bg-rose-900 text-white text-xs font-bold rounded transition"
             >
               Adjourn Hearing
@@ -196,7 +213,21 @@ export default function VirtualHearingRoomPage() {
                   className="flex-1 w-full bg-[#050C17] border border-navy-800 rounded p-3 text-xs text-slate-200 font-mono leading-relaxed focus:outline-none focus:border-brass-500 resize-none"
                 />
                 <button
-                  onClick={() => alert("Deposition recorded and sealed with SHA-256 custody checksum.")}
+                  onClick={() => {
+                    platformStore.addAuditLog(
+                      "IC Presiding Officer",
+                      "ic_presiding_officer",
+                      "DEPOSITION_SEALED",
+                      "case",
+                      caseId,
+                      `Deposition recorded during hearing ${hearingId} sealed into immutable custody vault.`
+                    );
+                    toast({
+                      title: "Deposition Sealed",
+                      description: "Deposition recorded and sealed with SHA-256 custody checksum into the evidence vault.",
+                      variant: "success",
+                    });
+                  }}
                   className="w-full py-2 bg-[#101F38] hover:bg-navy-900 text-brass-300 text-xs font-semibold rounded border border-brass-500/30 transition"
                 >
                   Seal &amp; Inscribe Deposition Record

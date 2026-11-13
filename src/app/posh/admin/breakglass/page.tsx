@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import { platformStore } from "@/lib/store";
 import { formatDate } from "@/lib/utils";
+import { useToast } from "@/components/ui/toast";
 
 interface BreakGlassLog {
   id: string;
@@ -44,6 +45,7 @@ const INITIAL_LOGS: BreakGlassLog[] = [
 ];
 
 export default function PoshBreakGlassPage() {
+  const { toast } = useToast();
   const [logs, setLogs] = useState<BreakGlassLog[]>(INITIAL_LOGS);
   const [showModal, setShowModal] = useState(false);
   const [form, setForm] = useState({
@@ -58,7 +60,11 @@ export default function PoshBreakGlassPage() {
   const handleTrigger = (e: React.FormEvent) => {
     e.preventDefault();
     if (form.emergencyPin !== "ACORN-9900") {
-      alert("Invalid Security Override Passcode. Access denied.");
+      toast({
+        title: "Security Override Denied",
+        description: "Invalid Security Override Passcode. Access attempt logged in immutable audit vault.",
+        variant: "danger",
+      });
       return;
     }
 
@@ -82,6 +88,11 @@ export default function PoshBreakGlassPage() {
       form.authorizedBy,
       `Emergency break-glass access invoked for case ${form.caseNumber}. Reason: ${form.reasonCategory}`
     );
+    toast({
+      title: "Break-Glass Protocol Activated",
+      description: `Emergency access unlocked for matter ${form.caseNumber}. Session expires in 60 minutes.`,
+      variant: "warning",
+    });
   };
 
   return (

@@ -11,7 +11,8 @@ import {
   Users,
   PenTool
 } from "lucide-react";
-import { formatDate } from "@/lib/utils";
+import { formatDate, downloadFile } from "@/lib/utils";
+import { useToast } from "@/components/ui/toast";
 
 interface DeclarationItem {
   id: string;
@@ -56,6 +57,7 @@ const INITIAL_DECLARATIONS: DeclarationItem[] = [
 ];
 
 export default function PoshIcDeclarationsPage() {
+  const { toast } = useToast();
   const [declarations, setDeclarations] = useState<DeclarationItem[]>(INITIAL_DECLARATIONS);
   const [signingModal, setSigningModal] = useState<DeclarationItem | null>(null);
   const [confirmedCheck, setConfirmedCheck] = useState(false);
@@ -151,7 +153,30 @@ export default function PoshIcDeclarationsPage() {
                   </button>
                 ) : (
                   <button
-                    onClick={() => alert(`Undertaking ${dec.id} is securely sealed and archived in the compliance vault.`)}
+                    onClick={() => {
+                      const undertakingDoc = [
+                        "===========================================================",
+                        "     STATUTORY SECTION 16 CONFIDENTIALITY UNDERTAKING",
+                        "===========================================================",
+                        `Docket Identifier: ${dec.id}`,
+                        `Title: ${dec.title}`,
+                        `Signatory: ${dec.signedBy}`,
+                        `Role: ${dec.role}`,
+                        `Signed At: ${dec.signedAt || new Date().toISOString()}`,
+                        `Status: EXECUTED & DIGITALLY VERIFIED`,
+                        "===========================================================",
+                        "Terms: The signatory solemnly affirms to preserve absolute",
+                        "confidentiality of the identities of aggrieved women, respondents,",
+                        "and witnesses pursuant to Section 16 of the POSH Act 2013.",
+                        "Penalty for breach: Disciplinary action and statutory fine per Section 17.",
+                      ].join("\n");
+                      downloadFile(`${dec.id}-signed-undertaking.txt`, undertakingDoc);
+                      toast({
+                        title: "Docket Downloaded",
+                        description: `Signed Undertaking ${dec.id} downloaded from compliance vault.`,
+                        variant: "info",
+                      });
+                    }}
                     className="px-3 py-1.5 border border-border bg-slate-50 hover:bg-slate-100 text-xs font-medium text-slate-700 rounded flex items-center gap-1.5"
                   >
                     <FileCheck2 className="w-3.5 h-3.5 text-emerald-600" />

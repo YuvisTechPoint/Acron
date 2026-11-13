@@ -15,8 +15,10 @@ import {
   Building,
 } from "lucide-react";
 import { platformStore } from "@/lib/store";
+import { useToast } from "@/components/ui/toast";
 
 export default function PoshOrgSupportPage() {
+  const { toast } = useToast();
   const [selectedOrgId, setSelectedOrgId] = useState("org-1");
   const orgs = platformStore.getOrganizations();
   const activeOrg = orgs.find((o) => o.id === selectedOrgId) || orgs[0];
@@ -56,7 +58,11 @@ export default function PoshOrgSupportPage() {
     setSubmittedTicket(newTicketId);
     setTicketSubject("");
     setDescription("");
-    alert(`Support request registered: ${newTicketId}. Assigned to Acorn Senior POSH Counsel.`);
+    toast({
+      title: "Support Request Lodged",
+      description: `Support request registered: ${newTicketId}. Assigned to Acorn Senior POSH Counsel.`,
+      variant: "success",
+    });
   };
 
   return (

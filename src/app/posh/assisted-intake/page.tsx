@@ -18,8 +18,10 @@ import {
 } from "lucide-react";
 import { platformStore } from "@/lib/store";
 import { AssistedIntakeRecord } from "@/lib/types";
+import { useToast } from "@/components/ui/toast";
 
 export default function PoshAssistedIntakePage() {
+  const { toast } = useToast();
   const [counsellorName, setCounsellorName] = useState("Pooja Banerjee, MSW (Senior Intake Counsellor)");
   const [callerPhone, setCallerPhone] = useState("+91 98314 55219");
   const [callerChannel, setCallerChannel] = useState<"PHONE" | "WALK_IN" | "VIDEO_BRIDGE">("PHONE");
@@ -36,7 +38,11 @@ export default function PoshAssistedIntakePage() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!readBackConfirmed || !safeContactAffirmed) {
-      alert("Statutory Requirement: Both the Read-Back protocol and Safe Contact Affirmation must be checked by the counsellor.");
+      toast({
+        title: "Statutory Protocol Affirmation Required",
+        description: "Both the Read-Back protocol and Safe Contact Affirmation must be checked by the counsellor.",
+        variant: "danger",
+      });
       return;
     }
 
@@ -53,6 +59,11 @@ export default function PoshAssistedIntakePage() {
 
     setSubmittedRef(newRecord.id);
     setRecords(platformStore.getAssistedIntakes());
+    toast({
+      title: "Assisted Intake Docket Recorded",
+      description: `Intake docket ${newRecord.id} generated and read-back verified.`,
+      variant: "success",
+    });
   };
 
   return (

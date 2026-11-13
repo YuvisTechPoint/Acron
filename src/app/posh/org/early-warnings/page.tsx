@@ -14,13 +14,28 @@ import {
 } from "lucide-react";
 import { platformStore } from "@/lib/store";
 import { EarlyWarningSignal } from "@/lib/types";
+import { useToast } from "@/components/ui/toast";
 
 export default function OrgEarlyWarningsPage() {
+  const { toast } = useToast();
   const [warnings, setWarnings] = useState<EarlyWarningSignal[]>(platformStore.getEarlyWarnings("TECHKOL"));
   const [actionDone, setActionDone] = useState<string | null>(null);
 
   const markActionInitiated = (id: string, metric: string) => {
+    platformStore.addAuditLog(
+      "Org Admin",
+      "org_admin",
+      "PREVENTIVE_ADVISORY_ISSUED",
+      "policy",
+      id,
+      `Preventive advisory dispatched for early-warning signal: ${metric}`
+    );
     setActionDone(`Statutory preventive advisory generated for '${metric}'. Logged in Section 19 compliance ledger.`);
+    toast({
+      title: "Preventive Advisory Issued",
+      description: `Action initiated for '${metric}'. Logged in Section 19 compliance ledger.`,
+      variant: "success",
+    });
     setTimeout(() => setActionDone(null), 4000);
   };
 

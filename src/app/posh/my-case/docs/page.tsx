@@ -12,8 +12,11 @@ import {
   AlertCircle
 } from "lucide-react";
 import { platformStore } from "@/lib/store";
+import { downloadFile } from "@/lib/utils";
+import { useToast } from "@/components/ui/toast";
 
 export default function ComplainantDocsPage() {
+  const { toast } = useToast();
   const [activeCaseId] = useState("POSH-TECHKOL-2026-0014");
   const [supplementalTitle, setSupplementalTitle] = useState("");
   const [supplementalType, setSupplementalType] = useState("CHAT_SCREENSHOT");
@@ -52,9 +55,29 @@ export default function ComplainantDocsPage() {
   };
 
   const handleDownload = (exhibitCode: string, title: string) => {
+    const docData = [
+      "===========================================================",
+      "  ACORN LEGAL CONSULTANTS - COMPLAINANT EXHIBIT TRANSCRIPT",
+      "===========================================================",
+      `Case Reference: ${activeCaseId}`,
+      `Exhibit Code: ${exhibitCode}`,
+      `Exhibit Title: ${title}`,
+      `Accessed By: Aggrieved Complainant`,
+      `Decryption Timestamp: ${new Date().toISOString()}`,
+      "-----------------------------------------------------------",
+      "Tamper-Evident SHA-256 seal verified under Indian Evidence Act.",
+      "Strictly Confidential per Section 16 POSH Act 2013.",
+      "===========================================================",
+    ].join("\n");
+    downloadFile(`${exhibitCode}-decrypted.txt`, docData);
     setNotification({
       message: `Verified exhibit ${exhibitCode} ("${title}") decrypted and downloaded securely.`,
       type: "info"
+    });
+    toast({
+      title: "Exhibit Downloaded",
+      description: `Decrypted exhibit ${exhibitCode} downloaded.`,
+      variant: "info",
     });
   };
 

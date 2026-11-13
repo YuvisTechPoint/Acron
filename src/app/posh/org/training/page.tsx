@@ -14,8 +14,11 @@ import {
   TrendingUp,
 } from "lucide-react";
 import { platformStore } from "@/lib/store";
+import { downloadFile } from "@/lib/utils";
+import { useToast } from "@/components/ui/toast";
 
 export default function PoshOrgTrainingPage() {
+  const { toast } = useToast();
   const [selectedOrgId, setSelectedOrgId] = useState("org-1");
   const orgs = platformStore.getOrganizations();
   const activeOrg = orgs.find((o) => o.id === selectedOrgId) || orgs[0];
@@ -185,7 +188,18 @@ export default function PoshOrgTrainingPage() {
                     Standard Assessment Passmark: 80% &bull; Interactive Scenarios Included
                   </span>
                   <button
-                    onClick={() => alert(`Exporting audit completion ledger for ${c.code}...`)}
+                    onClick={() => {
+                      const csvContent = [
+                        "course_code,course_title,target_audience,total_assigned,completed_count,completion_rate_pct,statutory_mandate",
+                        `"${c.code}","${c.title}","${c.target}",${c.totalAssigned},${c.completedCount},${c.completionRate}%,"Section 19(c) POSH Act 2013"`,
+                      ].join("\n");
+                      downloadFile(`LMS-Completion-Ledger-${c.code}.csv`, csvContent, "text/csv;charset=utf-8");
+                      toast({
+                        title: "Audit Ledger Exported",
+                        description: `Audit completion ledger for ${c.code} exported in CSV format.`,
+                        variant: "success",
+                      });
+                    }}
                     className="px-3 py-1.5 border border-border rounded hover:bg-surface text-ink flex items-center gap-1.5 font-medium"
                   >
                     <Download className="w-3.5 h-3.5" />

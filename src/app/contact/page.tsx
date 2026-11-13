@@ -27,29 +27,78 @@ import {
   Checkbox,
 } from "@/components/ui";
 import { ChambersMap } from "@/components/chambers-map";
+import { useToast } from "@/components/ui/toast";
 
 export default function ContactPage() {
   const siteConfig = useRealtimeSiteConfig();
+  const { toast } = useToast();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [message, setMessage] = useState("");
   const [consent, setConsent] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [submittedRef, setSubmittedRef] = useState<string | null>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const req = platformStore.addServiceRequest({
-      fullName: name,
-      email: email,
-      phone: phone,
-      subject: "General Contact Inquiry",
-      description: message,
-      preferredChannel: "email",
-      serviceCategory: "general_counsel",
-      urgency: "standard",
-    });
-    setSubmittedRef(req.refNumber || `CONT-${Math.floor(100000 + Math.random() * 900000)}`);
+    setIsSubmitting(true);
+    try {
+      const res = await fetch("/api/requests", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          fullName: name,
+          email,
+          phone,
+          practiceArea: "General Advisory",
+          subject: "General Contact Inquiry",
+          description: message,
+          preferredMode: "ONLINE_VC",
+        }),
+      });
+      const data = await res.json();
+      const refNumber = data.referenceNumber || data.refNumber;
+
+      const req = platformStore.addServiceRequest({
+        fullName: name,
+        email,
+        phone,
+        subject: "General Contact Inquiry",
+        description: message,
+        preferredChannel: "email",
+        serviceCategory: "general_counsel",
+        urgency: "standard",
+      });
+
+      const finalRef = refNumber || req.refNumber || `CONT-${Math.floor(100000 + Math.random() * 900000)}`;
+      setSubmittedRef(finalRef);
+      toast({
+        title: "Inquiry Transmitted",
+        description: `Your communication has been lodged under reference ${finalRef}.`,
+        variant: "success",
+      });
+    } catch {
+      const req = platformStore.addServiceRequest({
+        fullName: name,
+        email,
+        phone,
+        subject: "General Contact Inquiry",
+        description: message,
+        preferredChannel: "email",
+        serviceCategory: "general_counsel",
+        urgency: "standard",
+      });
+      const fallbackRef = req.refNumber || `CONT-${Math.floor(100000 + Math.random() * 900000)}`;
+      setSubmittedRef(fallbackRef);
+      toast({
+        title: "Inquiry Transmitted",
+        description: `Your inquiry has been logged under reference ${fallbackRef}.`,
+        variant: "success",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (

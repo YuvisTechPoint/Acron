@@ -19,9 +19,11 @@ import {
 import { platformStore } from "@/lib/store";
 import { formatDate, validateConciliationTerms } from "@/lib/utils";
 import { POSHCase } from "@/lib/types";
+import { useToast } from "@/components/ui/toast";
 
 export default function ICConciliationPage() {
   const params = useParams();
+  const { toast } = useToast();
   const caseId = (params?.id as string) || "case-01";
   const [poshCase, setPoshCase] = useState<POSHCase | undefined>(() => platformStore.getCaseById(caseId));
 
@@ -42,20 +44,32 @@ export default function ICConciliationPage() {
 
   const termsValidation = validateConciliationTerms(writtenTerms);
 
-  const handleRecordConciliation = (outcome: "CONCLUDED" | "FAILED") => {
+  const handleRecordConciliation = async (outcome: "CONCLUDED" | "FAILED") => {
     if (!poshCase) return;
 
     if (outcome === "CONCLUDED") {
       if (!requestedByComplainant) {
-        alert("Statutory Violation: Under Section 10(1) of the POSH Act, conciliation may only take place upon the voluntary written request of the aggrieved woman. The IC or employer cannot initiate conciliation without complainant request.");
+        toast({
+          title: "Statutory Violation (Section 10(1))",
+          description: "Conciliation may only take place upon the voluntary written request of the aggrieved woman.",
+          variant: "danger",
+        });
         return;
       }
       if (!termsValidation.isValid) {
-        alert(termsValidation.errorMessage || "Statutory Error: The conciliation terms contain illegal monetary settlement provisions.");
+        toast({
+          title: "Statutory Prohibition Violation",
+          description: termsValidation.errorMessage || "Conciliation terms contain illegal monetary settlement provisions.",
+          variant: "danger",
+        });
         return;
       }
       if (!monetaryFreeAcknowledged) {
-        alert("Statutory Error: You must acknowledge the statutory prohibition against monetary settlement (Section 10(1) Proviso).");
+        toast({
+          title: "Mandatory Statutory Acknowledgment",
+          description: "You must acknowledge the statutory prohibition against monetary settlement (Section 10(1) Proviso).",
+          variant: "danger",
+        });
         return;
       }
 
@@ -64,16 +78,48 @@ export default function ICConciliationPage() {
         "CONCILIATION_SUCCESS",
         "Section 10 conciliation agreement concluded and forwarded to employer. No monetary terms involved."
       );
+      try {
+        await fetch("/api/cases", {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            id: poshCase.id,
+            state: "CONCILIATION_SUCCESS",
+            note: "Section 10 conciliation completed.",
+          }),
+        });
+      } catch {}
+
       setConciliationStatus("CONCLUDED");
-      alert("Conciliation agreement executed successfully. Forwarded to employer per Section 10(2).");
+      toast({
+        title: "Conciliation Agreement Executed",
+        description: "Agreement executed per Section 10(2) and forwarded to employer for compliance.",
+        variant: "success",
+      });
     } else {
       platformStore.updateCaseState(
         poshCase.id,
         "INQUIRY_IN_PROGRESS",
         "Conciliation failed or terminated. Formal inquiry initiated pursuant to Section 11(1) proviso."
       );
+      try {
+        await fetch("/api/cases", {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            id: poshCase.id,
+            state: "INQUIRY_IN_PROGRESS",
+            note: "Conciliation failed. Transferred to Section 11 inquiry.",
+          }),
+        });
+      } catch {}
+
       setConciliationStatus("FAILED");
-      alert("Conciliation failed. Case transitioned to formal Section 11 inquiry.");
+      toast({
+        title: "Inquiry Initiated",
+        description: "Conciliation failed. Case transitioned to formal Section 11 inquiry proceedings.",
+        variant: "info",
+      });
     }
   };
 

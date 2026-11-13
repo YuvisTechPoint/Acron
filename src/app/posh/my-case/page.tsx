@@ -15,8 +15,10 @@ import {
 } from "lucide-react";
 import { platformStore } from "@/lib/store";
 import { formatDate, formatDateTime, calculateDaysRemaining } from "@/lib/utils";
+import { useToast } from "@/components/ui/toast";
 
 export default function ComplainantCaseTrackingPage() {
+  const { toast } = useToast();
   const [caseQuery, setCaseQuery] = useState("POSH-TECHKOL-2026-0014");
   const [searchedCase, setSearchedCase] = useState<any>(null);
   const [errorMsg, setErrorMsg] = useState("");
@@ -195,7 +197,13 @@ export default function ComplainantCaseTrackingPage() {
                         </div>
                       </div>
                       <button
-                        onClick={() => alert(`Secured Exhibit ${ev.exhibitCode} integrity validated via SHA-256 hash.`)}
+                        onClick={() => {
+                          toast({
+                            title: "Exhibit Cryptographically Verified",
+                            description: `Secured Exhibit ${ev.exhibitCode} integrity validated via SHA-256 hash (${ev.sha256Hash}).`,
+                            variant: "success",
+                          });
+                        }}
                         className="px-3 py-1.5 border border-border rounded text-[11px] font-medium hover:bg-surface flex items-center gap-1"
                       >
                         <ShieldCheck className="w-3 h-3 text-emerald-600" />

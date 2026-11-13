@@ -6,8 +6,10 @@ import { ArrowLeft, Edit2, Save, X, CheckCircle2, Scale, Plus } from "lucide-rea
 import { platformStore } from "@/lib/store";
 import { useRealtimeLegalRules } from "@/lib/realtime";
 import { LegalRule } from "@/lib/types";
+import { useToast } from "@/components/ui/toast";
 
 export default function LegalRulesConsolePage() {
+  const { toast } = useToast();
   const rules = useRealtimeLegalRules();
   const [editingParam, setEditingParam] = useState<string | null>(null);
   const [editValue, setEditValue] = useState("");
@@ -15,7 +17,11 @@ export default function LegalRulesConsolePage() {
 
   const handleStartEdit = (rule: LegalRule) => {
     if (rule.param === "conciliation_allows_monetary") {
-      alert("This parameter is a statutory guardrail locked by Section 10(1) Proviso of the POSH Act.");
+      toast({
+        title: "Statutory Guardrail Locked",
+        description: "This parameter is locked by Section 10(1) Proviso of the POSH Act prohibiting monetary conciliations.",
+        variant: "danger",
+      });
       return;
     }
     setEditingParam(rule.param);

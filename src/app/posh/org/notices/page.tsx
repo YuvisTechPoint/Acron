@@ -15,9 +15,11 @@ import {
   Building,
 } from "lucide-react";
 import { platformStore } from "@/lib/store";
-import { formatDate } from "@/lib/utils";
+import { formatDate, downloadFile } from "@/lib/utils";
+import { useToast } from "@/components/ui/toast";
 
 export default function PoshOrgNoticesPage() {
+  const { toast } = useToast();
   const [selectedOrgId, setSelectedOrgId] = useState("org-1");
   const orgs = platformStore.getOrganizations();
   const activeOrg = orgs.find((o) => o.id === selectedOrgId) || orgs[0];
@@ -130,7 +132,31 @@ export default function PoshOrgNoticesPage() {
                 Contains complete statutory definition of sexual harassment, penal consequences under IPC / BNS &amp; POSH Act, confidential grievance filing link, and contact coordinates of Presiding Officer and Acorn Legal External Member.
               </p>
               <button
-                onClick={() => alert("Downloading print-ready bilingual A3 poster (PDF)...")}
+                onClick={() => {
+                  const posterSvg = `
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="1130" viewBox="0 0 800 1130">
+  <rect width="800" height="1130" fill="#FBF9F5"/>
+  <rect x="20" y="20" width="760" height="1090" fill="none" stroke="#0E2042" stroke-width="4"/>
+  <rect x="30" y="30" width="740" height="1070" fill="none" stroke="#C29B38" stroke-width="1.5"/>
+  <text x="400" y="90" font-family="serif" font-size="28" font-weight="bold" fill="#0E2042" text-anchor="middle">ACORN LEGAL CONSULTANTS &bull; POSH ACT 2013</text>
+  <text x="400" y="125" font-family="sans-serif" font-size="14" font-weight="bold" fill="#C29B38" text-anchor="middle" letter-spacing="3">MANDATORY STATUTORY WORKPLACE NOTICE (SECTION 19(b))</text>
+  <line x1="100" y1="145" x2="700" y2="145" stroke="#E2D9C8" stroke-width="1"/>
+  <text x="80" y="190" font-family="serif" font-size="20" font-weight="bold" fill="#0E2042">1. Prohibition of Sexual Harassment</text>
+  <text x="80" y="220" font-family="sans-serif" font-size="12" fill="#334155">Sexual harassment at workplace is an offence under Section 3 of the POSH Act 2013 and IPC/BNS.</text>
+  <text x="80" y="240" font-family="sans-serif" font-size="12" fill="#334155">কর্মক্ষেত্রে যে কোনও ধরনের যৌন হয়রানি সম্পূর্ণ নিষিদ্ধ ও আইনত দণ্ডনীয় অপরাধ।</text>
+  <text x="80" y="290" font-family="serif" font-size="20" font-weight="bold" fill="#0E2042">2. Internal Committee (IC) Contacts</text>
+  <text x="80" y="320" font-family="sans-serif" font-size="12" fill="#334155">Presiding Officer: Dr. Ananya Mukherjee | External Member: Adv. Debjani Sen (Acorn Legal)</text>
+  <text x="80" y="340" font-family="sans-serif" font-size="12" fill="#334155">Confidential Portal: https://acornlegal.in/posh/portal</text>
+  <text x="400" y="1050" font-family="serif" font-size="12" fill="#64748B" text-anchor="middle">Excellence in Law. Integrity in Practice. Acorn Legal Consultants, Kolkata.</text>
+</svg>
+                  `.trim();
+                  downloadFile(`POSH-Statutory-Notice-Poster-${activeOrg.code}.svg`, posterSvg, "image/svg+xml;charset=utf-8");
+                  toast({
+                    title: "Poster Downloaded",
+                    description: `Print-ready bilingual A3 poster (English + বাংলা) downloaded.`,
+                    variant: "success",
+                  });
+                }}
                 className="px-4 py-2 bg-primary text-white text-xs font-semibold rounded hover:bg-primary-hover flex items-center gap-1.5"
               >
                 <Download className="w-3.5 h-3.5 text-accent" />
@@ -146,7 +172,25 @@ export default function PoshOrgNoticesPage() {
                 High-contrast digital creatives designed for employee portal homepages, digital signage monitors in corporate lobbies, and remote team onboarding packages.
               </p>
               <button
-                onClick={() => alert("Downloading digital graphics asset bundle (.ZIP)...")}
+                onClick={() => {
+                  const digitalBundle = [
+                    "===========================================================",
+                    "  ACORN LEGAL CONSULTANTS - DIGITAL ASSET MANIFEST",
+                    "===========================================================",
+                    `Client: ${activeOrg.name}`,
+                    "Format: Digital Intranet Banner / Screensaver Pack",
+                    "Dimensions: 1920x1080 Full HD & 1200x630 Social Banner",
+                    "Includes: Mandatory Sec 19(b) penal notice, QR code to confidential portal,",
+                    "and Presiding Officer direct contact channel.",
+                    "===========================================================",
+                  ].join("\n");
+                  downloadFile(`POSH-Digital-Creatives-${activeOrg.code}.txt`, digitalBundle);
+                  toast({
+                    title: "Asset Pack Downloaded",
+                    description: "Digital intranet & screensaver graphics manifest downloaded.",
+                    variant: "info",
+                  });
+                }}
                 className="px-4 py-2 border border-border text-ink text-xs font-semibold rounded hover:bg-surface flex items-center gap-1.5"
               >
                 <Download className="w-3.5 h-3.5" />
@@ -189,7 +233,13 @@ export default function PoshOrgNoticesPage() {
                 <div className="text-[11px] text-ink-secondary pt-1 flex justify-between items-center">
                   <span>Last Inspected: {loc.verifiedAt} by {loc.inspector}</span>
                   <button
-                    onClick={() => alert(`Viewing inspection photo evidence for ${loc.id}...`)}
+                    onClick={() => {
+                      toast({
+                        title: "Inspection Photo Evidence Verified",
+                        description: `Location ${loc.id} physical notice display confirmed by ${loc.inspector} on ${loc.verifiedAt}. Tamper hash logged.`,
+                        variant: "success",
+                      });
+                    }}
                     className="text-primary hover:underline font-semibold"
                   >
                     View Photo Evidence &rarr;

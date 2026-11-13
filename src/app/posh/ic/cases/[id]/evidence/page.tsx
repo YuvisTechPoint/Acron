@@ -18,11 +18,13 @@ import {
   Share2,
 } from "lucide-react";
 import { platformStore } from "@/lib/store";
-import { formatDate } from "@/lib/utils";
+import { formatDate, downloadFile } from "@/lib/utils";
 import { POSHCase, EvidenceItem } from "@/lib/types";
+import { useToast } from "@/components/ui/toast";
 
 export default function ICEvidencePage() {
   const params = useParams();
+  const { toast } = useToast();
   const caseId = (params?.id as string) || "case-01";
   const [poshCase, setPoshCase] = useState<POSHCase | undefined>(() => platformStore.getCaseById(caseId));
 
@@ -52,7 +54,11 @@ export default function ICEvidencePage() {
     const updated = platformStore.getCaseById(poshCase.id);
     if (updated) setPoshCase({ ...updated });
     setNewTitle("");
-    alert("Exhibit registered into cryptographic evidence vault with SHA-256 custody entry.");
+    toast({
+      title: "Exhibit Registered",
+      description: "Exhibit registered into cryptographic evidence vault with SHA-256 custody entry.",
+      variant: "success",
+    });
   };
 
   if (!poshCase) {
@@ -216,14 +222,52 @@ export default function ICEvidencePage() {
 
                     <div className="flex gap-2">
                       <button
-                        onClick={() => alert(`Releasing exhibit ${ex.exhibitCode} to opposing party under natural justice...`)}
+                        onClick={() => {
+                          platformStore.addAuditLog(
+                            "IC Presiding Officer",
+                            "ic_presiding_officer",
+                            "EXHIBIT_RELEASED_TO_PARTIES",
+                            "case",
+                            poshCase.caseNumber,
+                            `Exhibit ${ex.exhibitCode} (${ex.title}) released to parties under Rule 7 natural justice standards.`
+                          );
+                          toast({
+                            title: "Exhibit Released",
+                            description: `Exhibit ${ex.exhibitCode} formally released to opposing party under natural justice per Rule 7.`,
+                            variant: "success",
+                          });
+                        }}
                         className="px-3 py-1 border border-border rounded hover:bg-surface flex items-center gap-1 text-ink"
                       >
                         <Share2 className="w-3 h-3 text-primary" />
                         <span>Release to Parties</span>
                       </button>
                       <button
-                        onClick={() => alert(`Downloading verified exhibit ${ex.exhibitCode}...`)}
+                        onClick={() => {
+                          const manifest = [
+                            "===========================================================",
+                            "  ACORN LEGAL CONSULTANTS - EVIDENCE VAULT MANIFEST",
+                            "===========================================================",
+                            `Case Docket: ${poshCase.caseNumber}`,
+                            `Exhibit Code: ${ex.exhibitCode}`,
+                            `Title: ${ex.title}`,
+                            `Uploaded By: ${ex.uploadedBy.toUpperCase()}`,
+                            `File Type: ${ex.fileType}`,
+                            `File Size: ${ex.fileSizeKb} KB`,
+                            `SHA-256 Digest: ${ex.sha256Hash}`,
+                            `Custody Seal: SEAL-VAULT-${ex.exhibitCode}-VERIFIED`,
+                            `Timestamp: ${new Date().toISOString()}`,
+                            "===========================================================",
+                            "Cryptographically verified under Indian Evidence Act Section 65B.",
+                            "Strictly Confidential per Section 16 POSH Act 2013.",
+                          ].join("\n");
+                          downloadFile(`${ex.exhibitCode}-manifest.txt`, manifest);
+                          toast({
+                            title: "Exhibit Downloaded",
+                            description: `Verified custody manifest for ${ex.exhibitCode} downloaded.`,
+                            variant: "info",
+                          });
+                        }}
                         className="px-3 py-1 bg-surface border border-border rounded hover:bg-surface-muted flex items-center gap-1 text-ink"
                       >
                         <Download className="w-3 h-3 text-primary" />

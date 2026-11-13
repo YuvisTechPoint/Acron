@@ -15,9 +15,11 @@ import {
   Lock,
 } from "lucide-react";
 import { platformStore } from "@/lib/store";
-import { formatINR, formatSuppressedCount, isCellSuppressed } from "@/lib/utils";
+import { formatINR, formatSuppressedCount, isCellSuppressed, downloadFile } from "@/lib/utils";
+import { useToast } from "@/components/ui/toast";
 
 export default function PoshAdminAnalyticsPage() {
+  const { toast } = useToast();
   const [selectedYear, setSelectedYear] = useState("2026");
 
   const analyticsMetrics = {
@@ -194,14 +196,56 @@ export default function PoshAdminAnalyticsPage() {
 
             <div className="pt-4 flex flex-col gap-3">
               <button
-                onClick={() => alert("Generating anonymized macro analytics CSV...")}
+                onClick={() => {
+                  const csvRows = [
+                    "metric_key,value,statutory_benchmark,compliance_status",
+                    `total_inquiries_initiated,${analyticsMetrics.totalInquiriesInitiated},N/A,Active`,
+                    `disposed_within_90_days_pct,${analyticsMetrics.disposedWithin90DaysPct}%,100%,Compliant`,
+                    `avg_inquiry_duration_days,${analyticsMetrics.avgInquiryDays},<=90 Days,Compliant`,
+                    `conciliation_settlements,${analyticsMetrics.conciliationSuccessCount},Sec 10 Voluntary,Executed`,
+                    `formal_substantiated_findings,${analyticsMetrics.formalInquirySubstantiatedCount},Preponderance,Substantiated`,
+                    `formal_exonerated_findings,${analyticsMetrics.formalInquiryExoneratedCount},Natural Justice,Exonerated`,
+                    `avg_compensation_awarded_inr,${analyticsMetrics.avgCompensationAwardedPaise / 100},Sec 15 Factors,Recovered`,
+                  ];
+                  downloadFile(`acorn-posh-telemetry-${selectedYear}.csv`, csvRows.join("\n"), "text/csv;charset=utf-8");
+                  toast({
+                    title: "Dataset Exported",
+                    description: `Anonymized macro telemetry CSV for ${selectedYear} downloaded.`,
+                    variant: "success",
+                  });
+                }}
                 className="w-full py-2.5 bg-primary text-white text-xs font-semibold rounded hover:bg-primary-hover flex items-center justify-center gap-2"
               >
                 <Download className="w-4 h-4 text-accent" />
                 <span>Export Anonymized Macro Dataset (CSV)</span>
               </button>
               <button
-                onClick={() => alert("Generating annual Chambers POSH Practice Whitepaper (PDF)...")}
+                onClick={() => {
+                  const summaryDoc = [
+                    "===========================================================",
+                    "  ACORN LEGAL CONSULTANTS - ANNUAL POSH PRACTICE WHITEPAPER",
+                    "===========================================================",
+                    `Reporting Year: ${selectedYear}`,
+                    "Chambers: 25 Camac Street, Kolkata - 700016",
+                    `Generated On: ${new Date().toISOString()}`,
+                    "-----------------------------------------------------------",
+                    "KEY STATUTORY BENCHMARKS:",
+                    `- Total Matters Handled: ${analyticsMetrics.totalInquiriesInitiated}`,
+                    `- Disposed Within Statutory 90-Day Window: ${analyticsMetrics.disposedWithin90DaysPct}%`,
+                    `- Average Adjudication Time: ${analyticsMetrics.avgInquiryDays} days`,
+                    `- Section 10 Conciliations: ${analyticsMetrics.conciliationSuccessCount}`,
+                    `- Section 13 Formal Inquiries: ${analyticsMetrics.formalInquirySubstantiatedCount + analyticsMetrics.formalInquiryExoneratedCount}`,
+                    `- Average Section 15 Compensation: ${formatINR(analyticsMetrics.avgCompensationAwardedPaise)}`,
+                    "===========================================================",
+                    "All figures strictly sanitized per Section 16 & Rule 14.",
+                  ].join("\n");
+                  downloadFile(`Acorn-Chambers-POSH-Executive-Summary-${selectedYear}.txt`, summaryDoc);
+                  toast({
+                    title: "Executive Summary Downloaded",
+                    description: `Annual Chambers POSH Practice Summary for ${selectedYear} generated.`,
+                    variant: "info",
+                  });
+                }}
                 className="w-full py-2.5 bg-white border border-border text-ink text-xs font-semibold rounded hover:bg-surface flex items-center justify-center gap-2"
               >
                 <Download className="w-4 h-4" />

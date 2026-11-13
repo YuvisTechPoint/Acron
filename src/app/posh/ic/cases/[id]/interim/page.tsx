@@ -18,9 +18,11 @@ import {
 import { platformStore } from "@/lib/store";
 import { formatDate } from "@/lib/utils";
 import { POSHCase } from "@/lib/types";
+import { useToast } from "@/components/ui/toast";
 
 export default function ICInterimReliefPage() {
   const params = useParams();
+  const { toast } = useToast();
   const caseId = (params?.id as string) || "case-01";
   const [poshCase, setPoshCase] = useState<POSHCase | undefined>(() => platformStore.getCaseById(caseId));
 
@@ -54,7 +56,11 @@ export default function ICInterimReliefPage() {
     );
 
     setStatus("RECOMMENDED");
-    alert("Interim Relief order issued to employer under Section 12 of POSH Act 2013.");
+    toast({
+      title: "Interim Relief Issued",
+      description: "Interim Relief order issued to employer under Section 12 of POSH Act 2013.",
+      variant: "success",
+    });
   };
 
   if (!poshCase) {

@@ -17,9 +17,11 @@ import {
   Lock,
 } from "lucide-react";
 import { platformStore } from "@/lib/store";
-import { formatDate } from "@/lib/utils";
+import { formatDate, downloadFile } from "@/lib/utils";
+import { useToast } from "@/components/ui/toast";
 
 export default function PoshRespondentStatusPage() {
+  const { toast } = useToast();
   const [caseNumber, setCaseNumber] = useState("POSH-TECHKOL-2026-0014");
 
   const poshCase = platformStore.getCaseById(caseNumber);
@@ -207,7 +209,28 @@ export default function PoshRespondentStatusPage() {
                   </div>
                 </div>
                 <button
-                  onClick={() => alert(`Downloading verified exhibit ${doc.code}...`)}
+                  onClick={() => {
+                    const docText = [
+                      "===========================================================",
+                      "   ACORN LEGAL CONSULTANTS - CERTIFIED EXHIBIT COPY",
+                      "===========================================================",
+                      `Case Identifier: ${caseNumber}`,
+                      `Exhibit Reference: ${doc.code}`,
+                      `Document Title: ${doc.title}`,
+                      `Release Date: ${doc.date}`,
+                      `Released Under: Natural Justice & Rule 7 POSH Rules 2013`,
+                      "===========================================================",
+                      "Notice: This document is released exclusively for defense",
+                      "purposes before the Internal Committee. Redistribution or",
+                      "publication is prohibited under Section 16 of the POSH Act 2013.",
+                    ].join("\n");
+                    downloadFile(`${doc.code}-exhibit.txt`, docText);
+                    toast({
+                      title: "Exhibit Downloaded",
+                      description: `Verified copy of ${doc.code} downloaded.`,
+                      variant: "info",
+                    });
+                  }}
                   className="px-3 py-1.5 border border-border rounded text-ink hover:bg-surface flex items-center gap-1.5 font-medium"
                 >
                   <Download className="w-3.5 h-3.5" />

@@ -29,9 +29,11 @@ import {
   Select,
   Checkbox,
 } from "@/components/ui";
+import { useToast } from "@/components/ui/toast";
 
 function RequestServiceContent() {
   const searchParams = useSearchParams();
+  const { toast } = useToast();
   const initialService = searchParams.get("service") || searchParams.get("category") || "Advisory";
 
   const [step, setStep] = useState(1);
@@ -98,7 +100,7 @@ function RequestServiceContent() {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!consent) {
       setErrors({ consent: "You must acknowledge the Bar Council compliance declaration" });
@@ -106,27 +108,66 @@ function RequestServiceContent() {
     }
 
     setIsSubmitting(true);
-    setTimeout(() => {
-      const generated = `ACORN-${new Date().getFullYear()}-${Math.floor(1000 + Math.random() * 9000)}`;
-      
-      // Log to platformStore if available
-      try {
-        platformStore.addServiceRequest({
+    try {
+      const res = await fetch("/api/requests", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
           fullName,
           email,
           phone,
           organization: orgName || undefined,
-          preferredChannel: "phone",
-          serviceCategory: selectedPractice || "corporate_advisory",
-          subject,
+          practiceArea: selectedPractice || "General Advisory",
+          subject: subject || `Legal Matter: ${selectedPractice}`,
           description,
+          preferredMode: "ONLINE_VC",
           urgency: "standard",
-        });
-      } catch {}
+        }),
+      });
+      const data = await res.json();
+      const serverRef = data.referenceNumber || data.refNumber;
 
+      const savedLocal = platformStore.addServiceRequest({
+        fullName,
+        email,
+        phone,
+        organization: orgName || undefined,
+        preferredChannel: "phone",
+        serviceCategory: selectedPractice || "corporate_advisory",
+        subject: subject || `Legal Matter: ${selectedPractice}`,
+        description,
+        urgency: "standard",
+      });
+
+      const finalRef = serverRef || savedLocal.refNumber || `ACORN-${new Date().getFullYear()}-${Math.floor(1000 + Math.random() * 9000)}`;
+      setRefId(finalRef);
+      toast({
+        title: "Brief Lodged With Registry",
+        description: `Privileged docket reference ${finalRef} created.`,
+        variant: "success",
+      });
+    } catch {
+      const savedLocal = platformStore.addServiceRequest({
+        fullName,
+        email,
+        phone,
+        organization: orgName || undefined,
+        preferredChannel: "phone",
+        serviceCategory: selectedPractice || "corporate_advisory",
+        subject: subject || `Legal Matter: ${selectedPractice}`,
+        description,
+        urgency: "standard",
+      });
+      const finalRef = savedLocal.refNumber || `ACORN-${new Date().getFullYear()}-${Math.floor(1000 + Math.random() * 9000)}`;
+      setRefId(finalRef);
+      toast({
+        title: "Brief Lodged With Registry",
+        description: `Privileged docket reference ${finalRef} created.`,
+        variant: "success",
+      });
+    } finally {
       setIsSubmitting(false);
-      setRefId(generated);
-    }, 900);
+    }
   };
 
   const STEPPER_ITEMS = [

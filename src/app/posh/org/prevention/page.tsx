@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import {
   ShieldAlert,
   BarChart3,
@@ -15,8 +16,11 @@ import {
   Lock,
 } from "lucide-react";
 import { platformStore } from "@/lib/store";
+import { useToast } from "@/components/ui/toast";
 
 export default function PoshOrgPreventionPage() {
+  const router = useRouter();
+  const { toast } = useToast();
   const [selectedOrgId, setSelectedOrgId] = useState("org-1");
   const orgs = platformStore.getOrganizations();
   const activeOrg = orgs.find((o) => o.id === selectedOrgId) || orgs[0];
@@ -147,7 +151,14 @@ export default function PoshOrgPreventionPage() {
               Workplace Risk Factor Matrix &amp; Remedial Roadmap
             </h2>
             <button
-              onClick={() => alert("Initiating new biannual anonymous climate survey campaign...")}
+              onClick={() => {
+                toast({
+                  title: "Survey Campaign Initiated",
+                  description: "Proceeding to anonymous workplace climate survey control console.",
+                  variant: "info",
+                });
+                router.push("/posh/org/surveys");
+              }}
               className="px-3.5 py-1.5 bg-primary text-white text-xs font-semibold rounded hover:bg-primary-hover"
             >
               Launch Climate Survey

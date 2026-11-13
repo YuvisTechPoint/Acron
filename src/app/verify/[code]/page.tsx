@@ -14,7 +14,11 @@ import {
   Building,
 } from "lucide-react";
 
+import { downloadFile } from "@/lib/utils";
+import { useToast } from "@/components/ui/toast";
+
 export default function DynamicCertificateVerificationPage() {
+  const { toast } = useToast();
   const params = useParams();
   const rawCode = (params?.code as string) || "CERT-ACORN-2026-884";
   const code = decodeURIComponent(rawCode).trim().toUpperCase();
@@ -127,7 +131,32 @@ export default function DynamicCertificateVerificationPage() {
               </button>
 
               <button
-                onClick={() => alert(`Downloading authenticated PDF credential for ${certData.code}...`)}
+                onClick={() => {
+                  const certDoc = [
+                    "===========================================================",
+                    "  ACORN LEGAL CONSULTANTS - CERTIFICATE OF COMPLETION",
+                    "===========================================================",
+                    `Credential Code: ${certData.code}`,
+                    `Recipient: ${certData.recipientName}`,
+                    `Course: ${certData.courseTitle}`,
+                    `Organization: ${certData.organisation}`,
+                    `Issue Date: ${certData.issuedDate}`,
+                    `Valid Through: ${certData.validUntil}`,
+                    `Accreditation: ${certData.accreditation}`,
+                    `Cryptographic Seal: ${certData.sealHash}`,
+                    "-----------------------------------------------------------",
+                    "Issued by Acorn Legal Consultants, Kolkata Chambers.",
+                    "Accredited under Section 19(c) POSH Rules 2013.",
+                    "Verification Link: https://acornlegal.in/verify/" + certData.code,
+                    "===========================================================",
+                  ].join("\n");
+                  downloadFile(`Certificate-${certData.code}.txt`, certDoc);
+                  toast({
+                    title: "Credential Downloaded",
+                    description: `Signed credential document for ${certData.code} downloaded.`,
+                    variant: "success",
+                  });
+                }}
                 className="px-5 py-2 bg-primary text-white text-xs font-semibold rounded hover:bg-primary-hover flex items-center gap-2"
               >
                 <Download className="w-3.5 h-3.5 text-accent" />

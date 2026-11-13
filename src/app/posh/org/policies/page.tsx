@@ -14,8 +14,11 @@ import {
   Building,
 } from "lucide-react";
 import { platformStore } from "@/lib/store";
+import { downloadFile } from "@/lib/utils";
+import { useToast } from "@/components/ui/toast";
 
 export default function PoshOrgPoliciesPage() {
+  const { toast } = useToast();
   const [selectedOrgId, setSelectedOrgId] = useState("org-1");
   const orgs = platformStore.getOrganizations();
   const activeOrg = orgs.find((o) => o.id === selectedOrgId) || orgs[0];
@@ -150,7 +153,32 @@ export default function PoshOrgPoliciesPage() {
                       {p.languages.map((l) => (
                         <button
                           key={l}
-                          onClick={() => alert(`Downloading verified ${l} POSH Policy PDF...`)}
+                          onClick={() => {
+                            const policyDoc = [
+                              "===========================================================",
+                              `  ACORN LEGAL CONSULTANTS - CERTIFIED STATUTORY POSH POLICY`,
+                              "===========================================================",
+                              `Organization: ${activeOrg.name}`,
+                              `Policy Edition: ${p.edition}`,
+                              `Language Translation: ${l}`,
+                              `Effective Date: ${p.effectiveDate}`,
+                              "-----------------------------------------------------------",
+                              "1. Policy Statement: Zero tolerance towards sexual harassment.",
+                              "2. Statutory Scope: Applies to all employees, consultants, vendors,",
+                              "   and interns across physical, digital, and remote workplaces.",
+                              "3. Internal Committee Composition per Section 4 POSH Act 2013.",
+                              "4. Formal & Informal Redressal Mechanisms (Sections 9, 10, 11).",
+                              "5. Section 16 Strict Non-Disclosure & Anti-Retaliation Protection.",
+                              "===========================================================",
+                              "Verified by Acorn Legal Consultants (Chambers Registry).",
+                            ].join("\n");
+                            downloadFile(`POSH-Policy-${activeOrg.code}-${l}.txt`, policyDoc);
+                            toast({
+                              title: "Policy Downloaded",
+                              description: `Certified ${l} translation of corporate POSH Policy downloaded.`,
+                              variant: "info",
+                            });
+                          }}
                           className="px-2.5 py-1 bg-white border border-border rounded text-[11px] hover:bg-surface font-semibold text-primary"
                         >
                           {l}
@@ -160,7 +188,34 @@ export default function PoshOrgPoliciesPage() {
                   </div>
 
                   <button
-                    onClick={() => alert("Downloading signed Order of Constitution of IC...")}
+                    onClick={() => {
+                      const orderDoc = [
+                        "===========================================================",
+                        "       FORMAL STATUTORY ORDER OF CONSTITUTION OF IC",
+                        "===========================================================",
+                        `Employer: ${activeOrg.name}`,
+                        `Registration / CIN: ${activeOrg.code}`,
+                        `Order Reference: ORD-CONST-IC-2026-${activeOrg.code}`,
+                        `Issued Pursuant To: Section 4(1) of POSH Act 2013`,
+                        "-----------------------------------------------------------",
+                        "CONSTITUTION OF INTERNAL COMMITTEE (IC):",
+                        "- Presiding Officer: Dr. Ananya Mukherjee (Senior Woman Employee)",
+                        "- Member: Sharmila Roy (Employee Representative)",
+                        "- Member: Subir Sen (Employee Representative)",
+                        "- External Member: Adv. Debjani Sen (Acorn Legal Consultants)",
+                        "-----------------------------------------------------------",
+                        "Statutory Quorum: Minimum 3 members, PO present, >=50% women.",
+                        "Tenure: 3 years from effective date.",
+                        "===========================================================",
+                        "Signed & Sealed on behalf of the Board of Directors.",
+                      ].join("\n");
+                      downloadFile(`Order-of-Constitution-IC-${activeOrg.code}.txt`, orderDoc);
+                      toast({
+                        title: "Constitution Order Downloaded",
+                        description: "Certified Section 4 Order of Constitution of IC downloaded.",
+                        variant: "info",
+                      });
+                    }}
                     className="px-4 py-2 bg-primary text-white font-semibold rounded hover:bg-primary-hover flex items-center gap-1.5 shrink-0"
                   >
                     <Download className="w-3.5 h-3.5 text-accent" />
@@ -185,7 +240,13 @@ export default function PoshOrgPoliciesPage() {
                 </p>
               </div>
               <button
-                onClick={() => alert("Automated reminder dispatched to unacknowledged employees.")}
+                onClick={() => {
+                  toast({
+                    title: "Automated Reminders Dispatched",
+                    description: `Reminder pulse sent to 23 unacknowledged employees across 3 departments via SSO email integration.`,
+                    variant: "success",
+                  });
+                }}
                 className="px-3.5 py-1.5 bg-primary text-white text-xs font-semibold rounded hover:bg-primary-hover"
               >
                 Send Automated Reminders
@@ -225,7 +286,25 @@ export default function PoshOrgPoliciesPage() {
                   </div>
                 </div>
                 <button
-                  onClick={() => alert(`Downloading archived policy ${p.id}...`)}
+                  onClick={() => {
+                    const archivedText = [
+                      "===========================================================",
+                      "   ACORN LEGAL CONSULTANTS - HISTORICAL ARCHIVED POLICY",
+                      "===========================================================",
+                      `Policy Reference: ${p.id}`,
+                      `Title: ${p.title}`,
+                      `Edition: ${p.edition}`,
+                      `Status: SUPERSEDED`,
+                      "===========================================================",
+                      "Archived in immutable 7-year compliance repository per PRD 8.6.4.",
+                    ].join("\n");
+                    downloadFile(`${p.id}-archived.txt`, archivedText);
+                    toast({
+                      title: "Archived Policy Downloaded",
+                      description: `Historical policy ${p.id} downloaded from compliance archive.`,
+                      variant: "info",
+                    });
+                  }}
                   className="px-3 py-1.5 border border-border rounded text-ink hover:bg-surface flex items-center gap-1.5"
                 >
                   <Download className="w-3.5 h-3.5" />

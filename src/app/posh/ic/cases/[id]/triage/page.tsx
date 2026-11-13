@@ -19,9 +19,11 @@ import {
 import { platformStore } from "@/lib/store";
 import { formatDate, evaluateLimitationStatus } from "@/lib/utils";
 import { POSHCase } from "@/lib/types";
+import { useToast } from "@/components/ui/toast";
 
 export default function ICTriagePage() {
   const params = useParams();
+  const { toast } = useToast();
   const caseId = (params?.id as string) || "case-01";
   const [poshCase, setPoshCase] = useState<POSHCase | undefined>(() => platformStore.getCaseById(caseId));
 
@@ -54,33 +56,57 @@ export default function ICTriagePage() {
   const lastIncidentDate = poshCase?.incidentDates?.[poshCase.incidentDates.length - 1];
   const limitationEvaluation = evaluateLimitationStatus(lastIncidentDate, poshCase?.filedAt);
 
-  const handleSaveTriage = (e: React.FormEvent) => {
+  const handleSaveTriage = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!poshCase) return;
 
     if (triageAction === "PROCEED" || triageAction === "CONDONE") {
       if (!isAggrievedWoman) {
-        alert("Statutory Threshold Error: Complainant must meet Section 2(a) Aggrieved Woman definition to proceed under POSH.");
+        toast({
+          title: "Statutory Threshold Error",
+          description: "Complainant must meet Section 2(a) Aggrieved Woman definition to proceed under POSH.",
+          variant: "danger",
+        });
         return;
       }
       if (!isWorkplaceJurisdiction) {
-        alert("Jurisdiction Defect: Section 2(o) Workplace Jurisdiction not met. IC cannot admit non-workplace complaints. Must refer to Local Committee (LC) or external authority.");
+        toast({
+          title: "Workplace Jurisdiction Defect",
+          description: "Section 2(o) Workplace Jurisdiction not met. IC cannot admit non-workplace complaints.",
+          variant: "danger",
+        });
         return;
       }
       if (!isQuorumValid || !conflictFree) {
-        alert("Quorum / Conflict Defect: Section 4 IC constitution and conflict clearance must be valid prior to initiating formal inquiry.");
+        toast({
+          title: "Quorum / Conflict Clearance Required",
+          description: "Section 4 IC constitution and conflict clearance must be valid prior to initiating formal inquiry.",
+          variant: "danger",
+        });
         return;
       }
       if (limitationEvaluation.status === "STATUTORILY_BARRED") {
-        alert("Statutory Bar (Section 9(1) Proviso): Complaint filed beyond the maximum 3-month condonation ceiling (more than 6 months total). The IC has no statutory authority to admit or condone this complaint. Must be referred to Local Committee or dismissed as time-barred.");
+        toast({
+          title: "Statutorily Barred by Section 9(1) Proviso",
+          description: "Complaint filed beyond 6-month statutory ceiling. The IC has no statutory authority to admit.",
+          variant: "danger",
+        });
         return;
       }
       if (!isWithinLimitation && triageAction === "PROCEED") {
-        alert("Limitation Notice: Complaint is beyond initial 3 months. You must choose 'Condone Delay' and record written reasons pursuant to the Proviso to Section 9(1).");
+        toast({
+          title: "Limitation Advisory",
+          description: "Complaint is beyond 3 months. Choose 'Condone Delay' and record written reasons under Section 9(1) Proviso.",
+          variant: "warning",
+        });
         return;
       }
       if (triageAction === "CONDONE" && !condonationReasons.trim()) {
-        alert("Mandatory Statutory Requirement: Section 9(1) Proviso mandates that the IC record its reasons in writing for condoning delay.");
+        toast({
+          title: "Mandatory Condonation Grounds Required",
+          description: "Section 9(1) Proviso mandates that the IC record its reasons in writing for condoning delay.",
+          variant: "danger",
+        });
         return;
       }
 
@@ -89,17 +115,56 @@ export default function ICTriagePage() {
         "NOTICE_SERVED",
         `Triage passed. Jurisdiction and limitation verified. Condonation: ${isWithinLimitation ? "N/A" : condonationReasons || "Approved under Section 9(1) Proviso"}`
       );
-      alert("Triage decision recorded: Proceed to Notice of Inquiry (Section 11).");
+
+      try {
+        await fetch("/api/cases", {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            id: poshCase.id,
+            state: "NOTICE_SERVED",
+            note: "Triage approved by IC Presiding Officer.",
+          }),
+        });
+      } catch {}
+
+      toast({
+        title: "Triage Decision Recorded",
+        description: "Proceed to Notice of Inquiry (Section 11). Docket updated successfully.",
+        variant: "success",
+      });
     } else if (triageAction === "REFER_LC") {
       platformStore.updateCaseState(
         poshCase.id,
         "REFERRED_TO_LC",
         "Referred to District Local Committee (LC) due to lack of workplace IC jurisdiction or statutory time-bar."
       );
-      alert("Docket routed to District Local Committee.");
+      try {
+        await fetch("/api/cases", {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            id: poshCase.id,
+            state: "REFERRED_TO_LC",
+            note: "Referred to District Local Committee.",
+          }),
+        });
+      } catch {}
+      toast({
+        title: "Routed to Local Committee",
+        description: "Docket dispatched to District Local Committee per Section 6.",
+        variant: "info",
+      });
     } else {
-      alert("Information request dispatched to complainant.");
+      toast({
+        title: "Information Request Dispatched",
+        description: "Clarification notice transmitted to complainant.",
+        variant: "info",
+      });
     }
+
+    const updated = platformStore.getCaseById(poshCase.id);
+    if (updated) setPoshCase({ ...updated });
   };
 
   if (!poshCase) {

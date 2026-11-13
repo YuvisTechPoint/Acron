@@ -20,9 +20,11 @@ import {
 import { platformStore } from "@/lib/store";
 import { formatDate } from "@/lib/utils";
 import { POSHCase } from "@/lib/types";
+import { useToast } from "@/components/ui/toast";
 
 export default function ICHearingsPage() {
   const params = useParams();
+  const { toast } = useToast();
   const caseId = (params?.id as string) || "case-01";
   const [poshCase, setPoshCase] = useState<POSHCase | undefined>(() => platformStore.getCaseById(caseId));
 
@@ -47,7 +49,11 @@ export default function ICHearingsPage() {
     if (!poshCase || !hearingDate || !agenda) return;
 
     if (!isQuorumMet) {
-      alert("Statutory Quorum Violation (Section 4 & Rule 7): An Internal Committee hearing cannot convene with deficient quorum. Quorum requires minimum 3 members present, Presiding Officer present, and at least 50% women representation.");
+      toast({
+        title: "Statutory Quorum Violation",
+        description: "Section 4 & Rule 7 mandate minimum 3 members present, PO present, and at least 50% women representation.",
+        variant: "danger",
+      });
       return;
     }
 
@@ -65,7 +71,11 @@ export default function ICHearingsPage() {
     const updated = platformStore.getCaseById(poshCase.id);
     if (updated) setPoshCase({ ...updated });
     setDepositionNotes("");
-    alert("Hearing and Daily Order Sheet scheduled into statutory docket.");
+    toast({
+      title: "Hearing Scheduled",
+      description: "Hearing and Daily Order Sheet scheduled into statutory docket.",
+      variant: "success",
+    });
   };
 
   if (!poshCase) {

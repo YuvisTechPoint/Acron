@@ -15,9 +15,11 @@ import {
   Clock,
 } from "lucide-react";
 import { platformStore } from "@/lib/store";
-import { formatINR } from "@/lib/utils";
+import { formatINR, downloadFile } from "@/lib/utils";
+import { useToast } from "@/components/ui/toast";
 
 export default function PoshOrgPlanPage() {
+  const { toast } = useToast();
   const [selectedOrgId, setSelectedOrgId] = useState("org-1");
   const orgs = platformStore.getOrganizations();
   const activeOrg = orgs.find((o) => o.id === selectedOrgId) || orgs[0];
@@ -134,7 +136,13 @@ export default function PoshOrgPlanPage() {
 
           <div className="pt-3 flex justify-end gap-3 border-t border-border-subtle">
             <button
-              onClick={() => alert("Retainer renewal confirmed. Advance invoice generated.")}
+              onClick={() => {
+                toast({
+                  title: "Scope Amendment Requested",
+                  description: "Request registered. Acorn Corporate Retainer desk will dispatch amendment proposal within 24 hours.",
+                  variant: "success",
+                });
+              }}
               className="px-4 py-2 bg-primary text-white text-xs font-semibold rounded hover:bg-primary-hover"
             >
               Request Scope Amendment / Custom Add-on
@@ -179,7 +187,33 @@ export default function PoshOrgPlanPage() {
                   </div>
 
                   <button
-                    onClick={() => alert(`Downloading verified Tax Invoice ${inv.invoiceNo}...`)}
+                    onClick={() => {
+                      const taxInvoice = [
+                        "===========================================================",
+                        "       ACORN LEGAL CONSULTANTS - STATUTORY TAX INVOICE",
+                        "===========================================================",
+                        `Invoice No: ${inv.invoiceNo}`,
+                        `Billed To: ${activeOrg.name} (${activeOrg.code})`,
+                        `Service Accounting Code: ${inv.sacCode}`,
+                        `Billing Period: ${inv.period}`,
+                        `Payment Date: ${inv.paidAt}`,
+                        `Status: ${inv.status}`,
+                        "-----------------------------------------------------------",
+                        `Base Fee: ${formatINR(inv.amountPaise)}`,
+                        `CGST (9%): ${formatINR(Math.round(inv.gstPaise / 2))}`,
+                        `SGST (9%): ${formatINR(Math.round(inv.gstPaise / 2))}`,
+                        `Total Amount (INR): ${formatINR(inv.totalPaise)}`,
+                        "===========================================================",
+                        "GSTIN: 19AAHCA8912J1ZU | PAN: AAHCA8912J",
+                        "Chambers: 25 Camac Street, Suite 4B, Kolkata 700016",
+                      ].join("\n");
+                      downloadFile(`Tax-Invoice-${inv.invoiceNo.replace(/[\/\\:]/g, "-")}.txt`, taxInvoice);
+                      toast({
+                        title: "Tax Invoice Downloaded",
+                        description: `Statutory Tax Invoice ${inv.invoiceNo} downloaded.`,
+                        variant: "info",
+                      });
+                    }}
                     className="px-3 py-1.5 border border-border rounded text-ink hover:bg-surface flex items-center gap-1.5 font-medium"
                   >
                     <Download className="w-3.5 h-3.5" />

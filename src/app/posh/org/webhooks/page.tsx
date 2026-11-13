@@ -22,8 +22,10 @@ import {
 } from "lucide-react";
 import { platformStore } from "@/lib/store";
 import { WebhookEndpoint } from "@/lib/types";
+import { useToast } from "@/components/ui/toast";
 
 export default function WebhooksAdminPage() {
+  const { toast } = useToast();
   const [webhooks, setWebhooks] = useState<WebhookEndpoint[]>([]);
   const [selectedHook, setSelectedHook] = useState<WebhookEndpoint | null>(null);
   const [copiedId, setCopiedId] = useState<string | null>(null);
@@ -65,6 +67,11 @@ export default function WebhooksAdminPage() {
       const active = updated.find((h) => h.id === id) || null;
       setSelectedHook(active);
       setTestingId(null);
+      toast({
+        title: "Test Event Dispatched",
+        description: `Delivered test payload to ${active?.url || "webhook target"} with HMAC signature.`,
+        variant: "success",
+      });
     }, 600);
   };
 
@@ -94,6 +101,11 @@ export default function WebhooksAdminPage() {
     setShowAddModal(false);
     setNewUrl("");
     setNewDesc("");
+    toast({
+      title: "Webhook Endpoint Added",
+      description: `Endpoint ${created.url} provisioned with Section 16 content scrubber enabled.`,
+      variant: "success",
+    });
   };
 
   const filteredHooks = webhooks.filter(

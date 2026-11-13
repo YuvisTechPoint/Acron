@@ -91,7 +91,7 @@ export default function AdminFaqPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.question.trim() || !formData.answer.trim()) {
-      alert("Question and Answer are required.");
+      triggerToast("Question and Answer are required.");
       return;
     }
 

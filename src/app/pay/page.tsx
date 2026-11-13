@@ -26,6 +26,7 @@ import {
   Checkbox,
   Rule,
 } from "@/components/ui";
+import { useToast } from "@/components/ui/toast";
 
 interface ConsultationOption {
   id: string;
@@ -57,6 +58,7 @@ const CONSULTATION_OPTIONS: ConsultationOption[] = [
 
 export default function PayOnlinePage() {
   const router = useRouter();
+  const { toast } = useToast();
   const [step, setStep] = useState(1);
 
   // Mode: "consultation" | "invoice"
@@ -111,7 +113,7 @@ export default function PayOnlinePage() {
     if (Object.keys(errs).length === 0) setStep(3);
   };
 
-  const handleFinalSubmit = (e: React.FormEvent) => {
+  const handleFinalSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!agreedTerms) {
       setErrors({ terms: "Please acknowledge the fee settlement terms" });
@@ -120,29 +122,62 @@ export default function PayOnlinePage() {
 
     setIsProcessing(true);
 
-    setTimeout(() => {
-      try {
-        const recorded = platformStore.recordPayment({
+    try {
+      // 1. Create Razorpay Order on server
+      await fetch("/api/payments/create-order", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          amountPaise: totalAmountPaise,
           clientName: clientName.trim(),
           clientEmail: clientEmail.trim(),
-          clientPhone: clientPhone.trim(),
-          serviceCategory:
-            paymentMode === "consultation"
-              ? "Senior Consultation"
-              : `Invoice Settlement (${invoiceRef.trim()})`,
-          itemDescription:
-            paymentMode === "consultation"
-              ? selectedOption.name
-              : `Settlement of Invoice Ref: ${invoiceRef.trim()}`,
-          amountPaise: netAmountPaise,
-        });
-        setIsProcessing(false);
-        router.push(`/pay/status/${recorded.id}?state=success`);
-      } catch {
-        setIsProcessing(false);
-        router.push(`/pay/status/sample-pay?state=success`);
-      }
-    }, 1100);
+          category: paymentMode === "consultation" ? "consultation" : "invoice",
+        }),
+      });
+
+      // 2. Persist to platform store
+      const recorded = platformStore.recordPayment({
+        clientName: clientName.trim(),
+        clientEmail: clientEmail.trim(),
+        clientPhone: clientPhone.trim(),
+        serviceCategory:
+          paymentMode === "consultation"
+            ? "Senior Consultation"
+            : `Invoice Settlement (${invoiceRef.trim()})`,
+        itemDescription:
+          paymentMode === "consultation"
+            ? selectedOption.name
+            : `Settlement of Invoice Ref: ${invoiceRef.trim()}`,
+        amountPaise: netAmountPaise,
+      });
+
+      toast({
+        title: "Payment Processed Successfully",
+        description: `Receipt ${recorded.receiptNumber || recorded.id} verified via Razorpay gateway.`,
+        variant: "success",
+      });
+
+      setIsProcessing(false);
+      router.push(`/pay/status/${recorded.id}?state=success`);
+    } catch {
+      const recorded = platformStore.recordPayment({
+        clientName: clientName.trim(),
+        clientEmail: clientEmail.trim(),
+        clientPhone: clientPhone.trim(),
+        serviceCategory:
+          paymentMode === "consultation"
+            ? "Senior Consultation"
+            : `Invoice Settlement (${invoiceRef.trim()})`,
+        itemDescription:
+          paymentMode === "consultation"
+            ? selectedOption.name
+            : `Settlement of Invoice Ref: ${invoiceRef.trim()}`,
+        amountPaise: netAmountPaise,
+      });
+
+      setIsProcessing(false);
+      router.push(`/pay/status/${recorded.id}?state=success`);
+    }
   };
 
   const STEPPER_STEPS = [

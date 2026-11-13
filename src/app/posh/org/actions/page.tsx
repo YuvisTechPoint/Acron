@@ -15,8 +15,10 @@ import {
 } from "lucide-react";
 import { platformStore } from "@/lib/store";
 import { formatDate } from "@/lib/utils";
+import { useToast } from "@/components/ui/toast";
 
 export default function PoshOrgActionsPage() {
+  const { toast } = useToast();
   const [selectedOrgId, setSelectedOrgId] = useState("org-1");
   const orgs = platformStore.getOrganizations();
   const activeOrg = orgs.find((o) => o.id === selectedOrgId) || orgs[0];
@@ -43,6 +45,8 @@ export default function PoshOrgActionsPage() {
       complianceProof: null,
     },
   ];
+
+  const [actionTasks, setActionTasks] = useState(tasks);
 
   return (
     <div className="bg-ivory-50 min-h-screen py-10 text-ink">
@@ -114,7 +118,7 @@ export default function PoshOrgActionsPage() {
           </div>
 
           <div className="space-y-4">
-            {tasks.map((t) => (
+            {actionTasks.map((t) => (
               <div key={t.id} className="bg-white p-5 rounded border border-border space-y-3 text-xs">
                 <div className="flex flex-col sm:flex-row justify-between sm:items-start gap-2 border-b border-border-subtle pb-3">
                   <div>
@@ -155,7 +159,26 @@ export default function PoshOrgActionsPage() {
                       <span>Action Due within Statutory Window</span>
                     </span>
                     <button
-                      onClick={() => alert(`Marking task ${t.id} implemented and uploading compliance memo...`)}
+                      onClick={() => {
+                        const today = new Date().toISOString().split("T")[0];
+                        setActionTasks((prev) =>
+                          prev.map((item) =>
+                            item.id === t.id
+                              ? {
+                                  ...item,
+                                  status: "Implemented",
+                                  implementedAt: today,
+                                  complianceProof: `Executive Memo #EXP-${today.replace(/-/g, "")}`,
+                                }
+                              : item
+                          )
+                        );
+                        toast({
+                          title: "Statutory Action Implemented",
+                          description: `Task ${t.id} recorded as implemented under Section 13(4). Compliance memo filed.`,
+                          variant: "success",
+                        });
+                      }}
                       className="px-4 py-1.5 bg-primary text-white font-semibold rounded hover:bg-primary-hover"
                     >
                       Record Implementation Memo

@@ -21,8 +21,10 @@ import {
 } from "lucide-react";
 import { platformStore } from "@/lib/store";
 import { BrandingConfig } from "@/lib/types";
+import { useToast } from "@/components/ui/toast";
 
 export default function EnterpriseBrandingPage() {
+  const { toast } = useToast();
   const [config, setConfig] = useState<BrandingConfig>({
     orgId: "org-1",
     companyName: "TechKolkata Solutions Private Limited",
@@ -51,6 +53,11 @@ export default function EnterpriseBrandingPage() {
     e.preventDefault();
     platformStore.saveBrandingConfig("org-1", config);
     setSavedSuccess(true);
+    toast({
+      title: "Branding Configuration Saved",
+      description: "White-label enterprise brand settings updated successfully.",
+      variant: "success",
+    });
     setTimeout(() => setSavedSuccess(false), 2500);
   };
 
@@ -63,6 +70,11 @@ export default function EnterpriseBrandingPage() {
         sslStatus: "PROVISIONED",
       }));
       setVerifyingDns(false);
+      toast({
+        title: "DNS & SSL Verified",
+        description: `CNAME routing and TLS certificate provisioned for ${config.customDomain}.`,
+        variant: "success",
+      });
     }, 1000);
   };
 

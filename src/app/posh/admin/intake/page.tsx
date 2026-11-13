@@ -15,9 +15,11 @@ import {
   Building,
 } from "lucide-react";
 import { platformStore } from "@/lib/store";
-import { formatDate } from "@/lib/utils";
+import { formatDate, downloadFile } from "@/lib/utils";
+import { useToast } from "@/components/ui/toast";
 
 export default function PoshAdminIntakeDeskPage() {
+  const { toast } = useToast();
   const [activeTab, setActiveTab] = useState<"CONCERNS" | "ASSISTED" | "UNASSIGNED">("CONCERNS");
 
   const bystanderConcerns = [
@@ -42,6 +44,8 @@ export default function PoshAdminIntakeDeskPage() {
       triageStatus: "Converted to Formal Case",
     },
   ];
+
+  const [concerns, setConcerns] = useState(bystanderConcerns);
 
   const assistedSessions = [
     {
@@ -127,7 +131,7 @@ export default function PoshAdminIntakeDeskPage() {
             </div>
 
             <div className="space-y-4">
-              {bystanderConcerns.map((c) => (
+              {concerns.map((c) => (
                 <div key={c.id} className="bg-white p-5 rounded border border-border space-y-3 text-xs">
                   <div className="flex flex-col sm:flex-row justify-between sm:items-start gap-2 border-b border-border-subtle pb-2">
                     <div>
@@ -159,13 +163,45 @@ export default function PoshAdminIntakeDeskPage() {
 
                     <div className="flex gap-2">
                       <button
-                        onClick={() => alert(`Assigning concern ${c.id} to Presiding Officer for preliminary inquiry...`)}
+                        onClick={() => {
+                          setConcerns((prev) =>
+                            prev.map((item) =>
+                              item.id === c.id
+                                ? { ...item, triageStatus: "Assigned to Presiding Officer" }
+                                : item
+                            )
+                          );
+                          toast({
+                            title: "Concern Assigned",
+                            description: `Concern ${c.id} forwarded to Presiding Officer for preliminary review.`,
+                            variant: "info",
+                          });
+                        }}
                         className="px-3 py-1.5 border border-border rounded text-ink hover:bg-surface font-semibold"
                       >
                         Forward to Presiding Officer
                       </button>
                       <button
-                        onClick={() => alert(`Converting concern ${c.id} into formal Section 9 statutory inquiry docket...`)}
+                        onClick={() => {
+                          const newCase = platformStore.addPOSHCase({
+                            orgName: c.orgName,
+                            complainantName: "Aggrieved Woman (via Concern)",
+                            summary: c.incidentSummary,
+                            detailedStatement: `Intake Conversion from Concern ${c.id}. Reported parties: ${c.partiesInvolved}`,
+                          });
+                          setConcerns((prev) =>
+                            prev.map((item) =>
+                              item.id === c.id
+                                ? { ...item, triageStatus: `Converted to Case (${newCase.caseNumber})` }
+                                : item
+                            )
+                          );
+                          toast({
+                            title: "Converted to Case Docket",
+                            description: `Concern ${c.id} converted to inquiry docket ${newCase.caseNumber}.`,
+                            variant: "success",
+                          });
+                        }}
                         className="px-4 py-1.5 bg-primary text-white font-semibold rounded hover:bg-primary-hover"
                       >
                         Convert to Case Docket
@@ -227,7 +263,31 @@ export default function PoshAdminIntakeDeskPage() {
                   Complaints where the harassment is alleged against the employer themselves, or where the enterprise has fewer than 10 employees (unorganised sector), are routed directly to the District Officer&apos;s Local Committee.
                 </p>
                 <button
-                  onClick={() => alert("Initiating formal referral notice to District Officer / LC...")}
+                  onClick={() => {
+                    const lcPack = [
+                      "===========================================================",
+                      "  SECTION 6 POSH ACT 2013: FORMAL REFERRAL TO LOCAL COMMITTEE",
+                      "===========================================================",
+                      "To: The District Officer / Chairperson, Local Committee (LC)",
+                      "District: Kolkata / North 24 Parganas, West Bengal",
+                      `Date: ${new Date().toISOString().split("T")[0]}`,
+                      "Reference: ACN-LC-REF-2026-0091",
+                      "Subject: Statutory Transmission of Complaint under Section 6(1)",
+                      "-----------------------------------------------------------",
+                      "Statutory Grounds for LC Jurisdiction:",
+                      "- Section 6(1): Harassment complaint directed against the Employer,",
+                      "  OR workplace enterprise employs fewer than 10 workers.",
+                      "Transmitted by: Acorn Legal Consultants (Advisory Registry)",
+                      "===========================================================",
+                      "Confidential per Section 16 POSH Act 2013.",
+                    ].join("\n");
+                    downloadFile("Section-6-LC-Referral-Pack.txt", lcPack);
+                    toast({
+                      title: "LC Referral Pack Generated",
+                      description: "Section 6 Local Committee referral pack downloaded successfully.",
+                      variant: "info",
+                    });
+                  }}
                   className="px-3.5 py-1.5 border border-border rounded text-ink hover:bg-surface font-semibold"
                 >
                   Prepare LC Referral Pack
@@ -242,7 +302,31 @@ export default function PoshAdminIntakeDeskPage() {
                   Where the aggrieved woman chooses to register an FIR under Bharatiya Nyaya Sanhita (BNS) / IPC, Acorn Legal Consultants provides dedicated assistance in lodging the complaint with local police authorities.
                 </p>
                 <button
-                  onClick={() => alert("Dispatching criminal legal aid counsel support checklist...")}
+                  onClick={() => {
+                    const policeChecklist = [
+                      "===========================================================",
+                      "  SECTION 19(h) POSH ACT 2013: POLICE ASSISTANCE PROTOCOL",
+                      "===========================================================",
+                      "Applicable Penal Provisions: Bharatiya Nyaya Sanhita (BNS) / IPC",
+                      "- BNS Section 75 / IPC Section 354A (Sexual Harassment)",
+                      "- BNS Section 78 / IPC Section 354D (Stalking)",
+                      "- Information Technology Act Section 66E / 67 (Electronic Transmission)",
+                      "-----------------------------------------------------------",
+                      "Counsel Action Checklist:",
+                      "[ ] 1. Obtain written consent from aggrieved woman per Section 19(h)",
+                      "[ ] 2. Accompany complainant to Jurisdictional Police Station / Cyber Cell",
+                      "[ ] 3. Ensure Zero-FIR registration if outside immediate jurisdiction",
+                      "[ ] 4. Lodge Certified Copy with Internal Committee within 48 hours",
+                      "===========================================================",
+                      "Chambers Helpline: +91 33 2486 7700",
+                    ].join("\n");
+                    downloadFile("Section-19h-Police-Aid-Checklist.txt", policeChecklist);
+                    toast({
+                      title: "Police Aid Protocol Generated",
+                      description: "Section 19(h) Criminal legal aid assistance checklist downloaded.",
+                      variant: "info",
+                    });
+                  }}
                   className="px-3.5 py-1.5 border border-border rounded text-ink hover:bg-surface font-semibold"
                 >
                   Generate Sec 19(h) Police Aid Checklist

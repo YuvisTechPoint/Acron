@@ -1383,28 +1383,28 @@ class PlatformStore {
   }
 
   addPOSHCase(complaintData: {
-    orgId: string;
+    orgId?: string;
     orgName: string;
     complainantName: string;
-    complainantDesignation: string;
-    complainantDepartment: string;
-    complainantEmail: string;
-    complainantPhone: string;
-    needsAssistance: boolean;
+    complainantDesignation?: string;
+    complainantDepartment?: string;
+    complainantEmail?: string;
+    complainantPhone?: string;
+    needsAssistance?: boolean;
     supportPersonName?: string;
-    preferredLanguage: "en" | "bn" | "hi";
-    respondentName: string;
-    respondentDesignation: string;
-    respondentDepartment: string;
-    respondentEmail: string;
-    incidentDates: string[];
-    incidentLocation: string;
-    natureOfHarassment: string[];
+    preferredLanguage?: "en" | "bn" | "hi";
+    respondentName?: string;
+    respondentDesignation?: string;
+    respondentDepartment?: string;
+    respondentEmail?: string;
+    incidentDates?: string[];
+    incidentLocation?: string;
+    natureOfHarassment?: string[];
     summary: string;
     detailedStatement: string;
-    witnesses: Array<{ name: string; role: string; contact?: string }>;
+    witnesses?: Array<{ name: string; role: string; contact?: string }>;
     interimRelief?: { type: any; details: string };
-    conciliationRequested: boolean;
+    conciliationRequested?: boolean;
   }): POSHCase {
     const list = this.getCases();
     const now = new Date();
@@ -1417,27 +1417,27 @@ class PlatformStore {
     const newCase: POSHCase = {
       id: `case-${Date.now()}`,
       caseNumber: generateCaseNumber(complaintData.orgName.substring(0, 4).toUpperCase()),
-      orgId: complaintData.orgId,
+      orgId: complaintData.orgId || "org-1",
       orgName: complaintData.orgName,
       state: "SUBMITTED",
-      incidentDates: complaintData.incidentDates,
-      incidentLocation: complaintData.incidentLocation,
-      natureOfHarassment: complaintData.natureOfHarassment,
+      incidentDates: complaintData.incidentDates || [now.toISOString().split("T")[0]],
+      incidentLocation: complaintData.incidentLocation || "Main Office",
+      natureOfHarassment: complaintData.natureOfHarassment || ["Other"],
       summary: complaintData.summary,
       detailedStatement: complaintData.detailedStatement,
       complainantName: complaintData.complainantName,
-      complainantDesignation: complaintData.complainantDesignation,
-      complainantDepartment: complaintData.complainantDepartment,
-      complainantEmail: complaintData.complainantEmail,
-      complainantPhone: complaintData.complainantPhone,
-      needsAssistance: complaintData.needsAssistance,
+      complainantDesignation: complaintData.complainantDesignation || "Confidential",
+      complainantDepartment: complaintData.complainantDepartment || "Operations",
+      complainantEmail: complaintData.complainantEmail || "confidential@intake.local",
+      complainantPhone: complaintData.complainantPhone || "+91 90000 00000",
+      needsAssistance: complaintData.needsAssistance ?? false,
       supportPersonName: complaintData.supportPersonName,
-      preferredLanguage: complaintData.preferredLanguage,
-      respondentName: complaintData.respondentName,
-      respondentDesignation: complaintData.respondentDesignation,
-      respondentDepartment: complaintData.respondentDepartment,
-      respondentEmail: complaintData.respondentEmail,
-      witnesses: complaintData.witnesses,
+      preferredLanguage: complaintData.preferredLanguage || "en",
+      respondentName: complaintData.respondentName || "Under Identification",
+      respondentDesignation: complaintData.respondentDesignation || "Not Specified",
+      respondentDepartment: complaintData.respondentDepartment || "Operations",
+      respondentEmail: complaintData.respondentEmail || "respondent@intake.local",
+      witnesses: complaintData.witnesses || [],
       interimReliefRequested: complaintData.interimRelief
         ? {
             type: complaintData.interimRelief.type,
@@ -1450,7 +1450,7 @@ class PlatformStore {
       noticeToRespondentDeadline: noticeDeadline.toISOString(),
       inquiryDeadline: inquiryDeadline.toISOString(),
       reportDeadline: reportDeadline.toISOString(),
-      conciliationRequested: complaintData.conciliationRequested,
+      conciliationRequested: complaintData.conciliationRequested ?? false,
       hearings: [],
       evidence: [],
       assignedICMembers: ["Dr. Ananya Mukherjee (PO)", "Adv. Debjani Sen (External)"],

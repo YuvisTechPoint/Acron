@@ -18,6 +18,7 @@ import {
   Sparkles
 } from "lucide-react";
 import { formatDate } from "@/lib/utils";
+import { useToast } from "@/components/ui/toast";
 
 interface AftercareItem {
   id: string;
@@ -72,6 +73,7 @@ const INITIAL_QUEUE: AftercareItem[] = [
 ];
 
 export default function PoshAftercarePage() {
+  const { toast } = useToast();
   const [queue, setQueue] = useState<AftercareItem[]>(INITIAL_QUEUE);
   const [activeTab, setActiveTab] = useState<"ALL" | "DUE" | "FLAGGED">("ALL");
 
@@ -81,7 +83,11 @@ export default function PoshAftercarePage() {
         item.id === id ? { ...item, status: "SURVEY_SENT" } : item
       )
     );
-    alert("Confidential Aftercare check-in pulse dispatched via encrypted SMS & Email.");
+    toast({
+      title: "Aftercare Dispatched",
+      description: "Confidential Aftercare check-in pulse dispatched via encrypted SMS & Email.",
+      variant: "success",
+    });
   };
 
   const filtered = queue.filter((item) => {

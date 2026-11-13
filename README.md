@@ -161,3 +161,4 @@ npm run test
 
 Copyright &copy; 2026 Acorn Legal Consultants. All rights reserved.  
 Confidential privileged legal technology platform.
+

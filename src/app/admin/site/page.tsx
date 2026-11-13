@@ -28,8 +28,10 @@ import {
 } from "lucide-react";
 import { platformStore } from "@/lib/store";
 import { SiteConfig, EngagementStep, ChambersPrinciple, TeamMemberItem } from "@/lib/types";
+import { useToast } from "@/components/ui/toast";
 
 export default function AdminSiteSettingsPage() {
+  const { toast } = useToast();
   const [activeTab, setActiveTab] = useState<
     "hero" | "pathway" | "principles" | "team" | "chambers" | "footer" | "preview"
   >("hero");
@@ -163,7 +165,11 @@ export default function AdminSiteSettingsPage() {
   const handleSaveTeamMember = (e: React.FormEvent) => {
     e.preventDefault();
     if (!memberFormData.name || !memberFormData.role) {
-      alert("Name and Role are required.");
+      toast({
+        title: "Validation Error",
+        description: "Name and Role are required.",
+        variant: "danger",
+      });
       return;
     }
 

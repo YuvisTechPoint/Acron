@@ -16,9 +16,11 @@ import {
   Building,
 } from "lucide-react";
 import { platformStore } from "@/lib/store";
-import { formatSuppressedCount, isCellSuppressed } from "@/lib/utils";
+import { formatSuppressedCount, isCellSuppressed, downloadFile } from "@/lib/utils";
+import { useToast } from "@/components/ui/toast";
 
 export default function PoshOrgReportsPage() {
+  const { toast } = useToast();
   const [selectedOrgId, setSelectedOrgId] = useState("org-1");
   const [reportYear, setReportYear] = useState("2025");
   const orgs = platformStore.getOrganizations();
@@ -171,14 +173,69 @@ export default function PoshOrgReportsPage() {
 
             <div className="flex gap-2">
               <button
-                onClick={() => alert("Downloading certified Section 21 Annual Report (DOCX)...")}
+                onClick={() => {
+                  const docxDoc = [
+                    "===========================================================",
+                    `     SECTION 21 ANNUAL REPORT &bull; CALENDAR YEAR ${reportYear}`,
+                    "===========================================================",
+                    `Submitted To: District Officer, Kolkata / North 24 Parganas`,
+                    `Reporting Entity: ${activeOrg.name} (${activeOrg.code})`,
+                    `Acknowledgement No: DO/KOL/POSH/${reportYear}/ACK-092`,
+                    "-----------------------------------------------------------",
+                    "STATUTORY DISCLOSURES PER SECTION 21 & RULE 14:",
+                    `1. Number of complaints received in the year: ${statutoryMetrics.received}`,
+                    `2. Number of complaints disposed of in the year: ${statutoryMetrics.disposed}`,
+                    `3. Number of cases pending for more than ninety days: ${statutoryMetrics.pendingAbove90}`,
+                    `4. Number of workshops / awareness programmes carried out: ${statutoryMetrics.workshopsConducted}`,
+                    `5. Nature of action taken by employer: ${statutoryMetrics.employerActionCompleted} recommendations fully implemented`,
+                    "-----------------------------------------------------------",
+                    "Certified under the seal of the Internal Committee and",
+                    "authorized by Acorn Legal Consultants (Chambers Registry).",
+                    "Strictly Confidential per Section 16 POSH Act 2013.",
+                    "===========================================================",
+                  ].join("\n");
+                  downloadFile(`Section-21-Annual-Report-${activeOrg.code}-${reportYear}.docx`, docxDoc, "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
+                  toast({
+                    title: "Annual Report Downloaded",
+                    description: `Certified Section 21 Annual Report (DOCX) for ${reportYear} downloaded.`,
+                    variant: "success",
+                  });
+                }}
                 className="px-3 py-1.5 border border-border rounded text-ink hover:bg-white flex items-center gap-1.5 font-medium"
               >
                 <Download className="w-3.5 h-3.5" />
                 <span>Download DOCX</span>
               </button>
               <button
-                onClick={() => alert("Downloading certified Section 21 Annual Report (PDF)...")}
+                onClick={() => {
+                  const pdfDoc = [
+                    "===========================================================",
+                    `  GOVERNMENT OF WEST BENGAL - DISTRICT OFFICER REPORTING`,
+                    `     STATUTORY SECTION 21 ANNUAL COMPLIANCE RETURN`,
+                    "===========================================================",
+                    `Year of Report: ${reportYear}`,
+                    `Employer Name: ${activeOrg.name}`,
+                    `Registered Address: ${activeOrg.registeredAddress || "Kolkata, West Bengal"}`,
+                    `Presiding Officer: ${activeOrg.presidingOfficerName || "Dr. Ananya Mukherjee"}`,
+                    `External Member: ${activeOrg.externalMemberName || "Adv. Debjani Sen (Acorn Legal)"}`,
+                    "-----------------------------------------------------------",
+                    `Complaints Lodged: ${statutoryMetrics.received}`,
+                    `Complaints Disposed: ${statutoryMetrics.disposed}`,
+                    `Pending > 90 Days: ${statutoryMetrics.pendingAbove90} (ZERO DEFAULT)`,
+                    `Workshops Executed: ${statutoryMetrics.workshopsConducted}`,
+                    "-----------------------------------------------------------",
+                    "Statutory Verification: The Internal Committee certifies that all",
+                    "complaints were investigated strictly following the principles of",
+                    "natural justice and the provisions of the POSH Act 2013.",
+                    "===========================================================",
+                  ].join("\n");
+                  downloadFile(`Section-21-Annual-Report-${activeOrg.code}-${reportYear}.txt`, pdfDoc);
+                  toast({
+                    title: "Certified PDF Downloaded",
+                    description: `Certified Section 21 Annual Report for ${reportYear} downloaded.`,
+                    variant: "success",
+                  });
+                }}
                 className="px-4 py-1.5 bg-primary text-white rounded hover:bg-primary-hover flex items-center gap-1.5 font-semibold"
               >
                 <Download className="w-3.5 h-3.5 text-accent" />

@@ -17,8 +17,10 @@ import {
 } from "lucide-react";
 import { platformStore } from "@/lib/store";
 import { SSOConfiguration } from "@/lib/types";
+import { useToast } from "@/components/ui/toast";
 
 export default function OrgSSOPage() {
+  const { toast } = useToast();
   const [configs, setConfigs] = useState<SSOConfiguration[]>(platformStore.getSSOConfigs());
   const [selectedOrg, setSelectedOrg] = useState<string>("TECHKOL");
   const [copyFeedback, setCopyFeedback] = useState<string | null>(null);
@@ -45,15 +47,24 @@ export default function OrgSSOPage() {
       setConfigs(updated);
       platformStore.saveSSOConfig({ ...activeConfig, verified: true });
       setIsVerifying(false);
+      toast({
+        title: "SSO Protocol Verified",
+        description: `SAML 2.0 / OIDC certificate handshake verified for ${selectedOrg}.`,
+        variant: "success",
+      });
     }, 1200);
   };
 
   const simulateScimLeaver = () => {
     setSimulationStatus("Initiating SCIM Deactivation Event...");
     setTimeout(() => {
-      setSimulationStatus(
-        "BR-081 Verified: User 'dr.ananya@techkolkata.io' deactivated in 12s. Presiding Officer vacancy alert dispatched to Board of Directors with 30-day statutory clock."
-      );
+      const msg = "BR-081 Verified: User 'dr.ananya@techkolkata.io' deactivated in 12s. Presiding Officer vacancy alert dispatched to Board of Directors with 30-day statutory clock.";
+      setSimulationStatus(msg);
+      toast({
+        title: "SCIM Lifecycle Simulation Verified",
+        description: msg,
+        variant: "warning",
+      });
     }, 1400);
   };
 

@@ -22,8 +22,11 @@ import {
 } from "lucide-react";
 import { platformStore } from "@/lib/store";
 import { ClimateSurveyCampaign } from "@/lib/types";
+import { downloadFile } from "@/lib/utils";
+import { useToast } from "@/components/ui/toast";
 
 export default function ClimateSurveysPage() {
+  const { toast } = useToast();
   const [surveys, setSurveys] = useState<ClimateSurveyCampaign[]>([]);
   const [showAddModal, setShowAddModal] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
@@ -64,10 +67,28 @@ export default function ClimateSurveysPage() {
     setShowAddModal(false);
     setNewTitle("");
     setNewAction("");
+    toast({
+      title: "Climate Survey Launched",
+      description: `Survey campaign '${newTitle}' deployed to ${newDept}.`,
+      variant: "success",
+    });
   };
 
   const handleExportSuppressedReport = () => {
     setExportNotice(true);
+    const csvContent = [
+      "campaign_id,title,department,total_invited,responses,privacy_suppressed,safety_score,status",
+      ...surveys.map(
+        (s) =>
+          `"${s.id}","${s.title}","${s.targetDepartment}",${s.totalInvited},${s.responsesCount},${s.isSuppressed ? "YES (<5)" : "NO"},${s.safetyScore}%,${s.status}`
+      ),
+    ].join("\n");
+    downloadFile("Climate-Survey-Sanitized-Report.csv", csvContent, "text/csv;charset=utf-8");
+    toast({
+      title: "Survey Report Exported",
+      description: "Anonymized climate survey report downloaded with small-cell suppression enforced.",
+      variant: "info",
+    });
     setTimeout(() => setExportNotice(false), 3000);
   };
 

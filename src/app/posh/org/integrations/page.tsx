@@ -17,8 +17,10 @@ import {
 } from "lucide-react";
 import { platformStore } from "@/lib/store";
 import { IntegrationConnector } from "@/lib/types";
+import { useToast } from "@/components/ui/toast";
 
 export default function OrgIntegrationsPage() {
+  const { toast } = useToast();
   const [connectors, setConnectors] = useState<IntegrationConnector[]>(platformStore.getConnectors("TECHKOL"));
   const [syncingId, setSyncingId] = useState<string | null>(null);
   const [syncNotice, setSyncNotice] = useState<string | null>(null);
@@ -27,6 +29,11 @@ export default function OrgIntegrationsPage() {
     const nextStatus = currentStatus === "CONNECTED" ? "DISCONNECTED" : "CONNECTED";
     platformStore.toggleConnector(id, nextStatus as any);
     setConnectors(platformStore.getConnectors("TECHKOL"));
+    toast({
+      title: "Connector Status Updated",
+      description: `Integration connector set to ${nextStatus}.`,
+      variant: nextStatus === "CONNECTED" ? "success" : "info",
+    });
   };
 
   const triggerSync = (id: string, name: string) => {
@@ -41,7 +48,13 @@ export default function OrgIntegrationsPage() {
         return c;
       });
       setConnectors(updated);
-      setSyncNotice(`Successfully synchronized '${name}'. All payloads scanned and validated against BR-082.`);
+      const msg = `Successfully synchronized '${name}'. All payloads scanned and validated against BR-082.`;
+      setSyncNotice(msg);
+      toast({
+        title: "Synchronization Complete",
+        description: msg,
+        variant: "success",
+      });
       setTimeout(() => setSyncNotice(null), 4000);
     }, 1200);
   };

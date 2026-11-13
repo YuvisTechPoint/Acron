@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import {
   ShieldCheck,
   Calendar,
@@ -23,9 +23,12 @@ import {
 import { platformStore } from "@/lib/store";
 import { formatDate, formatDateTime, calculateDaysRemaining, formatINR } from "@/lib/utils";
 import { POSHCase } from "@/lib/types";
+import { useToast } from "@/components/ui/toast";
 
 export default function ICCaseDetailPage() {
   const params = useParams();
+  const router = useRouter();
+  const { toast } = useToast();
   const caseId = (params?.id as string) || "case-01";
 
   const [activeTab, setActiveTab] = useState<string>("overview");
@@ -404,7 +407,7 @@ export default function ICCaseDetailPage() {
                 Statutory Notices &amp; Summons Registry
               </h3>
               <button
-                onClick={() => alert("Notice drafted from standard template. Ready to issue via email and registered post.")}
+                onClick={() => router.push(`/posh/ic/cases/${poshCase.id}/notices`)}
                 className="px-3.5 py-1.5 bg-primary text-white text-xs font-semibold rounded hover:bg-primary-hover flex items-center gap-1.5"
               >
                 <Plus className="w-3.5 h-3.5" />
@@ -686,7 +689,14 @@ export default function ICCaseDetailPage() {
               {/* Digital Affirmation & Generation */}
               <div className="pt-2 flex justify-end gap-3">
                 <button
-                  onClick={() => alert(`Section 13 Final Inquiry Report generated for ${poshCase.caseNumber}. Prepared for submission to Employer within 10 days.`)}
+                  onClick={() => {
+                    toast({
+                      title: "Drafting Final Inquiry Report",
+                      description: `Proceeding to Section 13 report sign & submission console for ${poshCase.caseNumber}.`,
+                      variant: "info",
+                    });
+                    router.push(`/posh/ic/cases/${poshCase.id}/report`);
+                  }}
                   className="px-6 py-2.5 bg-primary hover:bg-primary-hover text-white font-bold uppercase tracking-wider rounded shadow transition-colors flex items-center gap-2"
                 >
                   <FileText className="w-4 h-4" />

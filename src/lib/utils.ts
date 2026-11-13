@@ -269,4 +269,24 @@ export function validateICQuorum(attendees: {
   };
 }
 
+/**
+ * Client-Side Document & Asset Download Helper
+ */
+export function downloadFile(
+  filename: string,
+  content: string,
+  mimeType: string = "text/plain;charset=utf-8"
+): void {
+  if (typeof window === "undefined") return;
+  const blob = new Blob([content], { type: mimeType });
+  const url = URL.createObjectURL(blob);
+  const anchor = document.createElement("a");
+  anchor.href = url;
+  anchor.download = filename;
+  document.body.appendChild(anchor);
+  anchor.click();
+  document.body.removeChild(anchor);
+  URL.revokeObjectURL(url);
+}
+
 

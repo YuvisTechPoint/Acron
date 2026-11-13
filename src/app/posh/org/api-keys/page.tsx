@@ -19,8 +19,10 @@ import {
 } from "lucide-react";
 import { platformStore } from "@/lib/store";
 import { APIClientCredential } from "@/lib/types";
+import { useToast } from "@/components/ui/toast";
 
 export default function OrgAPIKeysPage() {
+  const { toast } = useToast();
   const [selectedOrgId, setSelectedOrgId] = useState("org-1");
   const [clients, setClients] = useState<APIClientCredential[]>(platformStore.getAPIClients(selectedOrgId));
 
@@ -60,12 +62,22 @@ export default function OrgAPIKeysPage() {
     setClients(platformStore.getAPIClients(selectedOrgId));
     setNewClientName("");
     setShowCreateModal(false);
+    toast({
+      title: "API Credentials Provisioned",
+      description: `Client credentials for ${newClientName} issued with restricted mTLS scope.`,
+      variant: "success",
+    });
   };
 
   const handleRevoke = (id: string) => {
     if (confirm("Are you sure you want to revoke this API client? All automated scripts using these credentials will be immediately blocked.")) {
       platformStore.revokeAPIClient(selectedOrgId, id);
       setClients(platformStore.getAPIClients(selectedOrgId));
+      toast({
+        title: "API Client Revoked",
+        description: `Client ID ${id} permanently revoked.`,
+        variant: "warning",
+      });
     }
   };
 
