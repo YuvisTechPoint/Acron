@@ -11,6 +11,7 @@ import {
   ExternalLink,
   ChevronRight,
   MessageSquare,
+  MessageSquareText,
   Lock,
   Sparkles,
 } from "lucide-react";
@@ -116,19 +117,39 @@ export function LegalGuidanceAssistant() {
 
   return (
     <>
-      {/* Floating Trigger Pill */}
+      {/* Floating Trigger Pill - Justified Support / Chat Desk */}
       {!isOpen && (
         <button
           type="button"
           onClick={() => setIsOpen(true)}
-          className="fixed bottom-6 right-6 z-40 inline-flex items-center gap-2 px-4 py-2.5 min-h-[44px] rounded-full bg-navy-900 text-white border border-brass-400/50 shadow-xl hover:bg-navy-800 transition-all transform hover:scale-105 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass-500"
-          aria-label="Open Statutory Guidance Desk"
+          className="fixed bottom-6 right-6 z-40 inline-flex items-center gap-3 pl-2.5 pr-4 py-2 min-h-[48px] rounded-full bg-navy-950/95 backdrop-blur-md text-white border border-brass-500/40 shadow-2xl hover:border-brass-400 hover:bg-navy-900 transition-all duration-200 hover:shadow-brass-500/10 hover:-translate-y-0.5 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass-500 focus-visible:ring-offset-2 focus-visible:ring-offset-ink-950"
+          aria-label="Open Statutory Guidance Support Desk"
         >
-          <span className="w-2 h-2 rounded-full bg-brass-400 animate-pulse" />
-          <Scale className="w-4 h-4 text-brass-400" />
-          <span className="font-sans text-xs font-semibold tracking-wide">
-            Statutory Guidance
-          </span>
+          {/* Circular Icon Container with Live Status Beacon */}
+          <div className="relative w-8 h-8 rounded-full bg-brass-500/15 border border-brass-500/30 flex items-center justify-center text-brass-300 group-hover:bg-brass-500/25 group-hover:text-brass-200 transition-colors shrink-0">
+            <MessageSquareText className="w-4 h-4 text-brass-400 group-hover:scale-110 transition-transform" />
+            <span className="absolute -top-0.5 -right-0.5 flex h-2.5 w-2.5">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500 border border-navy-950" />
+            </span>
+          </div>
+
+          {/* Justified Text Hierarchy */}
+          <div className="flex flex-col text-left leading-tight">
+            <span className="font-sans text-xs font-bold tracking-wide text-white group-hover:text-brass-200 transition-colors">
+              Statutory Guidance
+            </span>
+            <span className="font-sans text-[10px] text-slate-400 tracking-wider uppercase font-medium flex items-center gap-1.5 mt-0.5">
+              <span>Support Desk</span>
+              <span className="text-brass-500/60">&bull;</span>
+              <span className="text-emerald-400 font-semibold lowercase tracking-normal">live</span>
+            </span>
+          </div>
+
+          {/* Micro Accent Icon */}
+          <div className="ml-0.5 pl-2 border-l border-navy-800 text-brass-400/70 group-hover:text-brass-300 group-hover:translate-x-0.5 transition-all shrink-0">
+            <Sparkles className="w-3.5 h-3.5" />
+          </div>
         </button>
       )}
 
@@ -139,8 +160,8 @@ export function LegalGuidanceAssistant() {
           {/* Header */}
           <div className="bg-navy-900 text-white px-5 py-3.5 flex items-center justify-between border-b border-brass-500/30">
             <div className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center border border-brass-400/40">
-                <Scale className="w-4 h-4 text-brass-400" />
+              <div className="w-8 h-8 rounded-lg bg-brass-500/20 flex items-center justify-center border border-brass-400/40 text-brass-300">
+                <MessageSquareText className="w-4 h-4 text-brass-400" />
               </div>
               <div>
                 <h3 className="font-serif text-sm font-bold tracking-tight text-white flex items-center gap-1.5">

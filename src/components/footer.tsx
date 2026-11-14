@@ -292,7 +292,7 @@ export function Footer() {
             </span>
             <span className="hidden sm:inline text-navy-700 select-none">&bull;</span>
             <span className="hidden sm:inline text-[11px] text-slate-400">
-              Acron
+              Kolkata Chambers
             </span>
           </div>
 
