@@ -764,7 +764,7 @@ const SEED_SITE_CONFIG: SiteConfig = {
   heroHeadline: "Excellence in Law.",
   heroSubheadline: "Integrity in Practice.",
   heroDescription:
-    "A professional legal consultancy delivering thoughtful, precise, and result-oriented solutions for individuals, businesses, and institutions in Kolkata and across India.",
+    "A specialized legal consultancy in Kolkata delivering thoughtful, precise, and result-oriented solutions for corporate governance, commercial contracts, regulatory affairs, and institutional integrity.",
   heroBgImage: "/images/hero.jpg",
   heroPrimaryCtaText: "Request a Consultation",
   heroPrimaryCtaLink: "/request-service",
@@ -786,13 +786,13 @@ const SEED_SITE_CONFIG: SiteConfig = {
   receptionPhone: "+91 (033) 2486-7700",
   primaryEmail: "contact@acornlegal.in",
   poshEmail: "posh.desk@acornlegal.in",
-  emergencyPhone: "+91 98300 12345",
-  operatingHours: "Monday – Saturday: 9:30 AM – 7:30 PM IST",
+  emergencyPhone: "+91 98300 99999",
+  operatingHours: "Mon – Sat: 9:30 AM – 7:30 PM IST",
   courtVacationNotice:
     "Chambers open throughout High Court long vacation for urgent mentions & POSH inquiries.",
   googleMapsQuery: "Camac Court, 25 Camac Street, Park Street District, Kolkata 700016",
   footerRollText:
-    "Excellence in Law • Integrity in Practice • Camac Street Chambers • Kolkata • High Court Practice • POSH Redressal • Corporate Advisory",
+    "Acorn Legal Consultants • Excellence in Law • Integrity in Practice • Calcutta High Court • POSH Act Advisory • Corporate Governance • Commercial Contracts • Arbitration & Mediation",
   disclaimer:
     "As per the rules of the Bar Council of India, law firms are not permitted to solicit work or advertise. By accessing this website, the user acknowledges that the information provided is solely for informational purposes and does not create an advocate-client relationship.",
   pathwaySteps: [
