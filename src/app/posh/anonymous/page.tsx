@@ -58,7 +58,7 @@ export default function PoshAnonymousPage() {
   return (
     <div className="min-h-screen bg-slate-50 text-slate-800 pb-20">
       {/* Header */}
-      <div className="bg-[#050C17] text-white border-b border-navy-800">
+      <div className="bg-ink-950 text-white border-b border-navy-800">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
@@ -118,7 +118,7 @@ export default function PoshAnonymousPage() {
             </button>
             <button
               onClick={handleGenerateNew}
-              className="px-3 py-1 bg-[#101F38] hover:bg-navy-900 text-brass-300 rounded transition font-medium"
+              className="px-3 py-1 bg-navy-900 hover:bg-navy-800 text-brass-300 rounded transition font-medium"
             >
               Generate New Token
             </button>
@@ -150,7 +150,7 @@ export default function PoshAnonymousPage() {
                 <div
                   className={`max-w-md p-3.5 rounded-lg leading-relaxed ${
                     m.sender === "COMPLAINANT"
-                      ? "bg-[#101F38] text-white rounded-br-none"
+                      ? "bg-navy-900 text-white rounded-br-none"
                       : "bg-slate-100 text-slate-800 rounded-bl-none border border-slate-200"
                   }`}
                 >
@@ -174,7 +174,7 @@ export default function PoshAnonymousPage() {
             />
             <button
               type="submit"
-              className="px-4 py-2 bg-[#101F38] hover:bg-navy-900 text-brass-300 rounded-md text-xs font-medium transition inline-flex items-center gap-1.5 shrink-0"
+              className="px-4 py-2 bg-navy-900 hover:bg-navy-800 text-brass-300 rounded-md text-xs font-medium transition inline-flex items-center gap-1.5 shrink-0"
             >
               <span>Send Message</span>
               <Send className="w-3.5 h-3.5" />
@@ -192,7 +192,7 @@ export default function PoshAnonymousPage() {
           </div>
           <Link
             href="/posh/file"
-            className="px-4 py-2 bg-[#101F38] hover:bg-navy-900 text-brass-300 rounded text-xs font-medium transition inline-flex items-center gap-1.5 shrink-0"
+            className="px-4 py-2 bg-navy-900 hover:bg-navy-800 text-brass-300 rounded text-xs font-medium transition inline-flex items-center gap-1.5 shrink-0"
           >
             <span>File Statutory Complaint</span>
             <ArrowRight className="w-3.5 h-3.5" />

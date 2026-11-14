@@ -156,7 +156,8 @@ export default function ICCaseDetailPage() {
           <div className="flex items-center gap-3">
             <Link
               href="/posh/ic"
-              className="p-1.5 rounded hover:bg-surface text-ink-secondary hover:text-ink transition-colors"
+              className="min-h-[44px] min-w-[44px] inline-flex items-center justify-center p-2 rounded hover:bg-surface text-ink-secondary hover:text-ink transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+              aria-label="Back to Internal Committee cases"
             >
               <ArrowLeft className="w-4 h-4" />
             </Link>
@@ -179,14 +180,14 @@ export default function ICCaseDetailPage() {
           <div className="flex items-center gap-3">
             <button
               onClick={() => setIsMasked(!isMasked)}
-              className="px-3 py-1.5 border border-border text-xs font-medium rounded hover:bg-surface flex items-center gap-1.5"
+              className="min-h-[44px] px-3.5 py-2 border border-border text-xs font-semibold rounded hover:bg-surface inline-flex items-center gap-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
             >
               {isMasked ? <Eye className="w-3.5 h-3.5 text-accent" /> : <EyeOff className="w-3.5 h-3.5 text-ink-secondary" />}
               <span>{isMasked ? "Reveal Names" : "Mask PII"}</span>
             </button>
             <button
               onClick={() => window.print()}
-              className="px-3 py-1.5 bg-surface border border-border text-xs font-medium rounded hover:bg-surface-muted flex items-center gap-1.5"
+              className="min-h-[44px] px-3.5 py-2 bg-surface border border-border text-xs font-semibold rounded hover:bg-surface-muted inline-flex items-center gap-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
             >
               <Printer className="w-3.5 h-3.5" />
               <span>Print Docket</span>
@@ -197,34 +198,34 @@ export default function ICCaseDetailPage() {
         {/* Dedicated Procedural Step Pages (PRD Section 22.4.3: I-03 to I-10 & v3.0 Enterprise) */}
         <div className="flex items-center gap-2 overflow-x-auto pb-1 text-xs">
           <span className="text-[11px] font-bold uppercase tracking-wider text-accent shrink-0">Dedicated Screens:</span>
-          <Link href={`/posh/ic/cases/${poshCase.id}/triage`} className="px-2.5 py-1 bg-surface border border-border rounded hover:bg-white text-ink shrink-0 font-medium">
+          <Link href={`/posh/ic/cases/${poshCase.id}/triage`} className="min-h-[44px] px-3 py-2 bg-surface border border-border rounded hover:bg-white text-ink shrink-0 font-medium inline-flex items-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary">
             Triage (I-03)
           </Link>
-          <Link href={`/posh/ic/cases/${poshCase.id}/conciliation`} className="px-2.5 py-1 bg-surface border border-border rounded hover:bg-white text-ink shrink-0 font-medium">
+          <Link href={`/posh/ic/cases/${poshCase.id}/conciliation`} className="min-h-[44px] px-3 py-2 bg-surface border border-border rounded hover:bg-white text-ink shrink-0 font-medium inline-flex items-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary">
             Conciliation (I-04)
           </Link>
-          <Link href={`/posh/ic/cases/${poshCase.id}/notices`} className="px-2.5 py-1 bg-surface border border-border rounded hover:bg-white text-ink shrink-0 font-medium">
+          <Link href={`/posh/ic/cases/${poshCase.id}/notices`} className="min-h-[44px] px-3 py-2 bg-surface border border-border rounded hover:bg-white text-ink shrink-0 font-medium inline-flex items-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary">
             Notices &amp; Summons (I-05)
           </Link>
-          <Link href={`/posh/ic/cases/${poshCase.id}/hearings`} className="px-2.5 py-1 bg-surface border border-border rounded hover:bg-white text-ink shrink-0 font-medium">
+          <Link href={`/posh/ic/cases/${poshCase.id}/hearings`} className="min-h-[44px] px-3 py-2 bg-surface border border-border rounded hover:bg-white text-ink shrink-0 font-medium inline-flex items-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary">
             Hearings (I-06)
           </Link>
-          <Link href={`/posh/ic/cases/${poshCase.id}/hearings/vhr-${poshCase.id.replace(/[^a-zA-Z0-9]/g, "")}-01/room`} className="px-2.5 py-1 bg-navy-900 text-brass-300 border border-brass-500/40 rounded hover:bg-navy-800 shrink-0 font-medium flex items-center gap-1">
+          <Link href={`/posh/ic/cases/${poshCase.id}/hearings/vhr-${poshCase.id.replace(/[^a-zA-Z0-9]/g, "")}-01/room`} className="min-h-[44px] px-3 py-2 bg-navy-900 text-brass-300 border border-brass-500/40 rounded hover:bg-navy-800 shrink-0 font-medium inline-flex items-center gap-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass-500">
             <span>Virtual Hearing (v3.0)</span>
           </Link>
-          <Link href={`/posh/ic/cases/${poshCase.id}/evidence`} className="px-2.5 py-1 bg-surface border border-border rounded hover:bg-white text-ink shrink-0 font-medium">
+          <Link href={`/posh/ic/cases/${poshCase.id}/evidence`} className="min-h-[44px] px-3 py-2 bg-surface border border-border rounded hover:bg-white text-ink shrink-0 font-medium inline-flex items-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary">
             Evidence Vault (I-07)
           </Link>
-          <Link href={`/posh/ic/cases/${poshCase.id}/report`} className="px-2.5 py-1 bg-surface border border-border rounded hover:bg-white text-ink shrink-0 font-medium">
+          <Link href={`/posh/ic/cases/${poshCase.id}/report`} className="min-h-[44px] px-3 py-2 bg-surface border border-border rounded hover:bg-white text-ink shrink-0 font-medium inline-flex items-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary">
             Report &amp; Sec 15 (I-08)
           </Link>
-          <Link href={`/posh/ic/cases/${poshCase.id}/interim`} className="px-2.5 py-1 bg-surface border border-border rounded hover:bg-white text-ink shrink-0 font-medium">
+          <Link href={`/posh/ic/cases/${poshCase.id}/interim`} className="min-h-[44px] px-3 py-2 bg-surface border border-border rounded hover:bg-white text-ink shrink-0 font-medium inline-flex items-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary">
             Interim Relief (I-09)
           </Link>
-          <Link href={`/posh/ic/cases/${poshCase.id}/close`} className="px-2.5 py-1 bg-surface border border-border rounded hover:bg-white text-ink shrink-0 font-medium">
+          <Link href={`/posh/ic/cases/${poshCase.id}/close`} className="min-h-[44px] px-3 py-2 bg-surface border border-border rounded hover:bg-white text-ink shrink-0 font-medium inline-flex items-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary">
             Closure &amp; Aftercare (I-10)
           </Link>
-          <Link href={`/posh/ic/cases/${poshCase.id}/ai-assistant`} className="px-2.5 py-1 bg-brass-100 text-brass-900 border border-brass-400 rounded hover:bg-brass-200 shrink-0 font-semibold flex items-center gap-1">
+          <Link href={`/posh/ic/cases/${poshCase.id}/ai-assistant`} className="min-h-[44px] px-3 py-2 bg-brass-100 text-brass-900 border border-brass-400 rounded hover:bg-brass-200 shrink-0 font-semibold inline-flex items-center gap-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass-500">
             <span>Case AI Assistant (v3.0)</span>
           </Link>
         </div>
@@ -245,7 +246,7 @@ export default function ICCaseDetailPage() {
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`px-4 py-2.5 font-medium whitespace-nowrap border-b-2 transition-colors ${
+              className={`min-h-[44px] px-4 py-2.5 font-medium whitespace-nowrap border-b-2 transition-colors inline-flex items-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary ${
                 activeTab === tab.id
                   ? "border-primary text-primary font-bold bg-surface"
                   : "border-transparent text-ink-secondary hover:text-ink hover:bg-surface/50"
@@ -313,32 +314,37 @@ export default function ICCaseDetailPage() {
               </div>
               <div className="flex flex-wrap gap-2 text-xs">
                 <button
+                  type="button"
                   onClick={() => handleStateTransition("PRELIMINARY_ASSESSMENT")}
-                  className="px-3 py-1.5 rounded bg-surface border border-border hover:bg-surface-muted font-medium"
+                  className="min-h-[44px] px-3.5 py-2 rounded bg-surface border border-border hover:bg-surface-muted font-medium inline-flex items-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
                 >
                   &rarr; Preliminary Assessment
                 </button>
                 <button
+                  type="button"
                   onClick={() => handleStateTransition("NOTICE_SERVED")}
-                  className="px-3 py-1.5 rounded bg-surface border border-border hover:bg-surface-muted font-medium"
+                  className="min-h-[44px] px-3.5 py-2 rounded bg-surface border border-border hover:bg-surface-muted font-medium inline-flex items-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
                 >
                   &rarr; Notice Served (7-Day)
                 </button>
                 <button
+                  type="button"
                   onClick={() => handleStateTransition("HEARING_SCHEDULED")}
-                  className="px-3 py-1.5 rounded bg-surface border border-border hover:bg-surface-muted font-medium"
+                  className="min-h-[44px] px-3.5 py-2 rounded bg-surface border border-border hover:bg-surface-muted font-medium inline-flex items-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
                 >
                   &rarr; Hearing Scheduled
                 </button>
                 <button
+                  type="button"
                   onClick={() => handleStateTransition("REPORT_DRAFTED")}
-                  className="px-3 py-1.5 rounded bg-surface border border-border hover:bg-surface-muted font-medium"
+                  className="min-h-[44px] px-3.5 py-2 rounded bg-surface border border-border hover:bg-surface-muted font-medium inline-flex items-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
                 >
                   &rarr; Report Drafted (Sec 13)
                 </button>
                 <button
+                  type="button"
                   onClick={() => handleStateTransition("CLOSED")}
-                  className="px-3 py-1.5 rounded bg-emerald-100 text-emerald-800 font-bold hover:bg-emerald-200"
+                  className="min-h-[44px] px-3.5 py-2 rounded bg-emerald-100 text-emerald-800 font-bold hover:bg-emerald-200 inline-flex items-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-600"
                 >
                   &check; Close Docket
                 </button>
@@ -465,8 +471,9 @@ export default function ICCaseDetailPage() {
                 Statutory Notices &amp; Summons Registry
               </h3>
               <button
+                type="button"
                 onClick={() => router.push(`/posh/ic/cases/${poshCase.id}/notices`)}
-                className="px-3.5 py-1.5 bg-primary text-white text-xs font-semibold rounded hover:bg-primary-hover flex items-center gap-1.5"
+                className="min-h-[44px] px-4 py-2 bg-primary text-white text-xs font-semibold rounded hover:bg-primary-hover inline-flex items-center gap-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass-500 focus-visible:ring-offset-2"
               >
                 <Plus className="w-3.5 h-3.5" />
                 <span>Issue New Notice</span>
@@ -515,41 +522,44 @@ export default function ICCaseDetailPage() {
               <div className="font-bold text-primary uppercase text-[11px]">Schedule Next Hearing Session</div>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 <div>
-                  <label className="block text-ink-secondary mb-1">Date *</label>
+                  <label htmlFor="hearing-date-input" className="block text-ink-secondary mb-1">Date *</label>
                   <input
+                    id="hearing-date-input"
                     type="date"
                     required
                     value={newHearingDate}
                     onChange={(e) => setNewHearingDate(e.target.value)}
-                    className="w-full px-2.5 py-1.5 border border-border rounded"
+                    className="w-full min-h-[44px] px-3 py-2 border border-border rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
                   />
                 </div>
                 <div>
-                  <label className="block text-ink-secondary mb-1">Time *</label>
+                  <label htmlFor="hearing-time-input" className="block text-ink-secondary mb-1">Time *</label>
                   <input
+                    id="hearing-time-input"
                     type="text"
                     required
                     value={newHearingTime}
                     onChange={(e) => setNewHearingTime(e.target.value)}
-                    className="w-full px-2.5 py-1.5 border border-border rounded"
+                    className="w-full min-h-[44px] px-3 py-2 border border-border rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
                   />
                 </div>
                 <div>
-                  <label className="block text-ink-secondary mb-1">Agenda / Purpose *</label>
+                  <label htmlFor="hearing-agenda-input" className="block text-ink-secondary mb-1">Agenda / Purpose *</label>
                   <input
+                    id="hearing-agenda-input"
                     type="text"
                     required
                     value={newHearingAgenda}
                     onChange={(e) => setNewHearingAgenda(e.target.value)}
                     placeholder="e.g. Cross-examination of witness W1"
-                    className="w-full px-2.5 py-1.5 border border-border rounded"
+                    className="w-full min-h-[44px] px-3 py-2 border border-border rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
                   />
                 </div>
               </div>
               <div className="flex justify-end pt-1">
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-primary text-white font-semibold rounded hover:bg-primary-hover"
+                  className="min-h-[44px] px-5 py-2.5 bg-primary text-white font-semibold rounded hover:bg-primary-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass-500 focus-visible:ring-offset-2"
                 >
                   Schedule Hearing
                 </button>
@@ -599,18 +609,20 @@ export default function ICCaseDetailPage() {
             </div>
 
             {/* Quick Upload Form */}
-            <form onSubmit={handleDepositEvidence} className="bg-white p-4 rounded border border-border flex gap-3 text-xs">
+            <form onSubmit={handleDepositEvidence} className="bg-white p-4 rounded border border-border flex flex-col sm:flex-row gap-3 text-xs">
+              <label htmlFor="exhibit-title-input" className="sr-only">Exhibit Description</label>
               <input
+                id="exhibit-title-input"
                 type="text"
                 required
                 value={newExhibitTitle}
                 onChange={(e) => setNewExhibitTitle(e.target.value)}
                 placeholder="Exhibit Description (e.g. CCTV recording log or Slack export)"
-                className="flex-1 px-3 py-1.5 border border-border rounded"
+                className="flex-1 min-h-[44px] px-3.5 py-2 border border-border rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
               />
               <button
                 type="submit"
-                className="px-4 py-1.5 bg-primary text-white font-semibold rounded hover:bg-primary-hover flex items-center gap-1.5"
+                className="min-h-[44px] px-5 py-2 bg-primary text-white font-semibold rounded hover:bg-primary-hover inline-flex items-center justify-center gap-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass-500 focus-visible:ring-offset-2"
               >
                 <Upload className="w-3.5 h-3.5" />
                 <span>Deposit Exhibit</span>
@@ -685,13 +697,14 @@ export default function ICCaseDetailPage() {
 
             <div className="space-y-4 text-xs">
               <div>
-                <label className="block font-semibold text-ink mb-1">
+                <label htmlFor="inquiry-decision-select" className="block font-semibold text-ink mb-1">
                   Inquiry Determination:
                 </label>
                 <select
+                  id="inquiry-decision-select"
                   value={recommendationDecision}
                   onChange={(e) => setRecommendationDecision(e.target.value)}
-                  className="w-full px-3 py-2 bg-white border border-border rounded font-semibold text-primary"
+                  className="w-full min-h-[44px] px-3 py-2 bg-white border border-border rounded font-semibold text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
                 >
                   <option value="charges_substantiated">Charges Substantiated (Guilty of Harassment)</option>
                   <option value="charges_not_substantiated">Charges Not Substantiated (Dismissed)</option>
@@ -700,14 +713,15 @@ export default function ICCaseDetailPage() {
               </div>
 
               <div>
-                <label className="block font-semibold text-ink mb-1">
+                <label htmlFor="findings-reasoning-input" className="block font-semibold text-ink mb-1">
                   Executive Findings &amp; Evidentiary Reasoning:
                 </label>
                 <textarea
+                  id="findings-reasoning-input"
                   rows={4}
                   value={findingsSummary}
                   onChange={(e) => setFindingsSummary(e.target.value)}
-                  className="w-full px-3 py-2 bg-white border border-border rounded"
+                  className="w-full p-3 bg-white border border-border rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
                 ></textarea>
               </div>
 
@@ -718,30 +732,33 @@ export default function ICCaseDetailPage() {
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                   <div>
-                    <label className="block text-ink-secondary mb-1">Mental Trauma / Distress (₹)</label>
+                    <label htmlFor="mental-trauma-input" className="block text-ink-secondary mb-1">Mental Trauma / Distress (₹)</label>
                     <input
+                      id="mental-trauma-input"
                       type="number"
                       value={mentalTrauma}
                       onChange={(e) => setMentalTrauma(Number(e.target.value))}
-                      className="w-full px-3 py-1.5 border border-border rounded"
+                      className="w-full min-h-[44px] px-3 py-2 border border-border rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
                     />
                   </div>
                   <div>
-                    <label className="block text-ink-secondary mb-1">Loss of Career Opportunity (₹)</label>
+                    <label htmlFor="career-loss-input" className="block text-ink-secondary mb-1">Loss of Career Opportunity (₹)</label>
                     <input
+                      id="career-loss-input"
                       type="number"
                       value={careerLoss}
                       onChange={(e) => setCareerLoss(Number(e.target.value))}
-                      className="w-full px-3 py-1.5 border border-border rounded"
+                      className="w-full min-h-[44px] px-3 py-2 border border-border rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
                     />
                   </div>
                   <div>
-                    <label className="block text-ink-secondary mb-1">Medical / Psychiatric Treatment (₹)</label>
+                    <label htmlFor="medical-expenses-input" className="block text-ink-secondary mb-1">Medical / Psychiatric Treatment (₹)</label>
                     <input
+                      id="medical-expenses-input"
                       type="number"
                       value={medicalExpenses}
                       onChange={(e) => setMedicalExpenses(Number(e.target.value))}
-                      className="w-full px-3 py-1.5 border border-border rounded"
+                      className="w-full min-h-[44px] px-3 py-2 border border-border rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
                     />
                   </div>
                 </div>
@@ -757,6 +774,7 @@ export default function ICCaseDetailPage() {
               {/* Digital Affirmation & Generation */}
               <div className="pt-2 flex justify-end gap-3">
                 <button
+                  type="button"
                   onClick={() => {
                     toast({
                       title: "Drafting Final Inquiry Report",
@@ -765,7 +783,7 @@ export default function ICCaseDetailPage() {
                     });
                     router.push(`/posh/ic/cases/${poshCase.id}/report`);
                   }}
-                  className="px-6 py-2.5 bg-primary hover:bg-primary-hover text-white font-bold uppercase tracking-wider rounded shadow transition-colors flex items-center gap-2"
+                  className="min-h-[44px] px-6 py-2.5 bg-primary hover:bg-primary-hover text-white font-bold uppercase tracking-wider rounded shadow transition-colors inline-flex items-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass-500 focus-visible:ring-offset-2"
                 >
                   <FileText className="w-4 h-4" />
                   <span>Sign &amp; Generate Statutory Section 13 Report</span>

@@ -42,7 +42,7 @@ export default function OrgEarlyWarningsPage() {
   return (
     <div className="min-h-screen bg-slate-50 text-slate-800 pb-20">
       {/* Header */}
-      <div className="bg-[#050C17] text-white border-b border-navy-800">
+      <div className="bg-ink-950 text-white border-b border-navy-800">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div>
@@ -140,7 +140,7 @@ export default function OrgEarlyWarningsPage() {
                 <div className="shrink-0 flex md:flex-col items-center md:items-end justify-between gap-3 border-t md:border-t-0 pt-3 md:pt-0 border-slate-100">
                   <button
                     onClick={() => markActionInitiated(w.id, w.metricName)}
-                    className="px-4 py-2 bg-[#101F38] hover:bg-navy-900 text-brass-300 rounded text-xs font-medium transition"
+                    className="px-4 py-2 min-h-[44px] bg-navy-900 hover:bg-navy-800 text-brass-300 rounded text-xs font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass-500"
                   >
                     Initiate Preventive Advisory
                   </button>

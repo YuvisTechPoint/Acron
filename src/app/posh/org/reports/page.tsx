@@ -164,7 +164,7 @@ export default function PoshOrgReportsPage() {
                   setNewAckNumber(ackNumber);
                   setShowAckModal(true);
                 }}
-                className="text-xs font-semibold text-primary hover:underline px-2 py-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded"
+                className="text-xs font-semibold text-primary hover:underline min-h-[44px] px-3 py-2 inline-flex items-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded"
               >
                 Update Receipt
               </button>

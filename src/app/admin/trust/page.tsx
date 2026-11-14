@@ -61,29 +61,29 @@ export default function TrustAndBYOKPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#FDFBF7] text-[#111827] pt-28 pb-20">
+    <div className="min-h-screen bg-ivory-50 text-ink-950 pt-28 pb-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Navigation Breadcrumb */}
-        <div className="flex items-center gap-2 text-xs text-[#6B7280] mb-6">
-          <Link href="/admin" className="hover:text-[#0A192F] transition flex items-center gap-1">
+        <div className="flex items-center gap-2 text-xs text-ink-secondary mb-6">
+          <Link href="/admin" className="hover:text-navy-900 transition flex items-center gap-1 min-h-[44px] px-2 -ml-2 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-navy-900">
             <ArrowLeft className="w-3.5 h-3.5" /> Back to Staff Admin
           </Link>
           <span>/</span>
-          <span className="text-[#0A192F] font-semibold">Trust Assurance, BYOK &amp; DPIA Portal</span>
+          <span className="text-navy-900 font-semibold">Trust Assurance, BYOK &amp; DPIA Portal</span>
         </div>
 
         {/* Page Header */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-[#E5E0D8]">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-border">
           <div className="flex items-center gap-3">
-            <span className="p-2.5 rounded-lg bg-[#0A192F] text-[#D4AF37]">
+            <span className="p-2.5 rounded-lg bg-navy-900 text-brass-400">
               <ShieldCheck className="w-6 h-6" />
             </span>
             <div>
-              <h1 className="font-serif text-2xl sm:text-3xl font-bold text-[#0A192F]">
+              <h1 className="font-serif text-2xl sm:text-3xl font-bold text-navy-900">
                 Trust Assurance &amp; Statutory Privacy Console
               </h1>
-              <p className="font-sans text-xs sm:text-sm text-[#4B5563] mt-0.5">
+              <p className="font-sans text-xs sm:text-sm text-ink-secondary mt-0.5">
                 PRD v3.0 US-280, US-282, US-284 &bull; Customer-Managed Keys (BYOK), DPIA Register &amp; India Data Residency
               </p>
             </div>
@@ -93,12 +93,12 @@ export default function TrustAndBYOKPage() {
             <button
               onClick={handleDownloadPack}
               disabled={evidenceDownloading}
-              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-md bg-[#0A192F] text-white hover:bg-[#152E52] text-xs font-semibold tracking-wide shadow-sm transition disabled:opacity-50"
+              className="inline-flex items-center gap-2 px-4 py-2.5 min-h-[44px] rounded-md bg-navy-900 text-white hover:bg-navy-800 text-xs font-semibold tracking-wide shadow-sm transition disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass-500"
             >
               {evidenceDownloading ? (
-                <RefreshCw className="w-4 h-4 animate-spin text-[#D4AF37]" />
+                <RefreshCw className="w-4 h-4 animate-spin text-brass-400" />
               ) : (
-                <Download className="w-4 h-4 text-[#D4AF37]" />
+                <Download className="w-4 h-4 text-brass-400" />
               )}
               <span>Export Inspection Pack</span>
             </button>
@@ -115,14 +115,14 @@ export default function TrustAndBYOKPage() {
         )}
 
         {/* Customer-Managed Keys (BYOK) Section (US-280) */}
-        <div className="mt-8 bg-white rounded-xl border border-[#E5E0D8] p-6 shadow-sm space-y-5">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-[#F3F4F6]">
+        <div className="mt-8 bg-white rounded-xl border border-border p-6 shadow-sm space-y-5">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-border-subtle">
             <div>
-              <span className="text-[10px] font-mono font-semibold text-[#D4AF37] uppercase tracking-wider block">
+              <span className="text-[10px] font-mono font-semibold text-brass-400 uppercase tracking-wider block">
                 Enterprise Key Management &bull; US-280
               </span>
-              <h2 className="font-serif text-lg font-bold text-[#0A192F] flex items-center gap-2 mt-0.5">
-                <Key className="w-5 h-5 text-[#0A192F]" />
+              <h2 className="font-serif text-lg font-bold text-navy-900 flex items-center gap-2 mt-0.5">
+                <Key className="w-5 h-5 text-navy-900" />
                 Customer-Managed Encryption Keys (BYOK KMS)
               </h2>
             </div>
@@ -136,19 +136,19 @@ export default function TrustAndBYOKPage() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="p-4 rounded-lg bg-[#FAF9F6] border border-[#E5E0D8] space-y-1 text-xs">
-              <span className="text-[#6B7280] block font-medium">KMS Provider</span>
-              <span className="font-mono font-bold text-sm text-[#0A192F] block">
+            <div className="p-4 rounded-lg bg-surface border border-border space-y-1 text-xs">
+              <span className="text-ink-secondary block font-medium">KMS Provider</span>
+              <span className="font-mono font-bold text-sm text-navy-900 block">
                 {byokStatus?.provider || "AWS_KMS"} (ap-south-1 Mumbai)
               </span>
-              <span className="text-[11px] text-[#9CA3AF]">
+              <span className="text-[11px] text-ink-muted">
                 Zero cross-border key escrow
               </span>
             </div>
 
-            <div className="p-4 rounded-lg bg-[#FAF9F6] border border-[#E5E0D8] space-y-1 text-xs">
-              <span className="text-[#6B7280] block font-medium">Customer Key ARN</span>
-              <div className="flex items-center justify-between font-mono text-[11px] text-[#0A192F] truncate">
+            <div className="p-4 rounded-lg bg-surface border border-border space-y-1 text-xs">
+              <span className="text-ink-secondary block font-medium">Customer Key ARN</span>
+              <div className="flex items-center justify-between font-mono text-[11px] text-navy-900 truncate">
                 <span className="truncate">{byokStatus?.keyArnMasked}</span>
                 <button
                   onClick={() => {
@@ -156,9 +156,10 @@ export default function TrustAndBYOKPage() {
                     setCopiedArn(true);
                     setTimeout(() => setCopiedArn(false), 2000);
                   }}
-                  className="ml-1 text-[#6B7280] hover:text-[#0A192F]"
+                  className="ml-1 text-ink-secondary hover:text-navy-900 min-h-[44px] min-w-[44px] inline-flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-navy-900 rounded"
+                  aria-label="Copy key ARN"
                 >
-                  {copiedArn ? <Check className="w-3 h-3 text-emerald-600" /> : <Copy className="w-3 h-3" />}
+                  {copiedArn ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
                 </button>
               </div>
               <span className="text-[11px] text-emerald-700 font-semibold block">
@@ -166,25 +167,25 @@ export default function TrustAndBYOKPage() {
               </span>
             </div>
 
-            <div className="p-4 rounded-lg bg-[#FAF9F6] border border-[#E5E0D8] space-y-1 text-xs">
-              <span className="text-[#6B7280] block font-medium">Last Cryptographic Drill</span>
-              <span className="font-mono text-xs text-[#0A192F] block font-semibold">
+            <div className="p-4 rounded-lg bg-surface border border-border space-y-1 text-xs">
+              <span className="text-ink-secondary block font-medium">Last Cryptographic Drill</span>
+              <span className="font-mono text-xs text-navy-900 block font-semibold">
                 {byokStatus?.lastShreddingDrill}
               </span>
-              <span className="text-[11px] text-[#9CA3AF]">
+              <span className="text-[11px] text-ink-muted">
                 Automated monthly zero-byte audit
               </span>
             </div>
           </div>
 
           {/* Key Revocation Test Harness */}
-          <div className="p-4 rounded-lg bg-[#0A192F]/5 border border-[#D4AF37]/30 space-y-3">
+          <div className="p-4 rounded-lg bg-navy-900/5 border border-brass-500/30 space-y-3">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
               <div className="space-y-0.5">
-                <span className="font-semibold text-xs text-[#0A192F] block">
+                <span className="font-semibold text-xs text-navy-900 block">
                   Simulated Key Revocation Test (Fail-Closed Verification)
                 </span>
-                <p className="text-xs text-[#4B5563]">
+                <p className="text-xs text-ink-secondary">
                   Simulates immediate key revocation by enterprise KMS. Verifies that all unencrypted access halts immediately while statutory 90-day inquiry timelines continue without corruption.
                 </p>
               </div>
@@ -192,7 +193,7 @@ export default function TrustAndBYOKPage() {
                 type="button"
                 onClick={handleSimulateRevocation}
                 disabled={revocationTesting}
-                className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded bg-amber-700 text-white hover:bg-amber-800 text-xs font-semibold shrink-0 transition disabled:opacity-50"
+                className="inline-flex items-center gap-1.5 px-3.5 py-2 min-h-[44px] rounded bg-amber-700 text-white hover:bg-amber-800 text-xs font-semibold shrink-0 transition disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-700"
               >
                 {revocationTesting ? (
                   <RefreshCw className="w-3.5 h-3.5 animate-spin" />
@@ -215,18 +216,18 @@ export default function TrustAndBYOKPage() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start mt-8">
           
           {/* Left 7 Cols: DPIA Register */}
-          <div className="lg:col-span-7 bg-white rounded-xl border border-[#E5E0D8] p-6 shadow-sm space-y-5">
-            <div className="flex items-center justify-between pb-3 border-b border-[#F3F4F6]">
+          <div className="lg:col-span-7 bg-white rounded-xl border border-border p-6 shadow-sm space-y-5">
+            <div className="flex items-center justify-between pb-3 border-b border-border-subtle">
               <div>
-                <span className="text-[10px] font-mono font-semibold text-[#D4AF37] uppercase tracking-wider block">
+                <span className="text-[10px] font-mono font-semibold text-brass-400 uppercase tracking-wider block">
                   Statutory Privacy &bull; US-282
                 </span>
-                <h3 className="font-serif text-base font-bold text-[#0A192F] flex items-center gap-2 mt-0.5">
-                  <FileText className="w-4 h-4 text-[#D4AF37]" />
+                <h3 className="font-serif text-base font-bold text-navy-900 flex items-center gap-2 mt-0.5">
+                  <FileText className="w-4 h-4 text-brass-400" />
                   Data Protection Impact Assessment (DPIA) Register
                 </h3>
               </div>
-              <span className="text-xs font-mono text-[#6B7280]">
+              <span className="text-xs font-mono text-ink-secondary">
                 {dpiaRecords.length} Audited Assessments
               </span>
             </div>
@@ -235,14 +236,14 @@ export default function TrustAndBYOKPage() {
               {dpiaRecords.map((dpia) => (
                 <div
                   key={dpia.id}
-                  className="p-4 rounded-lg border border-[#E5E0D8] bg-[#FAF9F6] space-y-3"
+                  className="p-4 rounded-lg border border-border bg-surface space-y-3"
                 >
                   <div className="flex items-start justify-between gap-2">
                     <div>
-                      <span className="font-mono text-[11px] font-bold text-[#0A192F]">
+                      <span className="font-mono text-[11px] font-bold text-navy-900">
                         {dpia.id} &bull; Class: {dpia.dataClass.toUpperCase()}
                       </span>
-                      <h4 className="font-serif text-sm font-bold text-[#0A192F] mt-0.5">
+                      <h4 className="font-serif text-sm font-bold text-navy-900 mt-0.5">
                         {dpia.title}
                       </h4>
                     </div>
@@ -252,10 +253,10 @@ export default function TrustAndBYOKPage() {
                   </div>
 
                   <div className="space-y-1.5 text-xs">
-                    <span className="font-semibold text-[#0A192F] block">Assessed Privacy Risks:</span>
+                    <span className="font-semibold text-navy-900 block">Assessed Privacy Risks:</span>
                     <ul className="space-y-1">
                       {dpia.assessedRisks.map((risk, i) => (
-                        <li key={i} className="text-[#4B5563] flex items-start gap-1.5">
+                        <li key={i} className="text-ink-secondary flex items-start gap-1.5">
                           <span className="text-amber-600 font-bold">&bull;</span>
                           <span>{risk}</span>
                         </li>
@@ -267,7 +268,7 @@ export default function TrustAndBYOKPage() {
                     <span className="font-semibold text-emerald-800 block">Enforced Mitigations:</span>
                     <ul className="space-y-1">
                       {dpia.mitigations.map((mit, i) => (
-                        <li key={i} className="text-[#374151] flex items-start gap-1.5">
+                        <li key={i} className="text-ink flex items-start gap-1.5">
                           <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0 mt-0.5" />
                           <span>{mit}</span>
                         </li>
@@ -275,7 +276,7 @@ export default function TrustAndBYOKPage() {
                     </ul>
                   </div>
 
-                  <div className="pt-2 border-t border-[#E5E0D8] flex items-center justify-between text-[11px] text-[#6B7280]">
+                  <div className="pt-2 border-t border-border flex items-center justify-between text-[11px] text-ink-secondary">
                     <span>Reviewer: <strong>{dpia.legalReviewer}</strong></span>
                     <span>Approved: {dpia.dpoApprovalDate}</span>
                   </div>
@@ -285,14 +286,14 @@ export default function TrustAndBYOKPage() {
           </div>
 
           {/* Right 5 Cols: Sub-Processor Registry */}
-          <div className="lg:col-span-5 bg-white rounded-xl border border-[#E5E0D8] p-6 shadow-sm space-y-5">
-            <div className="flex items-center justify-between pb-3 border-b border-[#F3F4F6]">
+          <div className="lg:col-span-5 bg-white rounded-xl border border-border p-6 shadow-sm space-y-5">
+            <div className="flex items-center justify-between pb-3 border-b border-border-subtle">
               <div>
-                <span className="text-[10px] font-mono font-semibold text-[#D4AF37] uppercase tracking-wider block">
+                <span className="text-[10px] font-mono font-semibold text-brass-400 uppercase tracking-wider block">
                   Data Residency &bull; US-282
                 </span>
-                <h3 className="font-serif text-base font-bold text-[#0A192F] flex items-center gap-2 mt-0.5">
-                  <Server className="w-4 h-4 text-[#D4AF37]" />
+                <h3 className="font-serif text-base font-bold text-navy-900 flex items-center gap-2 mt-0.5">
+                  <Server className="w-4 h-4 text-brass-400" />
                   Sub-Processor Registry
                 </h3>
               </div>
@@ -305,26 +306,26 @@ export default function TrustAndBYOKPage() {
               {subProcessors.map((sp) => (
                 <div
                   key={sp.id}
-                  className="p-4 rounded-lg border border-[#E5E0D8] bg-[#FAF9F6] space-y-2 text-xs"
+                  className="p-4 rounded-lg border border-border bg-surface space-y-2 text-xs"
                 >
                   <div className="flex items-start justify-between gap-2">
-                    <span className="font-bold text-[#0A192F] text-sm">
+                    <span className="font-bold text-navy-900 text-sm">
                       {sp.name}
                     </span>
-                    <span className="text-[10px] font-semibold text-[#0A192F] bg-white px-2 py-0.5 rounded border border-[#E5E0D8]">
+                    <span className="text-[10px] font-semibold text-navy-900 bg-white px-2 py-0.5 rounded border border-border">
                       {sp.dataResidency}
                     </span>
                   </div>
 
-                  <p className="text-[#4B5563] leading-relaxed">
+                  <p className="text-ink-secondary leading-relaxed">
                     {sp.purpose}
                   </p>
 
-                  <div className="pt-2 border-t border-[#E5E0D8] space-y-1 text-[11px]">
-                    <div className="text-[#0A192F] font-semibold">
+                  <div className="pt-2 border-t border-border space-y-1 text-[11px]">
+                    <div className="text-navy-900 font-semibold">
                       Certifications: {sp.complianceCert}
                     </div>
-                    <div className="text-[#6B7280] flex items-center justify-between">
+                    <div className="text-ink-secondary flex items-center justify-between">
                       <span>DPIA Ref: {sp.dpiaRef}</span>
                       <span>Verified: {sp.verifiedAt}</span>
                     </div>
@@ -334,13 +335,13 @@ export default function TrustAndBYOKPage() {
             </div>
 
             {/* Public Vulnerability Disclosure Policy Note */}
-            <div className="p-3.5 rounded-lg bg-[#FAF9F6] border border-[#E5E0D8] space-y-1.5 text-xs">
-              <span className="font-semibold text-[#0A192F] flex items-center gap-1.5">
-                <Globe2 className="w-3.5 h-3.5 text-[#D4AF37]" />
+            <div className="p-3.5 rounded-lg bg-surface border border-border space-y-1.5 text-xs">
+              <span className="font-semibold text-navy-900 flex items-center gap-1.5">
+                <Globe2 className="w-3.5 h-3.5 text-brass-400" />
                 Security Disclosure &amp; RFC 9116 Policy:
               </span>
-              <p className="text-[#6B7280]">
-                Public security coordination endpoint at <code className="text-[#0A192F]">/.well-known/security.txt</code> with counsel PGP keys and statutory 72-hour triage SLA.
+              <p className="text-ink-secondary">
+                Public security coordination endpoint at <code className="text-navy-900 font-mono">/.well-known/security.txt</code> with counsel PGP keys and statutory 72-hour triage SLA.
               </p>
             </div>
 

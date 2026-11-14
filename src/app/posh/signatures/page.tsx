@@ -55,7 +55,7 @@ export default function PoshSignaturesPage() {
   return (
     <div className="min-h-screen bg-slate-50 text-slate-800 pb-20">
       {/* Header */}
-      <div className="bg-[#050C17] text-white border-b border-navy-800">
+      <div className="bg-ink-950 text-white border-b border-navy-800">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
@@ -177,7 +177,7 @@ export default function PoshSignaturesPage() {
                   <div className="pt-2 flex justify-end">
                     <button
                       onClick={() => setActiveSigningId(r.id)}
-                      className="px-4 py-2 bg-[#101F38] hover:bg-navy-900 text-brass-300 rounded text-xs font-semibold transition inline-flex items-center gap-2"
+                      className="min-h-[44px] px-4 py-2 bg-navy-900 hover:bg-navy-800 text-brass-300 rounded text-xs font-semibold transition inline-flex items-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass-500"
                     >
                       <Fingerprint className="w-4 h-4" />
                       <span>Countersign as Member (Rita Basu)</span>
@@ -260,7 +260,7 @@ export default function PoshSignaturesPage() {
                     </button>
                     <button
                       type="submit"
-                      className="px-4 py-2 bg-[#101F38] hover:bg-navy-900 text-brass-300 rounded font-semibold text-xs"
+                      className="min-h-[44px] px-4 py-2 bg-navy-900 hover:bg-navy-800 text-brass-300 rounded font-semibold text-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass-500"
                     >
                       Verify &amp; Seal Document
                     </button>
@@ -280,7 +280,7 @@ export default function PoshSignaturesPage() {
 
                   <button
                     onClick={handleSign}
-                    className="w-full py-2 bg-[#101F38] hover:bg-navy-900 text-brass-300 rounded font-semibold text-xs"
+                    className="w-full min-h-[44px] py-2 bg-navy-900 hover:bg-navy-800 text-brass-300 rounded font-semibold text-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass-500"
                   >
                     Authorize with USB Token PIN
                   </button>

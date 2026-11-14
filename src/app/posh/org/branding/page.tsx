@@ -85,29 +85,29 @@ export default function EnterpriseBrandingPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#FDFBF7] text-[#111827] pt-28 pb-20">
+    <div className="min-h-screen bg-ivory-50 text-ink-950 pt-28 pb-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Navigation Breadcrumb */}
-        <div className="flex items-center gap-2 text-xs text-[#6B7280] mb-6">
-          <Link href="/posh/org" className="hover:text-[#0A192F] transition flex items-center gap-1">
+        <div className="flex items-center gap-2 text-xs text-ink-secondary mb-6">
+          <Link href="/posh/org" className="hover:text-navy-900 transition flex items-center gap-1 min-h-[44px] px-2 -ml-2 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-navy-900">
             <ArrowLeft className="w-3.5 h-3.5" /> Back to Org Hub
           </Link>
           <span>/</span>
-          <span className="text-[#0A192F] font-semibold">White-Label Branding &amp; Custom Domain</span>
+          <span className="text-navy-900 font-semibold">White-Label Branding &amp; Custom Domain</span>
         </div>
 
         {/* Page Header */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-[#E5E0D8]">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-border">
           <div className="flex items-center gap-3">
-            <span className="p-2.5 rounded-lg bg-[#0A192F] text-[#D4AF37]">
+            <span className="p-2.5 rounded-lg bg-navy-900 text-brass-400">
               <Palette className="w-6 h-6" />
             </span>
             <div>
-              <h1 className="font-serif text-2xl sm:text-3xl font-bold text-[#0A192F]">
+              <h1 className="font-serif text-2xl sm:text-3xl font-bold text-navy-900">
                 Enterprise Branding &amp; Custom Domain
               </h1>
-              <p className="font-sans text-xs sm:text-sm text-[#4B5563] mt-0.5">
+              <p className="font-sans text-xs sm:text-sm text-ink-secondary mt-0.5">
                 PRD v3.0 US-243 &bull; White-Label Portal Customization, Managed TLS &amp; Domain Verification
               </p>
             </div>
@@ -122,9 +122,9 @@ export default function EnterpriseBrandingPage() {
             )}
             <button
               onClick={handleSave}
-              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-md bg-[#0A192F] text-white hover:bg-[#152E52] text-xs font-semibold tracking-wide shadow-sm transition"
+              className="inline-flex items-center gap-2 px-4 py-2.5 min-h-[44px] rounded-md bg-navy-900 text-white hover:bg-navy-800 text-xs font-semibold tracking-wide shadow-sm transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass-500"
             >
-              <Save className="w-4 h-4 text-[#D4AF37]" />
+              <Save className="w-4 h-4 text-brass-400" />
               <span>Save Changes</span>
             </button>
           </div>
@@ -137,10 +137,10 @@ export default function EnterpriseBrandingPage() {
           <form onSubmit={handleSave} className="lg:col-span-6 space-y-6">
             
             {/* Custom Domain & Managed TLS */}
-            <div className="bg-white rounded-lg border border-[#E5E0D8] p-6 shadow-sm space-y-5">
-              <div className="flex items-center justify-between pb-3 border-b border-[#F3F4F6]">
-                <h2 className="font-serif text-base font-bold text-[#0A192F] flex items-center gap-2">
-                  <Globe className="w-4 h-4 text-[#D4AF37]" />
+            <div className="bg-white rounded-lg border border-border p-6 shadow-sm space-y-5">
+              <div className="flex items-center justify-between pb-3 border-b border-border-subtle">
+                <h2 className="font-serif text-base font-bold text-navy-900 flex items-center gap-2">
+                  <Globe className="w-4 h-4 text-brass-400" />
                   Custom Dedicated Domain
                 </h2>
                 <span
@@ -155,7 +155,7 @@ export default function EnterpriseBrandingPage() {
               </div>
 
               <div className="space-y-1">
-                <label className="block text-xs font-semibold text-[#0A192F]">
+                <label className="block text-xs font-semibold text-navy-900">
                   Custom FQDN Domain
                 </label>
                 <div className="flex items-center gap-2">
@@ -166,13 +166,13 @@ export default function EnterpriseBrandingPage() {
                       setConfig({ ...config, customDomain: e.target.value, customDomainVerified: false })
                     }
                     placeholder="e.g. posh.yourcompany.com"
-                    className="flex-1 px-3 py-2 text-xs rounded border border-[#E5E0D8] font-mono focus:outline-none focus:ring-1 focus:ring-[#0A192F]"
+                    className="flex-1 px-3 py-2 min-h-[44px] text-xs rounded border border-border font-mono focus:outline-none focus:ring-1 focus:ring-navy-900"
                   />
                   <button
                     type="button"
                     onClick={handleVerifyDns}
                     disabled={verifyingDns}
-                    className="px-3 py-2 rounded bg-[#0A192F]/5 hover:bg-[#0A192F]/10 text-[#0A192F] text-xs font-semibold flex items-center gap-1.5 transition disabled:opacity-50"
+                    className="px-3 py-2 min-h-[44px] rounded bg-navy-900/5 hover:bg-navy-900/10 text-navy-900 text-xs font-semibold flex items-center gap-1.5 transition disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-navy-900"
                   >
                     {verifyingDns ? (
                       <RefreshCw className="w-3.5 h-3.5 animate-spin" />
@@ -185,16 +185,16 @@ export default function EnterpriseBrandingPage() {
               </div>
 
               {/* DNS Instructions Card */}
-              <div className="p-3.5 rounded bg-[#FAF9F6] border border-[#E5E0D8] space-y-2 text-xs">
-                <span className="font-semibold text-[#0A192F] block">
+              <div className="p-3.5 rounded bg-surface border border-border space-y-2 text-xs">
+                <span className="font-semibold text-navy-900 block">
                   DNS Configuration Target:
                 </span>
-                <div className="flex items-center justify-between bg-white px-3 py-2 rounded border border-[#E5E0D8] font-mono text-[11px]">
+                <div className="flex items-center justify-between bg-white px-3 py-2 rounded border border-border font-mono text-[11px]">
                   <span>CNAME &rarr; cname.acornlegal.in</span>
                   <button
                     type="button"
                     onClick={handleCopyDns}
-                    className="text-[#0A192F] hover:underline flex items-center gap-1"
+                    className="text-navy-900 hover:underline flex items-center gap-1 min-h-[44px] px-2 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-navy-900"
                   >
                     {copiedDns ? (
                       <Check className="w-3 h-3 text-emerald-600" />
@@ -204,7 +204,7 @@ export default function EnterpriseBrandingPage() {
                     <span>{copiedDns ? "Copied" : "Copy"}</span>
                   </button>
                 </div>
-                <div className="flex items-center justify-between text-[11px] text-[#6B7280]">
+                <div className="flex items-center justify-between text-[11px] text-ink-secondary">
                   <span>Managed TLS: Let&apos;s Encrypt Auto-Renewal</span>
                   <span className="text-emerald-700 font-semibold">SSL Active</span>
                 </div>
@@ -212,27 +212,27 @@ export default function EnterpriseBrandingPage() {
             </div>
 
             {/* Corporate Identity & Colors */}
-            <div className="bg-white rounded-lg border border-[#E5E0D8] p-6 shadow-sm space-y-5">
-              <h2 className="font-serif text-base font-bold text-[#0A192F] flex items-center gap-2 pb-3 border-b border-[#F3F4F6]">
-                <Sparkles className="w-4 h-4 text-[#D4AF37]" />
+            <div className="bg-white rounded-lg border border-border p-6 shadow-sm space-y-5">
+              <h2 className="font-serif text-base font-bold text-navy-900 flex items-center gap-2 pb-3 border-b border-border-subtle">
+                <Sparkles className="w-4 h-4 text-brass-400" />
                 Brand Identity &amp; Palette
               </h2>
 
               <div className="space-y-1">
-                <label className="block text-xs font-semibold text-[#0A192F]">
+                <label className="block text-xs font-semibold text-navy-900">
                   Enterprise Legal Entity Name
                 </label>
                 <input
                   type="text"
                   value={config.companyName}
                   onChange={(e) => setConfig({ ...config, companyName: e.target.value })}
-                  className="w-full px-3 py-2 text-xs rounded border border-[#E5E0D8] focus:outline-none focus:ring-1 focus:ring-[#0A192F]"
+                  className="w-full px-3 py-2 min-h-[44px] text-xs rounded border border-border focus:outline-none focus:ring-1 focus:ring-navy-900"
                 />
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-1">
-                  <label className="block text-xs font-semibold text-[#0A192F]">
+                  <label className="block text-xs font-semibold text-navy-900">
                     Primary Brand Color
                   </label>
                   <div className="flex items-center gap-2">
@@ -240,19 +240,19 @@ export default function EnterpriseBrandingPage() {
                       type="color"
                       value={config.primaryColor}
                       onChange={(e) => setConfig({ ...config, primaryColor: e.target.value })}
-                      className="w-8 h-8 rounded border border-[#E5E0D8] cursor-pointer"
+                      className="w-8 h-8 rounded border border-border cursor-pointer min-h-[44px] min-w-[44px]"
                     />
                     <input
                       type="text"
                       value={config.primaryColor}
                       onChange={(e) => setConfig({ ...config, primaryColor: e.target.value })}
-                      className="flex-1 px-3 py-1.5 text-xs font-mono rounded border border-[#E5E0D8]"
+                      className="flex-1 px-3 py-1.5 min-h-[44px] text-xs font-mono rounded border border-border"
                     />
                   </div>
                 </div>
 
                 <div className="space-y-1">
-                  <label className="block text-xs font-semibold text-[#0A192F]">
+                  <label className="block text-xs font-semibold text-navy-900">
                     Accent / Gold Tone
                   </label>
                   <div className="flex items-center gap-2">
@@ -260,52 +260,52 @@ export default function EnterpriseBrandingPage() {
                       type="color"
                       value={config.accentColor}
                       onChange={(e) => setConfig({ ...config, accentColor: e.target.value })}
-                      className="w-8 h-8 rounded border border-[#E5E0D8] cursor-pointer"
+                      className="w-8 h-8 rounded border border-border cursor-pointer min-h-[44px] min-w-[44px]"
                     />
                     <input
                       type="text"
                       value={config.accentColor}
                       onChange={(e) => setConfig({ ...config, accentColor: e.target.value })}
-                      className="flex-1 px-3 py-1.5 text-xs font-mono rounded border border-[#E5E0D8]"
+                      className="flex-1 px-3 py-1.5 min-h-[44px] text-xs font-mono rounded border border-border"
                     />
                   </div>
                 </div>
               </div>
 
               <div className="space-y-1">
-                <label className="block text-xs font-semibold text-[#0A192F]">
+                <label className="block text-xs font-semibold text-navy-900">
                   Enterprise Logo URL
                 </label>
                 <input
                   type="url"
                   value={config.logoUrl}
                   onChange={(e) => setConfig({ ...config, logoUrl: e.target.value })}
-                  className="w-full px-3 py-2 text-xs rounded border border-[#E5E0D8] font-mono focus:outline-none focus:ring-1 focus:ring-[#0A192F]"
+                  className="w-full px-3 py-2 min-h-[44px] text-xs rounded border border-border font-mono focus:outline-none focus:ring-1 focus:ring-navy-900"
                 />
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-1">
-                  <label className="block text-xs font-semibold text-[#0A192F]">
+                  <label className="block text-xs font-semibold text-navy-900">
                     Employee Helpdesk Email
                   </label>
                   <input
                     type="email"
                     value={config.supportEmail}
                     onChange={(e) => setConfig({ ...config, supportEmail: e.target.value })}
-                    className="w-full px-3 py-2 text-xs rounded border border-[#E5E0D8]"
+                    className="w-full px-3 py-2 min-h-[44px] text-xs rounded border border-border"
                   />
                 </div>
 
                 <div className="space-y-1">
-                  <label className="block text-xs font-semibold text-[#0A192F]">
+                  <label className="block text-xs font-semibold text-navy-900">
                     Confidential 24/7 Helpline
                   </label>
                   <input
                     type="text"
                     value={config.confidentialHotline}
                     onChange={(e) => setConfig({ ...config, confidentialHotline: e.target.value })}
-                    className="w-full px-3 py-2 text-xs rounded border border-[#E5E0D8]"
+                    className="w-full px-3 py-2 min-h-[44px] text-xs rounded border border-border"
                   />
                 </div>
               </div>
@@ -317,25 +317,25 @@ export default function EnterpriseBrandingPage() {
           {/* Right 6 Cols: Live Preview Canvas */}
           <div className="lg:col-span-6 space-y-4">
             <div className="flex items-center justify-between">
-              <h2 className="font-sans text-xs font-bold uppercase tracking-wider text-[#6B7280] flex items-center gap-1.5">
+              <h2 className="font-sans text-xs font-bold uppercase tracking-wider text-ink-secondary flex items-center gap-1.5">
                 <Eye className="w-3.5 h-3.5" />
                 Live Employee Portal Preview
               </h2>
-              <span className="text-[11px] font-mono text-[#D4AF37]">
+              <span className="text-[11px] font-mono text-brass-400">
                 {config.customDomain}
               </span>
             </div>
 
             {/* Mock Browser Container */}
-            <div className="rounded-xl border border-[#CBD5E1] bg-white shadow-xl overflow-hidden">
+            <div className="rounded-xl border border-border bg-white shadow-xl overflow-hidden">
               {/* Browser chrome toolbar */}
-              <div className="bg-[#F1F5F9] px-4 py-2.5 border-b border-[#E2E8F0] flex items-center gap-3 text-xs">
+              <div className="bg-surface px-4 py-2.5 border-b border-border flex items-center gap-3 text-xs">
                 <div className="flex items-center gap-1.5">
-                  <span className="w-2.5 h-2.5 rounded-full bg-[#EF4444]" />
-                  <span className="w-2.5 h-2.5 rounded-full bg-[#F59E0B]" />
-                  <span className="w-2.5 h-2.5 rounded-full bg-[#10B981]" />
+                  <span className="w-2.5 h-2.5 rounded-full bg-status-danger" />
+                  <span className="w-2.5 h-2.5 rounded-full bg-status-warning" />
+                  <span className="w-2.5 h-2.5 rounded-full bg-status-success" />
                 </div>
-                <div className="flex-1 bg-white px-3 py-1 rounded text-[11px] font-mono text-[#475569] border border-[#CBD5E1] flex items-center justify-between">
+                <div className="flex-1 bg-white px-3 py-1 rounded text-[11px] font-mono text-ink-secondary border border-border flex items-center justify-between">
                   <span className="flex items-center gap-1">
                     <Lock className="w-3 h-3 text-emerald-600" />
                     https://{config.customDomain}
@@ -345,7 +345,7 @@ export default function EnterpriseBrandingPage() {
               </div>
 
               {/* Portal Canvas */}
-              <div className="p-6 bg-[#FAF9F6] space-y-6">
+              <div className="p-6 bg-surface space-y-6">
                 
                 {/* Header with Enterprise Logo & Color */}
                 <div
@@ -375,25 +375,25 @@ export default function EnterpriseBrandingPage() {
                 </div>
 
                 {/* Hero Card */}
-                <div className="bg-white rounded-lg border border-[#E5E0D8] p-5 shadow-sm space-y-3">
-                  <h3 className="font-serif text-base font-bold text-[#0A192F]">
+                <div className="bg-white rounded-lg border border-border p-5 shadow-sm space-y-3">
+                  <h3 className="font-serif text-base font-bold text-navy-900">
                     Confidential Workplace Grievance &amp; POSH Safety Portal
                   </h3>
-                  <p className="text-xs text-[#6B7280] leading-relaxed">
+                  <p className="text-xs text-ink-secondary leading-relaxed">
                     Empowering employees of {config.companyName} with statutory protection under the Sexual Harassment of Women at Workplace (Prevention, Prohibition and Redressal) Act, 2013.
                   </p>
 
                   <div className="pt-2 flex flex-wrap gap-2">
                     <button
                       type="button"
-                      className="px-3.5 py-1.5 rounded text-xs font-semibold text-white shadow-sm"
+                      className="px-3.5 py-1.5 min-h-[44px] rounded text-xs font-semibold text-white shadow-sm inline-flex items-center justify-center"
                       style={{ backgroundColor: config.primaryColor }}
                     >
                       File Confidential Concern
                     </button>
                     <button
                       type="button"
-                      className="px-3.5 py-1.5 rounded text-xs font-semibold border border-[#E5E0D8] text-[#374151] bg-[#FAF9F6]"
+                      className="px-3.5 py-1.5 min-h-[44px] rounded text-xs font-semibold border border-border text-ink bg-surface inline-flex items-center justify-center"
                     >
                       View Statutory IC Roster
                     </button>
@@ -402,21 +402,21 @@ export default function EnterpriseBrandingPage() {
 
                 {/* Helpline & Support Bar */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
-                  <div className="p-3 rounded bg-white border border-[#E5E0D8] flex items-center gap-2">
-                    <Mail className="w-4 h-4 text-[#D4AF37]" />
+                  <div className="p-3 rounded bg-white border border-border flex items-center gap-2">
+                    <Mail className="w-4 h-4 text-brass-400" />
                     <div className="overflow-hidden">
-                      <span className="text-[10px] text-[#6B7280] block">Employee Support</span>
-                      <span className="font-mono text-[11px] truncate block text-[#0A192F]">
+                      <span className="text-[10px] text-ink-secondary block">Employee Support</span>
+                      <span className="font-mono text-[11px] truncate block text-navy-900">
                         {config.supportEmail}
                       </span>
                     </div>
                   </div>
 
-                  <div className="p-3 rounded bg-white border border-[#E5E0D8] flex items-center gap-2">
-                    <Phone className="w-4 h-4 text-[#D4AF37]" />
+                  <div className="p-3 rounded bg-white border border-border flex items-center gap-2">
+                    <Phone className="w-4 h-4 text-brass-400" />
                     <div>
-                      <span className="text-[10px] text-[#6B7280] block">24/7 IC Helpline</span>
-                      <span className="font-mono text-[11px] font-semibold text-[#0A192F]">
+                      <span className="text-[10px] text-ink-secondary block">24/7 IC Helpline</span>
+                      <span className="font-mono text-[11px] font-semibold text-navy-900">
                         {config.confidentialHotline}
                       </span>
                     </div>
@@ -424,7 +424,7 @@ export default function EnterpriseBrandingPage() {
                 </div>
 
                 {/* Footer with Powered by Acorn tag */}
-                <div className="pt-2 text-center text-[10px] text-[#9CA3AF]">
+                <div className="pt-2 text-center text-[10px] text-ink-muted">
                   Protected by Acorn Legal Consultants Statutory Compliance Infrastructure &bull; Kolkata
                 </div>
 

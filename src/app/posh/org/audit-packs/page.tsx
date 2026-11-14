@@ -68,7 +68,7 @@ export default function OrgAuditPacksPage() {
   return (
     <div className="min-h-screen bg-slate-50 text-slate-800 pb-20">
       {/* Header */}
-      <div className="bg-[#050C17] text-white border-b border-navy-800">
+      <div className="bg-ink-950 text-white border-b border-navy-800">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
@@ -88,7 +88,7 @@ export default function OrgAuditPacksPage() {
             <button
               onClick={generatePack}
               disabled={generating}
-              className="px-4 py-2 bg-[#101F38] hover:bg-navy-900 text-brass-300 rounded text-xs font-semibold border border-brass-500/30 transition disabled:opacity-40 inline-flex items-center gap-2"
+              className="min-h-[44px] px-4 py-2 bg-navy-900 hover:bg-navy-800 text-brass-300 rounded text-xs font-semibold border border-brass-500/30 transition disabled:opacity-40 inline-flex items-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass-500"
             >
               <FolderArchive className="w-4 h-4" />
               <span>{generating ? "Compiling Audit Evidence..." : "Compile Inspection Pack"}</span>
@@ -147,7 +147,7 @@ export default function OrgAuditPacksPage() {
                     <a
                       href={`/api/org/audit-packs/download?orgCode=${encodeURIComponent(p.orgCode)}&fiscalYear=${encodeURIComponent(p.fiscalYear)}`}
                       download={`Inspection-Manifest-${p.orgCode}-${p.fiscalYear}.json`}
-                      className="px-3 py-1.5 bg-[#101F38] hover:bg-navy-900 text-brass-300 rounded text-xs font-medium transition inline-flex items-center gap-1.5"
+                      className="min-h-[44px] px-3.5 py-2 bg-navy-900 hover:bg-navy-800 text-brass-300 rounded text-xs font-semibold transition inline-flex items-center gap-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass-500"
                     >
                       <Download className="w-3.5 h-3.5" />
                       <span>Download Sealed Manifest</span>

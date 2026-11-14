@@ -65,7 +65,7 @@ export default function AdminLegalRegisterPage() {
   return (
     <div className="min-h-screen bg-slate-50 text-slate-800 pb-20">
       {/* Header */}
-      <div className="bg-[#050C17] text-white border-b border-navy-800">
+      <div className="bg-ink-950 text-white border-b border-navy-800">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>

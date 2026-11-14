@@ -71,7 +71,7 @@ export default function OrgSSOPage() {
   return (
     <div className="min-h-screen bg-slate-50 text-slate-800 pb-20">
       {/* Header */}
-      <div className="bg-[#050C17] text-white border-b border-navy-800">
+      <div className="bg-ink-950 text-white border-b border-navy-800">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div>
@@ -93,7 +93,7 @@ export default function OrgSSOPage() {
               <select
                 value={selectedOrg}
                 onChange={(e) => setSelectedOrg(e.target.value)}
-                className="bg-[#101F38] border border-brass-500/30 text-brass-300 text-xs rounded-md px-3 py-1.5 focus:outline-none focus:border-brass-400 font-mono"
+                className="bg-navy-900 border border-brass-500/30 text-brass-300 text-xs rounded-md px-3 py-2 min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-brass-500 font-mono"
               >
                 <option value="TECHKOL">TECHKOL (Kolkata Cloud Tech)</option>
                 <option value="BENGALIND">BENGALIND (Bengal Precision Eng.)</option>
@@ -181,7 +181,7 @@ export default function OrgSSOPage() {
                   <button
                     onClick={verifyDns}
                     disabled={isVerifying || activeConfig.verified}
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#101F38] hover:bg-navy-900 text-brass-300 rounded text-xs font-medium transition disabled:opacity-50"
+                    className="inline-flex items-center gap-1.5 px-3 py-2 min-h-[44px] bg-navy-900 hover:bg-navy-800 text-brass-300 rounded text-xs font-semibold transition disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass-500"
                   >
                     <RefreshCw className={`w-3.5 h-3.5 ${isVerifying ? "animate-spin" : ""}`} />
                     <span>{isVerifying ? "Querying DNS..." : activeConfig.verified ? "Verified ✓" : "Verify TXT Record"}</span>

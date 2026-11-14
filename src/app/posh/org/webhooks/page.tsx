@@ -113,34 +113,34 @@ export default function WebhooksAdminPage() {
   );
 
   return (
-    <div className="min-h-screen bg-[#FDFBF7] text-[#111827] pt-28 pb-20">
+    <div className="min-h-screen bg-ivory-50 text-ink-950 pt-28 pb-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Navigation Breadcrumb */}
-        <div className="flex items-center gap-2 text-xs text-[#6B7280] mb-6">
-          <Link href="/posh/org" className="hover:text-[#0A192F] transition flex items-center gap-1">
+        <div className="flex items-center gap-2 text-xs text-ink-secondary mb-6">
+          <Link href="/posh/org" className="hover:text-navy-900 transition flex items-center gap-1 min-h-[44px] px-2 -ml-2 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-navy-900">
             <ArrowLeft className="w-3.5 h-3.5" /> Back to Org Hub
           </Link>
           <span>/</span>
-          <Link href="/posh/org/integrations" className="hover:text-[#0A192F] transition">
+          <Link href="/posh/org/integrations" className="hover:text-navy-900 transition min-h-[44px] px-2 flex items-center rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-navy-900">
             Integrations
           </Link>
           <span>/</span>
-          <span className="text-[#0A192F] font-semibold">Signed Webhooks</span>
+          <span className="text-navy-900 font-semibold">Signed Webhooks</span>
         </div>
 
         {/* Page Header */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-[#E5E0D8]">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-border">
           <div>
             <div className="flex items-center gap-3">
-              <span className="p-2.5 rounded-lg bg-[#0A192F] text-[#D4AF37]">
+              <span className="p-2.5 rounded-lg bg-navy-900 text-brass-400">
                 <Webhook className="w-6 h-6" />
               </span>
               <div>
-                <h1 className="font-serif text-2xl sm:text-3xl font-bold text-[#0A192F]">
+                <h1 className="font-serif text-2xl sm:text-3xl font-bold text-navy-900">
                   Signed Webhook Subscriptions
                 </h1>
-                <p className="font-sans text-xs sm:text-sm text-[#4B5563] mt-0.5">
+                <p className="font-sans text-xs sm:text-sm text-ink-secondary mt-0.5">
                   PRD v3.0 US-241 &bull; HMAC SHA-256 Signed Outbound Events with 24-Hour Retry and BR-082 Redaction Gate
                 </p>
               </div>
@@ -150,22 +150,22 @@ export default function WebhooksAdminPage() {
           <div className="flex items-center gap-3">
             <button
               onClick={() => setShowAddModal(true)}
-              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-md bg-[#0A192F] text-white hover:bg-[#152E52] text-xs font-semibold tracking-wide shadow-sm transition"
+              className="inline-flex items-center gap-2 px-4 py-2.5 min-h-[44px] rounded-md bg-navy-900 text-white hover:bg-navy-800 text-xs font-semibold tracking-wide shadow-sm transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass-500"
             >
-              <Plus className="w-4 h-4 text-[#D4AF37]" />
+              <Plus className="w-4 h-4 text-brass-400" />
               <span>Register Webhook Endpoint</span>
             </button>
           </div>
         </div>
 
         {/* Statutory Privacy & BR-082 Protection Banner */}
-        <div className="my-6 p-4 rounded-lg bg-[#0A192F]/5 border border-[#D4AF37]/40 flex items-start gap-3">
-          <ShieldCheck className="w-5 h-5 text-[#D4AF37] shrink-0 mt-0.5" />
+        <div className="my-6 p-4 rounded-lg bg-navy-900/5 border border-brass-500/40 flex items-start gap-3">
+          <ShieldCheck className="w-5 h-5 text-brass-400 shrink-0 mt-0.5" />
           <div className="text-xs space-y-1">
-            <p className="font-semibold text-[#0A192F]">
+            <p className="font-semibold text-navy-900">
               BR-082 Cryptographic Payload Screening &amp; Zero-Narrative Gate Active
             </p>
-            <p className="text-[#4B5563] leading-relaxed">
+            <p className="text-ink-secondary leading-relaxed">
               Outbound webhooks transmit only synthetic identifiers, state enums, and UTC timestamps. Raw complaint narratives, witness names, and respondent identity never leave the Acorn cryptographic boundary. Every payload is signed with a unique HMAC SHA-256 key and verified timestamp header (`X-Acorn-Signature`).
             </p>
           </div>
@@ -177,17 +177,17 @@ export default function WebhooksAdminPage() {
           {/* Left 5 Cols: Endpoint List */}
           <div className="lg:col-span-5 space-y-4">
             <div className="flex items-center justify-between">
-              <h2 className="font-sans text-xs font-bold uppercase tracking-wider text-[#6B7280]">
+              <h2 className="font-sans text-xs font-bold uppercase tracking-wider text-ink-secondary">
                 Configured Endpoints ({webhooks.length})
               </h2>
               <div className="relative w-44">
-                <Search className="w-3.5 h-3.5 absolute left-2.5 top-1/2 -translate-y-1/2 text-[#9CA3AF]" />
+                <Search className="w-3.5 h-3.5 absolute left-2.5 top-1/2 -translate-y-1/2 text-ink-muted" />
                 <input
                   type="text"
                   placeholder="Filter endpoints..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-8 pr-2.5 py-1 text-xs rounded border border-[#E5E0D8] bg-white focus:outline-none focus:ring-1 focus:ring-[#0A192F]"
+                  className="w-full pl-8 pr-2.5 py-1 min-h-[40px] text-xs rounded border border-border bg-white focus:outline-none focus:ring-1 focus:ring-navy-900"
                 />
               </div>
             </div>
@@ -201,16 +201,16 @@ export default function WebhooksAdminPage() {
                     onClick={() => setSelectedHook(hook)}
                     className={`p-4 rounded-lg border cursor-pointer transition ${
                       isSelected
-                        ? "bg-white border-[#0A192F] shadow-md ring-1 ring-[#0A192F]"
-                        : "bg-white border-[#E5E0D8] hover:border-[#CBD5E1]"
+                        ? "bg-white border-navy-900 shadow-md ring-1 ring-navy-900"
+                        : "bg-white border-border hover:border-border"
                     }`}
                   >
                     <div className="flex items-start justify-between gap-2">
                       <div className="space-y-1 overflow-hidden">
-                        <span className="font-mono text-[11px] font-semibold text-[#0A192F] block truncate">
+                        <span className="font-mono text-[11px] font-semibold text-navy-900 block truncate">
                           {hook.url}
                         </span>
-                        <p className="text-xs text-[#6B7280]">{hook.description}</p>
+                        <p className="text-xs text-ink-secondary">{hook.description}</p>
                       </div>
                       <span
                         className={`text-[10px] font-semibold uppercase px-2 py-0.5 rounded-full ${
@@ -223,7 +223,7 @@ export default function WebhooksAdminPage() {
                       </span>
                     </div>
 
-                    <div className="mt-3 pt-3 border-t border-[#F3F4F6] flex items-center justify-between text-xs text-[#6B7280]">
+                    <div className="mt-3 pt-3 border-t border-border-subtle flex items-center justify-between text-xs text-ink-secondary">
                       <span>{hook.subscribedEvents.length} events subscribed</span>
                       <span className="flex items-center gap-1 font-mono text-[10px]">
                         ID: {hook.id}
@@ -238,15 +238,15 @@ export default function WebhooksAdminPage() {
           {/* Right 7 Cols: Endpoint Details & Delivery Logs */}
           <div className="lg:col-span-7">
             {selectedHook ? (
-              <div className="bg-white rounded-lg border border-[#E5E0D8] shadow-sm p-6 space-y-6">
+              <div className="bg-white rounded-lg border border-border shadow-sm p-6 space-y-6">
                 
                 {/* Header & Controls */}
-                <div className="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-[#F3F4F6]">
+                <div className="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-border-subtle">
                   <div>
-                    <span className="text-[10px] font-mono text-[#D4AF37] uppercase tracking-wider font-semibold">
+                    <span className="text-[10px] font-mono text-brass-400 uppercase tracking-wider font-semibold">
                       Endpoint Inspector &bull; {selectedHook.id}
                     </span>
-                    <h3 className="font-mono text-sm font-bold text-[#0A192F] break-all">
+                    <h3 className="font-mono text-sm font-bold text-navy-900 break-all">
                       {selectedHook.url}
                     </h3>
                   </div>
@@ -255,12 +255,12 @@ export default function WebhooksAdminPage() {
                     <button
                       onClick={() => handleTestPing(selectedHook.id)}
                       disabled={testingId === selectedHook.id}
-                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded text-xs font-semibold bg-[#0A192F] text-white hover:bg-[#152E52] transition disabled:opacity-50"
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 min-h-[44px] rounded text-xs font-semibold bg-navy-900 text-white hover:bg-navy-800 transition disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass-500"
                     >
                       {testingId === selectedHook.id ? (
-                        <RotateCw className="w-3.5 h-3.5 animate-spin text-[#D4AF37]" />
+                        <RotateCw className="w-3.5 h-3.5 animate-spin text-brass-400" />
                       ) : (
-                        <Play className="w-3.5 h-3.5 text-[#D4AF37]" />
+                        <Play className="w-3.5 h-3.5 text-brass-400" />
                       )}
                       <span>Send Test Ping</span>
                     </button>
@@ -268,15 +268,15 @@ export default function WebhooksAdminPage() {
                 </div>
 
                 {/* Secret Key & Security Config */}
-                <div className="p-4 rounded-lg bg-[#FAF9F6] border border-[#E5E0D8] space-y-3">
+                <div className="p-4 rounded-lg bg-surface border border-border space-y-3">
                   <div className="flex items-center justify-between text-xs">
-                    <span className="font-semibold text-[#0A192F] flex items-center gap-1.5">
-                      <Lock className="w-3.5 h-3.5 text-[#D4AF37]" />
+                    <span className="font-semibold text-navy-900 flex items-center gap-1.5">
+                      <Lock className="w-3.5 h-3.5 text-brass-400" />
                       HMAC Signing Secret:
                     </span>
                     <button
                       onClick={() => handleCopySecret("whsec_live_9942a8b301cde91f00a892b4", selectedHook.id)}
-                      className="text-xs text-[#0A192F] font-semibold hover:underline flex items-center gap-1"
+                      className="text-xs text-navy-900 font-semibold hover:underline flex items-center gap-1 min-h-[44px] px-2 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-navy-900"
                     >
                       {copiedId === selectedHook.id ? (
                         <>
@@ -291,11 +291,11 @@ export default function WebhooksAdminPage() {
                       )}
                     </button>
                   </div>
-                  <div className="font-mono text-xs bg-white px-3 py-2 rounded border border-[#E5E0D8] text-[#374151]">
+                  <div className="font-mono text-xs bg-white px-3 py-2 rounded border border-border text-ink">
                     {selectedHook.secretMasked}
                   </div>
-                  <div className="flex items-center justify-between text-[11px] text-[#6B7280]">
-                    <span>Header: <code className="text-[#0A192F] font-mono">X-Acorn-Signature: t=1731149200,v1=...</code></span>
+                  <div className="flex items-center justify-between text-[11px] text-ink-secondary">
+                    <span>Header: <code className="text-navy-900 font-mono">X-Acorn-Signature: t=1731149200,v1=...</code></span>
                     <span className="inline-flex items-center gap-1 text-emerald-700 font-medium">
                       <CheckCircle2 className="w-3 h-3" />
                       Payload Redaction Active
@@ -305,14 +305,14 @@ export default function WebhooksAdminPage() {
 
                 {/* Subscribed Events Badges */}
                 <div className="space-y-2">
-                  <h4 className="font-sans text-xs font-bold uppercase tracking-wider text-[#6B7280]">
+                  <h4 className="font-sans text-xs font-bold uppercase tracking-wider text-ink-secondary">
                     Subscribed Events
                   </h4>
                   <div className="flex flex-wrap gap-1.5">
                     {selectedHook.subscribedEvents.map((evt) => (
                       <span
                         key={evt}
-                        className="px-2.5 py-1 rounded bg-[#0A192F]/5 border border-[#0A192F]/10 font-mono text-[11px] text-[#0A192F]"
+                        className="px-2.5 py-1 rounded bg-navy-900/5 border border-navy-900/10 font-mono text-[11px] text-navy-900"
                       >
                         {evt}
                       </span>
@@ -323,17 +323,17 @@ export default function WebhooksAdminPage() {
                 {/* Recent Delivery Log Table */}
                 <div className="space-y-3 pt-2">
                   <div className="flex items-center justify-between">
-                    <h4 className="font-sans text-xs font-bold uppercase tracking-wider text-[#6B7280]">
+                    <h4 className="font-sans text-xs font-bold uppercase tracking-wider text-ink-secondary">
                       Recent Deliveries &amp; Retry Log
                     </h4>
-                    <span className="text-[11px] text-[#9CA3AF]">
+                    <span className="text-[11px] text-ink-muted">
                       Retries automatically up to 24 hours
                     </span>
                   </div>
 
-                  <div className="border border-[#E5E0D8] rounded-lg overflow-hidden">
+                  <div className="border border-border rounded-lg overflow-hidden">
                     <table className="w-full text-left text-xs">
-                      <thead className="bg-[#FAF9F6] border-b border-[#E5E0D8] text-[#6B7280] uppercase tracking-wider font-semibold">
+                      <thead className="bg-surface border-b border-border text-ink-secondary uppercase tracking-wider font-semibold">
                         <tr>
                           <th className="px-3 py-2">Event</th>
                           <th className="px-3 py-2">Status</th>
@@ -343,11 +343,11 @@ export default function WebhooksAdminPage() {
                           <th className="px-3 py-2 text-right">Action</th>
                         </tr>
                       </thead>
-                      <tbody className="divide-y divide-[#E5E0D8]">
+                      <tbody className="divide-y divide-border">
                         {selectedHook.deliveries.length > 0 ? (
                           selectedHook.deliveries.map((del) => (
-                            <tr key={del.id} className="hover:bg-[#FAF9F6]/50">
-                              <td className="px-3 py-2 font-mono text-[11px] text-[#0A192F]">
+                            <tr key={del.id} className="hover:bg-surface/50">
+                              <td className="px-3 py-2 font-mono text-[11px] text-navy-900">
                                 {del.event}
                               </td>
                               <td className="px-3 py-2">
@@ -359,10 +359,10 @@ export default function WebhooksAdminPage() {
                               <td className="px-3 py-2 font-mono text-[11px]">
                                 {del.responseCode}
                               </td>
-                              <td className="px-3 py-2 text-[#6B7280]">
+                              <td className="px-3 py-2 text-ink-secondary">
                                 {del.latencyMs}ms
                               </td>
-                              <td className="px-3 py-2 text-[#6B7280]">
+                              <td className="px-3 py-2 text-ink-secondary">
                                 {new Date(del.deliveredAt).toLocaleTimeString("en-IN", {
                                   hour: "2-digit",
                                   minute: "2-digit",
@@ -372,7 +372,7 @@ export default function WebhooksAdminPage() {
                               <td className="px-3 py-2 text-right">
                                 <button
                                   onClick={() => handleTestPing(selectedHook.id)}
-                                  className="text-[11px] text-[#0A192F] hover:underline inline-flex items-center gap-1"
+                                  className="text-[11px] text-navy-900 hover:underline min-h-[44px] px-2 rounded inline-flex items-center gap-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-navy-900"
                                   title="Replay event payload"
                                 >
                                   <RotateCw className="w-3 h-3" /> Replay
@@ -382,7 +382,7 @@ export default function WebhooksAdminPage() {
                           ))
                         ) : (
                           <tr>
-                            <td colSpan={6} className="px-4 py-6 text-center text-[#9CA3AF]">
+                            <td colSpan={6} className="px-4 py-6 text-center text-ink-muted">
                               No delivery attempts recorded yet. Click &quot;Send Test Ping&quot; to test.
                             </td>
                           </tr>
@@ -394,7 +394,7 @@ export default function WebhooksAdminPage() {
 
               </div>
             ) : (
-              <div className="bg-white rounded-lg border border-[#E5E0D8] p-12 text-center text-[#6B7280]">
+              <div className="bg-white rounded-lg border border-border p-12 text-center text-ink-secondary">
                 Select an endpoint from the left or create a new webhook subscription.
               </div>
             )}
@@ -407,14 +407,15 @@ export default function WebhooksAdminPage() {
       {/* Add Webhook Modal */}
       {showAddModal && (
         <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-white rounded-xl border border-[#E5E0D8] shadow-2xl max-w-lg w-full p-6 space-y-5 animate-in fade-in duration-200">
-            <div className="flex items-center justify-between pb-3 border-b border-[#E5E0D8]">
-              <h3 className="font-serif text-lg font-bold text-[#0A192F]">
+          <div className="bg-white rounded-xl border border-border shadow-2xl max-w-lg w-full p-6 space-y-5 animate-in fade-in duration-200">
+            <div className="flex items-center justify-between pb-3 border-b border-border">
+              <h3 className="font-serif text-lg font-bold text-navy-900">
                 Register Webhook Endpoint
               </h3>
               <button
                 onClick={() => setShowAddModal(false)}
-                className="text-[#9CA3AF] hover:text-[#0A192F]"
+                className="text-ink-muted hover:text-navy-900 min-h-[44px] min-w-[44px] inline-flex items-center justify-center rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-navy-900 text-lg"
+                aria-label="Close dialog"
               >
                 &times;
               </button>
@@ -422,7 +423,7 @@ export default function WebhooksAdminPage() {
 
             <form onSubmit={handleCreateWebhook} className="space-y-4">
               <div className="space-y-1">
-                <label className="block text-xs font-semibold text-[#0A192F]">
+                <label className="block text-xs font-semibold text-navy-900">
                   Target HTTPS URL *
                 </label>
                 <input
@@ -431,12 +432,12 @@ export default function WebhooksAdminPage() {
                   placeholder="https://api.yourcompany.com/posh/events"
                   value={newUrl}
                   onChange={(e) => setNewUrl(e.target.value)}
-                  className="w-full px-3 py-2 text-xs rounded border border-[#E5E0D8] focus:outline-none focus:ring-1 focus:ring-[#0A192F]"
+                  className="w-full px-3 py-2 min-h-[44px] text-xs rounded border border-border focus:outline-none focus:ring-1 focus:ring-navy-900"
                 />
               </div>
 
               <div className="space-y-1">
-                <label className="block text-xs font-semibold text-[#0A192F]">
+                <label className="block text-xs font-semibold text-navy-900">
                   Description / Destination System
                 </label>
                 <input
@@ -444,12 +445,12 @@ export default function WebhooksAdminPage() {
                   placeholder="e.g. Corporate SIEM / Workday Connector"
                   value={newDesc}
                   onChange={(e) => setNewDesc(e.target.value)}
-                  className="w-full px-3 py-2 text-xs rounded border border-[#E5E0D8] focus:outline-none focus:ring-1 focus:ring-[#0A192F]"
+                  className="w-full px-3 py-2 min-h-[44px] text-xs rounded border border-border focus:outline-none focus:ring-1 focus:ring-navy-900"
                 />
               </div>
 
               <div className="space-y-2">
-                <label className="block text-xs font-semibold text-[#0A192F]">
+                <label className="block text-xs font-semibold text-navy-900">
                   Subscribed Event Topics
                 </label>
                 <div className="space-y-1.5 max-h-40 overflow-y-auto pr-1">
@@ -458,7 +459,7 @@ export default function WebhooksAdminPage() {
                     return (
                       <label
                         key={evt.id}
-                        className="flex items-start gap-2 p-2 rounded border border-[#E5E0D8] hover:bg-[#FAF9F6] cursor-pointer text-xs"
+                        className="flex items-start gap-2 p-2 rounded border border-border hover:bg-surface cursor-pointer text-xs"
                       >
                         <input
                           type="checkbox"
@@ -473,10 +474,10 @@ export default function WebhooksAdminPage() {
                           className="mt-0.5"
                         />
                         <div>
-                          <span className="font-semibold text-[#0A192F] block">
+                          <span className="font-semibold text-navy-900 block">
                             {evt.label}
                           </span>
-                          <span className="text-[11px] text-[#6B7280]">
+                          <span className="text-[11px] text-ink-secondary">
                             {evt.desc}
                           </span>
                         </div>
@@ -486,12 +487,12 @@ export default function WebhooksAdminPage() {
                 </div>
               </div>
 
-              <div className="p-3 rounded bg-[#0A192F]/5 border border-[#D4AF37]/30 flex items-center justify-between text-xs">
+              <div className="p-3 rounded bg-navy-900/5 border border-brass-500/30 flex items-center justify-between text-xs">
                 <div className="space-y-0.5">
-                  <span className="font-semibold text-[#0A192F] block">
+                  <span className="font-semibold text-navy-900 block">
                     BR-082 Redaction Screening
                   </span>
-                  <span className="text-[11px] text-[#6B7280]">
+                  <span className="text-[11px] text-ink-secondary">
                     Strips narrative fields prior to outbound signing
                   </span>
                 </div>
@@ -503,17 +504,17 @@ export default function WebhooksAdminPage() {
                 />
               </div>
 
-              <div className="flex items-center justify-end gap-3 pt-4 border-t border-[#E5E0D8]">
+              <div className="flex items-center justify-end gap-3 pt-4 border-t border-border">
                 <button
                   type="button"
                   onClick={() => setShowAddModal(false)}
-                  className="px-4 py-2 rounded text-xs text-[#6B7280] hover:text-[#0A192F]"
+                  className="px-4 py-2 min-h-[44px] rounded text-xs text-ink-secondary hover:text-navy-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-navy-900"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 rounded bg-[#0A192F] text-white hover:bg-[#152E52] text-xs font-semibold"
+                  className="px-4 py-2 min-h-[44px] rounded bg-navy-900 text-white hover:bg-navy-800 text-xs font-semibold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass-500"
                 >
                   Confirm &amp; Generate Secret
                 </button>

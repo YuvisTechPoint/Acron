@@ -31,6 +31,7 @@ export default function OrgAPIKeysPage() {
   const [selectedScopes, setSelectedScopes] = useState<string[]>(["roster.read", "compliance.read"]);
   const [ipAllowlistText, setIpAllowlistText] = useState("103.21.244.0/22");
   const [copiedKey, setCopiedKey] = useState<string | null>(null);
+  const [clientToRevoke, setClientToRevoke] = useState<string | null>(null);
 
   const handleCopy = (text: string, id: string) => {
     navigator.clipboard.writeText(text);
@@ -69,16 +70,17 @@ export default function OrgAPIKeysPage() {
     });
   };
 
-  const handleRevoke = (id: string) => {
-    if (confirm("Are you sure you want to revoke this API client? All automated scripts using these credentials will be immediately blocked.")) {
-      platformStore.revokeAPIClient(selectedOrgId, id);
-      setClients(platformStore.getAPIClients(selectedOrgId));
-      toast({
-        title: "API Client Revoked",
-        description: `Client ID ${id} permanently revoked.`,
-        variant: "warning",
-      });
-    }
+  const confirmRevoke = () => {
+    if (!clientToRevoke) return;
+    const id = clientToRevoke;
+    platformStore.revokeAPIClient(selectedOrgId, id);
+    setClients(platformStore.getAPIClients(selectedOrgId));
+    setClientToRevoke(null);
+    toast({
+      title: "API Client Revoked",
+      description: `Client ID ${id} permanently revoked.`,
+      variant: "warning",
+    });
   };
 
   return (
@@ -191,8 +193,9 @@ export default function OrgAPIKeysPage() {
                     <td className="py-3 px-3 text-right">
                       {c.status === "ACTIVE" && (
                         <button
-                          onClick={() => handleRevoke(c.id)}
-                          className="text-rose-600 hover:text-rose-800 font-semibold text-[11px] inline-flex items-center gap-1"
+                          type="button"
+                          onClick={() => setClientToRevoke(c.id)}
+                          className="min-h-[44px] text-rose-600 hover:text-rose-800 font-semibold text-[11px] inline-flex items-center gap-1 px-2.5 py-1 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500"
                         >
                           <Trash2 className="w-3.5 h-3.5" />
                           <span>Revoke</span>
@@ -303,6 +306,49 @@ export default function OrgAPIKeysPage() {
                   </button>
                 </div>
               </form>
+            </div>
+          </div>
+        )}
+
+        {/* Revoke Confirmation Alert Dialog */}
+        {clientToRevoke && (
+          <div
+            role="alertdialog"
+            aria-modal="true"
+            aria-labelledby="revoke-dialog-title"
+            aria-describedby="revoke-dialog-desc"
+            className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4 animate-fade-in"
+          >
+            <div className="bg-white rounded-card border border-border shadow-raised max-w-md w-full p-6 space-y-4">
+              <div className="flex items-center gap-3 text-red-600">
+                <div className="p-2 bg-red-50 rounded-full">
+                  <AlertTriangle className="w-5 h-5 text-red-600" />
+                </div>
+                <h3 id="revoke-dialog-title" className="font-serif font-bold text-base text-ink">
+                  Revoke API Client Credentials
+                </h3>
+              </div>
+
+              <p id="revoke-dialog-desc" className="text-xs text-ink-secondary leading-relaxed">
+                Are you sure you want to revoke this API client? All automated scripts and CI pipelines using client ID <span className="font-mono font-bold text-ink">{clientToRevoke}</span> will be immediately blocked from accessing statutory webhooks.
+              </p>
+
+              <div className="flex justify-end gap-3 pt-3 border-t border-border">
+                <button
+                  type="button"
+                  onClick={() => setClientToRevoke(null)}
+                  className="px-4 py-2 min-h-[44px] border border-border rounded text-xs font-semibold text-ink-secondary hover:bg-surface focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  onClick={confirmRevoke}
+                  className="px-4 py-2 min-h-[44px] bg-red-600 hover:bg-red-700 text-white text-xs font-bold rounded transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-600 focus-visible:ring-offset-2 shadow-sm"
+                >
+                  Revoke Credentials
+                </button>
+              </div>
             </div>
           </div>
         )}

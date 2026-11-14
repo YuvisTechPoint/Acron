@@ -290,7 +290,7 @@ export default function AdminFaqPage() {
               <button
                 key={cat}
                 onClick={() => setCategoryFilter(cat)}
-                className={`px-3 py-2 min-h-[40px] rounded-btn text-xs transition font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-navy-700 ${
+                className={`px-3 py-2 min-h-[44px] rounded-btn text-xs transition font-medium inline-flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-navy-700 ${
                   categoryFilter === cat
                     ? "bg-navy-700 text-white font-bold"
                     : "bg-ivory-100 hover:bg-border text-ink-secondary"

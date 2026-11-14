@@ -49,7 +49,7 @@ export default function PoshChannelsPage() {
       </div>
 
       {/* Header */}
-      <div className="bg-[#050C17] text-white border-b border-navy-800">
+      <div className="bg-ink-950 text-white border-b border-navy-800">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
@@ -72,7 +72,7 @@ export default function PoshChannelsPage() {
                 className={`px-3 py-1.5 rounded text-xs font-mono border transition ${
                   isLowBandwidth
                     ? "bg-amber-400 text-black border-amber-500 font-bold"
-                    : "bg-[#101F38] text-brass-300 border-brass-500/30"
+                    : "bg-navy-900 text-brass-300 border-brass-500/30"
                 }`}
               >
                 {isLowBandwidth ? "2G Mode: ON" : "Toggle 2G Text Mode"}
@@ -129,7 +129,7 @@ export default function PoshChannelsPage() {
 
             <Link
               href="/posh/anonymous"
-              className="w-full py-2 bg-[#101F38] hover:bg-navy-900 text-brass-300 rounded text-xs font-medium transition text-center block"
+              className="w-full min-h-[44px] py-2 bg-navy-900 hover:bg-navy-800 text-brass-300 rounded text-xs font-semibold transition text-center inline-flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass-500"
             >
               Open Anonymous Thread
             </Link>

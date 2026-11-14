@@ -35,7 +35,7 @@ export default function OpsReliabilityPage() {
   return (
     <div className="min-h-screen bg-slate-50 text-slate-800 pb-20">
       {/* Header */}
-      <div className="bg-[#050C17] text-white border-b border-navy-800">
+      <div className="bg-ink-950 text-white border-b border-navy-800">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
@@ -133,7 +133,7 @@ export default function OpsReliabilityPage() {
               <button
                 onClick={() => triggerChaosExperiment("CHX-01", "PII Scrubber Latency Spike")}
                 disabled={runningChaos !== null}
-                className="w-full py-1.5 bg-[#101F38] hover:bg-navy-900 text-brass-300 text-xs rounded font-medium transition disabled:opacity-40"
+                className="w-full min-h-[44px] py-2 bg-navy-900 hover:bg-navy-800 text-brass-300 text-xs rounded font-semibold transition disabled:opacity-40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass-500"
               >
                 {runningChaos === "CHX-01" ? "Running Drill..." : "Execute Drill"}
               </button>
@@ -148,7 +148,7 @@ export default function OpsReliabilityPage() {
               <button
                 onClick={() => triggerChaosExperiment("CHX-04", "Outbox Backpressure Drill")}
                 disabled={runningChaos !== null}
-                className="w-full py-1.5 bg-[#101F38] hover:bg-navy-900 text-brass-300 text-xs rounded font-medium transition disabled:opacity-40"
+                className="w-full min-h-[44px] py-2 bg-navy-900 hover:bg-navy-800 text-brass-300 text-xs rounded font-semibold transition disabled:opacity-40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass-500"
               >
                 {runningChaos === "CHX-04" ? "Running Drill..." : "Execute Drill"}
               </button>
@@ -163,7 +163,7 @@ export default function OpsReliabilityPage() {
               <button
                 onClick={() => triggerChaosExperiment("CHX-07", "Primary DB Failover")}
                 disabled={runningChaos !== null}
-                className="w-full py-1.5 bg-[#101F38] hover:bg-navy-900 text-brass-300 text-xs rounded font-medium transition disabled:opacity-40"
+                className="w-full min-h-[44px] py-2 bg-navy-900 hover:bg-navy-800 text-brass-300 text-xs rounded font-semibold transition disabled:opacity-40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass-500"
               >
                 {runningChaos === "CHX-07" ? "Running Drill..." : "Execute Drill"}
               </button>

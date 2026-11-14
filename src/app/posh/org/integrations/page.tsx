@@ -62,7 +62,7 @@ export default function OrgIntegrationsPage() {
   return (
     <div className="min-h-screen bg-slate-50 text-slate-800 pb-20">
       {/* Top Banner */}
-      <div className="bg-[#050C17] text-white border-b border-navy-800">
+      <div className="bg-ink-950 text-white border-b border-navy-800">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div>
@@ -167,10 +167,10 @@ export default function OrgIntegrationsPage() {
               <div className="pt-3 border-t border-slate-100 flex items-center justify-between gap-3">
                 <button
                   onClick={() => toggleConnector(c.id, c.status)}
-                  className={`px-3 py-1.5 rounded text-xs font-medium transition border ${
+                  className={`px-3 py-2 min-h-[44px] rounded text-xs font-semibold transition border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass-500 ${
                     c.status === "CONNECTED"
                       ? "bg-white hover:bg-slate-50 text-rose-700 border-rose-200"
-                      : "bg-[#101F38] hover:bg-navy-900 text-brass-300 border-brass-500/30"
+                      : "bg-navy-900 hover:bg-navy-800 text-brass-300 border-brass-500/30"
                   }`}
                 >
                   {c.status === "CONNECTED" ? "Disconnect" : "Connect Account"}
@@ -179,7 +179,7 @@ export default function OrgIntegrationsPage() {
                 <button
                   onClick={() => triggerSync(c.id, c.name)}
                   disabled={c.status !== "CONNECTED" || syncingId === c.id}
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded text-xs font-medium transition disabled:opacity-40"
+                  className="inline-flex items-center gap-1.5 px-3 py-2 min-h-[44px] bg-slate-100 hover:bg-slate-200 text-slate-700 rounded text-xs font-medium transition disabled:opacity-40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-navy-700"
                 >
                   <RefreshCw className={`w-3.5 h-3.5 ${syncingId === c.id ? "animate-spin" : ""}`} />
                   <span>{syncingId === c.id ? "Syncing..." : "Sync Now"}</span>

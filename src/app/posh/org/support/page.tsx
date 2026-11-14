@@ -288,7 +288,7 @@ export default function PoshOrgSupportPage() {
                   key={mode}
                   type="button"
                   onClick={() => setStatusFilter(mode)}
-                  className={`px-3 py-1.5 min-h-[36px] rounded text-xs font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary ${
+                  className={`px-3.5 py-2 min-h-[44px] rounded text-xs font-semibold transition inline-flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary ${
                     statusFilter === mode
                       ? "bg-primary text-white"
                       : "bg-white border border-border text-ink-secondary hover:bg-surface"

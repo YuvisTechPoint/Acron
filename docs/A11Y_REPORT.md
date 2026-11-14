@@ -76,8 +76,14 @@ All color pairings across public and admin interfaces meet or exceed WCAG 2.1 AA
 
 ### F. Internal Committee Case Workspace & Docket (`/posh/ic/cases/[id]`)
 - **Status:** **PASS** (WCAG 2.1 AA)
-- **Tab Navigation:** 9-tab workflow navigation bar with keyboard focus and active indicator contrast.
-- **Procedural Wiring:** Direct links to dedicated procedural screens (Triage, Conciliation, Notices, Hearings, Evidence, Interim Relief, Final Report).
+- **Tab Navigation:** 9-tab workflow navigation bar with keyboard focus and active indicator contrast (`min-h-[44px]` with `focus-visible:ring-2 focus-visible:ring-primary`).
+- **Procedural Wiring:** Direct links to dedicated procedural screens (Triage, Conciliation, Notices, Hearings, Evidence, Interim Relief, Final Report) upgraded with >= 44px touch targets and visible focus outlines.
+- **Form Accessibility:** Hearing scheduler, evidence vault deposit, and Section 15 compensation worksheet inputs fully paired with semantic `<label htmlFor="...">` identifiers and minimum 44px touch target heights.
 - **Calm Mode:** In accordance with PRD and Design System rules, all emergency/urgent styling uses calm tones without aggressive red flashes or auto-looping pulses.
 - **Toast Feedback:** All hearings scheduled, exhibits deposited, and state machine transitions trigger calm, content-free toast notifications.
+
+### G. Zero Native Dialogs & Enterprise Administrative Consoles
+- **Status:** **PASS** (WCAG 2.1 AA)
+- **Zero Browser Dialogs:** Completely eliminated all native `alert()`, `confirm()`, and `prompt()` calls across all user and admin portals. Replaced with accessible `role="dialog"` and `role="alertdialog"` components (e.g., Legal Hold modal in `/posh/admin/retention`, API client revocation modal in `/posh/org/api-keys`, and FAQ deletion dialog in `/admin/faq`).
+- **Design Token Purity:** Remediated all hardcoded hex values in `/admin/trust`, `/posh/org/webhooks`, `/posh/org/surveys`, `/posh/org/branding`, `/posh/org/benchmarks`, `/posh/org/early-warnings`, `/posh/org/integrations`, `/posh/org/sso`, `/posh/org/audit-packs`, `/posh/anonymous`, `/posh/channels`, and `/posh/signatures`, binding strictly to design system tokens (`bg-ink-950`, `bg-navy-900`, `bg-ivory-50`, `text-brass-400`).
 
