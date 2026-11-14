@@ -21,12 +21,14 @@ import {
 import { formatINR, formatDate } from "@/lib/utils";
 import { platformStore } from "@/lib/store";
 import { PaymentLinkItem } from "@/lib/types";
+import { ConfirmDialog } from "@/components/admin/confirm-dialog";
 
 export default function AdminPaymentLinksPage() {
   const [links, setLinks] = useState<PaymentLinkItem[]>([]);
   const [showModal, setShowModal] = useState(false);
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
+  const [linkToDelete, setLinkToDelete] = useState<string | null>(null);
   const [toastMsg, setToastMsg] = useState<string | null>(null);
 
   const [form, setForm] = useState({
@@ -88,11 +90,15 @@ export default function AdminPaymentLinksPage() {
   };
 
   const handleDelete = (id: string) => {
-    if (confirm(`Are you sure you want to delete payment link ${id}?`)) {
-      platformStore.deletePaymentLink(id);
-      triggerToast(`Deleted payment link ${id}`);
-      loadData();
-    }
+    setLinkToDelete(id);
+  };
+
+  const confirmDelete = () => {
+    if (!linkToDelete) return;
+    platformStore.deletePaymentLink(linkToDelete);
+    triggerToast(`Deleted payment link ${linkToDelete}`);
+    setLinkToDelete(null);
+    loadData();
   };
 
   const filtered = links.filter(
@@ -391,6 +397,15 @@ export default function AdminPaymentLinksPage() {
             </div>
           </div>
         )}
+
+        <ConfirmDialog
+          isOpen={!!linkToDelete}
+          title="Delete Payment Link"
+          message={`Are you sure you want to delete payment link ${linkToDelete}?`}
+          confirmLabel="Delete Link"
+          onConfirm={confirmDelete}
+          onCancel={() => setLinkToDelete(null)}
+        />
 
       </div>
     </div>

@@ -17,12 +17,14 @@ import {
 import { formatINR } from "@/lib/utils";
 import { platformStore } from "@/lib/store";
 import { CatalogueFeeItem } from "@/lib/types";
+import { ConfirmDialog } from "@/components/admin/confirm-dialog";
 
 export default function AdminPaymentCataloguePage() {
   const [catalogue, setCatalogue] = useState<CatalogueFeeItem[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [editingItem, setEditingItem] = useState<CatalogueFeeItem | null>(null);
+  const [deleteTarget, setDeleteTarget] = useState<{ id: string; name: string } | null>(null);
   const [toastMsg, setToastMsg] = useState<string | null>(null);
 
   const [formData, setFormData] = useState({
@@ -115,11 +117,15 @@ export default function AdminPaymentCataloguePage() {
   };
 
   const handleDelete = (id: string, name: string) => {
-    if (confirm(`Are you sure you want to remove "${name}" from the active fee schedule?`)) {
-      platformStore.deleteCatalogueItem(id);
-      triggerToast(`Removed item ${name}`);
-      loadData();
-    }
+    setDeleteTarget({ id, name });
+  };
+
+  const confirmDelete = () => {
+    if (!deleteTarget) return;
+    platformStore.deleteCatalogueItem(deleteTarget.id);
+    triggerToast(`Removed item ${deleteTarget.name}`);
+    setDeleteTarget(null);
+    loadData();
   };
 
   const filtered = catalogue.filter(
@@ -409,6 +415,16 @@ export default function AdminPaymentCataloguePage() {
             </div>
           </div>
         )}
+
+        {/* Accessible Delete Confirmation Modal */}
+        <ConfirmDialog
+          isOpen={!!deleteTarget}
+          title="Remove Fee Item"
+          message={`Are you sure you want to remove "${deleteTarget?.name}" from the active fee schedule?`}
+          confirmLabel="Remove Item"
+          onConfirm={confirmDelete}
+          onCancel={() => setDeleteTarget(null)}
+        />
 
       </div>
     </div>

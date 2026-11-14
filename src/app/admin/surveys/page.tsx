@@ -15,11 +15,13 @@ import {
 } from "lucide-react";
 import { platformStore } from "@/lib/store";
 import { SurveyItem } from "@/lib/types";
+import { ConfirmDialog } from "@/components/admin/confirm-dialog";
 
 export default function AdminSurveysPage() {
   const [surveys, setSurveys] = useState<SurveyItem[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [showModal, setShowModal] = useState(false);
+  const [surveyToDelete, setSurveyToDelete] = useState<{ id: string; name: string } | null>(null);
   const [toastMsg, setToastMsg] = useState<string | null>(null);
 
   const [formData, setFormData] = useState({
@@ -76,11 +78,15 @@ export default function AdminSurveysPage() {
   };
 
   const handleDelete = (id: string, name: string) => {
-    if (confirm(`Remove survey "${name}"?`)) {
-      platformStore.deleteSurvey(id);
-      triggerToast(`Removed survey ${id}`);
-      loadData();
-    }
+    setSurveyToDelete({ id, name });
+  };
+
+  const confirmDelete = () => {
+    if (!surveyToDelete) return;
+    platformStore.deleteSurvey(surveyToDelete.id);
+    triggerToast(`Removed survey ${surveyToDelete.name}`);
+    setSurveyToDelete(null);
+    loadData();
   };
 
   const filtered = surveys.filter(
@@ -319,6 +325,15 @@ export default function AdminSurveysPage() {
             </div>
           </div>
         )}
+
+        <ConfirmDialog
+          isOpen={!!surveyToDelete}
+          title="Remove Survey"
+          message={`Are you sure you want to remove survey "${surveyToDelete?.name}"?`}
+          confirmLabel="Remove Survey"
+          onConfirm={confirmDelete}
+          onCancel={() => setSurveyToDelete(null)}
+        />
 
       </div>
     </div>

@@ -15,6 +15,7 @@ import { platformStore } from "@/lib/store";
 import { useRealtimeQuestions } from "@/lib/realtime";
 import { formatDate } from "@/lib/utils";
 import { QuestionAnswer } from "@/lib/types";
+import { ConfirmDialog } from "@/components/admin/confirm-dialog";
 
 export default function AdminQAQueuePage() {
   const [selectedQA, setSelectedQA] = useState<QuestionAnswer | null>(null);
@@ -23,6 +24,7 @@ export default function AdminQAQueuePage() {
   const [publishPublic, setPublishPublic] = useState(true);
 
   const questions = useRealtimeQuestions();
+  const [questionToDelete, setQuestionToDelete] = useState<string | null>(null);
   const [savedSuccess, setSavedSuccess] = useState(false);
 
   const handleSaveAnswer = async (e: React.FormEvent) => {
@@ -57,14 +59,19 @@ export default function AdminQAQueuePage() {
     setTimeout(() => setSavedSuccess(false), 3000);
   };
 
-  const handleDelete = async (id: string) => {
-    if (confirm("Delete this question from moderation queue?")) {
-      platformStore.deleteQuestion(id);
-      try {
-        await fetch(`/api/qa?id=${id}`, { method: "DELETE" });
-      } catch {}
-      setSelectedQA(null);
-    }
+  const handleDelete = (id: string) => {
+    setQuestionToDelete(id);
+  };
+
+  const confirmDelete = async () => {
+    if (!questionToDelete) return;
+    const id = questionToDelete;
+    platformStore.deleteQuestion(id);
+    try {
+      await fetch(`/api/qa?id=${id}`, { method: "DELETE" });
+    } catch {}
+    setQuestionToDelete(null);
+    setSelectedQA(null);
   };
 
   return (
@@ -217,6 +224,15 @@ export default function AdminQAQueuePage() {
             )}
           </div>
         </div>
+        <ConfirmDialog
+          isOpen={!!questionToDelete}
+          title="Delete Moderation Question"
+          message="Are you sure you want to delete this question from the moderation queue?"
+          confirmLabel="Delete Question"
+          onConfirm={confirmDelete}
+          onCancel={() => setQuestionToDelete(null)}
+        />
+
       </div>
     </div>
   );

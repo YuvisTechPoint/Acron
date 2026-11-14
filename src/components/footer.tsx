@@ -55,7 +55,7 @@ export function Footer() {
   };
 
   return (
-    <footer className="relative bg-[#07101F] text-white border-t border-navy-800">
+    <footer className="relative bg-ink-950 text-white border-t border-navy-800">
 
       {/* ─────────────────────────────────────────────────────────────
           1. MAIN DIRECTORY GRID (4 COLUMNS)
@@ -66,7 +66,7 @@ export function Footer() {
           {/* Column 1: Firm Identity & Chambers Ethos (4 cols) */}
           <div className="lg:col-span-4 space-y-4">
             <Link href="/" className="inline-flex items-center gap-3 group focus:outline-none">
-              <div className="w-10 h-10 rounded-md bg-[#0E1F3D] border border-brass-500/40 flex items-center justify-center text-brass-300 group-hover:border-brass-400 transition-colors shadow-inner">
+              <div className="w-10 h-10 rounded-md bg-navy-900 border border-brass-500/40 flex items-center justify-center text-brass-300 group-hover:border-brass-400 transition-colors shadow-inner">
                 <span className="font-serif text-2xl font-bold leading-none select-none text-brass-300">A</span>
               </div>
               <div className="flex flex-col">
@@ -252,7 +252,7 @@ export function Footer() {
                   <button
                     type="button"
                     onClick={() => setShowMapModal(true)}
-                    className="w-full inline-flex items-center justify-between gap-2 px-3 py-2 rounded-md bg-[#0E1F3D] hover:bg-[#14264A] border border-brass-500/30 text-brass-300 text-xs font-semibold tracking-wide transition group shadow-sm"
+                    className="w-full inline-flex items-center justify-between gap-2 px-3 py-2.5 min-h-[44px] rounded-md bg-navy-900 hover:bg-navy-800 border border-brass-500/30 text-brass-300 text-xs font-semibold tracking-wide transition group shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass-500"
                   >
                     <div className="flex items-center gap-2">
                       <span className="w-2 h-2 rounded-full bg-brass-400 animate-pulse" />
@@ -271,7 +271,7 @@ export function Footer() {
       {/* ─────────────────────────────────────────────────────────────
           2. AESTHETIC LIGHT GREY BRAND WATERMARK
          ───────────────────────────────────────────────────────────── */}
-      <div className="border-t border-navy-800/80 bg-[#050C17] overflow-hidden">
+      <div className="border-t border-navy-800/80 bg-ink-950 overflow-hidden">
         <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-8 text-center pointer-events-none select-none" aria-hidden="true">
           <span className="font-serif text-[clamp(4.5rem,13vw,10.5rem)] font-black tracking-[0.16em] text-slate-400/25 sm:text-slate-300/30 leading-none block select-none uppercase drop-shadow-[0_4px_24px_rgba(255,255,255,0.03)]">
             ACORN
@@ -282,7 +282,7 @@ export function Footer() {
       {/* ─────────────────────────────────────────────────────────────
           3. CLEAN BASE BAR
          ───────────────────────────────────────────────────────────── */}
-      <div className="border-t border-navy-800 bg-[#040812]">
+      <div className="border-t border-navy-800 bg-ink-950">
         <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col md:flex-row items-center justify-between gap-4 text-xs font-sans text-slate-400">
 
           {/* Copyright */}
@@ -330,9 +330,9 @@ export function Footer() {
               onClick={scrollToTop}
               title="Return to top of page"
               aria-label="Scroll back to top of page"
-              className="w-8 h-8 rounded-full bg-[#0E1F3D] border border-brass-500/35 hover:border-brass-400 text-brass-300 hover:text-white flex items-center justify-center transition-all duration-300 shadow-sm group hover:scale-105"
+              className="w-11 h-11 rounded-full bg-navy-900 border border-brass-500/35 hover:border-brass-400 text-brass-300 hover:text-white flex items-center justify-center transition-all duration-300 shadow-sm group hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass-500"
             >
-              <ArrowUp className="w-3.5 h-3.5 group-hover:-translate-y-0.5 transition-transform" />
+              <ArrowUp className="w-4 h-4 group-hover:-translate-y-0.5 transition-transform" />
             </button>
           </div>
 

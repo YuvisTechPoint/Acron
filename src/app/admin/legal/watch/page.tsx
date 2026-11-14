@@ -17,12 +17,14 @@ import {
 } from "lucide-react";
 import { platformStore } from "@/lib/store";
 import { LegalWatchItem } from "@/lib/types";
+import { ConfirmDialog } from "@/components/admin/confirm-dialog";
 
 export default function LegalWatchListPage() {
   const [watchItems, setWatchItems] = useState<LegalWatchItem[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [editingItem, setEditingItem] = useState<LegalWatchItem | null>(null);
+  const [refToDelete, setRefToDelete] = useState<string | null>(null);
   const [toastMsg, setToastMsg] = useState<string | null>(null);
 
   const [formData, setFormData] = useState({
@@ -108,11 +110,15 @@ export default function LegalWatchListPage() {
   };
 
   const handleDelete = (ref: string) => {
-    if (confirm(`Are you sure you want to delete watch item ${ref}?`)) {
-      platformStore.deleteLegalWatchItem(ref);
-      triggerToast(`Removed watch item ${ref}`);
-      loadData();
-    }
+    setRefToDelete(ref);
+  };
+
+  const confirmDelete = () => {
+    if (!refToDelete) return;
+    platformStore.deleteLegalWatchItem(refToDelete);
+    triggerToast(`Removed watch item ${refToDelete}`);
+    setRefToDelete(null);
+    loadData();
   };
 
   const filtered = watchItems.filter(
@@ -384,6 +390,15 @@ export default function LegalWatchListPage() {
             </div>
           </div>
         )}
+
+        <ConfirmDialog
+          isOpen={!!refToDelete}
+          title="Delete Watch Item"
+          message={`Are you sure you want to delete watch item ${refToDelete}?`}
+          confirmLabel="Delete Item"
+          onConfirm={confirmDelete}
+          onCancel={() => setRefToDelete(null)}
+        />
 
       </div>
     </div>

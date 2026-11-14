@@ -18,11 +18,13 @@ import { platformStore } from "@/lib/store";
 import { useRealtimePosts } from "@/lib/realtime";
 import { formatDate } from "@/lib/utils";
 import { BlogPost } from "@/lib/types";
+import { ConfirmDialog } from "@/components/admin/confirm-dialog";
 
 export default function AdminBlogCMSPage() {
   const blogs = useRealtimePosts();
   const [isCreating, setIsCreating] = useState(false);
   const [editingPost, setEditingPost] = useState<BlogPost | null>(null);
+  const [postToDelete, setPostToDelete] = useState<{ id: string; title: string } | null>(null);
 
   // Form state
   const [title, setTitle] = useState("");
@@ -85,13 +87,18 @@ export default function AdminBlogCMSPage() {
     setEditingPost(null);
   };
 
-  const handleDelete = async (id: string, postTitle: string) => {
-    if (confirm(`Are you sure you want to delete "${postTitle}"?`)) {
-      platformStore.deleteBlogPost(id);
-      try {
-        await fetch(`/api/posts?id=${id}`, { method: "DELETE" });
-      } catch {}
-    }
+  const handleDelete = (id: string, postTitle: string) => {
+    setPostToDelete({ id, title: postTitle });
+  };
+
+  const confirmDelete = async () => {
+    if (!postToDelete) return;
+    const { id } = postToDelete;
+    platformStore.deleteBlogPost(id);
+    try {
+      await fetch(`/api/posts?id=${id}`, { method: "DELETE" });
+    } catch {}
+    setPostToDelete(null);
   };
 
   return (
@@ -383,6 +390,15 @@ export default function AdminBlogCMSPage() {
             ))}
           </div>
         </div>
+
+        <ConfirmDialog
+          isOpen={!!postToDelete}
+          title="Delete Blog Article"
+          message={`Are you sure you want to delete "${postToDelete?.title}"?`}
+          confirmLabel="Delete Post"
+          onConfirm={confirmDelete}
+          onCancel={() => setPostToDelete(null)}
+        />
 
       </div>
     </div>

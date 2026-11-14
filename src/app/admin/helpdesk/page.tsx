@@ -16,12 +16,14 @@ import {
 } from "lucide-react";
 import { platformStore } from "@/lib/store";
 import { HelpdeskTicket } from "@/lib/types";
+import { ConfirmDialog } from "@/components/admin/confirm-dialog";
 
 export default function AdminHelpdeskPage() {
   const [tickets, setTickets] = useState<HelpdeskTicket[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
   const [showModal, setShowModal] = useState(false);
+  const [ticketToDelete, setTicketToDelete] = useState<string | null>(null);
   const [toastMsg, setToastMsg] = useState<string | null>(null);
 
   const [formData, setFormData] = useState({
@@ -77,11 +79,15 @@ export default function AdminHelpdeskPage() {
   };
 
   const handleDelete = (id: string) => {
-    if (confirm(`Are you sure you want to delete ticket ${id}?`)) {
-      platformStore.deleteHelpdeskTicket(id);
-      triggerToast(`Removed ticket ${id}`);
-      loadData();
-    }
+    setTicketToDelete(id);
+  };
+
+  const confirmDelete = () => {
+    if (!ticketToDelete) return;
+    platformStore.deleteHelpdeskTicket(ticketToDelete);
+    triggerToast(`Removed ticket ${ticketToDelete}`);
+    setTicketToDelete(null);
+    loadData();
   };
 
   const filtered = tickets.filter((t) => {
@@ -369,6 +375,15 @@ export default function AdminHelpdeskPage() {
             </div>
           </div>
         )}
+
+        <ConfirmDialog
+          isOpen={!!ticketToDelete}
+          title="Delete Ticket"
+          message={`Are you sure you want to delete ticket ${ticketToDelete}?`}
+          confirmLabel="Delete Ticket"
+          onConfirm={confirmDelete}
+          onCancel={() => setTicketToDelete(null)}
+        />
 
       </div>
     </div>

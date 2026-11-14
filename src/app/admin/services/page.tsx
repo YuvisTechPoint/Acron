@@ -20,11 +20,13 @@ import { platformStore } from "@/lib/store";
 import { useRealtimeServices } from "@/lib/realtime";
 import { CustomService } from "@/lib/types";
 import { formatINR } from "@/lib/utils";
+import { ConfirmDialog } from "@/components/admin/confirm-dialog";
 
 export default function AdminServicesCataloguePage() {
   const realtimeServices = useRealtimeServices(true);
   const [categoryFilter, setCategoryFilter] = useState<string>("ALL");
   const [editingService, setEditingService] = useState<CustomService | null>(null);
+  const [serviceToDelete, setServiceToDelete] = useState<{ id: string; name: string } | null>(null);
   const [isCreating, setIsCreating] = useState(false);
   const [newFeaturesText, setNewFeaturesText] = useState("");
 
@@ -89,13 +91,18 @@ export default function AdminServicesCataloguePage() {
     setEditingService(null);
   };
 
-  const handleDelete = async (id: string, name: string) => {
-    if (confirm(`Are you sure you want to delete service "${name}" from the catalogue?`)) {
-      platformStore.deleteService(id);
-      try {
-        await fetch(`/api/services?id=${id}`, { method: "DELETE" });
-      } catch {}
-    }
+  const handleDelete = (id: string, name: string) => {
+    setServiceToDelete({ id, name });
+  };
+
+  const confirmDelete = async () => {
+    if (!serviceToDelete) return;
+    const { id } = serviceToDelete;
+    platformStore.deleteService(id);
+    try {
+      await fetch(`/api/services?id=${id}`, { method: "DELETE" });
+    } catch {}
+    setServiceToDelete(null);
   };
 
   const categories = ["ALL", ...Array.from(new Set(services.map((s) => s.category)))];
@@ -507,6 +514,15 @@ export default function AdminServicesCataloguePage() {
             </div>
           </div>
         )}
+
+        <ConfirmDialog
+          isOpen={!!serviceToDelete}
+          title="Delete Catalogue Service"
+          message={`Are you sure you want to delete service "${serviceToDelete?.name}" from the catalogue?`}
+          confirmLabel="Delete Service"
+          onConfirm={confirmDelete}
+          onCancel={() => setServiceToDelete(null)}
+        />
 
       </div>
     </div>

@@ -17,12 +17,14 @@ import {
 } from "lucide-react";
 import { platformStore } from "@/lib/store";
 import { AdminUserItem } from "@/lib/types";
+import { ConfirmDialog } from "@/components/admin/confirm-dialog";
 
 export default function AdminUsersRBACPage() {
   const [users, setUsers] = useState<AdminUserItem[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [editingUser, setEditingUser] = useState<AdminUserItem | null>(null);
+  const [userToDelete, setUserToDelete] = useState<{ id: string; email: string } | null>(null);
   const [toastMsg, setToastMsg] = useState<string | null>(null);
 
   const [formData, setFormData] = useState({
@@ -107,11 +109,15 @@ export default function AdminUsersRBACPage() {
   };
 
   const handleDelete = (id: string, email: string) => {
-    if (confirm(`Revoke credentials and delete account ${email}?`)) {
-      platformStore.deleteAdminUser(id);
-      triggerToast(`Deleted user ${email}`);
-      loadData();
-    }
+    setUserToDelete({ id, email });
+  };
+
+  const confirmDelete = () => {
+    if (!userToDelete) return;
+    platformStore.deleteAdminUser(userToDelete.id);
+    triggerToast(`Deleted user ${userToDelete.email}`);
+    setUserToDelete(null);
+    loadData();
   };
 
   const filtered = users.filter(
@@ -367,6 +373,15 @@ export default function AdminUsersRBACPage() {
             </div>
           </div>
         )}
+
+        <ConfirmDialog
+          isOpen={!!userToDelete}
+          title="Revoke User Account"
+          message={`Are you sure you want to revoke credentials and delete account ${userToDelete?.email}?`}
+          confirmLabel="Revoke Account"
+          onConfirm={confirmDelete}
+          onCancel={() => setUserToDelete(null)}
+        />
 
       </div>
     </div>

@@ -84,6 +84,15 @@ All color pairings across public and admin interfaces meet or exceed WCAG 2.1 AA
 
 ### G. Zero Native Dialogs & Enterprise Administrative Consoles
 - **Status:** **PASS** (WCAG 2.1 AA)
-- **Zero Browser Dialogs:** Completely eliminated all native `alert()`, `confirm()`, and `prompt()` calls across all user and admin portals. Replaced with accessible `role="dialog"` and `role="alertdialog"` components (e.g., Legal Hold modal in `/posh/admin/retention`, API client revocation modal in `/posh/org/api-keys`, and FAQ deletion dialog in `/admin/faq`).
-- **Design Token Purity:** Remediated all hardcoded hex values in `/admin/trust`, `/posh/org/webhooks`, `/posh/org/surveys`, `/posh/org/branding`, `/posh/org/benchmarks`, `/posh/org/early-warnings`, `/posh/org/integrations`, `/posh/org/sso`, `/posh/org/audit-packs`, `/posh/anonymous`, `/posh/channels`, and `/posh/signatures`, binding strictly to design system tokens (`bg-ink-950`, `bg-navy-900`, `bg-ivory-50`, `text-brass-400`).
+- **Zero Browser Dialogs Across 100% of the Codebase:** Completely eliminated all native `alert()`, `confirm()`, and `prompt()` calls across all user and admin portals. Replaced with accessible `role="dialog"` and `role="alertdialog"` components:
+  - Replaced native `prompt()` in `/posh/admin/retention` with an accessible judicial legal hold reference modal.
+  - Replaced native `confirm()` in `/posh/org/api-keys` with an accessible alert dialog for API key revocation.
+  - Replaced native `confirm()` in all 16 administrative console pages (`/admin/catalogue`, `/admin/delivery`, `/admin/helpdesk`, `/admin/kb`, `/admin/legal/calendars`, `/admin/legal/watch`, `/admin/lms/courses`, `/admin/media`, `/admin/payment-links`, `/admin/posts`, `/admin/questions`, `/admin/seo`, `/admin/services`, `/admin/site`, `/admin/surveys`, `/admin/users`) with the reusable, accessible `ConfirmDialog` component featuring `role="alertdialog"`, `aria-modal="true"`, visible focus management, and >= 44px touch targets.
+- **Design Token Purity Across All UI Components:** Remediated all hardcoded hex values across the entire frontend:
+  - Global navigation and header (`/components/navbar.tsx`): converted scrolled header ticker, monogram boxes, practice mega-menu, telephone button, and consultation CTA to Quiet Authority tokens (`bg-ink-950`, `bg-navy-900`, `bg-ivory-50`, `bg-stone-100`).
+  - Chambers homepage (`/app/page.tsx`): converted hero section background, gradient masks, CTA buttons, oak crest arch header, and bottom principle cards to `bg-ink-950`, `text-brass-300`, etc.
+  - Global footer (`/components/footer.tsx`): converted firm emblem, chambers map button, brand watermark, base bar, and back-to-top button to `bg-ink-950`, `bg-navy-900`, and upgraded touch targets to >= 44px (`w-11 h-11`).
+  - Statutory Guidance Assistant (`/components/legal-guidance-assistant.tsx`): converted all floating triggers, headers, message bubbles, chips, and send controls to design tokens and >= 44px touch targets.
+  - Architectural visual primitives (`arch-image.tsx`, `badge-and-stepper.tsx`): converted background grid linear gradients and status badge backgrounds (`bg-status-success-bg`, `bg-status-warning-bg`, `bg-status-danger-bg`).
+  - Admin and POSH consoles: `/admin/trust`, `/posh/org/webhooks`, `/posh/org/surveys`, `/posh/org/branding`, `/posh/org/benchmarks`, `/posh/org/early-warnings`, `/posh/org/integrations`, `/posh/org/sso`, `/posh/org/audit-packs`, `/posh/anonymous`, `/posh/channels`, and `/posh/signatures`.
 

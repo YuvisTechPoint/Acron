@@ -27,9 +27,9 @@ export function Badge({
     default: "bg-surface text-ink-secondary border border-border",
     brass: "bg-brass-500/10 text-brass-700 border border-brass-500/30",
     navy: "bg-blue-100 text-navy-700 border border-navy-700/20",
-    success: "bg-[#E7F5EE] text-status-success border border-status-success/30",
-    warning: "bg-[#FEF7EC] text-status-warning border border-status-warning/30",
-    danger: "bg-[#FDF1F0] text-status-danger border border-status-danger/30",
+    success: "bg-status-success-bg text-status-success border border-status-success/30",
+    warning: "bg-status-warning-bg text-status-warning border border-status-warning/30",
+    danger: "bg-status-danger-bg text-status-danger border border-status-danger/30",
     stone: "bg-stone-100 text-ink-secondary border border-border",
   };
 

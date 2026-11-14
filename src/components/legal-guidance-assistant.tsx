@@ -121,11 +121,11 @@ export function LegalGuidanceAssistant() {
         <button
           type="button"
           onClick={() => setIsOpen(true)}
-          className="fixed bottom-6 right-6 z-40 inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-[#0A192F] text-white border border-[#D4AF37]/50 shadow-xl hover:bg-[#152E52] transition-all transform hover:scale-105 group"
+          className="fixed bottom-6 right-6 z-40 inline-flex items-center gap-2 px-4 py-2.5 min-h-[44px] rounded-full bg-navy-900 text-white border border-brass-400/50 shadow-xl hover:bg-navy-800 transition-all transform hover:scale-105 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass-500"
           aria-label="Open Statutory Guidance Desk"
         >
-          <span className="w-2 h-2 rounded-full bg-[#D4AF37] animate-pulse" />
-          <Scale className="w-4 h-4 text-[#D4AF37]" />
+          <span className="w-2 h-2 rounded-full bg-brass-400 animate-pulse" />
+          <Scale className="w-4 h-4 text-brass-400" />
           <span className="font-sans text-xs font-semibold tracking-wide">
             Statutory Guidance
           </span>
@@ -134,18 +134,18 @@ export function LegalGuidanceAssistant() {
 
       {/* Slide-Up Guidance Drawer */}
       {isOpen && (
-        <div className="fixed bottom-6 right-6 z-50 w-[360px] sm:w-[420px] max-h-[580px] bg-white rounded-2xl border border-[#CBD5E1] shadow-2xl flex flex-col overflow-hidden animate-in fade-in slide-in-from-bottom-4 duration-300">
+        <div className="fixed bottom-6 right-6 z-50 w-[360px] sm:w-[420px] max-h-[580px] bg-white rounded-2xl border border-border shadow-2xl flex flex-col overflow-hidden animate-in fade-in slide-in-from-bottom-4 duration-300">
           
           {/* Header */}
-          <div className="bg-[#0A192F] text-white px-5 py-4 flex items-center justify-between border-b border-[#D4AF37]/30">
+          <div className="bg-navy-900 text-white px-5 py-3.5 flex items-center justify-between border-b border-brass-500/30">
             <div className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center border border-[#D4AF37]/40">
-                <Scale className="w-4 h-4 text-[#D4AF37]" />
+              <div className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center border border-brass-400/40">
+                <Scale className="w-4 h-4 text-brass-400" />
               </div>
               <div>
                 <h3 className="font-serif text-sm font-bold tracking-tight text-white flex items-center gap-1.5">
                   Statutory Guidance Desk
-                  <span className="text-[10px] font-sans font-normal text-[#D4AF37] border border-[#D4AF37]/40 px-1 rounded">
+                  <span className="text-[10px] font-sans font-normal text-brass-400 border border-brass-400/40 px-1 rounded">
                     Info Only
                   </span>
                 </h3>
@@ -158,7 +158,7 @@ export function LegalGuidanceAssistant() {
             <button
               type="button"
               onClick={() => setIsOpen(false)}
-              className="p-1 rounded text-slate-400 hover:text-white hover:bg-white/10 transition"
+              className="w-11 h-11 rounded-btn text-slate-300 hover:text-white hover:bg-white/10 transition flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass-500"
               aria-label="Close Assistant"
             >
               <X className="w-4 h-4" />
@@ -166,8 +166,8 @@ export function LegalGuidanceAssistant() {
           </div>
 
           {/* Bar Council Regulatory Disclaimer */}
-          <div className="bg-[#FAF9F6] px-4 py-2 border-b border-[#E5E0D8] text-[10px] text-[#6B7280] flex items-center gap-1.5">
-            <Lock className="w-3 h-3 text-[#D4AF37] shrink-0" />
+          <div className="bg-surface px-4 py-2 border-b border-border text-[10px] text-ink-secondary flex items-center gap-1.5">
+            <Lock className="w-3 h-3 text-brass-600 shrink-0" />
             <span>
               Rule 36 Notice: Informational statutory reference only. No advocate-client privilege.
             </span>
@@ -185,10 +185,10 @@ export function LegalGuidanceAssistant() {
                 <div
                   className={`max-w-[88%] rounded-xl px-3.5 py-2.5 leading-relaxed ${
                     msg.role === "user"
-                      ? "bg-[#0A192F] text-white rounded-br-none"
+                      ? "bg-navy-900 text-white rounded-br-none"
                       : msg.isAlert
                       ? "bg-amber-50 border border-amber-300 text-amber-900 rounded-bl-none shadow-sm"
-                      : "bg-[#FAF9F6] border border-[#E5E0D8] text-[#374151] rounded-bl-none"
+                      : "bg-surface border border-border text-ink rounded-bl-none"
                   }`}
                 >
                   {msg.isAlert && (
@@ -204,7 +204,7 @@ export function LegalGuidanceAssistant() {
                       <Link
                         href={msg.link}
                         onClick={() => setIsOpen(false)}
-                        className="inline-flex items-center gap-1.5 font-bold text-[#0A192F] bg-white px-3 py-1.5 rounded border border-amber-300 hover:bg-amber-100 transition shadow-xs text-[11px]"
+                        className="inline-flex items-center gap-1.5 font-bold text-navy-900 bg-white px-3 py-2 min-h-[44px] rounded border border-amber-300 hover:bg-amber-100 transition shadow-xs text-[11px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-navy-700"
                       >
                         <span>Open Confidential Filing Portal</span>
                         <ExternalLink className="w-3 h-3" />
@@ -217,13 +217,13 @@ export function LegalGuidanceAssistant() {
           </div>
 
           {/* Quick Statutory Topics Chips */}
-          <div className="px-3.5 py-2 bg-[#FAF9F6] border-t border-[#E5E0D8] flex items-center gap-1.5 overflow-x-auto text-[11px] scrollbar-none">
+          <div className="px-3.5 py-2 bg-surface border-t border-border flex items-center gap-1.5 overflow-x-auto text-[11px] scrollbar-none">
             {quickTopics.map((item, idx) => (
               <button
                 key={idx}
                 type="button"
                 onClick={() => handleSend(item.question)}
-                className="whitespace-nowrap px-2.5 py-1 rounded-full bg-white border border-[#CBD5E1] hover:border-[#0A192F] text-[#475569] hover:text-[#0A192F] transition text-[10px] font-medium"
+                className="whitespace-nowrap px-3 py-2 min-h-[44px] rounded-full bg-white border border-border hover:border-navy-900 text-ink-secondary hover:text-navy-900 transition text-[10px] font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-navy-700"
               >
                 {item.title}
               </button>
@@ -231,7 +231,7 @@ export function LegalGuidanceAssistant() {
           </div>
 
           {/* Input Footer */}
-          <div className="p-3 bg-white border-t border-[#E5E0D8]">
+          <div className="p-3 bg-white border-t border-border">
             <form
               onSubmit={(e) => {
                 e.preventDefault();
@@ -244,15 +244,15 @@ export function LegalGuidanceAssistant() {
                 placeholder="Ask about POSH provisions or duties..."
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                className="flex-1 px-3 py-2 text-xs rounded-lg border border-[#CBD5E1] focus:outline-none focus:ring-1 focus:ring-[#0A192F] bg-[#FAF9F6]"
+                className="flex-1 px-3.5 h-[44px] text-xs rounded-lg border border-border focus:outline-none focus:ring-2 focus:ring-navy-700 bg-surface text-ink"
               />
               <button
                 type="submit"
                 disabled={!query.trim()}
-                className="p-2 rounded-lg bg-[#0A192F] text-white hover:bg-[#152E52] disabled:opacity-40 transition"
+                className="w-11 h-11 shrink-0 rounded-lg bg-navy-900 text-white hover:bg-navy-800 disabled:opacity-40 transition flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass-500"
                 aria-label="Send query"
               >
-                <Send className="w-3.5 h-3.5 text-[#D4AF37]" />
+                <Send className="w-3.5 h-3.5 text-brass-400" />
               </button>
             </form>
           </div>

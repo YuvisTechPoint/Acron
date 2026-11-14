@@ -127,7 +127,7 @@ export function Navbar() {
     <>
       {/* Sticky / Scrolled Top Chambers Ticker Ribbon (Positioned Above the Header when Scrolled) */}
       <div
-        className={`fixed top-0 left-0 right-0 z-50 border-b border-navy-800/80 bg-[#040812] overflow-hidden select-none transition-all duration-300 ${
+        className={`fixed top-0 left-0 right-0 z-50 border-b border-navy-800/80 bg-ink-950 overflow-hidden select-none transition-all duration-300 ${
           scrolled ? "h-7 opacity-100 translate-y-0" : "h-0 opacity-0 -translate-y-full pointer-events-none"
         }`}
         aria-label="Chambers Scrolled Header Ribbon"
@@ -169,7 +169,7 @@ export function Navbar() {
             <div
               className={`w-10 h-10 rounded-md flex items-center justify-center transition duration-200 border ${
                 isTransparent
-                  ? "bg-[#101F38] border-brass-500/40 text-brass-300 shadow-inner group-hover:border-brass-400"
+                  ? "bg-navy-900 border-brass-500/40 text-brass-300 shadow-inner group-hover:border-brass-400"
                   : "bg-navy-800 border-brass-500/40 text-brass-300 shadow-sm group-hover:border-brass-400"
               }`}
             >
@@ -275,7 +275,7 @@ export function Navbar() {
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}
               >
-                <div className="w-full bg-[#FAF8F5] border-b border-brass-500/80 shadow-xl border-t border-border/60">
+                <div className="w-full bg-ivory-50 border-b border-brass-500/80 shadow-xl border-t border-border/60">
                   <div className="max-w-[1320px] mx-auto px-6 sm:px-8 pt-4.5 pb-4 text-ink">
                     
                     {/* Top Bar: Editorial Eyebrow & Directory Navigation Link */}
@@ -312,8 +312,8 @@ export function Navbar() {
                               onClick={() => setMegaMenuOpen(false)}
                               className={`group px-3 py-2 border-l-2 transition-all duration-150 flex items-start gap-2.5 text-left ${
                                 isHovered
-                                  ? "border-brass-600 bg-[#F2EDE4]/70"
-                                  : "border-transparent hover:border-brass-400 hover:bg-[#F7F4EE]/50"
+                                  ? "border-brass-600 bg-stone-100/70"
+                                  : "border-transparent hover:border-brass-400 hover:bg-stone-100/40"
                               }`}
                             >
                               <span className={`font-mono text-[10px] font-bold tracking-wider mt-0.5 select-none transition-colors ${
@@ -496,9 +496,9 @@ export function Navbar() {
             <a
               href={`tel:${siteConfig?.receptionPhone || BRAND_CONFIG.phone}`}
               title={`Call Chambers: ${siteConfig?.receptionPhone || BRAND_CONFIG.phone}`}
-              className={`w-10 h-10 rounded-full transition border flex items-center justify-center ${
+              className={`w-11 h-11 rounded-full transition border flex items-center justify-center ${
                 isTransparent
-                  ? "bg-[#101F38]/60 border-white/20 text-brass-300 hover:text-white hover:border-brass-400 backdrop-blur-sm"
+                  ? "bg-navy-900/60 border-white/20 text-brass-300 hover:text-white hover:border-brass-400 backdrop-blur-sm"
                   : "border-border text-navy-700 hover:text-brass-700 hover:bg-surface"
               }`}
               aria-label="Call Acorn Legal Consultants"
@@ -508,7 +508,7 @@ export function Navbar() {
 
             <Link
               href="/request-service"
-              className={`h-[42px] px-5 rounded-btn flex items-center justify-center text-xs font-bold uppercase tracking-[0.14em] transition-all duration-200 shadow-sm ${
+              className={`min-h-[44px] px-5 rounded-btn flex items-center justify-center text-xs font-bold uppercase tracking-[0.14em] transition-all duration-200 shadow-sm ${
                 isTransparent
                   ? "bg-brass-500 hover:bg-brass-400 text-ink-950 border border-brass-400"
                   : "bg-navy-700 hover:bg-blue-600 text-ivory-50 border border-navy-800"

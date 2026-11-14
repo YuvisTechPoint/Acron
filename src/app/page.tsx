@@ -201,7 +201,7 @@ export default function HomePage() {
     <div className="bg-ivory-50 text-ink selection:bg-brass-300/30">
 
       {/* 1. HERO SECTION: Full-bleed Heritage Law Library with Architectural Double Arch */}
-      <section className="relative min-h-[92vh] lg:min-h-[96vh] bg-[#07101F] text-white flex flex-col justify-between pt-28 pb-14 sm:pt-32 sm:pb-16 border-b border-navy-800/80 overflow-hidden">
+      <section className="relative min-h-[92vh] lg:min-h-[96vh] bg-ink-950 text-white flex flex-col justify-between pt-28 pb-14 sm:pt-32 sm:pb-16 border-b border-navy-800/80 overflow-hidden">
         {/* Full-bleed Hero Background Image - Exactly matches user's uploaded master background */}
         <div className="absolute inset-0 z-0 select-none pointer-events-none">
           <Image
@@ -213,8 +213,8 @@ export default function HomePage() {
             className="object-cover object-right lg:object-center"
           />
           {/* Subtle top & bottom edge transition blends */}
-          <div className="absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-[#07101F]/70 via-[#07101F]/20 to-transparent pointer-events-none" />
-          <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-[#07101F]/60 to-transparent pointer-events-none" />
+          <div className="absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-ink-950/70 via-ink-950/20 to-transparent pointer-events-none" />
+          <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-ink-950/60 to-transparent pointer-events-none" />
         </div>
 
         <div className="relative z-10 max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8 w-full my-auto py-4">
@@ -262,7 +262,7 @@ export default function HomePage() {
 
                 <Link
                   href={siteConfig.heroSecondaryCtaLink || "/services"}
-                  className="h-[48px] px-6 rounded-btn bg-[#07101F]/40 hover:bg-[#07101F]/70 border border-brass-500/50 hover:border-brass-400 text-brass-200 hover:text-white font-sans font-medium text-sm flex items-center gap-2.5 backdrop-blur-sm transition-all duration-200"
+                  className="h-[48px] px-6 rounded-btn bg-ink-950/40 hover:bg-ink-950/70 border border-brass-500/50 hover:border-brass-400 text-brass-200 hover:text-white font-sans font-medium text-sm flex items-center gap-2.5 backdrop-blur-sm transition-all duration-200"
                 >
                   <span>{siteConfig.heroSecondaryCtaText || "Explore our services"}</span>
                   <ArrowRight className="w-4 h-4 text-brass-400" />
@@ -298,7 +298,7 @@ export default function HomePage() {
                   <div className="absolute inset-2 sm:inset-2.5 rounded-t-full border border-brass-500/35 pointer-events-none" />
 
                   {/* Top Dome with Crest & Typography - Clickable to Chambers Contact */}
-                  <Link href="/contact" className="relative z-10 pt-7 pb-8 px-4 rounded-t-full bg-gradient-to-b from-[#07101F]/85 via-[#07101F]/50 to-transparent flex flex-col items-center text-center cursor-pointer group focus:outline-none">
+                  <Link href="/contact" className="relative z-10 pt-7 pb-8 px-4 rounded-t-full bg-gradient-to-b from-ink-950/85 via-ink-950/50 to-transparent flex flex-col items-center text-center cursor-pointer group focus:outline-none">
 
                     {/* Oak Leaf Crest Motif */}
                     <div className="w-11 h-11 flex items-center justify-center text-brass-400 mb-1 drop-shadow group-hover:scale-105 transition-transform">
@@ -320,7 +320,7 @@ export default function HomePage() {
                       </svg>
                     </div>
 
-                    <span className="font-serif text-2xl sm:text-[28px] font-bold text-[#F3E5D3] tracking-wide drop-shadow-md leading-tight mt-1 group-hover:text-white transition-colors">
+                    <span className="font-serif text-2xl sm:text-[28px] font-bold text-brass-300 tracking-wide drop-shadow-md leading-tight mt-1 group-hover:text-white transition-colors">
                       {siteConfig.heroArchTitle || "Chambers of Acorn"}
                     </span>
                     <span className="font-sans text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.25em] text-brass-400 mt-1 drop-shadow">
@@ -337,7 +337,7 @@ export default function HomePage() {
                     {/* Card 1: Discretion */}
                     <Link
                       href="/about"
-                      className="bg-[#07101F]/75 border border-brass-500/35 rounded-lg p-3 sm:p-3.5 flex flex-col justify-between shadow-2xl backdrop-blur-md transition-all duration-200 hover:border-brass-400 hover:bg-[#07101F]/90 cursor-pointer group focus:outline-none"
+                      className="bg-ink-950/75 border border-brass-500/35 rounded-lg p-3 sm:p-3.5 flex flex-col justify-between shadow-2xl backdrop-blur-md transition-all duration-200 hover:border-brass-400 hover:bg-ink-950/90 cursor-pointer group focus:outline-none"
                     >
                       <div>
                         <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-white/5 border border-brass-500/30 flex items-center justify-center text-brass-400 mb-2 group-hover:border-brass-400 transition-colors">
@@ -355,7 +355,7 @@ export default function HomePage() {
                     {/* Card 2: Diligence */}
                     <Link
                       href="/services"
-                      className="bg-[#07101F]/75 border border-brass-500/35 rounded-lg p-3 sm:p-3.5 flex flex-col justify-between shadow-2xl backdrop-blur-md transition-all duration-200 hover:border-brass-400 hover:bg-[#07101F]/90 cursor-pointer group focus:outline-none"
+                      className="bg-ink-950/75 border border-brass-500/35 rounded-lg p-3 sm:p-3.5 flex flex-col justify-between shadow-2xl backdrop-blur-md transition-all duration-200 hover:border-brass-400 hover:bg-ink-950/90 cursor-pointer group focus:outline-none"
                     >
                       <div>
                         <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-white/5 border border-brass-500/30 flex items-center justify-center text-brass-400 mb-2 group-hover:border-brass-400 transition-colors">
@@ -373,7 +373,7 @@ export default function HomePage() {
                     {/* Card 3: Transparency */}
                     <Link
                       href="/request-service"
-                      className="bg-[#07101F]/75 border border-brass-500/35 rounded-lg p-3 sm:p-3.5 flex flex-col justify-between shadow-2xl backdrop-blur-md transition-all duration-200 hover:border-brass-400 hover:bg-[#07101F]/90 cursor-pointer group focus:outline-none"
+                      className="bg-ink-950/75 border border-brass-500/35 rounded-lg p-3 sm:p-3.5 flex flex-col justify-between shadow-2xl backdrop-blur-md transition-all duration-200 hover:border-brass-400 hover:bg-ink-950/90 cursor-pointer group focus:outline-none"
                     >
                       <div>
                         <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-white/5 border border-brass-500/30 flex items-center justify-center text-brass-400 mb-2 group-hover:border-brass-400 transition-colors">

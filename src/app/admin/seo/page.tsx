@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import { platformStore } from "@/lib/store";
 import { SeoSettings, SeoRedirectItem } from "@/lib/types";
+import { ConfirmDialog } from "@/components/admin/confirm-dialog";
 
 export default function AdminSeoPage() {
   const [seo, setSeo] = useState<SeoSettings>({
@@ -31,6 +32,7 @@ export default function AdminSeoPage() {
   const [redirects, setRedirects] = useState<SeoRedirectItem[]>([]);
   const [newSource, setNewSource] = useState("");
   const [newTarget, setNewTarget] = useState("");
+  const [redirectToDelete, setRedirectToDelete] = useState<{ id: string; source: string } | null>(null);
   const [toastMsg, setToastMsg] = useState<string | null>(null);
 
   const loadData = () => {
@@ -74,11 +76,15 @@ export default function AdminSeoPage() {
   };
 
   const handleDeleteRedirect = (id: string, source: string) => {
-    if (confirm(`Delete redirect rule for ${source}?`)) {
-      platformStore.deleteSeoRedirect(id);
-      triggerToast(`Removed redirect rule ${id}`);
-      loadData();
-    }
+    setRedirectToDelete({ id, source });
+  };
+
+  const confirmDeleteRedirect = () => {
+    if (!redirectToDelete) return;
+    platformStore.deleteSeoRedirect(redirectToDelete.id);
+    triggerToast(`Removed redirect rule ${redirectToDelete.id}`);
+    setRedirectToDelete(null);
+    loadData();
   };
 
   return (
@@ -289,6 +295,15 @@ export default function AdminSeoPage() {
             </table>
           </div>
         </div>
+
+        <ConfirmDialog
+          isOpen={!!redirectToDelete}
+          title="Delete Redirect Rule"
+          message={`Delete redirect rule for ${redirectToDelete?.source}?`}
+          confirmLabel="Delete Rule"
+          onConfirm={confirmDeleteRedirect}
+          onCancel={() => setRedirectToDelete(null)}
+        />
 
       </div>
     </div>

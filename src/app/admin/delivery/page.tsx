@@ -16,12 +16,14 @@ import {
 } from "lucide-react";
 import { platformStore } from "@/lib/store";
 import { DeliveryTask } from "@/lib/types";
+import { ConfirmDialog } from "@/components/admin/confirm-dialog";
 
 export default function AdminDeliveryBoardPage() {
   const [tasks, setTasks] = useState<DeliveryTask[]>([]);
   const [showModal, setShowModal] = useState(false);
   const [statusFilter, setStatusFilter] = useState("all");
   const [searchTerm, setSearchTerm] = useState("");
+  const [taskToDelete, setTaskToDelete] = useState<string | null>(null);
   const [toastMsg, setToastMsg] = useState<string | null>(null);
 
   const [form, setForm] = useState({
@@ -80,11 +82,15 @@ export default function AdminDeliveryBoardPage() {
   };
 
   const handleDelete = (code: string) => {
-    if (confirm(`Are you sure you want to delete deliverable ${code}?`)) {
-      platformStore.deleteDeliveryTask(code);
-      triggerToast(`Removed task ${code}`);
-      loadData();
-    }
+    setTaskToDelete(code);
+  };
+
+  const confirmDelete = () => {
+    if (!taskToDelete) return;
+    platformStore.deleteDeliveryTask(taskToDelete);
+    triggerToast(`Removed task ${taskToDelete}`);
+    setTaskToDelete(null);
+    loadData();
   };
 
   const filtered = tasks.filter((t) => {
@@ -382,6 +388,15 @@ export default function AdminDeliveryBoardPage() {
             </div>
           </div>
         )}
+
+        <ConfirmDialog
+          isOpen={!!taskToDelete}
+          title="Delete Deliverable"
+          message={`Are you sure you want to delete deliverable ${taskToDelete}?`}
+          confirmLabel="Delete Task"
+          onConfirm={confirmDelete}
+          onCancel={() => setTaskToDelete(null)}
+        />
 
       </div>
     </div>

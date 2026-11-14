@@ -19,6 +19,7 @@ import {
 } from "lucide-react";
 import { platformStore } from "@/lib/store";
 import { MediaVaultItem } from "@/lib/types";
+import { ConfirmDialog } from "@/components/admin/confirm-dialog";
 
 export default function AdminMediaLibraryPage() {
   const [mediaList, setMediaList] = useState<MediaVaultItem[]>([]);
@@ -26,6 +27,7 @@ export default function AdminMediaLibraryPage() {
   const [categoryFilter, setCategoryFilter] = useState("all");
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const [showModal, setShowModal] = useState(false);
+  const [assetToDelete, setAssetToDelete] = useState<{ id: string; name: string } | null>(null);
   const [toastMsg, setToastMsg] = useState<string | null>(null);
 
   const [formData, setFormData] = useState({
@@ -81,11 +83,15 @@ export default function AdminMediaLibraryPage() {
   };
 
   const handleDelete = (id: string, name: string) => {
-    if (confirm(`Are you sure you want to delete asset "${name}"?`)) {
-      platformStore.deleteMediaVaultItem(id);
-      triggerToast(`Removed asset ${name}`);
-      loadData();
-    }
+    setAssetToDelete({ id, name });
+  };
+
+  const confirmDelete = () => {
+    if (!assetToDelete) return;
+    platformStore.deleteMediaVaultItem(assetToDelete.id);
+    triggerToast(`Removed asset ${assetToDelete.name}`);
+    setAssetToDelete(null);
+    loadData();
   };
 
   const filtered = mediaList.filter((m) => {
@@ -349,6 +355,15 @@ export default function AdminMediaLibraryPage() {
             </div>
           </div>
         )}
+
+        <ConfirmDialog
+          isOpen={!!assetToDelete}
+          title="Delete Media Asset"
+          message={`Are you sure you want to delete asset "${assetToDelete?.name}"?`}
+          confirmLabel="Delete Asset"
+          onConfirm={confirmDelete}
+          onCancel={() => setAssetToDelete(null)}
+        />
 
       </div>
     </div>

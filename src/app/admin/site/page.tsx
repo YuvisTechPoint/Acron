@@ -29,6 +29,7 @@ import {
 import { platformStore } from "@/lib/store";
 import { SiteConfig, EngagementStep, ChambersPrinciple, TeamMemberItem } from "@/lib/types";
 import { useToast } from "@/components/ui/toast";
+import { ConfirmDialog } from "@/components/admin/confirm-dialog";
 
 export default function AdminSiteSettingsPage() {
   const { toast } = useToast();
@@ -42,6 +43,7 @@ export default function AdminSiteSettingsPage() {
   // Team member modal state
   const [showTeamModal, setShowTeamModal] = useState(false);
   const [editingMember, setEditingMember] = useState<TeamMemberItem | null>(null);
+  const [memberToDelete, setMemberToDelete] = useState<{ id: string; name: string } | null>(null);
   const [memberFormData, setMemberFormData] = useState({
     name: "",
     role: "",
@@ -217,11 +219,16 @@ export default function AdminSiteSettingsPage() {
   };
 
   const handleDeleteTeamMember = (id: string, name: string) => {
-    if (confirm(`Remove counsel profile for ${name}?`)) {
-      platformStore.deleteTeamMember(id);
-      fetch(`/api/team?id=${id}`, { method: "DELETE" }).catch(() => {});
-      loadData();
-    }
+    setMemberToDelete({ id, name });
+  };
+
+  const confirmDeleteTeamMember = () => {
+    if (!memberToDelete) return;
+    const { id, name } = memberToDelete;
+    platformStore.deleteTeamMember(id);
+    fetch(`/api/team?id=${id}`, { method: "DELETE" }).catch(() => {});
+    setMemberToDelete(null);
+    loadData();
   };
 
   return (
@@ -1201,6 +1208,15 @@ export default function AdminSiteSettingsPage() {
             </div>
           </div>
         )}
+
+        <ConfirmDialog
+          isOpen={!!memberToDelete}
+          title="Remove Counsel Profile"
+          message={`Are you sure you want to remove the counsel profile for ${memberToDelete?.name}?`}
+          confirmLabel="Remove Profile"
+          onConfirm={confirmDeleteTeamMember}
+          onCancel={() => setMemberToDelete(null)}
+        />
 
       </div>
     </div>

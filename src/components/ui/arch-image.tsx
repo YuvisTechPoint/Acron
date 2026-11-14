@@ -69,7 +69,7 @@ export function ArchImage({
       className={`relative w-full ${aspectHeights[aspect]} arch-mask bg-gradient-to-b from-navy-900 via-navy-800 to-ink-950 border border-brass-500/25 shadow-raised overflow-hidden group select-none ${className}`}
     >
       {/* Background Architectural Grid Lines */}
-      <div className="absolute inset-0 opacity-15 bg-[linear-gradient(to_right,#B08D57_1px,transparent_1px),linear-gradient(to_bottom,#B08D57_1px,transparent_1px)] bg-[size:32px_32px]" />
+      <div className="absolute inset-0 opacity-15 bg-[linear-gradient(to_right,var(--brass-500)_1px,transparent_1px),linear-gradient(to_bottom,var(--brass-500)_1px,transparent_1px)] bg-[size:32px_32px]" />
 
       {/* Radial brass glow */}
       {glow && (

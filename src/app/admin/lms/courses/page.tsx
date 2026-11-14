@@ -16,12 +16,14 @@ import {
 } from "lucide-react";
 import { platformStore } from "@/lib/store";
 import { LmsCourse } from "@/lib/types";
+import { ConfirmDialog } from "@/components/admin/confirm-dialog";
 
 export default function AdminLMSCourseBuilderPage() {
   const [courses, setCourses] = useState<LmsCourse[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [editingCourse, setEditingCourse] = useState<LmsCourse | null>(null);
+  const [courseToDelete, setCourseToDelete] = useState<string | null>(null);
   const [toastMsg, setToastMsg] = useState<string | null>(null);
 
   const [formData, setFormData] = useState({
@@ -119,11 +121,15 @@ export default function AdminLMSCourseBuilderPage() {
   };
 
   const handleDelete = (code: string) => {
-    if (confirm(`Are you sure you want to delete course ${code}?`)) {
-      platformStore.deleteLmsCourse(code);
-      triggerToast(`Deleted course ${code}`);
-      loadData();
-    }
+    setCourseToDelete(code);
+  };
+
+  const confirmDelete = () => {
+    if (!courseToDelete) return;
+    platformStore.deleteLmsCourse(courseToDelete);
+    triggerToast(`Deleted course ${courseToDelete}`);
+    setCourseToDelete(null);
+    loadData();
   };
 
   const filtered = courses.filter(
@@ -384,6 +390,15 @@ export default function AdminLMSCourseBuilderPage() {
             </div>
           </div>
         )}
+
+        <ConfirmDialog
+          isOpen={!!courseToDelete}
+          title="Delete LMS Course"
+          message={`Are you sure you want to delete course ${courseToDelete}?`}
+          confirmLabel="Delete Course"
+          onConfirm={confirmDelete}
+          onCancel={() => setCourseToDelete(null)}
+        />
 
       </div>
     </div>

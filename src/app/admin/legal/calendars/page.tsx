@@ -14,11 +14,13 @@ import {
 } from "lucide-react";
 import { platformStore } from "@/lib/store";
 import { CourtHoliday } from "@/lib/types";
+import { ConfirmDialog } from "@/components/admin/confirm-dialog";
 
 export default function LegalCalendarsPage() {
   const [holidays, setHolidays] = useState<CourtHoliday[]>([]);
   const [selectedCalendar, setSelectedCalendar] = useState<"wb" | "central">("wb");
   const [showModal, setShowModal] = useState(false);
+  const [holidayToDelete, setHolidayToDelete] = useState<{ id: string; name: string } | null>(null);
   const [toastMsg, setToastMsg] = useState<string | null>(null);
 
   const [formData, setFormData] = useState({
@@ -67,11 +69,15 @@ export default function LegalCalendarsPage() {
   };
 
   const handleDelete = (id: string, name: string) => {
-    if (confirm(`Remove holiday "${name}" from judicial computation calendar?`)) {
-      platformStore.deleteHoliday(id);
-      triggerToast(`Removed holiday ${name}`);
-      loadData();
-    }
+    setHolidayToDelete({ id, name });
+  };
+
+  const confirmDelete = () => {
+    if (!holidayToDelete) return;
+    platformStore.deleteHoliday(holidayToDelete.id);
+    triggerToast(`Removed holiday ${holidayToDelete.name}`);
+    setHolidayToDelete(null);
+    loadData();
   };
 
   const displayedHolidays = holidays.filter(
@@ -305,6 +311,15 @@ export default function LegalCalendarsPage() {
             </div>
           </div>
         )}
+
+        <ConfirmDialog
+          isOpen={!!holidayToDelete}
+          title="Remove Court Holiday"
+          message={`Remove holiday "${holidayToDelete?.name}" from judicial computation calendar?`}
+          confirmLabel="Remove Holiday"
+          onConfirm={confirmDelete}
+          onCancel={() => setHolidayToDelete(null)}
+        />
 
       </div>
     </div>

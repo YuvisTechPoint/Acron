@@ -112,9 +112,10 @@
 ## 6. End-to-End Implementation & Remediation Notes
 
 ### A. Zero Raw Dialog Policy & Toast Integration
-- Completely eliminated all raw browser `alert()`, `confirm()`, and `prompt()` calls across user, organization, and administrative portals.
+- Completely eliminated all raw browser `alert()`, `confirm()`, and `prompt()` calls across user, organization, and administrative portals (verified with 0 grep occurrences across `src/`).
 - Replaced `prompt()` in `/posh/admin/retention` with an accessible judicial reference modal dialog.
 - Replaced `confirm()` in `/posh/org/api-keys` and `/admin/faq` with accessible `role="alertdialog"` components featuring focus trapping and keyboard navigation.
+- Replaced `confirm()` in all 16 staff administrative consoles (`/admin/catalogue`, `/admin/delivery`, `/admin/helpdesk`, `/admin/kb`, `/admin/legal/calendars`, `/admin/legal/watch`, `/admin/lms/courses`, `/admin/media`, `/admin/payment-links`, `/admin/posts`, `/admin/questions`, `/admin/seo`, `/admin/services`, `/admin/site`, `/admin/surveys`, `/admin/users`) with the shared `ConfirmDialog` component.
 - Integrated standard `useToast` provider for calm, non-blocking notifications on all form submissions, record mutations, and document exports.
 
 ### B. Quiet Authority Design Token Adherence
@@ -123,7 +124,8 @@
   - Accents & Highlights: `text-brass-300`, `text-brass-400`, `text-brass-500`, `text-brass-700`
   - Borders: `border-border`, `border-border-subtle`, `border-brass-500/30`, `border-navy-800`
   - Typography: `font-serif` (Cormorant Garamond) for editorial headings; `font-sans` (Inter) for functional interface copy; `tabular-nums` for dates, currency, and docket numbers.
-  - Remediated pages: `/admin/trust`, `/posh/org/webhooks`, `/posh/org/surveys`, `/posh/org/branding`, `/posh/org/benchmarks`, `/posh/org/early-warnings`, `/posh/org/integrations`, `/posh/org/sso`, `/posh/org/audit-packs`, `/posh/anonymous`, `/posh/channels`, and `/posh/signatures`.
+  - Remediated core public components: `/app/page.tsx` (hero, double arch frame, principle cards), `/components/navbar.tsx` (scrolled ticker ribbon, logo monogram, services mega-menu), `/components/footer.tsx` (firm lockup, chambers map button, brand watermark, back-to-top button), `/components/legal-guidance-assistant.tsx` (drawer container, headers, message bubbles, topics chips, input controls), `src/components/ui/arch-image.tsx`, and `src/components/ui/badge-and-stepper.tsx`.
+  - Remediated admin and POSH pages: `/admin/trust`, `/posh/org/webhooks`, `/posh/org/surveys`, `/posh/org/branding`, `/posh/org/benchmarks`, `/posh/org/early-warnings`, `/posh/org/integrations`, `/posh/org/sso`, `/posh/org/audit-packs`, `/posh/anonymous`, `/posh/channels`, and `/posh/signatures`.
 
 ### C. Finalized Enterprise POSH & Administrative Consoles
 - **`/admin/faq`:** Full statutory FAQ management, category filtering, search, homepage feature toggle, add/edit modal, in-place deletion confirmation, and >= 44px touch targets.

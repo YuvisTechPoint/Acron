@@ -18,6 +18,7 @@ import {
 } from "lucide-react";
 import { platformStore } from "@/lib/store";
 import { KbArticle } from "@/lib/types";
+import { ConfirmDialog } from "@/components/admin/confirm-dialog";
 
 export default function AdminKbPage() {
   const [articles, setArticles] = useState<KbArticle[]>([]);
@@ -25,6 +26,7 @@ export default function AdminKbPage() {
   const [categoryFilter, setCategoryFilter] = useState("all");
   const [showModal, setShowModal] = useState(false);
   const [editingArticle, setEditingArticle] = useState<KbArticle | null>(null);
+  const [articleToDelete, setArticleToDelete] = useState<{ id: string; title: string } | null>(null);
   const [toastMsg, setToastMsg] = useState<string | null>(null);
 
   const [formData, setFormData] = useState({
@@ -120,11 +122,15 @@ export default function AdminKbPage() {
   };
 
   const handleDelete = (id: string, title: string) => {
-    if (confirm(`Are you sure you want to remove "${title}"?`)) {
-      platformStore.deleteKbArticle(id);
-      triggerToast(`Deleted article ${id}`);
-      loadData();
-    }
+    setArticleToDelete({ id, title });
+  };
+
+  const confirmDelete = () => {
+    if (!articleToDelete) return;
+    platformStore.deleteKbArticle(articleToDelete.id);
+    triggerToast(`Deleted article ${articleToDelete.title}`);
+    setArticleToDelete(null);
+    loadData();
   };
 
   const filtered = articles.filter((a) => {
@@ -405,6 +411,15 @@ export default function AdminKbPage() {
             </div>
           </div>
         )}
+
+        <ConfirmDialog
+          isOpen={!!articleToDelete}
+          title="Remove Knowledge Guide"
+          message={`Are you sure you want to remove "${articleToDelete?.title}"?`}
+          confirmLabel="Remove Guide"
+          onConfirm={confirmDelete}
+          onCancel={() => setArticleToDelete(null)}
+        />
 
       </div>
     </div>
