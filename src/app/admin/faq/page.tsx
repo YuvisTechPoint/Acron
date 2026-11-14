@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import {
   HelpCircle,
@@ -14,12 +14,12 @@ import {
   ExternalLink,
   X,
   Filter,
-  Eye,
-  Check,
+  AlertTriangle,
 } from "lucide-react";
 import { platformStore } from "@/lib/store";
 import { useRealtimeFaqs } from "@/lib/realtime";
 import { FaqItem } from "@/lib/types";
+import { useToast } from "@/components/ui/toast";
 
 const CATEGORIES = [
   "All Categories",
@@ -32,11 +32,12 @@ const CATEGORIES = [
 
 export default function AdminFaqPage() {
   const faqs = useRealtimeFaqs();
+  const { toast } = useToast();
   const [searchTerm, setSearchTerm] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("All Categories");
   const [showModal, setShowModal] = useState(false);
   const [editingFaq, setEditingFaq] = useState<FaqItem | null>(null);
-  const [toastMsg, setToastMsg] = useState<string | null>(null);
+  const [faqToDelete, setFaqToDelete] = useState<FaqItem | null>(null);
 
   const [formData, setFormData] = useState({
     category: "POSH Compliance",
@@ -45,11 +46,6 @@ export default function AdminFaqPage() {
     showOnHomepage: false,
     order: 1,
   });
-
-  const triggerToast = (msg: string) => {
-    setToastMsg(msg);
-    setTimeout(() => setToastMsg(null), 3000);
-  };
 
   const openAddModal = () => {
     setEditingFaq(null);
@@ -85,13 +81,21 @@ export default function AdminFaqPage() {
         body: JSON.stringify(updated),
       });
     } catch {}
-    triggerToast(`FAQ homepage visibility toggled to ${!faq.showOnHomepage ? "Featured" : "Hidden"}`);
+    toast({
+      title: "Homepage Visibility Updated",
+      description: `FAQ visibility set to ${!faq.showOnHomepage ? "Featured on landing page" : "Standard practice library"}.`,
+      variant: "success",
+    });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.question.trim() || !formData.answer.trim()) {
-      triggerToast("Question and Answer are required.");
+      toast({
+        title: "Validation Incomplete",
+        description: "Both Question and Answer text fields are required.",
+        variant: "warning",
+      });
       return;
     }
 
@@ -112,7 +116,11 @@ export default function AdminFaqPage() {
           body: JSON.stringify(payload),
         });
       } catch {}
-      triggerToast("FAQ successfully updated.");
+      toast({
+        title: "FAQ Updated",
+        description: "Statutory FAQ revisions saved and propagated to practice knowledge.",
+        variant: "success",
+      });
     } else {
       const newFaqPayload = {
         category: formData.category,
@@ -129,20 +137,29 @@ export default function AdminFaqPage() {
           body: JSON.stringify(created),
         });
       } catch {}
-      triggerToast("New FAQ created and published.");
+      toast({
+        title: "FAQ Created",
+        description: "New statutory question and counsel answer successfully published.",
+        variant: "success",
+      });
     }
 
     setShowModal(false);
   };
 
-  const handleDelete = async (faq: FaqItem) => {
-    if (confirm(`Are you sure you want to delete this FAQ: "${faq.question.slice(0, 50)}..."?`)) {
-      platformStore.deleteFaq(faq.id);
-      try {
-        await fetch(`/api/faq?id=${faq.id}`, { method: "DELETE" });
-      } catch {}
-      triggerToast("FAQ deleted successfully.");
-    }
+  const confirmDelete = async () => {
+    if (!faqToDelete) return;
+    const deletedId = faqToDelete.id;
+    platformStore.deleteFaq(deletedId);
+    try {
+      await fetch(`/api/faq?id=${deletedId}`, { method: "DELETE" });
+    } catch {}
+    setFaqToDelete(null);
+    toast({
+      title: "FAQ Removed",
+      description: "The selected practice FAQ has been permanently removed.",
+      variant: "info",
+    });
   };
 
   const filteredFaqs = faqs
@@ -161,12 +178,11 @@ export default function AdminFaqPage() {
   return (
     <div className="bg-ivory-50 min-h-screen py-8 text-ink">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
-        
         {/* Navigation Breadcrumb */}
         <div className="flex items-center justify-between">
           <Link
             href="/admin"
-            className="inline-flex items-center gap-2 text-xs font-semibold text-navy-700 hover:text-blue-600 transition"
+            className="inline-flex items-center gap-2 text-xs font-semibold text-navy-700 hover:text-blue-600 transition min-h-[44px] px-2 -ml-2 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-navy-700"
           >
             <ArrowLeft className="w-3.5 h-3.5 text-brass-500" />
             <span>Back to Firm Dashboard</span>
@@ -197,28 +213,21 @@ export default function AdminFaqPage() {
             <Link
               href="/faq"
               target="_blank"
-              className="inline-flex items-center gap-1.5 px-3.5 py-2 border border-border rounded-btn text-xs font-semibold hover:bg-ivory-50 text-navy-700 transition"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 px-3.5 py-2.5 min-h-[44px] border border-border rounded-btn text-xs font-semibold hover:bg-ivory-50 text-navy-700 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-navy-700 focus-visible:ring-offset-2"
             >
               <span>View Public /faq</span>
               <ExternalLink className="w-3.5 h-3.5 text-brass-500" />
             </Link>
             <button
               onClick={openAddModal}
-              className="inline-flex items-center gap-2 px-4 py-2 bg-navy-700 hover:bg-blue-600 text-white text-xs font-bold rounded-btn transition shadow-sm"
+              className="inline-flex items-center gap-2 px-4 py-2.5 min-h-[44px] bg-navy-700 hover:bg-blue-600 text-white text-xs font-bold rounded-btn transition shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass-500 focus-visible:ring-offset-2"
             >
               <Plus className="w-4 h-4" />
               <span>Add New FAQ</span>
             </button>
           </div>
         </div>
-
-        {/* Toast Notification */}
-        {toastMsg && (
-          <div className="p-4 bg-emerald-50 border border-emerald-300 text-emerald-900 rounded-btn text-xs flex items-center gap-2 shadow-sm animate-fade-in">
-            <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-            <span className="font-semibold">{toastMsg}</span>
-          </div>
-        )}
 
         {/* Summary Metric Counters */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -264,13 +273,14 @@ export default function AdminFaqPage() {
         {/* Filter and Search Bar */}
         <div className="bg-white p-4 rounded-card border border-border shadow-card flex flex-col md:flex-row gap-4 items-center justify-between">
           <div className="relative w-full md:w-80">
-            <Search className="w-4 h-4 text-ink-muted absolute left-3 top-2.5" />
+            <Search className="w-4 h-4 text-ink-muted absolute left-3 top-3" />
             <input
               type="text"
+              aria-label="Search questions or legal answers"
               placeholder="Search questions or legal answers..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-9 pr-4 py-2 border border-border rounded-btn text-xs focus:outline-none focus:border-navy-700"
+              className="w-full pl-9 pr-4 py-2.5 min-h-[44px] border border-border rounded-btn text-xs focus:outline-none focus-visible:ring-2 focus-visible:ring-navy-700"
             />
           </div>
 
@@ -280,7 +290,7 @@ export default function AdminFaqPage() {
               <button
                 key={cat}
                 onClick={() => setCategoryFilter(cat)}
-                className={`px-3 py-1.5 rounded-btn text-xs transition font-medium ${
+                className={`px-3 py-2 min-h-[40px] rounded-btn text-xs transition font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-navy-700 ${
                   categoryFilter === cat
                     ? "bg-navy-700 text-white font-bold"
                     : "bg-ivory-100 hover:bg-border text-ink-secondary"
@@ -312,7 +322,7 @@ export default function AdminFaqPage() {
                   setSearchTerm("");
                   setCategoryFilter("All Categories");
                 }}
-                className="text-xs text-navy-700 font-bold hover:underline"
+                className="text-xs text-navy-700 font-bold hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-navy-700 min-h-[44px] px-3 py-2"
               >
                 Reset filters
               </button>
@@ -357,7 +367,8 @@ export default function AdminFaqPage() {
                     <button
                       onClick={() => handleToggleHomepage(faq)}
                       title={faq.showOnHomepage ? "Remove from Homepage" : "Feature on Homepage"}
-                      className={`p-2 rounded border text-xs flex items-center gap-1.5 transition ${
+                      aria-label={faq.showOnHomepage ? "Remove from Homepage" : "Feature on Homepage"}
+                      className={`p-2.5 min-h-[44px] min-w-[44px] rounded border text-xs flex items-center justify-center gap-1.5 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass-500 ${
                         faq.showOnHomepage
                           ? "bg-amber-50 border-amber-300 text-amber-800 hover:bg-amber-100"
                           : "bg-white border-border text-ink-secondary hover:bg-ivory-100"
@@ -371,16 +382,18 @@ export default function AdminFaqPage() {
 
                     <button
                       onClick={() => openEditModal(faq)}
-                      className="p-2 bg-white border border-border rounded hover:bg-navy-50 text-navy-700 transition"
+                      className="p-2.5 min-h-[44px] min-w-[44px] bg-white border border-border rounded hover:bg-navy-50 text-navy-700 transition flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-navy-700"
                       title="Edit FAQ"
+                      aria-label={`Edit FAQ: ${faq.question.slice(0, 30)}`}
                     >
                       <Edit2 className="w-3.5 h-3.5" />
                     </button>
 
                     <button
-                      onClick={() => handleDelete(faq)}
-                      className="p-2 bg-white border border-border rounded hover:bg-red-50 text-red-600 transition"
+                      onClick={() => setFaqToDelete(faq)}
+                      className="p-2.5 min-h-[44px] min-w-[44px] bg-white border border-border rounded hover:bg-red-50 text-red-600 transition flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-600"
                       title="Delete FAQ"
+                      aria-label={`Delete FAQ: ${faq.question.slice(0, 30)}`}
                     >
                       <Trash2 className="w-3.5 h-3.5" />
                     </button>
@@ -393,18 +406,24 @@ export default function AdminFaqPage() {
 
         {/* Modal for Add / Edit */}
         {showModal && (
-          <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="faq-modal-title"
+            className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4 animate-fade-in"
+          >
             <div className="bg-white rounded-card border border-border shadow-raised max-w-2xl w-full max-h-[90vh] overflow-y-auto">
               <div className="p-5 border-b border-border flex items-center justify-between bg-ivory-50 sticky top-0 z-10">
                 <div className="flex items-center gap-2">
                   <HelpCircle className="w-4 h-4 text-navy-700" />
-                  <h3 className="font-serif font-bold text-base text-ink-950">
+                  <h2 id="faq-modal-title" className="font-serif font-bold text-base text-ink-950">
                     {editingFaq ? "Edit Statutory FAQ" : "Create New Practice FAQ"}
-                  </h3>
+                  </h2>
                 </div>
                 <button
                   onClick={() => setShowModal(false)}
-                  className="p-1 hover:bg-border rounded text-ink-secondary"
+                  aria-label="Close dialog"
+                  className="p-2 min-h-[44px] min-w-[44px] hover:bg-border rounded text-ink-secondary flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-navy-700"
                 >
                   <X className="w-4 h-4" />
                 </button>
@@ -413,13 +432,14 @@ export default function AdminFaqPage() {
               <form onSubmit={handleSubmit} className="p-6 space-y-4 text-xs">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
-                    <label className="font-bold text-ink-950 block mb-1">
+                    <label htmlFor="faq-category" className="font-bold text-ink-950 block mb-1">
                       Legal Practice Category <span className="text-red-500">*</span>
                     </label>
                     <select
+                      id="faq-category"
                       value={formData.category}
                       onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                      className="w-full p-2.5 border border-border rounded-btn focus:outline-none focus:border-navy-700 bg-white"
+                      className="w-full p-2.5 min-h-[44px] border border-border rounded-btn focus:outline-none focus-visible:ring-2 focus-visible:ring-navy-700 bg-white"
                     >
                       <option value="POSH Compliance">POSH Compliance</option>
                       <option value="Commercial Contracts">Commercial Contracts</option>
@@ -432,43 +452,46 @@ export default function AdminFaqPage() {
                   </div>
 
                   <div>
-                    <label className="font-bold text-ink-950 block mb-1">Display Order</label>
+                    <label htmlFor="faq-order" className="font-bold text-ink-950 block mb-1">Display Order</label>
                     <input
+                      id="faq-order"
                       type="number"
                       min={1}
                       value={formData.order}
                       onChange={(e) => setFormData({ ...formData, order: parseInt(e.target.value) || 1 })}
-                      className="w-full p-2.5 border border-border rounded-btn focus:outline-none focus:border-navy-700"
+                      className="w-full p-2.5 min-h-[44px] border border-border rounded-btn focus:outline-none focus-visible:ring-2 focus-visible:ring-navy-700"
                     />
                     <span className="text-[10px] text-ink-muted">Lower numbers appear first.</span>
                   </div>
                 </div>
 
                 <div>
-                  <label className="font-bold text-ink-950 block mb-1">
+                  <label htmlFor="faq-question" className="font-bold text-ink-950 block mb-1">
                     Question / Inquiry Subject <span className="text-red-500">*</span>
                   </label>
                   <input
+                    id="faq-question"
                     type="text"
                     required
                     placeholder="e.g. When is an employer statutorily required to constitute an Internal Committee?"
                     value={formData.question}
                     onChange={(e) => setFormData({ ...formData, question: e.target.value })}
-                    className="w-full p-2.5 border border-border rounded-btn focus:outline-none focus:border-navy-700 font-medium"
+                    className="w-full p-2.5 min-h-[44px] border border-border rounded-btn focus:outline-none focus-visible:ring-2 focus-visible:ring-navy-700 font-medium"
                   />
                 </div>
 
                 <div>
-                  <label className="font-bold text-ink-950 block mb-1">
+                  <label htmlFor="faq-answer" className="font-bold text-ink-950 block mb-1">
                     Definitive Legal Answer &amp; Precedents <span className="text-red-500">*</span>
                   </label>
                   <textarea
+                    id="faq-answer"
                     rows={6}
                     required
                     placeholder="Provide authoritative statutory advisory citing specific sections, provisions, or Calcutta High Court / Supreme Court precedents..."
                     value={formData.answer}
                     onChange={(e) => setFormData({ ...formData, answer: e.target.value })}
-                    className="w-full p-2.5 border border-border rounded-btn focus:outline-none focus:border-navy-700 leading-relaxed font-sans"
+                    className="w-full p-2.5 border border-border rounded-btn focus:outline-none focus-visible:ring-2 focus-visible:ring-navy-700 leading-relaxed font-sans"
                   />
                   <span className="text-[10px] text-ink-muted">
                     Always respect BCI advertising guidelines: informational and objective, no guarantees or solicitations.
@@ -481,7 +504,7 @@ export default function AdminFaqPage() {
                       type="checkbox"
                       checked={formData.showOnHomepage}
                       onChange={(e) => setFormData({ ...formData, showOnHomepage: e.target.checked })}
-                      className="w-4 h-4 text-navy-700 rounded border-border focus:ring-navy-700"
+                      className="w-4 h-4 text-navy-700 rounded border-border focus-visible:ring-2 focus-visible:ring-navy-700"
                     />
                     <div>
                       <span className="font-bold text-ink-950 block">Feature on Homepage</span>
@@ -496,13 +519,13 @@ export default function AdminFaqPage() {
                   <button
                     type="button"
                     onClick={() => setShowModal(false)}
-                    className="px-4 py-2 border border-border rounded-btn text-ink-secondary hover:bg-ivory-100 font-semibold"
+                    className="px-4 py-2.5 min-h-[44px] border border-border rounded-btn text-ink-secondary hover:bg-ivory-100 font-semibold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-navy-700"
                   >
                     Cancel
                   </button>
                   <button
                     type="submit"
-                    className="px-5 py-2 bg-navy-700 hover:bg-blue-600 text-white rounded-btn font-bold transition shadow-sm"
+                    className="px-5 py-2.5 min-h-[44px] bg-navy-700 hover:bg-blue-600 text-white rounded-btn font-bold transition shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass-500 focus-visible:ring-offset-2"
                   >
                     {editingFaq ? "Save Changes" : "Publish FAQ"}
                   </button>
@@ -512,8 +535,56 @@ export default function AdminFaqPage() {
           </div>
         )}
 
+        {/* Delete Confirmation Modal (Replaces browser confirm) */}
+        {faqToDelete && (
+          <div
+            role="alertdialog"
+            aria-modal="true"
+            aria-labelledby="delete-dialog-title"
+            aria-describedby="delete-dialog-desc"
+            className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4 animate-fade-in"
+          >
+            <div className="bg-white rounded-card border border-border shadow-raised max-w-md w-full p-6 space-y-4">
+              <div className="flex items-center gap-3 text-red-600">
+                <div className="p-2 bg-red-50 rounded-full">
+                  <AlertTriangle className="w-5 h-5 text-red-600" />
+                </div>
+                <h3 id="delete-dialog-title" className="font-serif font-bold text-base text-ink-950">
+                  Confirm FAQ Deletion
+                </h3>
+              </div>
+
+              <p id="delete-dialog-desc" className="text-xs text-ink-secondary leading-relaxed">
+                Are you sure you want to permanently remove this statutory FAQ record?
+                <br />
+                <span className="font-semibold text-ink-950 mt-1 block">
+                  &ldquo;{faqToDelete.question}&rdquo;
+                </span>
+              </p>
+
+              <div className="flex justify-end gap-3 pt-3 border-t border-border">
+                <button
+                  type="button"
+                  onClick={() => setFaqToDelete(null)}
+                  className="px-4 py-2 min-h-[44px] border border-border rounded-btn text-xs font-semibold text-ink-secondary hover:bg-ivory-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-navy-700"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  onClick={confirmDelete}
+                  className="px-4 py-2 min-h-[44px] bg-red-600 hover:bg-red-700 text-white text-xs font-bold rounded-btn transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-600 focus-visible:ring-offset-2 shadow-sm"
+                >
+                  Delete FAQ
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
       </div>
     </div>
   );
 }
+
 

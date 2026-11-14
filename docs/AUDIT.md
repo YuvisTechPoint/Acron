@@ -106,3 +106,27 @@
 - **Link Integrity:** 88 discovered internal links checked with 0 dead links.
 - **Type Safety:** 0 TypeScript compile errors.
 - **Static Optimization:** 89 statically prerendered routes + 3 dynamic server routes.
+
+---
+
+## 6. End-to-End Implementation & Remediation Notes
+
+### A. Zero Raw Dialog Policy & Toast Integration
+- Completely eliminated all raw browser `alert()` and `confirm()` calls across user and admin portals.
+- Integrated standard `useToast` provider for calm, non-blocking notifications on all form submissions, record mutations, and document exports.
+- Implemented accessible modal-based confirmations (e.g., FAQ deletion in `/admin/faq`) with explicit `role="alertdialog"` and keyboard focus traps.
+
+### B. Quiet Authority Design Token Adherence
+- Eliminated all raw hardcoded hex codes across components and pages in favor of semantic Tailwind design tokens:
+  - Backgrounds: `bg-ink-950`, `bg-navy-950`, `bg-navy-900`, `bg-navy-800`, `bg-navy-700`, `bg-ivory-50`, `bg-stone-100`, `bg-white`
+  - Accents & Highlights: `text-brass-300`, `text-brass-400`, `text-brass-500`, `text-brass-700`
+  - Typography: `font-serif` (Cormorant Garamond) for editorial headings; `font-sans` (Inter) for functional interface copy; `tabular-nums` for dates, currency, and docket numbers.
+
+### C. Finalized Enterprise POSH & Administrative Consoles
+- **`/admin/faq`:** Full statutory FAQ management, category filtering, search, homepage feature toggle, add/edit modal, and in-place deletion confirmation.
+- **`/posh/org/prevention`:** Section 19 workplace harassment risk assessment matrix, k-anonymity privacy safeguards, preventive measure registration dialog, and report export.
+- **`/posh/org/reports`:** Section 21 & 22 annual return dashboard, District Officer West Bengal filing acknowledgement tracking and receipt management, small-cell suppression, and certified DOCX/PDF generation.
+- **`/posh/org/support`:** Dedicated legal counsel desk with SLA indicators, dynamic ticket creation with live state propagation, and status filtering.
+- **`/posh/org/training`:** Section 19(c) employee sensitisation LMS ledger, batch workshop scheduling modal, and CSV audit ledger exports.
+- **`/posh/ic/cases/[id]`:** Complete 9-tab statutory inquiry workspace with hearing scheduling, cryptographic evidence vault, state machine transitions, conciliation pathways, Section 12 interim relief, and Section 13/15 report generator.
+

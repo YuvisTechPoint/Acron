@@ -14,9 +14,20 @@ import {
   ShieldCheck,
   Building,
   Lock,
+  Download,
+  Plus,
+  X,
 } from "lucide-react";
 import { platformStore } from "@/lib/store";
 import { useToast } from "@/components/ui/toast";
+import { downloadFile } from "@/lib/utils";
+
+interface RiskFactor {
+  area: string;
+  level: "Low Risk" | "Medium Risk" | "Controlled Risk" | "High Risk";
+  finding: string;
+  action: string;
+}
 
 export default function PoshOrgPreventionPage() {
   const router = useRouter();
@@ -25,7 +36,7 @@ export default function PoshOrgPreventionPage() {
   const orgs = platformStore.getOrganizations();
   const activeOrg = orgs.find((o) => o.id === selectedOrgId) || orgs[0];
 
-  const riskFactors = [
+  const [riskFactors, setRiskFactors] = useState<RiskFactor[]>([
     {
       area: "Hybrid & Remote Messaging Channels",
       level: "Medium Risk",
@@ -44,7 +55,78 @@ export default function PoshOrgPreventionPage() {
       finding: "Security guard accompaniment and GPS tracking enabled on all night transport drops.",
       action: "Periodic safety audits conducted by Acorn Legal external advisor.",
     },
-  ];
+  ]);
+
+  const [showAddModal, setShowAddModal] = useState(false);
+  const [newArea, setNewArea] = useState("");
+  const [newLevel, setNewLevel] = useState<RiskFactor["level"]>("Medium Risk");
+  const [newFinding, setNewFinding] = useState("");
+  const [newAction, setNewAction] = useState("");
+
+  const handleAddRiskFactor = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newArea.trim() || !newFinding.trim() || !newAction.trim()) {
+      toast({
+        title: "Validation Incomplete",
+        description: "Please specify the audit area, assessment finding, and remedial action.",
+        variant: "warning",
+      });
+      return;
+    }
+
+    const newFactor: RiskFactor = {
+      area: newArea.trim(),
+      level: newLevel,
+      finding: newFinding.trim(),
+      action: newAction.trim(),
+    };
+
+    setRiskFactors((prev) => [newFactor, ...prev]);
+    setNewArea("");
+    setNewFinding("");
+    setNewAction("");
+    setShowAddModal(false);
+
+    toast({
+      title: "Prevention Safeguard Added",
+      description: `New preventive directive registered for ${activeOrg.name}.`,
+      variant: "success",
+    });
+  };
+
+  const handleExportMatrix = () => {
+    const reportContent = [
+      "===========================================================",
+      `  SECTION 19 HARASSMENT PREVENTION & RISK AUDIT MATRIX`,
+      "===========================================================",
+      `Employer / Entity: ${activeOrg.name} (${activeOrg.code})`,
+      `Audit Date: ${new Date().toLocaleDateString("en-IN")}`,
+      `Auditing Legal Counsel: Acorn Legal Consultants (Chambers Registry)`,
+      `Privacy Standard: k-Anonymity (Threshold >= 5 respondents)`,
+      "-----------------------------------------------------------",
+      "SUMMARY FINDINGS & REMEDIAL DIRECTIVES:",
+      ...riskFactors.map(
+        (rf, idx) =>
+          `\n[${idx + 1}] Area: ${rf.area}\n    Risk Level: ${rf.level}\n    Finding: ${rf.finding}\n    Mandated Remedial Action: ${rf.action}`
+      ),
+      "\n-----------------------------------------------------------",
+      "Statutory Mandate: Section 19(a)-(h) Sexual Harassment of Women at",
+      "Workplace (Prevention, Prohibition and Redressal) Act, 2013.",
+      "Strictly Confidential & Legally Privileged Document.",
+      "===========================================================",
+    ].join("\n");
+
+    downloadFile(
+      `POSH-Section-19-Risk-Matrix-${activeOrg.code}.txt`,
+      reportContent
+    );
+
+    toast({
+      title: "Risk Assessment Matrix Exported",
+      description: "Section 19 prevention assessment report downloaded successfully.",
+      variant: "success",
+    });
+  };
 
   return (
     <div className="bg-ivory-50 min-h-screen py-10 text-ink">
@@ -53,13 +135,16 @@ export default function PoshOrgPreventionPage() {
         <div className="flex items-center justify-between border-b border-border pb-4">
           <Link
             href="/posh/org"
-            className="inline-flex items-center gap-2 text-xs font-semibold text-ink-secondary hover:text-primary transition-colors"
+            className="inline-flex items-center gap-2 text-xs font-semibold text-ink-secondary hover:text-primary transition-colors min-h-[44px] px-2 -ml-2 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
           >
             <ArrowLeft className="w-3.5 h-3.5" />
             <span>&larr; Back to Organisation Console ({activeOrg.name})</span>
           </Link>
           <div className="flex items-center gap-3 text-xs">
-            <Link href="/posh/org/plan" className="text-primary font-semibold hover:underline">
+            <Link
+              href="/posh/org/plan"
+              className="text-primary font-semibold hover:underline min-h-[44px] flex items-center px-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded"
+            >
               Retainer Subscription (O-09) &rarr;
             </Link>
           </div>
@@ -81,17 +166,30 @@ export default function PoshOrgPreventionPage() {
               </p>
             </div>
 
-            <select
-              value={selectedOrgId}
-              onChange={(e) => setSelectedOrgId(e.target.value)}
-              className="px-3 py-2 bg-white border border-border rounded text-xs font-semibold text-ink shrink-0"
-            >
-              {orgs.map((o) => (
-                <option key={o.id} value={o.id}>
-                  {o.name}
-                </option>
-              ))}
-            </select>
+            <div className="flex flex-wrap items-center gap-3">
+              <label htmlFor="org-select" className="sr-only">Select Organisation</label>
+              <select
+                id="org-select"
+                value={selectedOrgId}
+                onChange={(e) => setSelectedOrgId(e.target.value)}
+                className="px-3 py-2 min-h-[44px] bg-white border border-border rounded text-xs font-semibold text-ink shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+              >
+                {orgs.map((o) => (
+                  <option key={o.id} value={o.id}>
+                    {o.name}
+                  </option>
+                ))}
+              </select>
+
+              <button
+                type="button"
+                onClick={handleExportMatrix}
+                className="inline-flex items-center gap-1.5 px-3.5 py-2 min-h-[44px] border border-border bg-white rounded text-xs font-semibold hover:bg-surface text-ink transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+              >
+                <Download className="w-3.5 h-3.5 text-primary" />
+                <span>Export Matrix</span>
+              </button>
+            </div>
           </div>
         </div>
 
@@ -146,23 +244,34 @@ export default function PoshOrgPreventionPage() {
 
         {/* Harassment Risk Zones & Preventive Action Plans */}
         <div className="bg-surface p-6 rounded-card border border-border shadow-card space-y-4">
-          <div className="flex justify-between items-center border-b border-border-subtle pb-3">
+          <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-3 border-b border-border-subtle pb-3">
             <h2 className="font-serif font-bold text-base text-ink">
               Workplace Risk Factor Matrix &amp; Remedial Roadmap
             </h2>
-            <button
-              onClick={() => {
-                toast({
-                  title: "Survey Campaign Initiated",
-                  description: "Proceeding to anonymous workplace climate survey control console.",
-                  variant: "info",
-                });
-                router.push("/posh/org/surveys");
-              }}
-              className="px-3.5 py-1.5 bg-primary text-white text-xs font-semibold rounded hover:bg-primary-hover"
-            >
-              Launch Climate Survey
-            </button>
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={() => setShowAddModal(true)}
+                className="px-3.5 py-2 min-h-[44px] bg-white border border-border text-ink text-xs font-semibold rounded hover:bg-surface flex items-center gap-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+              >
+                <Plus className="w-3.5 h-3.5 text-primary" />
+                <span>Add Preventive Directive</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  toast({
+                    title: "Survey Campaign Initiated",
+                    description: "Proceeding to anonymous workplace climate survey control console.",
+                    variant: "info",
+                  });
+                  router.push("/posh/org/surveys");
+                }}
+                className="px-4 py-2 min-h-[44px] bg-primary text-white text-xs font-semibold rounded hover:bg-primary-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass-500 focus-visible:ring-offset-2"
+              >
+                Launch Climate Survey
+              </button>
+            </div>
           </div>
 
           <div className="space-y-3">
@@ -171,7 +280,11 @@ export default function PoshOrgPreventionPage() {
                 <div className="flex justify-between items-center border-b border-border-subtle pb-2">
                   <span className="font-serif font-bold text-ink text-sm">{r.area}</span>
                   <span className={`px-2.5 py-0.5 rounded text-[10px] font-bold ${
-                    r.level === "Low Risk" ? "bg-emerald-100 text-emerald-800" : "bg-amber-100 text-amber-900"
+                    r.level === "Low Risk"
+                      ? "bg-emerald-100 text-emerald-800"
+                      : r.level === "Controlled Risk"
+                      ? "bg-blue-100 text-blue-800"
+                      : "bg-amber-100 text-amber-900"
                   }`}>
                     {r.level}
                   </span>
@@ -186,6 +299,110 @@ export default function PoshOrgPreventionPage() {
             ))}
           </div>
         </div>
+
+        {/* Modal for adding preventive directive */}
+        {showAddModal && (
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="prevent-modal-title"
+            className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4 animate-fade-in"
+          >
+            <div className="bg-white rounded-card border border-border shadow-raised max-w-lg w-full p-6 space-y-4 max-h-[90vh] overflow-y-auto">
+              <div className="flex items-center justify-between border-b border-border pb-3">
+                <h3 id="prevent-modal-title" className="font-serif font-bold text-base text-ink">
+                  Register Preventive Safeguard / Audit Action
+                </h3>
+                <button
+                  type="button"
+                  onClick={() => setShowAddModal(false)}
+                  aria-label="Close dialog"
+                  className="p-2 min-h-[44px] min-w-[44px] hover:bg-border rounded text-ink-secondary flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+
+              <form onSubmit={handleAddRiskFactor} className="space-y-4 text-xs">
+                <div>
+                  <label htmlFor="audit-area" className="block font-bold text-ink mb-1">
+                    Workplace Area / Operational Touchpoint <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    id="audit-area"
+                    type="text"
+                    required
+                    placeholder="e.g. Off-site client conferences or late cab routing"
+                    value={newArea}
+                    onChange={(e) => setNewArea(e.target.value)}
+                    className="w-full px-3 py-2.5 min-h-[44px] border border-border rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                  />
+                </div>
+
+                <div>
+                  <label htmlFor="risk-level" className="block font-bold text-ink mb-1">Risk Severity Level</label>
+                  <select
+                    id="risk-level"
+                    value={newLevel}
+                    onChange={(e) => setNewLevel(e.target.value as any)}
+                    className="w-full px-3 py-2.5 min-h-[44px] border border-border rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary bg-white"
+                  >
+                    <option value="Low Risk">Low Risk</option>
+                    <option value="Controlled Risk">Controlled Risk</option>
+                    <option value="Medium Risk">Medium Risk</option>
+                    <option value="High Risk">High Risk</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label htmlFor="audit-finding" className="block font-bold text-ink mb-1">
+                    Assessment Finding / Audit Observation <span className="text-red-500">*</span>
+                  </label>
+                  <textarea
+                    id="audit-finding"
+                    rows={3}
+                    required
+                    placeholder="Describe specific climate feedback or operational vulnerability observed..."
+                    value={newFinding}
+                    onChange={(e) => setNewFinding(e.target.value)}
+                    className="w-full p-2.5 border border-border rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary leading-relaxed"
+                  />
+                </div>
+
+                <div>
+                  <label htmlFor="remedial-action" className="block font-bold text-ink mb-1">
+                    Mandated Preventive Measure / Directive <span className="text-red-500">*</span>
+                  </label>
+                  <textarea
+                    id="remedial-action"
+                    rows={3}
+                    required
+                    placeholder="Actionable remedial step mandated per Section 19 duties..."
+                    value={newAction}
+                    onChange={(e) => setNewAction(e.target.value)}
+                    className="w-full p-2.5 border border-border rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary leading-relaxed"
+                  />
+                </div>
+
+                <div className="flex justify-end gap-3 pt-3 border-t border-border">
+                  <button
+                    type="button"
+                    onClick={() => setShowAddModal(false)}
+                    className="px-4 py-2 min-h-[44px] border border-border rounded text-ink-secondary hover:bg-surface font-semibold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    className="px-5 py-2 min-h-[44px] bg-primary text-white rounded font-bold hover:bg-primary-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass-500 focus-visible:ring-offset-2"
+                  >
+                    Save Directive
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

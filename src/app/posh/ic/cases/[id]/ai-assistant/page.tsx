@@ -41,7 +41,7 @@ export default function ICAIAssistantPage() {
   return (
     <div className="min-h-screen bg-slate-50 text-slate-800 pb-20">
       {/* Header */}
-      <div className="bg-[#050C17] text-white border-b border-navy-800">
+      <div className="bg-ink-950 text-white border-b border-navy-800">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
           <Link
             href={`/posh/ic/cases/${caseId}`}
@@ -132,7 +132,7 @@ export default function ICAIAssistantPage() {
               <button
                 onClick={runTimelineSynthesis}
                 disabled={!hasPartyConsent || isRunningTimeline}
-                className="w-full py-2 px-4 bg-[#101F38] hover:bg-navy-900 text-brass-300 rounded font-medium text-xs transition disabled:opacity-40 flex items-center justify-center gap-2"
+                className="w-full py-2 px-4 bg-navy-800 hover:bg-navy-900 text-brass-300 rounded font-medium text-xs transition disabled:opacity-40 flex items-center justify-center gap-2"
               >
                 <Sparkles className="w-3.5 h-3.5" />
                 <span>{isRunningTimeline ? "Extracting Factual Chronology..." : "Synthesize Event Chronology"}</span>
@@ -237,7 +237,7 @@ export default function ICAIAssistantPage() {
               className={`px-4 py-2 rounded text-xs font-medium transition border ${
                 isCounselSigned
                   ? "bg-emerald-50 text-emerald-800 border-emerald-300"
-                  : "bg-[#101F38] hover:bg-navy-900 text-brass-300 border-brass-500/30"
+                  : "bg-navy-800 hover:bg-navy-900 text-brass-300 border-brass-500/30"
               }`}
             >
               {isCounselSigned ? "✓ Digitally Signed & Inscribed to Docket" : "Review & Counter-Sign Extracted Chronology"}

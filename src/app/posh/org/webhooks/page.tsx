@@ -53,9 +53,7 @@ export default function WebhooksAdminPage() {
   useEffect(() => {
     const list = platformStore.getWebhooks("org-1");
     setWebhooks(list);
-    if (list.length > 0 && !selectedHook) {
-      setSelectedHook(list[0]);
-    }
+    setSelectedHook((current) => current || (list.length > 0 ? list[0] : null));
   }, []);
 
   const handleTestPing = (id: string) => {

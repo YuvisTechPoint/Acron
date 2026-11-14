@@ -19,6 +19,8 @@ import {
   Upload,
   ArrowRight,
   ArrowLeft,
+  Copy,
+  Check,
 } from "lucide-react";
 import { platformStore } from "@/lib/store";
 import { formatDate, formatDateTime, calculateDaysRemaining, formatINR } from "@/lib/utils";
@@ -33,6 +35,7 @@ export default function ICCaseDetailPage() {
 
   const [activeTab, setActiveTab] = useState<string>("overview");
   const [isMasked, setIsMasked] = useState(false);
+  const [copiedRef, setCopiedRef] = useState(false);
   const [poshCase, setPoshCase] = useState<POSHCase | undefined>(() => platformStore.getCaseById(caseId));
 
   // Hearing modal / form state
@@ -69,12 +72,24 @@ export default function ICCaseDetailPage() {
 
   const daysRemaining = calculateDaysRemaining(poshCase.inquiryDeadline || "");
 
+  const handleCopyDocketRef = () => {
+    navigator.clipboard.writeText(poshCase.caseNumber);
+    setCopiedRef(true);
+    setTimeout(() => setCopiedRef(false), 2000);
+    toast({
+      title: "Docket Reference Copied",
+      description: `Docket ID ${poshCase.caseNumber} copied to clipboard.`,
+      variant: "info",
+    });
+  };
+
   const handleScheduleHearing = (e: React.FormEvent) => {
     e.preventDefault();
     if (!newHearingDate || !newHearingAgenda) return;
 
+    const hearingNum = (poshCase.hearings?.length || 0) + 1;
     platformStore.addHearing(poshCase.id, {
-      hearingNumber: (poshCase.hearings?.length || 0) + 1,
+      hearingNumber: hearingNum,
       scheduledDate: newHearingDate,
       scheduledTime: newHearingTime,
       locationOrLink: newHearingVenue,
@@ -88,14 +103,21 @@ export default function ICCaseDetailPage() {
     if (updated) setPoshCase({ ...updated });
     setNewHearingAgenda("");
     setNewHearingDate("");
+
+    toast({
+      title: "Hearing Scheduled",
+      description: `Hearing #${hearingNum} scheduled for ${newHearingDate}. Notice generated for parties.`,
+      variant: "success",
+    });
   };
 
   const handleDepositEvidence = (e: React.FormEvent) => {
     e.preventDefault();
     if (!newExhibitTitle) return;
 
+    const savedTitle = newExhibitTitle;
     platformStore.addEvidence(poshCase.id, {
-      title: newExhibitTitle,
+      title: savedTitle,
       fileType: "application/pdf",
       fileSizeKb: 1024,
       uploadedBy: newExhibitUploader,
@@ -106,12 +128,24 @@ export default function ICCaseDetailPage() {
     const updated = platformStore.getCaseById(poshCase.id);
     if (updated) setPoshCase({ ...updated });
     setNewExhibitTitle("");
+
+    toast({
+      title: "Evidence Vault Updated",
+      description: `Exhibit "${savedTitle}" registered with SHA-256 custody checksum.`,
+      variant: "success",
+    });
   };
 
   const handleStateTransition = (newState: POSHCase["state"]) => {
     platformStore.updateCaseState(poshCase.id, newState, `Transitioned state to ${newState}`);
     const updated = platformStore.getCaseById(poshCase.id);
     if (updated) setPoshCase({ ...updated });
+
+    toast({
+      title: "Procedural State Transitioned",
+      description: `Case ${poshCase.caseNumber} moved to ${newState.replace(/_/g, " ")}.`,
+      variant: "info",
+    });
   };
 
   return (
@@ -316,6 +350,20 @@ export default function ICCaseDetailPage() {
         {/* TAB 2: Complaint Record */}
         {activeTab === "complaint" && (
           <div className="bg-surface rounded-card p-6 border border-border shadow-card space-y-6">
+            <div className="flex justify-between items-center border-b border-border-subtle pb-3">
+              <span className="font-serif font-bold text-base text-ink">
+                Verified Complaint Docket &bull; Section 9 Record
+              </span>
+              <button
+                type="button"
+                onClick={handleCopyDocketRef}
+                className="px-3 py-1.5 min-h-[40px] bg-white border border-border rounded text-xs font-semibold text-primary hover:bg-surface flex items-center gap-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+              >
+                {copiedRef ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5 text-primary" />}
+                <span>{copiedRef ? "Copied" : "Copy Docket Reference"}</span>
+              </button>
+            </div>
+
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 text-xs">
               <div className="bg-white p-4 rounded border border-border space-y-2">
                 <div className="font-bold text-primary uppercase text-[11px]">Complainant Details</div>
@@ -395,6 +443,16 @@ export default function ICCaseDetailPage() {
               <div className="p-3 bg-amber-50 rounded border border-amber-200 text-amber-900 text-[11px]">
                 <strong>Statutory Guardrail:</strong> Section 10(1) proviso explicitly prohibits any monetary settlement as the basis of conciliation.
               </div>
+            </div>
+
+            <div className="pt-2 flex items-center gap-3">
+              <Link
+                href={`/posh/ic/cases/${poshCase.id}/conciliation`}
+                className="px-4 py-2 min-h-[44px] bg-primary text-white rounded text-xs font-semibold hover:bg-primary-hover flex items-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass-500 focus-visible:ring-offset-2"
+              >
+                <span>Open Dedicated Conciliation Protocol (I-04)</span>
+                <ArrowRight className="w-3.5 h-3.5 text-accent" />
+              </Link>
             </div>
           </div>
         )}
@@ -600,6 +658,16 @@ export default function ICCaseDetailPage() {
             ) : (
               <p className="text-xs text-ink-secondary">No interim relief requested by complainant.</p>
             )}
+
+            <div className="pt-2 flex items-center gap-3">
+              <Link
+                href={`/posh/ic/cases/${poshCase.id}/interim`}
+                className="px-4 py-2 min-h-[44px] bg-primary text-white rounded text-xs font-semibold hover:bg-primary-hover flex items-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass-500 focus-visible:ring-offset-2"
+              >
+                <span>Manage Section 12 Interim Relief Directives (I-09)</span>
+                <ArrowRight className="w-3.5 h-3.5 text-accent" />
+              </Link>
+            </div>
           </div>
         )}
 

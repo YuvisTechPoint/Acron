@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useCallback } from "react";
 import { usePrefersReducedMotion } from "@/components/ui/motion";
 
 interface WordItem {
@@ -48,6 +48,32 @@ export function GoverningPrincipleScrollReveal({
     currentProgressRef.current = progress;
   }, [progress]);
 
+  const stopAutoTyping = useCallback(() => {
+    if (autoIntervalRef.current) {
+      clearInterval(autoIntervalRef.current);
+      autoIntervalRef.current = null;
+    }
+  }, []);
+
+  const startAutoTyping = useCallback(() => {
+    stopAutoTyping();
+    if (reducedMotion || !inViewRef.current) return;
+
+    autoIntervalRef.current = setInterval(() => {
+      if (isScrollingRef.current) return;
+
+      const totalWords = GOVERNING_QUOTE_WORDS.length;
+      const step = 1 / totalWords;
+      const nextProgress = Math.min(1, currentProgressRef.current + step);
+
+      setProgress(nextProgress);
+
+      if (nextProgress >= 1) {
+        stopAutoTyping();
+      }
+    }, 130);
+  }, [reducedMotion, stopAutoTyping]);
+
   // 1. Intersection Observer to detect when section enters viewport
   useEffect(() => {
     if (reducedMotion) {
@@ -75,34 +101,7 @@ export function GoverningPrincipleScrollReveal({
       observer.disconnect();
       stopAutoTyping();
     };
-  }, [reducedMotion]);
-
-  // 2. Auto-typing generator: smoothly advances unrevealed words when user pauses
-  const startAutoTyping = () => {
-    stopAutoTyping();
-    if (reducedMotion || !inViewRef.current) return;
-
-    autoIntervalRef.current = setInterval(() => {
-      if (isScrollingRef.current) return;
-
-      const totalWords = GOVERNING_QUOTE_WORDS.length;
-      const step = 1 / totalWords;
-      const nextProgress = Math.min(1, currentProgressRef.current + step);
-
-      setProgress(nextProgress);
-
-      if (nextProgress >= 1) {
-        stopAutoTyping();
-      }
-    }, 130);
-  };
-
-  const stopAutoTyping = () => {
-    if (autoIntervalRef.current) {
-      clearInterval(autoIntervalRef.current);
-      autoIntervalRef.current = null;
-    }
-  };
+  }, [reducedMotion, startAutoTyping, stopAutoTyping]);
 
   // 3. Scroll text effect: dynamically illuminates or dims words based on scroll position
   useEffect(() => {
@@ -156,7 +155,7 @@ export function GoverningPrincipleScrollReveal({
       if (scrollTimeoutRef.current) clearTimeout(scrollTimeoutRef.current);
       stopAutoTyping();
     };
-  }, [reducedMotion]);
+  }, [reducedMotion, startAutoTyping, stopAutoTyping]);
 
   const activeProgress = reducedMotion ? 1 : progress;
 

@@ -14,6 +14,8 @@ import {
   ArrowLeft,
   ArrowRight,
   Building,
+  Check,
+  X,
 } from "lucide-react";
 import { platformStore } from "@/lib/store";
 import { formatSuppressedCount, isCellSuppressed, downloadFile } from "@/lib/utils";
@@ -26,6 +28,12 @@ export default function PoshOrgReportsPage() {
   const orgs = platformStore.getOrganizations();
   const activeOrg = orgs.find((o) => o.id === selectedOrgId) || orgs[0];
 
+  const [ackNumber, setAckNumber] = useState("DO/KOL/POSH/2025/ACK-092");
+  const [ackDate, setAckDate] = useState("2026-01-22");
+  const [showAckModal, setShowAckModal] = useState(false);
+  const [newAckNumber, setNewAckNumber] = useState("");
+  const [newAckDate, setNewAckDate] = useState(new Date().toISOString().split("T")[0]);
+
   const statutoryMetrics = {
     received: 4, // Note: suppressed in public views if < 5 per privacy rules
     disposed: 4,
@@ -35,6 +43,28 @@ export default function PoshOrgReportsPage() {
     employerActionCompleted: "Disciplinary written warnings issued; 1 salary deduction executed.",
   };
 
+  const handleUpdateAck = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newAckNumber.trim()) {
+      toast({
+        title: "Validation Incomplete",
+        description: "Please enter the official District Officer acknowledgement receipt number.",
+        variant: "warning",
+      });
+      return;
+    }
+    setAckNumber(newAckNumber.trim());
+    setAckDate(newAckDate);
+    setShowAckModal(false);
+    setNewAckNumber("");
+
+    toast({
+      title: "DO Filing Acknowledgement Updated",
+      description: `Receipt ${newAckNumber.trim()} recorded for Calendar Year ${reportYear}.`,
+      variant: "success",
+    });
+  };
+
   return (
     <div className="bg-ivory-50 min-h-screen py-10 text-ink">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 space-y-8">
@@ -42,13 +72,16 @@ export default function PoshOrgReportsPage() {
         <div className="flex items-center justify-between border-b border-border pb-4">
           <Link
             href="/posh/org"
-            className="inline-flex items-center gap-2 text-xs font-semibold text-ink-secondary hover:text-primary transition-colors"
+            className="inline-flex items-center gap-2 text-xs font-semibold text-ink-secondary hover:text-primary transition-colors min-h-[44px] px-2 -ml-2 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
           >
             <ArrowLeft className="w-3.5 h-3.5" />
             <span>&larr; Back to Organisation Console ({activeOrg.name})</span>
           </Link>
           <div className="flex items-center gap-3 text-xs">
-            <Link href="/posh/org/prevention" className="text-primary font-semibold hover:underline">
+            <Link
+              href="/posh/org/prevention"
+              className="text-primary font-semibold hover:underline min-h-[44px] flex items-center px-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded"
+            >
               Prevention &amp; Climate Surveys (O-08) &rarr;
             </Link>
           </div>
@@ -70,20 +103,25 @@ export default function PoshOrgReportsPage() {
               </p>
             </div>
 
-            <div className="flex gap-2">
+            <div className="flex flex-wrap gap-2">
+              <label htmlFor="report-year" className="sr-only">Select Report Calendar Year</label>
               <select
+                id="report-year"
                 value={reportYear}
                 onChange={(e) => setReportYear(e.target.value)}
-                className="px-3 py-2 bg-white border border-border rounded text-xs font-semibold text-ink shrink-0"
+                className="px-3 py-2 min-h-[44px] bg-white border border-border rounded text-xs font-semibold text-ink shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
               >
+                <option value="2026">Calendar Year 2026</option>
                 <option value="2025">Calendar Year 2025</option>
                 <option value="2024">Calendar Year 2024</option>
               </select>
 
+              <label htmlFor="org-select-reports" className="sr-only">Select Employer Organisation</label>
               <select
+                id="org-select-reports"
                 value={selectedOrgId}
                 onChange={(e) => setSelectedOrgId(e.target.value)}
-                className="px-3 py-2 bg-white border border-border rounded text-xs font-semibold text-ink shrink-0"
+                className="px-3 py-2 min-h-[44px] bg-white border border-border rounded text-xs font-semibold text-ink shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
               >
                 {orgs.map((o) => (
                   <option key={o.id} value={o.id}>
@@ -111,13 +149,26 @@ export default function PoshOrgReportsPage() {
 
         {/* Statutory Report Metrics Box */}
         <div className="bg-surface p-6 rounded-card border border-border shadow-card space-y-6">
-          <div className="flex justify-between items-center border-b border-border-subtle pb-3">
+          <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-2 border-b border-border-subtle pb-3">
             <h2 className="font-serif font-bold text-base text-ink">
               Official Annual Return Summary ({reportYear})
             </h2>
-            <span className="px-3 py-1 rounded bg-emerald-100 text-emerald-800 text-xs font-bold">
-              Status: Filed with DO Kolkata
-            </span>
+            <div className="flex items-center gap-2">
+              <span className="px-3 py-1 rounded bg-emerald-100 text-emerald-800 text-xs font-bold inline-flex items-center gap-1">
+                <Check className="w-3.5 h-3.5 text-emerald-700" />
+                <span>Status: Filed with DO Kolkata</span>
+              </span>
+              <button
+                type="button"
+                onClick={() => {
+                  setNewAckNumber(ackNumber);
+                  setShowAckModal(true);
+                }}
+                className="text-xs font-semibold text-primary hover:underline px-2 py-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded"
+              >
+                Update Receipt
+              </button>
+            </div>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
@@ -168,11 +219,12 @@ export default function PoshOrgReportsPage() {
 
           <div className="pt-4 flex flex-col sm:flex-row justify-between items-center gap-3 border-t border-border-subtle text-xs">
             <span className="text-ink-secondary">
-              Submission Proof: <strong className="text-ink">DO/KOL/POSH/2025/ACK-092</strong> (Uploaded on 22 Jan 2026)
+              Submission Proof: <strong className="text-ink font-mono">{ackNumber}</strong> (Dated: {ackDate})
             </span>
 
-            <div className="flex gap-2">
+            <div className="flex flex-wrap gap-2">
               <button
+                type="button"
                 onClick={() => {
                   const docxDoc = [
                     "===========================================================",
@@ -180,7 +232,7 @@ export default function PoshOrgReportsPage() {
                     "===========================================================",
                     `Submitted To: District Officer, Kolkata / North 24 Parganas`,
                     `Reporting Entity: ${activeOrg.name} (${activeOrg.code})`,
-                    `Acknowledgement No: DO/KOL/POSH/${reportYear}/ACK-092`,
+                    `Acknowledgement No: ${ackNumber}`,
                     "-----------------------------------------------------------",
                     "STATUTORY DISCLOSURES PER SECTION 21 & RULE 14:",
                     `1. Number of complaints received in the year: ${statutoryMetrics.received}`,
@@ -201,12 +253,13 @@ export default function PoshOrgReportsPage() {
                     variant: "success",
                   });
                 }}
-                className="px-3 py-1.5 border border-border rounded text-ink hover:bg-white flex items-center gap-1.5 font-medium"
+                className="px-3.5 py-2 min-h-[44px] border border-border rounded text-ink hover:bg-white flex items-center gap-1.5 font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
               >
-                <Download className="w-3.5 h-3.5" />
+                <Download className="w-3.5 h-3.5 text-primary" />
                 <span>Download DOCX</span>
               </button>
               <button
+                type="button"
                 onClick={() => {
                   const pdfDoc = [
                     "===========================================================",
@@ -218,6 +271,7 @@ export default function PoshOrgReportsPage() {
                     `Registered Address: ${activeOrg.registeredAddress || "Kolkata, West Bengal"}`,
                     `Presiding Officer: ${activeOrg.presidingOfficerName || "Dr. Ananya Mukherjee"}`,
                     `External Member: ${activeOrg.externalMemberName || "Adv. Debjani Sen (Acorn Legal)"}`,
+                    `Filing Proof Receipt: ${ackNumber} (Dated: ${ackDate})`,
                     "-----------------------------------------------------------",
                     `Complaints Lodged: ${statutoryMetrics.received}`,
                     `Complaints Disposed: ${statutoryMetrics.disposed}`,
@@ -236,7 +290,7 @@ export default function PoshOrgReportsPage() {
                     variant: "success",
                   });
                 }}
-                className="px-4 py-1.5 bg-primary text-white rounded hover:bg-primary-hover flex items-center gap-1.5 font-semibold"
+                className="px-4 py-2 min-h-[44px] bg-primary text-white rounded hover:bg-primary-hover flex items-center gap-1.5 font-semibold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass-500 focus-visible:ring-offset-2"
               >
                 <Download className="w-3.5 h-3.5 text-accent" />
                 <span>Download Certified PDF</span>
@@ -244,7 +298,82 @@ export default function PoshOrgReportsPage() {
             </div>
           </div>
         </div>
+
+        {/* Modal for DO Filing Acknowledgement */}
+        {showAckModal && (
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="ack-modal-title"
+            className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4 animate-fade-in"
+          >
+            <div className="bg-white rounded-card border border-border shadow-raised max-w-md w-full p-6 space-y-4">
+              <div className="flex items-center justify-between border-b border-border pb-3">
+                <h3 id="ack-modal-title" className="font-serif font-bold text-base text-ink">
+                  Record DO Filing Acknowledgement
+                </h3>
+                <button
+                  type="button"
+                  onClick={() => setShowAckModal(false)}
+                  aria-label="Close dialog"
+                  className="p-2 min-h-[44px] min-w-[44px] hover:bg-border rounded text-ink-secondary flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+
+              <form onSubmit={handleUpdateAck} className="space-y-4 text-xs">
+                <div>
+                  <label htmlFor="ack-number" className="block font-bold text-ink mb-1">
+                    District Officer Acknowledgement / Challan No. <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    id="ack-number"
+                    type="text"
+                    required
+                    placeholder="e.g. DO/KOL/POSH/2026/ACK-108"
+                    value={newAckNumber}
+                    onChange={(e) => setNewAckNumber(e.target.value)}
+                    className="w-full px-3 py-2.5 min-h-[44px] font-mono border border-border rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                  />
+                </div>
+
+                <div>
+                  <label htmlFor="ack-date" className="block font-bold text-ink mb-1">
+                    Submission / Stamp Date <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    id="ack-date"
+                    type="date"
+                    required
+                    value={newAckDate}
+                    onChange={(e) => setNewAckDate(e.target.value)}
+                    className="w-full px-3 py-2.5 min-h-[44px] border border-border rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                  />
+                </div>
+
+                <div className="flex justify-end gap-3 pt-3 border-t border-border">
+                  <button
+                    type="button"
+                    onClick={() => setShowAckModal(false)}
+                    className="px-4 py-2 min-h-[44px] border border-border rounded text-ink-secondary hover:bg-surface font-semibold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    className="px-5 py-2 min-h-[44px] bg-primary text-white rounded font-bold hover:bg-primary-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass-500 focus-visible:ring-offset-2"
+                  >
+                    Save Acknowledgement
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        )}
+
       </div>
     </div>
   );
 }
+

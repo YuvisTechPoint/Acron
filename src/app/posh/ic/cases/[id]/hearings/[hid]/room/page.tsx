@@ -39,7 +39,7 @@ export default function VirtualHearingRoomPage() {
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col justify-between">
       {/* Top Bar: Case & Quorum Status */}
-      <div className="bg-[#050C17] border-b border-navy-800/80 px-4 py-3 flex flex-wrap items-center justify-between gap-3 text-xs">
+      <div className="bg-ink-950 border-b border-navy-800/80 px-4 py-3 flex flex-wrap items-center justify-between gap-3 text-xs">
         <div className="flex items-center gap-3">
           <Link
             href={`/posh/ic/cases/${caseId}/hearings`}
@@ -69,13 +69,13 @@ export default function VirtualHearingRoomPage() {
       <div className="flex-1 max-w-[1440px] w-full mx-auto p-4 grid grid-cols-1 lg:grid-cols-12 gap-4">
         
         {/* Video Canvas Stage (8 cols) */}
-        <div className="lg:col-span-8 flex flex-col justify-between bg-[#081224] rounded-lg border border-navy-800 p-4 relative overflow-hidden">
+        <div className="lg:col-span-8 flex flex-col justify-between bg-navy-950 rounded-lg border border-navy-800 p-4 relative overflow-hidden">
           
           {/* Active Speakers Stage */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 flex-1 mb-4">
             
             {/* Presiding Officer Stream */}
-            <div className="relative bg-[#101F38] rounded-lg border border-brass-500/30 flex flex-col items-center justify-center min-h-[220px] overflow-hidden group">
+            <div className="relative bg-navy-900 rounded-lg border border-brass-500/30 flex flex-col items-center justify-center min-h-[220px] overflow-hidden group">
               <div className="w-16 h-16 rounded-full bg-navy-800 border border-brass-400 flex items-center justify-center text-brass-300 text-xl font-serif font-bold">
                 AM
               </div>
@@ -86,7 +86,7 @@ export default function VirtualHearingRoomPage() {
             </div>
 
             {/* External Counsel Stream */}
-            <div className="relative bg-[#101F38] rounded-lg border border-brass-500/30 flex flex-col items-center justify-center min-h-[220px] overflow-hidden group">
+            <div className="relative bg-navy-900 rounded-lg border border-brass-500/30 flex flex-col items-center justify-center min-h-[220px] overflow-hidden group">
               <div className="w-16 h-16 rounded-full bg-navy-800 border border-brass-400 flex items-center justify-center text-brass-300 text-xl font-serif font-bold">
                 DS
               </div>
@@ -97,7 +97,7 @@ export default function VirtualHearingRoomPage() {
             </div>
 
             {/* Complainant Stream (Segregated) */}
-            <div className="relative bg-[#0d1829] rounded-lg border border-navy-700/60 flex flex-col items-center justify-center min-h-[220px] overflow-hidden">
+            <div className="relative bg-navy-900 rounded-lg border border-navy-700/60 flex flex-col items-center justify-center min-h-[220px] overflow-hidden">
               <div className="w-16 h-16 rounded-full bg-slate-800 flex items-center justify-center text-slate-300 text-xl font-serif">
                 CW
               </div>
@@ -108,7 +108,7 @@ export default function VirtualHearingRoomPage() {
             </div>
 
             {/* Isolated Respondent Waiting Room Status */}
-            <div className="relative bg-[#0a101d] rounded-lg border border-dashed border-navy-700 flex flex-col items-center justify-center min-h-[220px] text-center p-4">
+            <div className="relative bg-navy-950 rounded-lg border border-dashed border-navy-700 flex flex-col items-center justify-center min-h-[220px] text-center p-4">
               <Lock className="w-8 h-8 text-slate-500 mb-2" />
               <div className="text-xs font-semibold text-slate-300">Segregated Waiting Lounge</div>
               <p className="text-[11px] text-slate-500 max-w-xs mt-1">
@@ -122,7 +122,7 @@ export default function VirtualHearingRoomPage() {
           </div>
 
           {/* Controls Dock */}
-          <div className="bg-[#050C17] border border-navy-800 rounded-lg p-3 flex items-center justify-between">
+          <div className="bg-ink-950 border border-navy-800 rounded-lg p-3 flex items-center justify-between">
             <div className="flex items-center gap-2 text-xs">
               <button
                 onClick={() => setMicActive(!micActive)}
@@ -174,14 +174,14 @@ export default function VirtualHearingRoomPage() {
         </div>
 
         {/* Deposition & Procedural Scribe (4 cols) */}
-        <div className="lg:col-span-4 bg-[#081224] rounded-lg border border-navy-800 flex flex-col justify-between overflow-hidden">
+        <div className="lg:col-span-4 bg-navy-950 rounded-lg border border-navy-800 flex flex-col justify-between overflow-hidden">
           {/* Scribe Tabs */}
-          <div className="flex items-center border-b border-navy-800 bg-[#050C17] text-xs">
+          <div className="flex items-center border-b border-navy-800 bg-ink-950 text-xs">
             <button
               onClick={() => setActiveTab("DEPOSITION")}
               className={`flex-1 py-3 font-semibold transition border-b-2 text-center ${
                 activeTab === "DEPOSITION"
-                  ? "border-brass-400 text-brass-300 bg-[#101F38]"
+                  ? "border-brass-400 text-brass-300 bg-navy-900"
                   : "border-transparent text-slate-400 hover:text-white"
               }`}
             >
@@ -191,7 +191,7 @@ export default function VirtualHearingRoomPage() {
               onClick={() => setActiveTab("ROSTER")}
               className={`flex-1 py-3 font-semibold transition border-b-2 text-center ${
                 activeTab === "ROSTER"
-                  ? "border-brass-400 text-brass-300 bg-[#101F38]"
+                  ? "border-brass-400 text-brass-300 bg-navy-900"
                   : "border-transparent text-slate-400 hover:text-white"
               }`}
             >
@@ -210,7 +210,7 @@ export default function VirtualHearingRoomPage() {
                 <textarea
                   value={depositionNotes}
                   onChange={(e) => setDepositionNotes(e.target.value)}
-                  className="flex-1 w-full bg-[#050C17] border border-navy-800 rounded p-3 text-xs text-slate-200 font-mono leading-relaxed focus:outline-none focus:border-brass-500 resize-none"
+                  className="flex-1 w-full bg-ink-950 border border-navy-800 rounded p-3 text-xs text-slate-200 font-mono leading-relaxed focus:outline-none focus:border-brass-500 resize-none"
                 />
                 <button
                   onClick={() => {
@@ -228,24 +228,24 @@ export default function VirtualHearingRoomPage() {
                       variant: "success",
                     });
                   }}
-                  className="w-full py-2 bg-[#101F38] hover:bg-navy-900 text-brass-300 text-xs font-semibold rounded border border-brass-500/30 transition"
+                  className="w-full py-2 bg-navy-900 hover:bg-navy-800 text-brass-300 text-xs font-semibold rounded border border-brass-500/30 transition"
                 >
                   Seal &amp; Inscribe Deposition Record
                 </button>
               </>
             ) : (
               <div className="space-y-3 text-xs">
-                <div className="p-3 bg-[#050C17] border border-navy-800 rounded space-y-1">
+                <div className="p-3 bg-ink-950 border border-navy-800 rounded space-y-1">
                   <div className="font-bold text-white">Dr. Ananya Mukherjee</div>
                   <div className="text-brass-400 text-[11px]">Presiding Officer (Senior Woman)</div>
                   <div className="text-emerald-400 text-[10px] font-mono">Present • Audio Verified</div>
                 </div>
-                <div className="p-3 bg-[#050C17] border border-navy-800 rounded space-y-1">
+                <div className="p-3 bg-ink-950 border border-navy-800 rounded space-y-1">
                   <div className="font-bold text-white">Adv. Debjani Sen</div>
                   <div className="text-brass-400 text-[11px]">External Member (Acorn Legal)</div>
                   <div className="text-emerald-400 text-[10px] font-mono">Present • Audio Verified</div>
                 </div>
-                <div className="p-3 bg-[#050C17] border border-navy-800 rounded space-y-1">
+                <div className="p-3 bg-ink-950 border border-navy-800 rounded space-y-1">
                   <div className="font-bold text-white">Ms. Rita Basu</div>
                   <div className="text-brass-400 text-[11px]">Employee Member</div>
                   <div className="text-emerald-400 text-[10px] font-mono">Present • Audio Verified</div>
