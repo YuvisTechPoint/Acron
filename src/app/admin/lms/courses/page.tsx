@@ -12,14 +12,17 @@ import {
   Search,
   X,
   BookOpen,
-  Award
+  Award,
+  Download,
 } from "lucide-react";
 import { platformStore } from "@/lib/store";
+import { useRealtimeLmsCourses } from "@/lib/realtime";
 import { LmsCourse } from "@/lib/types";
 import { ConfirmDialog } from "@/components/admin/confirm-dialog";
+import { downloadCsv } from "@/lib/export-csv";
 
 export default function AdminLMSCourseBuilderPage() {
-  const [courses, setCourses] = useState<LmsCourse[]>([]);
+  const courses = useRealtimeLmsCourses();
   const [searchTerm, setSearchTerm] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [editingCourse, setEditingCourse] = useState<LmsCourse | null>(null);
@@ -36,14 +39,6 @@ export default function AdminLMSCourseBuilderPage() {
     description: "",
     status: "PUBLISHED" as LmsCourse["status"],
   });
-
-  const loadData = () => {
-    setCourses(platformStore.getLmsCourses());
-  };
-
-  useEffect(() => {
-    loadData();
-  }, []);
 
   const triggerToast = (msg: string) => {
     setToastMsg(msg);
@@ -110,14 +105,12 @@ export default function AdminLMSCourseBuilderPage() {
     }
 
     setShowModal(false);
-    loadData();
   };
 
   const handleToggleStatus = (c: LmsCourse) => {
     const nextStatus: LmsCourse["status"] = c.status === "PUBLISHED" ? "DRAFT" : "PUBLISHED";
     platformStore.updateLmsCourse(c.code, { status: nextStatus });
     triggerToast(`Course ${c.code} status set to ${nextStatus}`);
-    loadData();
   };
 
   const handleDelete = (code: string) => {
@@ -129,7 +122,6 @@ export default function AdminLMSCourseBuilderPage() {
     platformStore.deleteLmsCourse(courseToDelete);
     triggerToast(`Deleted course ${courseToDelete}`);
     setCourseToDelete(null);
-    loadData();
   };
 
   const filtered = courses.filter(
@@ -138,6 +130,21 @@ export default function AdminLMSCourseBuilderPage() {
       c.code.toLowerCase().includes(searchTerm.toLowerCase()) ||
       c.audience.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  const handleExportCSV = () => {
+    const headers = ["Course Code", "Title", "Target Audience", "Duration", "Passing Mark", "Module Count", "Status", "Description"];
+    const rows = filtered.map((c) => [
+      c.code,
+      c.title,
+      c.audience,
+      c.duration,
+      c.passMark,
+      c.modulesCount,
+      c.status,
+      c.description || "",
+    ]);
+    downloadCsv(`Acorn_LMS_Courses_${new Date().toISOString().slice(0, 10)}.csv`, headers, rows);
+  };
 
   return (
     <div className="bg-surface min-h-screen py-8">
@@ -181,13 +188,23 @@ export default function AdminLMSCourseBuilderPage() {
             </div>
           </div>
 
-          <button
-            onClick={openAddModal}
-            className="inline-flex items-center gap-2 px-4 py-2 bg-primary hover:bg-primary-light text-white text-xs font-bold rounded transition shadow"
-          >
-            <Plus className="w-3.5 h-3.5" />
-            <span>Add Training Course</span>
-          </button>
+          <div className="flex flex-wrap items-center gap-2">
+            <button
+              onClick={handleExportCSV}
+              className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-white border border-border text-navy-700 text-xs font-semibold rounded hover:bg-slate-50 transition shadow-sm"
+              title="Download LMS Courses CSV"
+            >
+              <Download className="w-3.5 h-3.5 text-brass-500" />
+              <span>Export CSV</span>
+            </button>
+            <button
+              onClick={openAddModal}
+              className="inline-flex items-center gap-2 px-4 py-2 bg-primary hover:bg-primary-light text-white text-xs font-bold rounded transition shadow"
+            >
+              <Plus className="w-3.5 h-3.5" />
+              <span>Add Training Course</span>
+            </button>
+          </div>
         </div>
 
         {/* Search */}

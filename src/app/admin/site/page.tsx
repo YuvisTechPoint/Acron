@@ -27,6 +27,7 @@ import {
   X,
 } from "lucide-react";
 import { platformStore } from "@/lib/store";
+import { useRealtimeSiteConfig, useRealtimeTeam } from "@/lib/realtime";
 import { SiteConfig, EngagementStep, ChambersPrinciple, TeamMemberItem } from "@/lib/types";
 import { useToast } from "@/components/ui/toast";
 import { ConfirmDialog } from "@/components/admin/confirm-dialog";
@@ -36,9 +37,14 @@ export default function AdminSiteSettingsPage() {
   const [activeTab, setActiveTab] = useState<
     "hero" | "pathway" | "principles" | "team" | "chambers" | "footer" | "preview"
   >("hero");
-  const [siteData, setSiteData] = useState<SiteConfig>(platformStore.getSiteConfig());
-  const [teamMembers, setTeamMembers] = useState<TeamMemberItem[]>([]);
+  const realtimeConfig = useRealtimeSiteConfig();
+  const [siteData, setSiteData] = useState<SiteConfig>(realtimeConfig);
+  const teamMembers = useRealtimeTeam();
   const [saved, setSaved] = useState(false);
+
+  useEffect(() => {
+    setSiteData(realtimeConfig);
+  }, [realtimeConfig]);
 
   // Team member modal state
   const [showTeamModal, setShowTeamModal] = useState(false);
@@ -54,15 +60,6 @@ export default function AdminSiteSettingsPage() {
     email: "",
     order: 1,
   });
-
-  const loadData = () => {
-    setSiteData(platformStore.getSiteConfig());
-    setTeamMembers(platformStore.getTeamMembers());
-  };
-
-  useEffect(() => {
-    loadData();
-  }, []);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -213,7 +210,6 @@ export default function AdminSiteSettingsPage() {
     }
 
     setShowTeamModal(false);
-    loadData();
     setSaved(true);
     setTimeout(() => setSaved(false), 3000);
   };
@@ -228,7 +224,6 @@ export default function AdminSiteSettingsPage() {
     platformStore.deleteTeamMember(id);
     fetch(`/api/team?id=${id}`, { method: "DELETE" }).catch(() => {});
     setMemberToDelete(null);
-    loadData();
   };
 
   return (

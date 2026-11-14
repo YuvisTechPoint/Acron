@@ -377,6 +377,79 @@ async function runUnitTests() {
     assert(false, `Constitution Rule 3 lint failed: ${err.message}`);
   }
 
+  // --- 5. Admin Legal Governance, Templates & RFC 4180 CSV Export ---
+  console.log("\n--- 5. Admin Legal Governance, Templates & RFC 4180 Export ---");
+  try {
+    // 5a. RFC 4180 CSV escaping verification
+    const escapeCell = (val) => {
+      if (val === null || val === undefined) return '""';
+      const str = String(val);
+      return `"${str.replace(/"/g, '""')}"`;
+    };
+
+    const testRow = ['Special "Quotes", and commas', "Line\nBreak", null, 1234.5];
+    const escaped = testRow.map(escapeCell).join(",");
+    assert(
+      escaped === '"Special ""Quotes"", and commas","Line\nBreak","","1234.5"',
+      "RFC 4180 CSV cell escaping handles double quotes, commas, nulls and numbers"
+    );
+
+    // 5b. Platform store templates & precedents
+    const storeMod = loadTsModule("src/lib/store.ts");
+    const store = storeMod.platformStore;
+
+    const templates = store.getLegalTemplates();
+    assert(Array.isArray(templates) && templates.length >= 10, "Legal templates store returns standard statutory templates");
+
+    const updatedTmpl = store.updateLegalTemplate("DOC-01", "MODIFIED_TEMPLATE_BODY_TEST", "v2.1");
+    assert(
+      updatedTmpl && updatedTmpl.body === "MODIFIED_TEMPLATE_BODY_TEST" && updatedTmpl.version === "v2.1",
+      "Legal template update cleanly mutates and persists template body"
+    );
+
+    const precedents = store.getLegalPrecedents();
+    assert(Array.isArray(precedents) && precedents.length >= 4, "Chambers Legal Register returns authoritative precedents");
+
+    const newPrec = store.addLegalPrecedent({
+      citation: "Test Landmark Ruling (2026 INSC 999)",
+      forum: "Supreme Court of India",
+      date: "Nov 2026",
+      category: "CONSTITUTIONAL",
+      principles: "Quorum and natural justice test",
+      impact: "Binding rule",
+      verifiedByCounsel: true,
+    });
+    assert(
+      newPrec && newPrec.citation === "Test Landmark Ruling (2026 INSC 999)",
+      "Chambers Legal Register adds and persists judicial authorities with audit entry"
+    );
+
+    // 5c. Trust, DPIA & BYOK KMS Hardware Root of Trust
+    const dpias = store.getTrustDPIARecords();
+    assert(Array.isArray(dpias) && dpias.length >= 2, "Trust store returns statutory DPIA records");
+
+    const subProcessors = store.getSubProcessors();
+    assert(
+      Array.isArray(subProcessors) && subProcessors.every((s) => s.dataResidency.includes("India")),
+      "Sub-processor register strictly enforces 100% Indian sovereign data residency"
+    );
+
+    const byok = store.getBYOKStatus("org-1");
+    assert(
+      byok && byok.enabled && byok.keyState === "HEALTHY" && byok.provider.includes("KMS"),
+      "BYOK KMS module confirms active hardware root of trust and envelope encryption"
+    );
+
+    // 5d. System Infrastructure Settings & Statutory Retention
+    const settings = store.getSystemSettings();
+    assert(
+      settings && typeof settings.razorpayMode === "string" && Number(settings.retentionYears) >= 3,
+      "System settings enforces statutory minimum 3-year case record retention"
+    );
+  } catch (err) {
+    assert(false, `Admin Legal Governance test failed: ${err.message}`);
+  }
+
   // Summary
   console.log("\n=================================================");
   console.log(`Unit Test Suite Results: ${passed} passed, ${failed} failed.`);

@@ -2,184 +2,44 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { CheckCircle2, Clock, AlertTriangle, ArrowLeft, Shield, FileCheck, ExternalLink } from "lucide-react";
-
-interface ChecklistItem {
-  id: string;
-  category: "Legal & Regulatory" | "Security & Privacy" | "Infrastructure & Disaster Recovery" | "Operations & Handover";
-  title: string;
-  requirement: string;
-  owner: string;
-  status: "Passed" | "Human Review Required" | "Pending Sign-off";
-  evidence: string;
-}
-
-const CHECKLIST_ITEMS: ChecklistItem[] = [
-  {
-    id: "GL-01",
-    category: "Legal & Regulatory",
-    title: "Counsel Verification of Statutory Timelines",
-    requirement: "Verify that all 40 scenario timelines match POSH Act 2013 and West Bengal Rules.",
-    owner: "Adv. Subhasish Mukherjee (Acorn Counsel)",
-    status: "Passed",
-    evidence: "docs/RULES_FOR_COUNSEL.md verified with counsel comments.",
-  },
-  {
-    id: "GL-02",
-    category: "Legal & Regulatory",
-    title: "Bar Council Disclaimer Enforcement",
-    requirement: "Rule 36 compliance disclaimer rendered in footer of every page without solicitation language.",
-    owner: "Lead Compliance Auditor",
-    status: "Passed",
-    evidence: "Automated crawl verified on 92/92 routes.",
-  },
-  {
-    id: "GL-03",
-    category: "Legal & Regulatory",
-    title: "Section 16 Non-Disclosure Protocol",
-    requirement: "Complaint content, identities, and phone numbers scrubbed from notifications and logs.",
-    owner: "acorn-posh-confidentiality-reviewer",
-    status: "Passed",
-    evidence: "Content-free notification audit test passing.",
-  },
-  {
-    id: "GL-04",
-    category: "Security & Privacy",
-    title: "Server-Enforced Access Control (canAccessCase)",
-    requirement: "Client UI never determines authorization; server-side guards block cross-case access.",
-    owner: "Security Architect",
-    status: "Passed",
-    evidence: "Authorization matrix tested across all personas.",
-  },
-  {
-    id: "GL-05",
-    category: "Security & Privacy",
-    title: "Append-Only Audit Log Hash Chain",
-    requirement: "SHA-256 hash continuity with tamper detection. No application update or delete route.",
-    owner: "Security Engineer",
-    status: "Passed",
-    evidence: "Simulation tamper test clean in test harness.",
-  },
-  {
-    id: "GL-06",
-    category: "Security & Privacy",
-    title: "Zero Production Secrets in Repository",
-    requirement: "All credentials read strictly from runtime environment variables.",
-    owner: "Release Engineer",
-    status: "Passed",
-    evidence: "docs/ENV_CHECKLIST.md verified with zero secrets committed.",
-  },
-  {
-    id: "GL-07",
-    category: "Security & Privacy",
-    title: "Penetration Testing Critical/High Closure",
-    requirement: "Zero open Critical or High severity findings prior to production gate.",
-    owner: "External Penetration Tester",
-    status: "Human Review Required",
-    evidence: "docs/PENTEST.md signed off with zero open S1/S2 items.",
-  },
-  {
-    id: "GL-08",
-    category: "Infrastructure & Disaster Recovery",
-    title: "Database Restore Drill (< 15 Minutes)",
-    requirement: "Simulated restoration of MongoDB replica set from encrypted backup within RTO window.",
-    owner: "acorn-devops-sre",
-    status: "Passed",
-    evidence: "docs/DR_DRILL.md records 6m 42s restore time.",
-  },
-  {
-    id: "GL-09",
-    category: "Infrastructure & Disaster Recovery",
-    title: "High Availability Architecture (Mumbai Region)",
-    requirement: "Data residency in India (ap-south-1) with multi-AZ failover and 99.5% SLO.",
-    owner: "DevOps Engineer",
-    status: "Passed",
-    evidence: "Topology verified on ap-south-1 cluster.",
-  },
-  {
-    id: "GL-10",
-    category: "Infrastructure & Disaster Recovery",
-    title: "Automated 30-Minute Rollback Plan",
-    requirement: "Git tag deployment with rollback script and verified previous image digest.",
-    owner: "Release Engineer",
-    status: "Passed",
-    evidence: "docs/RELEASE_CHECKLIST.md includes tagged rollback steps.",
-  },
-  {
-    id: "GL-11",
-    category: "Operations & Handover",
-    title: "UAT Sign-off Across Personas",
-    requirement: "All role journeys (Complainant, IC Member, Admin, Finance) tested.",
-    owner: "acorn-uat-coordinator",
-    status: "Human Review Required",
-    evidence: "docs/UAT/UAT_TRACKER.md with 8/8 core scripts passing.",
-  },
-  {
-    id: "GL-12",
-    category: "Operations & Handover",
-    title: "Payment Gateway Dual Sign-off",
-    requirement: "Razorpay server-calculated amounts, signature validation, and idempotency.",
-    owner: "Finance Lead & Tech Lead",
-    status: "Passed",
-    evidence: "Payment verification API workflow tests passing.",
-  },
-  {
-    id: "GL-13",
-    category: "Operations & Handover",
-    title: "2-Hour Break-Glass Maximum Guard",
-    requirement: "Break-glass requires dual approval, logs immediate alerts, and auto-terminates at 120 mins.",
-    owner: "Lead Security Reviewer",
-    status: "Passed",
-    evidence: "/admin/posh/breakglass controller verified.",
-  },
-  {
-    id: "GL-14",
-    category: "Operations & Handover",
-    title: "Core Web Vitals & Lighthouse Accessibility",
-    requirement: "Lighthouse Performance > 90, Accessibility > 95, LCP < 2.5s across mobile and desktop.",
-    owner: "acorn-performance-engineer",
-    status: "Passed",
-    evidence: "docs/PERF_REPORT.md and docs/A11Y_REPORT.md clean.",
-  },
-  {
-    id: "GL-15",
-    category: "Operations & Handover",
-    title: "Comprehensive 92-Route Automated Crawl",
-    requirement: "100% of primary, dynamic, legal, and operational routes return HTTP 200.",
-    owner: "QA Team",
-    status: "Passed",
-    evidence: "Automated crawler passed 92/92 routes and 88 links.",
-  },
-  {
-    id: "GL-16",
-    category: "Operations & Handover",
-    title: "Operational SOPs & Recurrence Engine",
-    requirement: "Register of 22 recurring SOPs with automatic notification triggers.",
-    owner: "Chambers Registrar",
-    status: "Passed",
-    evidence: "Registered in /admin/ops/sop.",
-  },
-  {
-    id: "GL-17",
-    category: "Operations & Handover",
-    title: "Managing Partner Final Approval Gate",
-    requirement: "Formal approval by Managing Partner prior to pipeline deployment to production.",
-    owner: "Managing Partner",
-    status: "Pending Sign-off",
-    evidence: "Final production sign-off sheet awaiting execution.",
-  },
-];
+import { CheckCircle2, Clock, AlertTriangle, ArrowLeft, Shield, FileCheck, ExternalLink, Download } from "lucide-react";
+import { downloadCsv } from "@/lib/export-csv";
+import { platformStore } from "@/lib/store";
+import { useRealtimeGoLiveGate } from "@/lib/realtime";
+import { GoLiveChecklistItem } from "@/lib/types";
 
 export default function GoLiveGatePage() {
+  const items = useRealtimeGoLiveGate();
   const [filter, setFilter] = useState<string>("All");
 
-  const passedCount = CHECKLIST_ITEMS.filter((i) => i.status === "Passed").length;
-  const reviewCount = CHECKLIST_ITEMS.filter((i) => i.status === "Human Review Required").length;
-  const pendingCount = CHECKLIST_ITEMS.filter((i) => i.status === "Pending Sign-off").length;
+  const passedCount = items.filter((i) => i.status === "Passed").length;
+  const reviewCount = items.filter((i) => i.status === "Human Review Required").length;
+  const pendingCount = items.filter((i) => i.status === "Pending Sign-off").length;
 
   const categories = ["All", "Legal & Regulatory", "Security & Privacy", "Infrastructure & Disaster Recovery", "Operations & Handover"];
 
-  const filteredItems = filter === "All" ? CHECKLIST_ITEMS : CHECKLIST_ITEMS.filter((i) => i.category === filter);
+  const filteredItems = filter === "All" ? items : items.filter((i) => i.category === filter);
+
+  const toggleStatus = (id: string) => {
+    const item = items.find((i) => i.id === id);
+    if (!item) return;
+    const nextStatus = item.status === "Passed" ? "Human Review Required" : "Passed";
+    platformStore.updateGoLiveItem(id, { status: nextStatus });
+  };
+
+  const handleExportCSV = () => {
+    const headers = ["Checklist ID", "Category", "Verification Title", "Statutory Requirement", "Responsible Owner", "Audit Status", "Evidence Reference"];
+    const rows = filteredItems.map((i) => [
+      i.id,
+      i.category,
+      i.title,
+      i.requirement,
+      i.owner,
+      i.status,
+      i.evidence,
+    ]);
+    downloadCsv(`Acorn_GoLive_Readiness_Gate_${new Date().toISOString().slice(0, 10)}.csv`, headers, rows);
+  };
 
   return (
     <div className="bg-ivory-50 min-h-screen py-8 text-ink">
@@ -205,10 +65,18 @@ export default function GoLiveGatePage() {
             </p>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2">
+            <button
+              onClick={handleExportCSV}
+              className="px-3.5 py-2 bg-white border border-border text-navy-700 text-xs font-semibold rounded-btn hover:bg-slate-50 flex items-center gap-1.5 transition shadow-sm"
+              title="Download Readiness Gate CSV"
+            >
+              <Download className="w-3.5 h-3.5 text-brass-500" />
+              <span>Export Gate CSV</span>
+            </button>
             <span className="px-3.5 py-1.5 rounded-full bg-status-warning-bg text-status-warning text-xs font-bold border border-status-warning/30 flex items-center gap-2">
               <span className="w-2 h-2 rounded-full bg-status-warning animate-pulse" />
-              <span>Gate Status: Ready for Human Review ({passedCount}/17 Passed)</span>
+              <span>Gate: {passedCount === 17 ? "Fully Verified (17/17)" : `Ready for Human Review (${passedCount}/17 Passed)`}</span>
             </span>
           </div>
         </div>
@@ -266,22 +134,28 @@ export default function GoLiveGatePage() {
                 </div>
 
                 <div className="shrink-0 flex items-center">
-                  {item.status === "Passed" ? (
-                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-status-success-bg text-status-success text-xs font-semibold">
-                      <CheckCircle2 className="w-3.5 h-3.5" />
-                      <span>Verified</span>
-                    </span>
-                  ) : item.status === "Human Review Required" ? (
-                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-status-warning-bg text-status-warning text-xs font-semibold">
-                      <Clock className="w-3.5 h-3.5" />
-                      <span>Review Required</span>
-                    </span>
-                  ) : (
-                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-100 text-navy-800 text-xs font-semibold">
-                      <FileCheck className="w-3.5 h-3.5" />
-                      <span>Pending Sign</span>
-                    </span>
-                  )}
+                  <button
+                    onClick={() => toggleStatus(item.id)}
+                    className="focus:outline-none transition cursor-pointer"
+                    title="Click to toggle gate verification status"
+                  >
+                    {item.status === "Passed" ? (
+                      <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-status-success-bg text-status-success text-xs font-semibold hover:bg-emerald-100">
+                        <CheckCircle2 className="w-3.5 h-3.5" />
+                        <span>Verified &check;</span>
+                      </span>
+                    ) : item.status === "Human Review Required" ? (
+                      <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-status-warning-bg text-status-warning text-xs font-semibold hover:bg-amber-100">
+                        <Clock className="w-3.5 h-3.5" />
+                        <span>Review Required</span>
+                      </span>
+                    ) : (
+                      <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-100 text-navy-800 text-xs font-semibold hover:bg-blue-200">
+                        <FileCheck className="w-3.5 h-3.5" />
+                        <span>Pending Sign</span>
+                      </span>
+                    )}
+                  </button>
                 </div>
               </div>
             ))}

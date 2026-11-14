@@ -14,35 +14,22 @@ import {
   Code
 } from "lucide-react";
 import { platformStore } from "@/lib/store";
+import { useRealtimeSeoSettings, useRealtimeSeoRedirects } from "@/lib/realtime";
 import { SeoSettings, SeoRedirectItem } from "@/lib/types";
 import { ConfirmDialog } from "@/components/admin/confirm-dialog";
 
 export default function AdminSeoPage() {
-  const [seo, setSeo] = useState<SeoSettings>({
-    defaultTitle: "Acorn Legal Consultants | Premier Kolkata Law Firm & POSH Advisory",
-    titleTemplate: "%s | Acorn Legal Consultants",
-    defaultDescription: "Premier legal consultancy in Kolkata specialising in corporate law, commercial litigation, employment law, and POSH Act statutory compliance.",
-    canonicalBase: "https://acornlegal.in",
-    ogImageUrl: "/images/hero.jpg",
-    twitterHandle: "@AcornLegalKolkata",
-    robotsIndex: true,
-    robotsFollow: true,
-    updatedAt: new Date().toISOString(),
-  });
-  const [redirects, setRedirects] = useState<SeoRedirectItem[]>([]);
+  const realtimeSeo = useRealtimeSeoSettings();
+  const [seo, setSeo] = useState<SeoSettings>(realtimeSeo);
+  const redirects = useRealtimeSeoRedirects();
   const [newSource, setNewSource] = useState("");
   const [newTarget, setNewTarget] = useState("");
   const [redirectToDelete, setRedirectToDelete] = useState<{ id: string; source: string } | null>(null);
   const [toastMsg, setToastMsg] = useState<string | null>(null);
 
-  const loadData = () => {
-    setSeo(platformStore.getSeoSettings());
-    setRedirects(platformStore.getSeoRedirects());
-  };
-
   useEffect(() => {
-    loadData();
-  }, []);
+    setSeo(realtimeSeo);
+  }, [realtimeSeo]);
 
   const triggerToast = (msg: string) => {
     setToastMsg(msg);
@@ -72,7 +59,6 @@ export default function AdminSeoPage() {
     triggerToast(`Added 301 redirect: ${sourcePath} -> ${targetPath}`);
     setNewSource("");
     setNewTarget("");
-    loadData();
   };
 
   const handleDeleteRedirect = (id: string, source: string) => {
@@ -84,7 +70,6 @@ export default function AdminSeoPage() {
     platformStore.deleteSeoRedirect(redirectToDelete.id);
     triggerToast(`Removed redirect rule ${redirectToDelete.id}`);
     setRedirectToDelete(null);
-    loadData();
   };
 
   return (

@@ -15,14 +15,18 @@ import {
   Eye,
   CheckCircle2,
   X,
-  ExternalLink
+  ExternalLink,
+  Download,
 } from "lucide-react";
 import { platformStore } from "@/lib/store";
+import { useRealtimeMediaVault } from "@/lib/realtime";
 import { MediaVaultItem } from "@/lib/types";
+import { formatDate } from "@/lib/utils";
 import { ConfirmDialog } from "@/components/admin/confirm-dialog";
+import { downloadCsv } from "@/lib/export-csv";
 
 export default function AdminMediaLibraryPage() {
-  const [mediaList, setMediaList] = useState<MediaVaultItem[]>([]);
+  const mediaList = useRealtimeMediaVault();
   const [searchTerm, setSearchTerm] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("all");
   const [copiedId, setCopiedId] = useState<string | null>(null);
@@ -37,14 +41,6 @@ export default function AdminMediaLibraryPage() {
     dimensions: "1920x1080",
     url: "/images/hero.jpg",
   });
-
-  const loadData = () => {
-    setMediaList(platformStore.getMediaVault());
-  };
-
-  useEffect(() => {
-    loadData();
-  }, []);
 
   const triggerToast = (msg: string) => {
     setToastMsg(msg);
@@ -79,7 +75,6 @@ export default function AdminMediaLibraryPage() {
       dimensions: "1920x1080",
       url: "/images/hero.jpg",
     });
-    loadData();
   };
 
   const handleDelete = (id: string, name: string) => {
@@ -91,7 +86,6 @@ export default function AdminMediaLibraryPage() {
     platformStore.deleteMediaVaultItem(assetToDelete.id);
     triggerToast(`Removed asset ${assetToDelete.name}`);
     setAssetToDelete(null);
-    loadData();
   };
 
   const filtered = mediaList.filter((m) => {
@@ -101,6 +95,19 @@ export default function AdminMediaLibraryPage() {
     const matchesCat = categoryFilter === "all" || m.category === categoryFilter;
     return matchesSearch && matchesCat;
   });
+
+  const handleExportCSV = () => {
+    const headers = ["Asset Name", "Category", "Dimensions", "File Size", "URL / Asset Path", "Created At"];
+    const rows = filtered.map((m) => [
+      m.name,
+      m.category,
+      m.dimensions,
+      m.size,
+      m.url,
+      formatDate(m.uploadedAt),
+    ]);
+    downloadCsv(`Acorn_Media_Vault_${new Date().toISOString().slice(0, 10)}.csv`, headers, rows);
+  };
 
   return (
     <div className="bg-surface min-h-screen py-8">
@@ -143,13 +150,23 @@ export default function AdminMediaLibraryPage() {
             </p>
           </div>
 
-          <button
-            onClick={() => setShowModal(true)}
-            className="inline-flex items-center gap-2 px-4 py-2 bg-primary hover:bg-primary-light text-white text-xs font-bold rounded transition shadow"
-          >
-            <Upload className="w-3.5 h-3.5" />
-            <span>Register New Asset</span>
-          </button>
+          <div className="flex flex-wrap items-center gap-2">
+            <button
+              onClick={handleExportCSV}
+              className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-white border border-border text-navy-700 text-xs font-semibold rounded hover:bg-slate-50 transition shadow-sm"
+              title="Download Assets CSV"
+            >
+              <Download className="w-3.5 h-3.5 text-brass-500" />
+              <span>Export CSV</span>
+            </button>
+            <button
+              onClick={() => setShowModal(true)}
+              className="inline-flex items-center gap-2 px-4 py-2 bg-primary hover:bg-primary-light text-white text-xs font-bold rounded transition shadow"
+            >
+              <Upload className="w-3.5 h-3.5" />
+              <span>Register New Asset</span>
+            </button>
+          </div>
         </div>
 
         {/* Search & Filter Bar */}

@@ -2,34 +2,67 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { ArrowLeft, Clock, CheckCircle2, AlertCircle, Calendar, RefreshCw } from "lucide-react";
-
-interface SopItem {
-  id: string;
-  name: string;
-  cadence: "Daily" | "Weekly" | "Monthly" | "Quarterly" | "Annual";
-  targetTime: string;
-  owner: string;
-  lastExecuted: string;
-  nextDue: string;
-  status: "Completed" | "Scheduled" | "Overdue";
-}
-
-const SOP_REGISTER: SopItem[] = [
-  { id: "SOP-01", name: "Daily Timers & Deadlines Scan", cadence: "Daily", targetTime: "08:00 IST", owner: "Automated BullMQ Worker", lastExecuted: "Today, 08:00 IST", nextDue: "Tomorrow, 08:00 IST", status: "Completed" },
-  { id: "SOP-02", name: "Daily Incident & Telemetry Triage", cadence: "Daily", targetTime: "09:00 IST", owner: "DevOps Duty Engineer", lastExecuted: "Today, 09:12 IST", nextDue: "Tomorrow, 09:00 IST", status: "Completed" },
-  { id: "SOP-03", name: "Weekly Audit Hash Chain Integrity Run", cadence: "Weekly", targetTime: "Every Monday 06:00 IST", owner: "Security Engineer", lastExecuted: "03-Nov-2026", nextDue: "10-Nov-2026", status: "Scheduled" },
-  { id: "SOP-04", name: "Monthly Backup Restoration Drill", cadence: "Monthly", targetTime: "1st Sunday of Month", owner: "DevOps Lead", lastExecuted: "01-Nov-2026", nextDue: "01-Dec-2026", status: "Completed" },
-  { id: "SOP-05", name: "Quarterly Precedent & Statutory Rules Review", cadence: "Quarterly", targetTime: "End of Quarter", owner: "Acorn Legal Counsel", lastExecuted: "30-Sep-2026", nextDue: "31-Dec-2026", status: "Scheduled" },
-  { id: "SOP-06", name: "Annual POSH Section 21 Filings Consolidation", cadence: "Annual", targetTime: "31st January", owner: "POSH Practice Desk", lastExecuted: "31-Jan-2026", nextDue: "31-Jan-2027", status: "Scheduled" },
-  { id: "SOP-07", name: "Quarterly Security Access & RBAC Review", cadence: "Quarterly", targetTime: "Quarter End", owner: "Super Admin", lastExecuted: "30-Sep-2026", nextDue: "31-Dec-2026", status: "Scheduled" },
-  { id: "SOP-08", name: "Monthly SSL/TLS & Domain Expiry Verification", cadence: "Monthly", targetTime: "15th of Month", owner: "Infra Engineer", lastExecuted: "15-Oct-2026", nextDue: "15-Nov-2026", status: "Scheduled" },
-];
+import {
+  ArrowLeft,
+  Clock,
+  CheckCircle2,
+  AlertCircle,
+  Calendar,
+  RefreshCw,
+  Download,
+  Search,
+  Filter,
+} from "lucide-react";
+import { downloadCsv } from "@/lib/export-csv";
+import { platformStore } from "@/lib/store";
+import { useRealtimeSopRegister } from "@/lib/realtime";
+import { SopItem } from "@/lib/types";
 
 export default function SopRegisterPage() {
+  const sops = useRealtimeSopRegister();
   const [filter, setFilter] = useState<string>("All");
+  const [search, setSearch] = useState("");
+  const [toastMsg, setToastMsg] = useState<string | null>(null);
 
-  const filtered = filter === "All" ? SOP_REGISTER : SOP_REGISTER.filter((s) => s.cadence === filter);
+  const triggerToast = (msg: string) => {
+    setToastMsg(msg);
+    setTimeout(() => setToastMsg(null), 3000);
+  };
+
+  const handleToggleStatus = (id: string) => {
+    const item = sops.find((s) => s.id === id);
+    if (!item) return;
+    const nextStatus: SopItem["status"] = item.status === "Completed" ? "Scheduled" : "Completed";
+    platformStore.updateSopItem(id, {
+      status: nextStatus,
+      lastExecuted: nextStatus === "Completed" ? "Just now (Verified)" : item.lastExecuted,
+    });
+    triggerToast(`Updated ${id} status to ${nextStatus}`);
+  };
+
+  const filtered = sops.filter((s) => {
+    const matchesFilter = filter === "All" || s.cadence === filter;
+    const matchesSearch =
+      s.name.toLowerCase().includes(search.toLowerCase()) ||
+      s.owner.toLowerCase().includes(search.toLowerCase()) ||
+      s.id.toLowerCase().includes(search.toLowerCase());
+    return matchesFilter && matchesSearch;
+  });
+
+  const handleExportCSV = () => {
+    const headers = ["SOP ID", "Procedure Name", "Cadence", "Target Schedule", "Accountable Owner", "Last Executed", "Next Due", "Status"];
+    const rows = filtered.map((s) => [
+      s.id,
+      s.name,
+      s.cadence,
+      s.targetTime,
+      s.owner,
+      s.lastExecuted,
+      s.nextDue,
+      s.status,
+    ]);
+    downloadCsv(`Acorn_SOP_Recurrence_Register_${new Date().toISOString().slice(0, 10)}.csv`, headers, rows);
+  };
 
   return (
     <div className="bg-ivory-50 min-h-screen py-8 text-ink">
@@ -40,6 +73,14 @@ export default function SopRegisterPage() {
           <ArrowLeft className="w-4 h-4" />
           <span>Back to Operations Command Centre</span>
         </Link>
+
+        {/* Toast */}
+        {toastMsg && (
+          <div className="p-3 bg-emerald-50 border border-emerald-300 rounded text-xs text-emerald-900 font-semibold flex items-center gap-2">
+            <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+            <span>{toastMsg}</span>
+          </div>
+        )}
 
         {/* Header */}
         <div className="bg-white p-6 rounded-card border border-border shadow-card flex flex-col sm:flex-row justify-between sm:items-center gap-4">
@@ -54,52 +95,91 @@ export default function SopRegisterPage() {
               Automated cadence tracker, recurrence schedules, and accountability owners for firm operations.
             </p>
           </div>
+
+          <button
+            onClick={handleExportCSV}
+            className="px-3.5 py-2 bg-white border border-border text-navy-700 text-xs font-semibold rounded hover:bg-slate-50 flex items-center gap-1.5 transition shadow-sm"
+            title="Download SOP Register CSV"
+          >
+            <Download className="w-3.5 h-3.5 text-brass-500" />
+            <span>Export CSV</span>
+          </button>
         </div>
 
-        {/* Cadence Filters */}
-        <div className="flex flex-wrap items-center gap-2 border-b border-border pb-3">
-          {["All", "Daily", "Weekly", "Monthly", "Quarterly", "Annual"].map((c) => (
-            <button
-              key={c}
-              onClick={() => setFilter(c)}
-              className={`px-3 py-1.5 rounded-btn text-xs font-semibold transition ${
-                filter === c
-                  ? "bg-navy-700 text-white shadow-sm"
-                  : "bg-white text-ink-secondary hover:text-ink border border-border hover:bg-surface"
-              }`}
-            >
-              {c}
-            </button>
-          ))}
+        {/* Filter and Search Bar */}
+        <div className="bg-white p-4 rounded-card border border-border shadow-card flex flex-col sm:flex-row justify-between items-center gap-3 text-xs">
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="font-semibold text-ink-950 flex items-center gap-1 mr-1">
+              <Filter className="w-3.5 h-3.5 text-brass-500" />
+              Cadence:
+            </span>
+            {["All", "Daily", "Weekly", "Monthly", "Quarterly", "Annual"].map((c) => (
+              <button
+                key={c}
+                onClick={() => setFilter(c)}
+                className={`px-3 py-1.5 rounded-btn text-xs font-semibold transition ${
+                  filter === c
+                    ? "bg-navy-700 text-white shadow-sm"
+                    : "bg-surface text-ink-secondary hover:text-ink border border-border hover:bg-slate-100"
+                }`}
+              >
+                {c}
+              </button>
+            ))}
+          </div>
+
+          <div className="relative w-full sm:w-72">
+            <Search className="w-4 h-4 text-slate-400 absolute left-3 top-2.5" />
+            <input
+              type="text"
+              placeholder="Search by procedure name, owner..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="w-full pl-9 pr-3 py-1.5 border border-border rounded text-xs focus:outline-none focus:border-navy-700"
+            />
+          </div>
         </div>
 
         {/* SOP Table */}
         <div className="bg-white rounded-card border border-border shadow-card overflow-hidden">
           <div className="divide-y divide-border text-xs">
-            {filtered.map((sop) => (
-              <div key={sop.id} className="p-4 sm:p-5 hover:bg-surface/40 transition flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                <div className="space-y-1">
-                  <div className="flex items-center gap-2">
-                    <span className="font-mono font-bold text-brass-700">{sop.id}</span>
-                    <span className="text-ink-muted">&bull;</span>
-                    <span className="px-2 py-0.5 rounded-btn bg-surface font-semibold text-ink-secondary text-[10px]">{sop.cadence}</span>
-                  </div>
-                  <h4 className="font-serif text-base font-bold text-ink">{sop.name}</h4>
-                  <div className="text-ink-secondary text-[11px]">
-                    <span className="font-semibold text-ink">Target:</span> {sop.targetTime} &bull;{" "}
-                    <span className="font-semibold text-ink">Owner:</span> {sop.owner}
-                  </div>
-                </div>
-
-                <div className="flex sm:flex-col sm:items-end justify-between gap-1 text-[11px]">
-                  <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-status-success-bg text-status-success font-semibold">
-                    <CheckCircle2 className="w-3 h-3" />
-                    <span>{sop.status}</span>
-                  </span>
-                  <span className="text-ink-muted">Next Due: {sop.nextDue}</span>
-                </div>
+            {filtered.length === 0 ? (
+              <div className="p-8 text-center text-ink-secondary">
+                No standard operating procedures match your search or filter.
               </div>
-            ))}
+            ) : (
+              filtered.map((sop) => (
+                <div key={sop.id} className="p-4 sm:p-5 hover:bg-surface/40 transition flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                  <div className="space-y-1">
+                    <div className="flex items-center gap-2">
+                      <span className="font-mono font-bold text-brass-700">{sop.id}</span>
+                      <span className="text-ink-muted">&bull;</span>
+                      <span className="px-2 py-0.5 rounded-btn bg-surface font-semibold text-ink-secondary text-[10px]">{sop.cadence}</span>
+                    </div>
+                    <h4 className="font-serif text-base font-bold text-ink">{sop.name}</h4>
+                    <div className="text-ink-secondary text-[11px]">
+                      <span className="font-semibold text-ink">Target:</span> {sop.targetTime} &bull;{" "}
+                      <span className="font-semibold text-ink">Owner:</span> {sop.owner}
+                    </div>
+                  </div>
+
+                  <div className="flex sm:flex-col sm:items-end justify-between gap-2 text-[11px]">
+                    <button
+                      onClick={() => handleToggleStatus(sop.id)}
+                      className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold transition cursor-pointer ${
+                        sop.status === "Completed"
+                          ? "bg-status-success-bg text-status-success hover:bg-emerald-100"
+                          : "bg-amber-50 text-amber-800 border border-amber-200 hover:bg-amber-100"
+                      }`}
+                    >
+                      <CheckCircle2 className="w-3.5 h-3.5" />
+                      <span>{sop.status} (Click to toggle)</span>
+                    </button>
+                    <span className="text-ink-muted">Next Due: {sop.nextDue}</span>
+                  </div>
+                </div>
+              ))
+            )}
           </div>
         </div>
 
@@ -107,4 +187,3 @@ export default function SopRegisterPage() {
     </div>
   );
 }
-

@@ -12,12 +12,15 @@ import {
   Clock,
   ArrowRight,
   Flame,
+  Download,
 } from "lucide-react";
 import { platformStore } from "@/lib/store";
+import { useRealtimeSLOMetrics } from "@/lib/realtime";
 import { SLOMonitorMetric } from "@/lib/types";
+import { downloadCsv } from "@/lib/export-csv";
 
 export default function OpsReliabilityPage() {
-  const [metrics] = useState<SLOMonitorMetric[]>(platformStore.getSLOMetrics());
+  const metrics = useRealtimeSLOMetrics();
   const [runningChaos, setRunningChaos] = useState<string | null>(null);
   const [chaosLog, setChaosLog] = useState<string | null>(null);
 
@@ -30,6 +33,19 @@ export default function OpsReliabilityPage() {
         `✓ [CHX PASS] Simulated '${desc}'. Circuit breaker tripped in 84ms. Zero unscrubbed PII escaped perimeter. Error budget remained >75%.`
       );
     }, 1200);
+  };
+
+  const handleExportCSV = () => {
+    const headers = ["SLO Key", "Objective Name", "Target Availability %", "Current 30-Day %", "Remaining Error Budget %", "Status"];
+    const rows = metrics.map((m) => [
+      m.sloKey,
+      m.name,
+      `${m.targetPct}%`,
+      `${m.currentPct}%`,
+      `${m.errorBudgetRemainingPct}%`,
+      m.status,
+    ]);
+    downloadCsv(`Acorn_SLO_Reliability_Report_${new Date().toISOString().slice(0, 10)}.csv`, headers, rows);
   };
 
   return (
@@ -65,9 +81,19 @@ export default function OpsReliabilityPage() {
         
         {/* SLO Grid */}
         <div className="space-y-4">
-          <div className="flex items-center justify-between">
-            <h2 className="font-serif font-bold text-lg text-slate-900">Statutory SLO Error Budgets (30-Day Rolling Window)</h2>
-            <span className="text-xs font-mono text-slate-500">Target Availability: 99.9%</span>
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div>
+              <h2 className="font-serif font-bold text-lg text-slate-900">Statutory SLO Error Budgets (30-Day Rolling Window)</h2>
+              <span className="text-xs font-mono text-slate-500">Target Availability: 99.9%</span>
+            </div>
+            <button
+              onClick={handleExportCSV}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white border border-slate-300 text-slate-700 text-xs font-semibold rounded hover:bg-slate-50 transition shadow-sm w-fit"
+              title="Download SLO Report CSV"
+            >
+              <Download className="w-3.5 h-3.5 text-brass-700" />
+              <span>Export SLOs CSV</span>
+            </button>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">

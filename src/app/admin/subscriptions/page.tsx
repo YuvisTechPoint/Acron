@@ -1,13 +1,15 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Link from "next/link";
-import { Package, ArrowLeft, CheckCircle2, Clock, Building, Plus, Edit2, Search, X } from "lucide-react";
+import { Package, ArrowLeft, CheckCircle2, Clock, Building, Plus, Edit2, Search, X, Download } from "lucide-react";
 import { platformStore } from "@/lib/store";
+import { useRealtimeOrganizations } from "@/lib/realtime";
 import { Organization } from "@/lib/types";
+import { downloadCsv } from "@/lib/export-csv";
 
 export default function AdminSubscriptionsPage() {
-  const [orgs, setOrgs] = useState<Organization[]>([]);
+  const orgs = useRealtimeOrganizations();
   const [searchTerm, setSearchTerm] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [editingOrg, setEditingOrg] = useState<Organization | null>(null);
@@ -23,14 +25,6 @@ export default function AdminSubscriptionsPage() {
     icExternalMember: "Adv. Debjani Sen (Acorn Legal Consultants)",
     registeredAddress: "",
   });
-
-  const loadData = () => {
-    setOrgs(platformStore.getOrganizations());
-  };
-
-  useEffect(() => {
-    loadData();
-  }, []);
 
   const triggerToast = (msg: string) => {
     setToastMsg(msg);
@@ -103,7 +97,6 @@ export default function AdminSubscriptionsPage() {
     }
 
     setShowModal(false);
-    loadData();
   };
 
   const filtered = orgs.filter(
@@ -112,6 +105,22 @@ export default function AdminSubscriptionsPage() {
       org.code.toLowerCase().includes(searchTerm.toLowerCase()) ||
       org.city.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  const handleExportCSV = () => {
+    const headers = ["Org Code", "Company Name", "City", "Employee Count", "Retainer Tier", "Presiding Officer", "External Member", "Compliance Score", "Address"];
+    const rows = filtered.map((o) => [
+      o.code,
+      o.name,
+      o.city,
+      o.employeeCount,
+      o.planTier,
+      o.icPresidingOfficer || "",
+      o.icExternalMember || "",
+      `${o.complianceScore || 0}%`,
+      o.registeredAddress || "",
+    ]);
+    downloadCsv(`Acorn_Retainer_Subscriptions_${new Date().toISOString().slice(0, 10)}.csv`, headers, rows);
+  };
 
   return (
     <div className="bg-surface min-h-screen py-8">
@@ -155,13 +164,23 @@ export default function AdminSubscriptionsPage() {
             </div>
           </div>
 
-          <button
-            onClick={openAddModal}
-            className="inline-flex items-center gap-2 px-4 py-2 bg-primary hover:bg-primary-light text-white text-xs font-bold rounded transition shadow"
-          >
-            <Plus className="w-3.5 h-3.5" />
-            <span>Enrol Client Retainer</span>
-          </button>
+          <div className="flex flex-wrap items-center gap-2">
+            <button
+              onClick={handleExportCSV}
+              className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-white border border-border text-navy-700 text-xs font-semibold rounded hover:bg-slate-50 transition shadow-sm"
+              title="Download Retainers CSV"
+            >
+              <Download className="w-3.5 h-3.5 text-brass-500" />
+              <span>Export CSV</span>
+            </button>
+            <button
+              onClick={openAddModal}
+              className="inline-flex items-center gap-2 px-4 py-2 bg-primary hover:bg-primary-light text-white text-xs font-bold rounded transition shadow"
+            >
+              <Plus className="w-3.5 h-3.5" />
+              <span>Enrol Client Retainer</span>
+            </button>
+          </div>
         </div>
 
         {/* Search Bar */}

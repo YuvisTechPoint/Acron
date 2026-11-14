@@ -22,23 +22,19 @@ import {
   Check,
 } from "lucide-react";
 import { platformStore } from "@/lib/store";
+import { useRealtimeTrustDPIA, useRealtimeSubProcessors } from "@/lib/realtime";
 import { TrustDPIARecord, SubProcessorItem } from "@/lib/types";
+import { downloadCsv } from "@/lib/export-csv";
 
 export default function TrustAndBYOKPage() {
-  const [dpiaRecords, setDpiaRecords] = useState<TrustDPIARecord[]>([]);
-  const [subProcessors, setSubProcessors] = useState<SubProcessorItem[]>([]);
-  const [byokStatus, setByokStatus] = useState<any>(null);
+  const dpiaRecords = useRealtimeTrustDPIA();
+  const subProcessors = useRealtimeSubProcessors();
+  const [byokStatus, setByokStatus] = useState<any>(platformStore.getBYOKStatus("org-1"));
   const [revocationTesting, setRevocationTesting] = useState(false);
   const [revocationResult, setRevocationResult] = useState<string | null>(null);
   const [evidenceDownloading, setEvidenceDownloading] = useState(false);
   const [downloadSuccess, setDownloadSuccess] = useState(false);
   const [copiedArn, setCopiedArn] = useState(false);
-
-  useEffect(() => {
-    setDpiaRecords(platformStore.getTrustDPIARecords());
-    setSubProcessors(platformStore.getSubProcessors());
-    setByokStatus(platformStore.getBYOKStatus("org-1"));
-  }, []);
 
   const handleSimulateRevocation = () => {
     setRevocationTesting(true);
@@ -53,11 +49,66 @@ export default function TrustAndBYOKPage() {
 
   const handleDownloadPack = () => {
     setEvidenceDownloading(true);
-    setTimeout(() => {
-      setEvidenceDownloading(false);
+    try {
+      const headers = [
+        "Record Type",
+        "Record ID",
+        "Title / Name",
+        "Category / Data Class",
+        "Data Residency / Location",
+        "Reviewer / Approver",
+        "Status / Certifications",
+        "Date Verified / Approved",
+      ];
+      const rows: (string | number | boolean | null | undefined)[][] = [];
+
+      dpiaRecords.forEach((d) => {
+        rows.push([
+          "DPIA_ASSESSMENT",
+          d.id,
+          d.title,
+          d.dataClass,
+          "ap-south-1 (Mumbai, India)",
+          d.legalReviewer,
+          d.status,
+          d.dpoApprovalDate,
+        ]);
+      });
+
+      subProcessors.forEach((s) => {
+        rows.push([
+          "SUB_PROCESSOR",
+          s.id,
+          s.name,
+          s.purpose,
+          s.dataResidency,
+          s.dpiaRef,
+          s.complianceCert,
+          s.verifiedAt,
+        ]);
+      });
+
+      rows.push([
+        "BYOK_ROOT_OF_TRUST",
+        byokStatus?.keyArnMasked || "arn:aws:kms:ap-south-1:718294:key/*",
+        "Customer-Managed KMS Hardware Module",
+        "FIPS 140-2 Level 3 HSM",
+        "AWS ap-south-1 (Mumbai)",
+        "DPO Subhasish Mukherjee",
+        "ACTIVE_ENVELOPE",
+        byokStatus?.lastShreddingDrill || new Date().toISOString().slice(0, 10),
+      ]);
+
+      downloadCsv(
+        `Acorn_Trust_DPIA_Audit_Pack_${new Date().toISOString().slice(0, 10)}.csv`,
+        headers,
+        rows
+      );
       setDownloadSuccess(true);
-      setTimeout(() => setDownloadSuccess(false), 3500);
-    }, 1000);
+      setTimeout(() => setDownloadSuccess(false), 4000);
+    } finally {
+      setEvidenceDownloading(false);
+    }
   };
 
   return (

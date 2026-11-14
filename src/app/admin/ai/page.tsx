@@ -13,20 +13,36 @@ import {
   ArrowRight,
   Database,
   Lock,
+  Download,
 } from "lucide-react";
 import { platformStore } from "@/lib/store";
+import { useRealtimeAIFeatures } from "@/lib/realtime";
 import { AIFeatureDefinition } from "@/lib/types";
+import { downloadCsv } from "@/lib/export-csv";
 
 export default function AdminAIGovernancePage() {
-  const [features, setFeatures] = useState<AIFeatureDefinition[]>(platformStore.getAIFeatures());
+  const features = useRealtimeAIFeatures();
   const [notice, setNotice] = useState<string | null>(null);
 
   const toggleSwitch = (featureKey: string, currentVal: boolean) => {
     platformStore.toggleAIKillSwitch(featureKey, !currentVal);
-    const updated = platformStore.getAIFeatures();
-    setFeatures(updated);
     setNotice(`Kill Switch for '${featureKey}' set to ${!currentVal ? "ACTIVE (DISABLED)" : "INACTIVE (ENABLED)"}`);
     setTimeout(() => setNotice(null), 3000);
+  };
+
+  const handleExportCSV = () => {
+    const headers = ["Feature Key", "Capability Name", "Model", "Risk Tier", "Human Review Required", "Kill Switch Active", "Eval Pass Rate", "Description"];
+    const rows = features.map((f) => [
+      f.featureKey,
+      f.name,
+      f.model,
+      f.riskTier,
+      f.humanReviewRequired ? "YES (Mandatory)" : "NO",
+      f.killSwitchActive ? "ENGAGED (DISABLED)" : "ACTIVE",
+      `${f.lastEvalPassRate}%`,
+      f.description,
+    ]);
+    downloadCsv(`Acorn_AI_Governance_Register_${new Date().toISOString().slice(0, 10)}.csv`, headers, rows);
   };
 
   return (
@@ -84,9 +100,19 @@ export default function AdminAIGovernancePage() {
 
         {/* Feature Register Cards */}
         <div className="space-y-4">
-          <div className="flex items-center justify-between">
-            <h2 className="font-serif font-bold text-lg text-slate-900">Registered AI Capabilities &amp; Status</h2>
-            <span className="text-xs text-slate-500">4 Active Registered Modules</span>
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div>
+              <h2 className="font-serif font-bold text-lg text-slate-900">Registered AI Capabilities &amp; Status</h2>
+              <span className="text-xs text-slate-500">4 Active Registered Modules</span>
+            </div>
+            <button
+              onClick={handleExportCSV}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white border border-slate-300 text-slate-700 text-xs font-semibold rounded hover:bg-slate-50 transition shadow-sm w-fit"
+              title="Download AI Capabilities CSV"
+            >
+              <Download className="w-3.5 h-3.5 text-brass-700" />
+              <span>Export Capabilities CSV</span>
+            </button>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

@@ -12,14 +12,17 @@ import {
   Trash2,
   Search,
   Filter,
-  X
+  X,
+  Download,
 } from "lucide-react";
 import { platformStore } from "@/lib/store";
+import { useRealtimeHelpdeskTickets } from "@/lib/realtime";
 import { HelpdeskTicket } from "@/lib/types";
 import { ConfirmDialog } from "@/components/admin/confirm-dialog";
+import { downloadCsv } from "@/lib/export-csv";
 
 export default function AdminHelpdeskPage() {
-  const [tickets, setTickets] = useState<HelpdeskTicket[]>([]);
+  const tickets = useRealtimeHelpdeskTickets();
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
   const [showModal, setShowModal] = useState(false);
@@ -33,14 +36,6 @@ export default function AdminHelpdeskPage() {
     sla: "Within SLA (24h remaining)",
     assignedTo: "Operations Support",
   });
-
-  const loadData = () => {
-    setTickets(platformStore.getHelpdeskTickets());
-  };
-
-  useEffect(() => {
-    loadData();
-  }, []);
 
   const triggerToast = (msg: string) => {
     setToastMsg(msg);
@@ -69,13 +64,11 @@ export default function AdminHelpdeskPage() {
       sla: "Within SLA (24h remaining)",
       assignedTo: "Operations Support",
     });
-    loadData();
   };
 
   const handleStatusChange = (id: string, status: HelpdeskTicket["status"]) => {
     platformStore.updateHelpdeskTicketStatus(id, status);
     triggerToast(`Ticket ${id} marked as ${status}`);
-    loadData();
   };
 
   const handleDelete = (id: string) => {
@@ -87,7 +80,6 @@ export default function AdminHelpdeskPage() {
     platformStore.deleteHelpdeskTicket(ticketToDelete);
     triggerToast(`Removed ticket ${ticketToDelete}`);
     setTicketToDelete(null);
-    loadData();
   };
 
   const filtered = tickets.filter((t) => {
@@ -98,6 +90,20 @@ export default function AdminHelpdeskPage() {
     const matchesStatus = statusFilter === "all" || t.status === statusFilter;
     return matchesSearch && matchesStatus;
   });
+
+  const handleExportCSV = () => {
+    const headers = ["Ticket ID", "Subject", "Client", "Priority", "Status", "SLA Target", "Assigned To"];
+    const rows = filtered.map((t) => [
+      t.id,
+      t.subject,
+      t.client,
+      t.priority,
+      t.status,
+      t.sla,
+      t.assignedTo,
+    ]);
+    downloadCsv(`Acorn_Helpdesk_Tickets_${new Date().toISOString().slice(0, 10)}.csv`, headers, rows);
+  };
 
   return (
     <div className="bg-surface min-h-screen py-8">
@@ -141,7 +147,15 @@ export default function AdminHelpdeskPage() {
             </div>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex flex-wrap items-center gap-2">
+            <button
+              onClick={handleExportCSV}
+              className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-white border border-border text-navy-700 text-xs font-semibold rounded hover:bg-slate-50 transition shadow-sm"
+              title="Download Helpdesk Tickets CSV"
+            >
+              <Download className="w-3.5 h-3.5 text-brass-500" />
+              <span>Export CSV</span>
+            </button>
             <Link
               href="/admin/delivery"
               className="px-3.5 py-2 border border-border rounded text-xs font-semibold hover:bg-surface text-ink transition"

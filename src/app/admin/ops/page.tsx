@@ -16,32 +16,29 @@ import {
   Cpu,
   Radio,
   FileCheck2,
+  Download,
 } from "lucide-react";
+import { downloadCsv } from "@/lib/export-csv";
+import { useRealtimeOpsTelemetry } from "@/lib/realtime";
 
 export default function OpsCommandCentrePage() {
   const [selectedPeriod, setSelectedPeriod] = useState<"today" | "7d" | "30d">("today");
+  const telemetry = useRealtimeOpsTelemetry();
 
-  const systemMetrics = {
-    availability: "99.98%",
-    uptimeHours: "720 hrs",
-    downtimeBudgetRemaining: "3 hrs 31 mins",
-    targetSlo: "99.50%",
-    p95Latency: "48ms",
-    activeConnections: 18,
-    timerScannerStatus: "Healthy (Every 5 mins)",
-    lastAuditChainVerified: "4 mins ago",
-    queueHealth: "0 pending jobs / 1,412 processed",
+  const systemMetrics = telemetry;
+  const servicesStatus = telemetry.services;
+
+  const handleExportTelemetry = () => {
+    const headers = ["Component / Service", "Status", "Latency / Ping", "Sovereign Region", "Telemetry Timestamp"];
+    const rows = servicesStatus.map((s) => [
+      s.name,
+      s.status,
+      s.ping,
+      s.region,
+      new Date().toISOString(),
+    ]);
+    downloadCsv(`Acorn_Ops_Telemetry_${new Date().toISOString().slice(0, 10)}.csv`, headers, rows);
   };
-
-  const servicesStatus = [
-    { name: "Web Application (Next.js)", status: "Operational", ping: "24ms", region: "ap-south-1 (Mumbai)" },
-    { name: "API & Websocket Engine", status: "Operational", ping: "38ms", region: "ap-south-1 (Mumbai)" },
-    { name: "MongoDB Primary Replica Set", status: "Operational", ping: "12ms", region: "ap-south-1 (Mumbai)" },
-    { name: "Redis Cache & Rate Limiter", status: "Operational", ping: "4ms", region: "ap-south-1 (Mumbai)" },
-    { name: "Evidence Vault (Encrypted S3)", status: "Operational", ping: "62ms", region: "ap-south-1 (Mumbai)" },
-    { name: "Payment Webhook Dispatcher", status: "Operational", ping: "85ms", region: "Razorpay Production" },
-    { name: "PII Scrubber Engine", status: "Active & Scrubbing", ping: "1ms", region: "Internal Memory" },
-  ];
 
   return (
     <div className="bg-ivory-50 min-h-screen py-8 text-ink">
@@ -64,7 +61,15 @@ export default function OpsCommandCentrePage() {
             </p>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex flex-wrap items-center gap-2">
+            <button
+              onClick={handleExportTelemetry}
+              className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-white border border-border text-navy-700 text-xs font-semibold rounded-btn hover:bg-slate-50 transition shadow-sm"
+              title="Download Telemetry CSV"
+            >
+              <Download className="w-3.5 h-3.5 text-brass-500" />
+              <span>Export Telemetry CSV</span>
+            </button>
             <Link
               href="/admin/ops/gate"
               className="px-4 py-2 border border-brass-500/40 text-xs font-semibold rounded-btn hover:bg-brass-50 text-brass-800 transition"

@@ -15,11 +15,13 @@ import {
   X,
   Filter,
   AlertTriangle,
+  Download,
 } from "lucide-react";
 import { platformStore } from "@/lib/store";
 import { useRealtimeFaqs } from "@/lib/realtime";
 import { FaqItem } from "@/lib/types";
 import { useToast } from "@/components/ui/toast";
+import { downloadCsv } from "@/lib/export-csv";
 
 const CATEGORIES = [
   "All Categories",
@@ -175,6 +177,19 @@ export default function AdminFaqPage() {
 
   const homepageCount = faqs.filter((f) => f.showOnHomepage).length;
 
+  const handleExportCSV = () => {
+    const headers = ["FAQ ID", "Category", "Question", "Answer", "Featured on Homepage", "Display Order"];
+    const rows = filteredFaqs.map((f) => [
+      f.id,
+      f.category,
+      f.question,
+      f.answer,
+      f.showOnHomepage ? "YES" : "NO",
+      f.order,
+    ]);
+    downloadCsv(`Acorn_FAQs_${new Date().toISOString().slice(0, 10)}.csv`, headers, rows);
+  };
+
   return (
     <div className="bg-ivory-50 min-h-screen py-8 text-ink">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
@@ -209,7 +224,15 @@ export default function AdminFaqPage() {
             </p>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex flex-wrap items-center gap-2">
+            <button
+              onClick={handleExportCSV}
+              className="inline-flex items-center gap-1.5 px-3.5 py-2.5 min-h-[44px] bg-white border border-border text-navy-700 text-xs font-semibold rounded-btn hover:bg-slate-50 transition shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-navy-700"
+              title="Download FAQs CSV"
+            >
+              <Download className="w-3.5 h-3.5 text-brass-500" />
+              <span>Export CSV</span>
+            </button>
             <Link
               href="/faq"
               target="_blank"

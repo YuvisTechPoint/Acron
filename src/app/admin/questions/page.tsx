@@ -10,22 +10,57 @@ import {
   Eye,
   Plus,
   Trash2,
+  Search,
+  Download,
+  Filter,
 } from "lucide-react";
 import { platformStore } from "@/lib/store";
 import { useRealtimeQuestions } from "@/lib/realtime";
 import { formatDate } from "@/lib/utils";
 import { QuestionAnswer } from "@/lib/types";
 import { ConfirmDialog } from "@/components/admin/confirm-dialog";
+import { downloadCsv } from "@/lib/export-csv";
 
 export default function AdminQAQueuePage() {
   const [selectedQA, setSelectedQA] = useState<QuestionAnswer | null>(null);
   const [answerText, setAnswerText] = useState("");
   const [answeredBy, setAnsweredBy] = useState("Adv. Debjani Sen, Head of POSH Practice");
   const [publishPublic, setPublishPublic] = useState(true);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [statusFilter, setStatusFilter] = useState("ALL");
 
   const questions = useRealtimeQuestions();
   const [questionToDelete, setQuestionToDelete] = useState<string | null>(null);
   const [savedSuccess, setSavedSuccess] = useState(false);
+
+  const filteredQuestions = questions.filter((q) => {
+    const matchesSearch =
+      q.question.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      q.authorName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      q.refNumber.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (q.category || "").toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesStatus =
+      statusFilter === "ALL" ||
+      (statusFilter === "PENDING" && q.status === "pending_review") ||
+      (statusFilter === "PUBLISHED" && q.status === "published");
+    return matchesSearch && matchesStatus;
+  });
+
+  const handleExportCSV = () => {
+    const headers = ["Reference Number", "Question", "Author", "Email", "Category", "Status", "Public FAQ", "Answered By", "Date"];
+    const rows = filteredQuestions.map((q) => [
+      q.refNumber,
+      q.question,
+      q.authorName,
+      q.authorEmail,
+      q.category,
+      q.status,
+      q.isPublic ? "Yes" : "No",
+      q.answeredBy || "Pending Review",
+      formatDate(q.createdAt),
+    ]);
+    downloadCsv(`Acorn_QA_Queue_${new Date().toISOString().slice(0, 10)}.csv`, headers, rows);
+  };
 
   const handleSaveAnswer = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -95,51 +130,102 @@ export default function AdminQAQueuePage() {
             </div>
           </div>
 
-          <Link
-            href="/qa"
-            className="text-xs text-primary font-semibold hover:underline"
-          >
-            View Public FAQ Page &rarr;
-          </Link>
+          <div className="flex items-center gap-3">
+            <Link
+              href="/qa"
+              className="text-xs text-primary font-semibold hover:underline"
+            >
+              View Public FAQ Page &rarr;
+            </Link>
+            <button
+              onClick={handleExportCSV}
+              className="px-3.5 py-2 bg-white border border-border text-navy-700 text-xs font-semibold rounded hover:bg-slate-50 flex items-center gap-1.5 transition shadow-sm"
+              title="Download Q&A Moderation CSV"
+            >
+              <Download className="w-3.5 h-3.5 text-brass-500" />
+              <span>Export CSV</span>
+            </button>
+          </div>
+        </div>
+
+        {/* Filter and Search Bar */}
+        <div className="bg-white p-4 rounded-card border border-border shadow-card flex flex-col sm:flex-row justify-between items-center gap-3 text-xs">
+          <div className="flex items-center gap-2">
+            <span className="font-semibold text-ink flex items-center gap-1">
+              <Filter className="w-3.5 h-3.5 text-brass-500" />
+              Filter:
+            </span>
+            {["ALL", "PENDING", "PUBLISHED"].map((st) => (
+              <button
+                key={st}
+                onClick={() => setStatusFilter(st)}
+                className={`px-3 py-1 rounded font-medium transition ${
+                  statusFilter === st
+                    ? "bg-primary text-white"
+                    : "bg-surface border border-border text-ink hover:bg-slate-100"
+                }`}
+              >
+                {st}
+              </button>
+            ))}
+          </div>
+
+          <div className="relative w-full sm:w-72">
+            <Search className="w-4 h-4 text-slate-400 absolute left-3 top-2.5" />
+            <input
+              type="text"
+              placeholder="Search by question, author, ref..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full pl-9 pr-3 py-1.5 border border-border rounded text-xs focus:outline-none focus:border-primary"
+            />
+          </div>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
           {/* Question List */}
           <div className="lg:col-span-6 bg-white rounded-card border border-border overflow-hidden shadow-card text-xs">
-            <div className="p-4 bg-surface border-b border-border font-bold text-ink text-xs uppercase tracking-wider">
-              Submitted Questions ({questions.length})
+            <div className="p-4 bg-surface border-b border-border font-bold text-ink text-xs uppercase tracking-wider flex justify-between items-center">
+              <span>Submitted Questions ({filteredQuestions.length})</span>
+              <span className="text-[10px] text-ink-secondary lowercase font-normal">showing {filteredQuestions.length} of {questions.length}</span>
             </div>
 
             <div className="divide-y divide-border-subtle">
-              {questions.map((q) => (
-                <div
-                  key={q.id}
-                  onClick={() => {
-                    setSelectedQA(q);
-                    setAnswerText(q.answer || "");
-                    setPublishPublic(q.isPublic);
-                  }}
-                  className={`p-4 hover:bg-surface cursor-pointer transition-colors space-y-1.5 ${
-                    selectedQA?.id === q.id ? "bg-primary-light/40" : ""
-                  }`}
-                >
-                  <div className="flex justify-between items-center text-[10px] text-ink-secondary font-mono">
-                    <span>{q.refNumber}</span>
-                    <span className={`px-2 py-0.5 rounded font-bold ${
-                      q.status === "published" ? "bg-emerald-100 text-emerald-800" : "bg-amber-100 text-amber-800"
-                    }`}>
-                      {q.status.toUpperCase()}
-                    </span>
-                  </div>
-                  <div className="font-semibold text-ink leading-snug">
-                    {q.question}
-                  </div>
-                  <div className="text-[11px] text-ink-secondary flex justify-between">
-                    <span>From: {q.authorName}</span>
-                    <span>Category: {q.category}</span>
-                  </div>
+              {filteredQuestions.length === 0 ? (
+                <div className="p-8 text-center text-ink-secondary">
+                  No questions match your current search or status filter.
                 </div>
-              ))}
+              ) : (
+                filteredQuestions.map((q) => (
+                  <div
+                    key={q.id}
+                    onClick={() => {
+                      setSelectedQA(q);
+                      setAnswerText(q.answer || "");
+                      setPublishPublic(q.isPublic);
+                    }}
+                    className={`p-4 hover:bg-surface cursor-pointer transition-colors space-y-1.5 ${
+                      selectedQA?.id === q.id ? "bg-primary-light/40" : ""
+                    }`}
+                  >
+                    <div className="flex justify-between items-center text-[10px] text-ink-secondary font-mono">
+                      <span>{q.refNumber}</span>
+                      <span className={`px-2 py-0.5 rounded font-bold ${
+                        q.status === "published" ? "bg-emerald-100 text-emerald-800" : "bg-amber-100 text-amber-800"
+                      }`}>
+                        {q.status.toUpperCase()}
+                      </span>
+                    </div>
+                    <div className="font-semibold text-ink leading-snug">
+                      {q.question}
+                    </div>
+                    <div className="text-[11px] text-ink-secondary flex justify-between">
+                      <span>From: {q.authorName}</span>
+                      <span>Category: {q.category}</span>
+                    </div>
+                  </div>
+                ))
+              )}
             </div>
           </div>
 

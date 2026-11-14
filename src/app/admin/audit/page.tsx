@@ -4,11 +4,13 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { Activity, ShieldCheck, ArrowLeft, Printer, Download, Search, Filter } from "lucide-react";
 import { platformStore } from "@/lib/store";
+import { useRealtimeAuditLogs } from "@/lib/realtime";
+import { downloadCsv } from "@/lib/export-csv";
 
 export default function AdminAuditPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [actionFilter, setActionFilter] = useState("ALL");
-  const logs = platformStore.getAuditLogs();
+  const logs = useRealtimeAuditLogs();
 
   const filteredLogs = logs.filter((l) => {
     const matchesSearch =
@@ -25,24 +27,17 @@ export default function AdminAuditPage() {
 
   const handleExportCSV = () => {
     const headers = ["ID", "Timestamp", "Actor", "Role", "Action", "Target Entity", "IP Address", "Event Details"];
-    const rows = logs.map((l) => [
-      `"${l.id}"`,
-      `"${l.timestamp}"`,
-      `"${l.actor}"`,
-      `"${l.actorRole}"`,
-      `"${l.action}"`,
-      `"${l.entityId}"`,
-      `"${l.ipAddress}"`,
-      `"${(l.details || "").replace(/"/g, '""')}"`,
+    const rows = filteredLogs.map((l) => [
+      l.id,
+      l.timestamp,
+      l.actor,
+      l.actorRole,
+      l.action,
+      l.entityId,
+      l.ipAddress,
+      l.details || "",
     ]);
-    const csvContent = "data:text/csv;charset=utf-8," + [headers.join(","), ...rows.map((e) => e.join(","))].join("\n");
-    const encodedUri = encodeURI(csvContent);
-    const link = document.createElement("a");
-    link.setAttribute("href", encodedUri);
-    link.setAttribute("download", `Acorn_Audit_Log_${new Date().toISOString().slice(0, 10)}.csv`);
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    downloadCsv(`Acorn_Audit_Log_${new Date().toISOString().slice(0, 10)}.csv`, headers, rows);
   };
 
   return (
@@ -125,36 +120,38 @@ export default function AdminAuditPage() {
             <span className="text-[11px] font-normal text-emerald-700 font-mono">SHA-256 Verified Append-Only</span>
           </div>
 
-          <table className="w-full text-left">
-            <thead className="bg-surface border-b border-border text-[11px] uppercase tracking-wider text-ink-secondary font-semibold">
-              <tr>
-                <th className="p-3.5">Timestamp</th>
-                <th className="p-3.5">Actor &bull; Role</th>
-                <th className="p-3.5">Action Event</th>
-                <th className="p-3.5">Target Entity</th>
-                <th className="p-3.5">IP Address</th>
-                <th className="p-3.5">Event Details</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-border-subtle">
-              {filteredLogs.map((l) => (
-                <tr key={l.id} className="hover:bg-surface/50 font-mono text-[11px]">
-                  <td className="p-3.5 text-ink-secondary whitespace-nowrap">{l.timestamp}</td>
-                  <td className="p-3.5 font-semibold text-ink whitespace-nowrap">
-                    {l.actor} ({l.actorRole})
-                  </td>
-                  <td className="p-3.5">
-                    <span className="px-2 py-0.5 rounded bg-primary-light text-primary font-bold text-[10px]">
-                      {l.action}
-                    </span>
-                  </td>
-                  <td className="p-3.5 text-ink">{l.entityId}</td>
-                  <td className="p-3.5 text-ink-secondary">{l.ipAddress}</td>
-                  <td className="p-3.5 font-sans text-xs text-ink">{l.details}</td>
+          <div className="overflow-x-auto">
+            <table className="w-full text-left">
+              <thead className="bg-surface border-b border-border text-[11px] uppercase tracking-wider text-ink-secondary font-semibold">
+                <tr>
+                  <th className="p-3.5">Timestamp</th>
+                  <th className="p-3.5">Actor &bull; Role</th>
+                  <th className="p-3.5">Action Event</th>
+                  <th className="p-3.5">Target Entity</th>
+                  <th className="p-3.5">IP Address</th>
+                  <th className="p-3.5">Event Details</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody className="divide-y divide-border-subtle">
+                {filteredLogs.map((l) => (
+                  <tr key={l.id} className="hover:bg-surface/50 font-mono text-[11px]">
+                    <td className="p-3.5 text-ink-secondary whitespace-nowrap">{l.timestamp}</td>
+                    <td className="p-3.5 font-semibold text-ink whitespace-nowrap">
+                      {l.actor} ({l.actorRole})
+                    </td>
+                    <td className="p-3.5">
+                      <span className="px-2 py-0.5 rounded bg-primary-light text-primary font-bold text-[10px]">
+                        {l.action}
+                      </span>
+                    </td>
+                    <td className="p-3.5 text-ink">{l.entityId}</td>
+                    <td className="p-3.5 text-ink-secondary">{l.ipAddress}</td>
+                    <td className="p-3.5 font-sans text-xs text-ink">{l.details}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
 
           {filteredLogs.length === 0 && (
             <div className="py-12 text-center text-ink-secondary text-xs">

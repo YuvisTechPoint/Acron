@@ -12,14 +12,17 @@ import {
   Search,
   Filter,
   X,
-  UserCheck
+  UserCheck,
+  Download,
 } from "lucide-react";
 import { platformStore } from "@/lib/store";
+import { useRealtimeDeliveryTasks } from "@/lib/realtime";
 import { DeliveryTask } from "@/lib/types";
 import { ConfirmDialog } from "@/components/admin/confirm-dialog";
+import { downloadCsv } from "@/lib/export-csv";
 
 export default function AdminDeliveryBoardPage() {
-  const [tasks, setTasks] = useState<DeliveryTask[]>([]);
+  const tasks = useRealtimeDeliveryTasks();
   const [showModal, setShowModal] = useState(false);
   const [statusFilter, setStatusFilter] = useState("all");
   const [searchTerm, setSearchTerm] = useState("");
@@ -34,14 +37,6 @@ export default function AdminDeliveryBoardPage() {
     owner: "Adv. Debjani Sen",
     priority: "Normal" as "High" | "Normal" | "Urgent",
   });
-
-  const loadData = () => {
-    setTasks(platformStore.getDeliveryTasks());
-  };
-
-  useEffect(() => {
-    loadData();
-  }, []);
 
   const triggerToast = (msg: string) => {
     setToastMsg(msg);
@@ -72,13 +67,11 @@ export default function AdminDeliveryBoardPage() {
       owner: "Adv. Debjani Sen",
       priority: "Normal",
     });
-    loadData();
   };
 
   const handleStatusChange = (code: string, status: DeliveryTask["status"]) => {
     platformStore.updateDeliveryTaskStatus(code, status);
     triggerToast(`Updated ${code} status to ${status}`);
-    loadData();
   };
 
   const handleDelete = (code: string) => {
@@ -90,7 +83,6 @@ export default function AdminDeliveryBoardPage() {
     platformStore.deleteDeliveryTask(taskToDelete);
     triggerToast(`Removed task ${taskToDelete}`);
     setTaskToDelete(null);
-    loadData();
   };
 
   const filtered = tasks.filter((t) => {
@@ -102,6 +94,20 @@ export default function AdminDeliveryBoardPage() {
     const matchesStatus = statusFilter === "all" || t.status === statusFilter;
     return matchesSearch && matchesStatus;
   });
+
+  const handleExportCSV = () => {
+    const headers = ["Task Code", "Deliverable Name", "Client Entity", "Due Date", "Counsel Owner", "Priority", "Status"];
+    const rows = filtered.map((t) => [
+      t.code,
+      t.task,
+      t.client,
+      t.due,
+      t.owner,
+      t.priority,
+      t.status,
+    ]);
+    downloadCsv(`Acorn_Delivery_Tasks_${new Date().toISOString().slice(0, 10)}.csv`, headers, rows);
+  };
 
   return (
     <div className="bg-surface min-h-screen py-8">
@@ -145,23 +151,33 @@ export default function AdminDeliveryBoardPage() {
             </div>
           </div>
 
-          <button
-            onClick={() => {
-              setForm({
-                code: `DEL-${tasks.length + 104}`,
-                task: "",
-                client: "TECHKOL",
-                due: "30 Nov 2026",
-                owner: "Adv. Debjani Sen",
-                priority: "Normal",
-              });
-              setShowModal(true);
-            }}
-            className="inline-flex items-center gap-2 px-4 py-2 bg-primary hover:bg-primary-light text-white text-xs font-bold rounded transition shadow"
-          >
-            <Plus className="w-3.5 h-3.5" />
-            <span>Add Fulfillment Task</span>
-          </button>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={handleExportCSV}
+              className="px-3.5 py-2 bg-white border border-border text-navy-700 text-xs font-semibold rounded hover:bg-slate-50 flex items-center gap-1.5 transition shadow-sm"
+              title="Download Fulfillment Tasks CSV"
+            >
+              <Download className="w-3.5 h-3.5 text-brass-500" />
+              <span>Export CSV</span>
+            </button>
+            <button
+              onClick={() => {
+                setForm({
+                  code: `DEL-${tasks.length + 104}`,
+                  task: "",
+                  client: "TECHKOL",
+                  due: "30 Nov 2026",
+                  owner: "Adv. Debjani Sen",
+                  priority: "Normal",
+                });
+                setShowModal(true);
+              }}
+              className="inline-flex items-center gap-2 px-4 py-2 bg-primary hover:bg-primary-light text-white text-xs font-bold rounded transition shadow"
+            >
+              <Plus className="w-3.5 h-3.5" />
+              <span>Add Fulfillment Task</span>
+            </button>
+          </div>
         </div>
 
         {/* Filter & Search Bar */}

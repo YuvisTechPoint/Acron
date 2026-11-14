@@ -14,11 +14,13 @@ import {
   MessageSquare,
   ArrowLeft,
   ArrowRight,
+  Download,
 } from "lucide-react";
 import { platformStore } from "@/lib/store";
 import { useRealtimeRequests } from "@/lib/realtime";
 import { formatDate, formatDateTime } from "@/lib/utils";
 import { ServiceRequest } from "@/lib/types";
+import { downloadCsv } from "@/lib/export-csv";
 
 export default function AdminServiceRequestsPage() {
   const [filter, setFilter] = useState<string>("ALL");
@@ -67,6 +69,23 @@ export default function AdminServiceRequestsPage() {
     setNewNote("");
   };
 
+  const handleExportCSV = () => {
+    const headers = ["Reference Number", "Client Name", "Email", "Phone", "Organization", "Category", "Subject", "Status", "Urgency", "Submitted Date"];
+    const rows = filtered.map((r) => [
+      r.refNumber,
+      r.fullName,
+      r.email,
+      r.phone,
+      r.organization || "",
+      r.serviceCategory,
+      r.subject,
+      r.status,
+      r.urgency,
+      formatDate(r.createdAt),
+    ]);
+    downloadCsv(`Acorn_Service_Requests_${new Date().toISOString().slice(0, 10)}.csv`, headers, rows);
+  };
+
   return (
     <div className="bg-surface min-h-screen py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
@@ -97,6 +116,14 @@ export default function AdminServiceRequestsPage() {
               placeholder="Search by name, ref, or subject..."
               className="text-xs px-3 py-2 bg-surface border border-border rounded focus:outline-none focus:border-primary w-64"
             />
+            <button
+              onClick={handleExportCSV}
+              className="px-3.5 py-2 bg-white border border-border text-navy-700 text-xs font-semibold rounded hover:bg-slate-50 flex items-center gap-1.5 transition shadow-sm"
+              title="Download Filtered Enquiries CSV"
+            >
+              <Download className="w-3.5 h-3.5 text-brass-500" />
+              <span>Export CSV</span>
+            </button>
           </div>
         </div>
 

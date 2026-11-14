@@ -12,11 +12,17 @@ export default function AdminRequestDetailPage() {
   const params = useParams();
   const reqId = params?.id as string;
   const requests = useRealtimeRequests();
-  const request = requests.find((r) => r.id === reqId || r.refNumber === reqId) || requests[0];
+  const request = requests.find((r) => r.id === reqId || r.refNumber === reqId);
 
-  const [status, setStatus] = useState<any>(request?.status || "IN_REVIEW");
+  const [status, setStatus] = useState<any>("IN_REVIEW");
   const [note, setNote] = useState("");
   const [savedSuccess, setSavedSuccess] = useState(false);
+
+  React.useEffect(() => {
+    if (request) {
+      setStatus(request.status);
+    }
+  }, [request]);
 
   const handleUpdate = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -41,7 +47,23 @@ export default function AdminRequestDetailPage() {
   };
 
   if (!request) {
-    return <div className="p-8 text-center text-xs">Request not found.</div>;
+    return (
+      <div className="bg-surface min-h-screen py-12">
+        <div className="max-w-md mx-auto p-8 bg-white rounded-card border border-border shadow-card text-center space-y-4">
+          <div className="text-sm font-semibold text-ink">Service Request Not Found</div>
+          <p className="text-xs text-ink-secondary">
+            No service request docket matching <code className="font-mono text-primary font-bold">{reqId}</code> was located in chambers records.
+          </p>
+          <Link
+            href="/admin/requests"
+            className="inline-flex items-center gap-1.5 px-4 py-2 bg-primary text-white text-xs font-semibold rounded hover:bg-primary-hover transition"
+          >
+            <ArrowLeft className="w-3.5 h-3.5" />
+            <span>Return to Service Requests Pipeline</span>
+          </Link>
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -50,7 +72,8 @@ export default function AdminRequestDetailPage() {
         <div className="flex items-center gap-3 bg-white p-6 rounded-card border border-border shadow-card">
           <Link
             href="/admin/requests"
-            className="p-1.5 rounded hover:bg-surface text-ink-secondary hover:text-ink transition-colors"
+            aria-label="Back to Service Requests Pipeline"
+            className="p-2 rounded hover:bg-surface text-ink-secondary hover:text-ink transition-colors min-h-[44px] min-w-[44px] inline-flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
           >
             <ArrowLeft className="w-4 h-4" />
           </Link>

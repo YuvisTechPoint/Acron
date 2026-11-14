@@ -16,13 +16,20 @@ import {
   CheckCircle2,
 } from "lucide-react";
 import { platformStore } from "@/lib/store";
+import {
+  useRealtimeRequests,
+  useRealtimeCases,
+  useRealtimePayments,
+  useRealtimeQuestions,
+} from "@/lib/realtime";
 import { formatINR, formatDate } from "@/lib/utils";
+import { downloadCsv } from "@/lib/export-csv";
 
 export default function AdminReportsPage() {
-  const requests = platformStore.getServiceRequests();
-  const cases = platformStore.getCases();
-  const payments = platformStore.getPayments();
-  const questions = platformStore.getQuestions();
+  const requests = useRealtimeRequests();
+  const cases = useRealtimeCases();
+  const payments = useRealtimePayments();
+  const questions = useRealtimeQuestions();
 
   const totalPaise = payments.reduce((acc, p) => acc + (p.status === "paid" ? p.totalPaise : 0), 0);
   const totalTaxPaise = payments.reduce((acc, p) => acc + (p.status === "paid" ? p.taxPaise : 0), 0);
@@ -45,8 +52,8 @@ export default function AdminReportsPage() {
   const casesClosed = cases.filter((c) => c.state === "CLOSED").length;
 
   const handleExportCSV = () => {
-    const summaryData = [
-      ["Metric Category", "Parameter", "Value"],
+    const headers = ["Metric Category", "Parameter", "Value"];
+    const rows = [
       ["Revenue", "Gross Collections (INR)", (totalPaise / 100).toFixed(2)],
       ["Revenue", "GST Output 18% (INR)", (totalTaxPaise / 100).toFixed(2)],
       ["Revenue", "Total Transactions", payments.length.toString()],
@@ -64,17 +71,7 @@ export default function AdminReportsPage() {
       ["Public Q&A", "Published to FAQ Library", qaPublic.toString()],
       ["Public Q&A", "Pending Review", qaPending.toString()],
     ];
-
-    const csvContent =
-      "data:text/csv;charset=utf-8," +
-      summaryData.map((e) => e.map((val) => `"${val}"`).join(",")).join("\n");
-    const encodedUri = encodeURI(csvContent);
-    const link = document.createElement("a");
-    link.setAttribute("href", encodedUri);
-    link.setAttribute("download", `Acorn_Practice_KPI_Report_${new Date().toISOString().slice(0, 10)}.csv`);
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    downloadCsv(`Acorn_Practice_KPI_Report_${new Date().toISOString().slice(0, 10)}.csv`, headers, rows);
   };
 
   return (

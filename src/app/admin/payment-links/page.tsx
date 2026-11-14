@@ -16,15 +16,18 @@ import {
   Search,
   X,
   ExternalLink,
-  Ban
+  Ban,
+  Download,
 } from "lucide-react";
 import { formatINR, formatDate } from "@/lib/utils";
 import { platformStore } from "@/lib/store";
+import { useRealtimePaymentLinks } from "@/lib/realtime";
 import { PaymentLinkItem } from "@/lib/types";
 import { ConfirmDialog } from "@/components/admin/confirm-dialog";
+import { downloadCsv } from "@/lib/export-csv";
 
 export default function AdminPaymentLinksPage() {
-  const [links, setLinks] = useState<PaymentLinkItem[]>([]);
+  const links = useRealtimePaymentLinks();
   const [showModal, setShowModal] = useState(false);
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
@@ -38,14 +41,6 @@ export default function AdminPaymentLinksPage() {
     amount: 5000,
     expiryDays: 3,
   });
-
-  const loadData = () => {
-    setLinks(platformStore.getPaymentLinks());
-  };
-
-  useEffect(() => {
-    loadData();
-  }, []);
 
   const triggerToast = (msg: string) => {
     setToastMsg(msg);
@@ -80,13 +75,11 @@ export default function AdminPaymentLinksPage() {
     triggerToast(`Payment link ${created.id} generated successfully!`);
     setShowModal(false);
     setForm({ clientName: "", clientEmail: "", matterRef: "", amount: 5000, expiryDays: 3 });
-    loadData();
   };
 
   const handleStatusChange = (id: string, status: PaymentLinkItem["status"]) => {
     platformStore.updatePaymentLinkStatus(id, status);
     triggerToast(`Link ${id} updated to ${status}`);
-    loadData();
   };
 
   const handleDelete = (id: string) => {
@@ -98,7 +91,6 @@ export default function AdminPaymentLinksPage() {
     platformStore.deletePaymentLink(linkToDelete);
     triggerToast(`Deleted payment link ${linkToDelete}`);
     setLinkToDelete(null);
-    loadData();
   };
 
   const filtered = links.filter(
@@ -108,6 +100,21 @@ export default function AdminPaymentLinksPage() {
       l.matterRef.toLowerCase().includes(searchTerm.toLowerCase()) ||
       l.id.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  const handleExportCSV = () => {
+    const headers = ["Link ID", "Client Name", "Client Email", "Matter Reference", "Amount (INR)", "Expires At", "Status", "Quick Pay URL"];
+    const rows = filtered.map((l) => [
+      l.id,
+      l.clientName,
+      l.clientEmail,
+      l.matterRef,
+      (l.amountPaise / 100).toFixed(2),
+      formatDate(l.expiresAt),
+      l.status,
+      l.url,
+    ]);
+    downloadCsv(`Acorn_Payment_Links_${new Date().toISOString().slice(0, 10)}.csv`, headers, rows);
+  };
 
   return (
     <div className="bg-surface min-h-screen py-8">
@@ -150,13 +157,23 @@ export default function AdminPaymentLinksPage() {
             </p>
           </div>
 
-          <button
-            onClick={() => setShowModal(true)}
-            className="inline-flex items-center gap-2 px-4 py-2 bg-primary hover:bg-primary-light text-white text-xs font-bold rounded transition shadow"
-          >
-            <Plus className="w-3.5 h-3.5" />
-            <span>Generate Payment Link</span>
-          </button>
+          <div className="flex flex-wrap items-center gap-2">
+            <button
+              onClick={handleExportCSV}
+              className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-white border border-border text-navy-700 text-xs font-semibold rounded hover:bg-slate-50 transition shadow-sm"
+              title="Download Payment Links CSV"
+            >
+              <Download className="w-3.5 h-3.5 text-brass-500" />
+              <span>Export CSV</span>
+            </button>
+            <button
+              onClick={() => setShowModal(true)}
+              className="inline-flex items-center gap-2 px-4 py-2 bg-primary hover:bg-primary-light text-white text-xs font-bold rounded transition shadow"
+            >
+              <Plus className="w-3.5 h-3.5" />
+              <span>Generate Payment Link</span>
+            </button>
+          </div>
         </div>
 
         {/* Search Bar */}

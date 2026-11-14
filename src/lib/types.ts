@@ -925,6 +925,78 @@ export interface AssistedIntakeRecord {
   loggedAt: string;
 }
 
+export interface LegalTemplateItem {
+  code: string;
+  name: string;
+  stage: string;
+  lang: string;
+  version: string;
+  body: string;
+  updatedAt?: string;
+}
+
+export interface LegalPrecedentItem {
+  id?: string;
+  citation: string;
+  forum: string;
+  date: string;
+  category: string;
+  principles: string;
+  impact: string;
+  verifiedByCounsel: boolean;
+}
+
+export interface SopItem {
+  id: string;
+  name: string;
+  cadence: "Daily" | "Weekly" | "Monthly" | "Quarterly" | "Annual";
+  targetTime: string;
+  owner: string;
+  lastExecuted: string;
+  nextDue: string;
+  status: "Completed" | "Scheduled" | "Overdue";
+}
+
+export interface GoLiveChecklistItem {
+  id: string;
+  category: "Legal & Regulatory" | "Security & Privacy" | "Performance & A11y" | "Disaster Recovery" | "Operations & SOP" | "Infrastructure & Disaster Recovery" | "Operations & Handover";
+  title: string;
+  requirement: string;
+  owner: string;
+  status: "Passed" | "Conditional" | "Pending" | "Blocked" | "Human Review Required" | "Pending Sign-off";
+  evidence: string;
+}
+
+export interface OpsServiceStatusItem {
+  name: string;
+  status: string;
+  ping: string;
+  region: string;
+}
+
+export interface OpsTelemetryData {
+  availability: string;
+  uptimeHours: string;
+  downtimeBudgetRemaining: string;
+  targetSlo: string;
+  p95Latency: string;
+  activeConnections: number;
+  timerScannerStatus: string;
+  lastAuditChainVerified: string;
+  queueHealth: string;
+  services: OpsServiceStatusItem[];
+}
+
+export interface PageSectionItem {
+  id: string;
+  name: string;
+  internalRef: string;
+  heading: string;
+  isEnabled: boolean;
+  order: number;
+}
+
+
 
 
 

@@ -16,41 +16,26 @@ import {
   Edit3,
 } from "lucide-react";
 import { platformStore } from "@/lib/store";
-import { PageContentItem } from "@/lib/types";
-
-interface PageSection {
-  id: string;
-  name: string;
-  internalRef: string;
-  heading: string;
-  isEnabled: boolean;
-  order: number;
-}
-
-const INITIAL_SECTIONS: PageSection[] = [
-  { id: "SEC-1", name: "Chamber Hero & Heritage Banner", internalRef: "hero", heading: "Excellence in Law. Integrity in Practice.", isEnabled: true, order: 1 },
-  { id: "SEC-2", name: "Core Practice Areas", internalRef: "practice_areas", heading: "Authoritative Legal Practice in Kolkata & Eastern India", isEnabled: true, order: 2 },
-  { id: "SEC-3", name: "POSH Practice Group Spotlight", internalRef: "posh_spotlight", heading: "Statutory POSH Compliance & External IC Representation", isEnabled: true, order: 3 },
-  { id: "SEC-4", name: "Partner Profiles & Leadership", internalRef: "leadership", heading: "Chamber Leadership & Counsel", isEnabled: true, order: 4 },
-  { id: "SEC-5", name: "Interactive Legal Concierge & Q&A", internalRef: "qa_preview", heading: "Recent Clarifications & Statutory Knowledge Base", isEnabled: true, order: 5 },
-  { id: "SEC-6", name: "Structured Consultation Intake", internalRef: "intake_form", heading: "Request Formal Legal Consultation", isEnabled: true, order: 6 },
-  { id: "SEC-7", name: "Statutory Disclaimers & Bar Council Notice", internalRef: "disclaimer", heading: "Bar Council of India Rule 36 Mandatory Notice", isEnabled: true, order: 7 }
-];
+import { useRealtimePageSections, useRealtimePages } from "@/lib/realtime";
+import { PageContentItem, PageSectionItem } from "@/lib/types";
 
 export default function AdminPageLayoutManager() {
   const [activeTab, setActiveTab] = useState<"layout" | "content">("content");
-  const [sections, setSections] = useState<PageSection[]>(INITIAL_SECTIONS);
-  const [pages, setPages] = useState<PageContentItem[]>([]);
+  const realtimeSections = useRealtimePageSections();
+  const [sections, setSections] = useState<PageSectionItem[]>([]);
+  const pages = useRealtimePages();
   const [selectedSlug, setSelectedSlug] = useState<string>("about");
   const [currentPage, setCurrentPage] = useState<PageContentItem | null>(null);
   const [saved, setSaved] = useState(false);
 
   useEffect(() => {
-    const all = platformStore.getAllPages();
-    setPages(all);
-    const curr = platformStore.getPageContent(selectedSlug);
+    setSections(realtimeSections);
+  }, [realtimeSections]);
+
+  useEffect(() => {
+    const curr = pages.find((p) => p.slug === selectedSlug) || platformStore.getPageContent(selectedSlug);
     setCurrentPage(curr);
-  }, [selectedSlug]);
+  }, [selectedSlug, pages]);
 
   const moveSection = (index: number, direction: "UP" | "DOWN") => {
     const targetIndex = direction === "UP" ? index - 1 : index + 1;
@@ -60,14 +45,17 @@ export default function AdminPageLayoutManager() {
     reordered[index] = reordered[targetIndex];
     reordered[targetIndex] = temp;
     setSections(reordered);
-    setSaved(false);
+    platformStore.updatePageSections(reordered);
+    setSaved(true);
+    setTimeout(() => setSaved(false), 3000);
   };
 
   const toggleVisibility = (id: string) => {
-    setSections(
-      sections.map((s) => (s.id === id ? { ...s, isEnabled: !s.isEnabled } : s))
-    );
-    setSaved(false);
+    const updated = sections.map((s) => (s.id === id ? { ...s, isEnabled: !s.isEnabled } : s));
+    setSections(updated);
+    platformStore.updatePageSections(updated);
+    setSaved(true);
+    setTimeout(() => setSaved(false), 3000);
   };
 
   const handleSavePage = (e: React.FormEvent) => {
@@ -267,7 +255,8 @@ export default function AdminPageLayoutManager() {
                 <div className="flex items-center gap-2">
                   <button
                     onClick={() => toggleVisibility(sec.id)}
-                    className={`p-1.5 rounded transition ${
+                    aria-label={sec.isEnabled ? `Hide section ${sec.name}` : `Show section ${sec.name}`}
+                    className={`min-h-[44px] min-w-[44px] inline-flex items-center justify-center rounded transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-navy-700 ${
                       sec.isEnabled
                         ? "text-emerald-700 bg-emerald-50 hover:bg-emerald-100"
                         : "text-slate-400 bg-slate-100"
@@ -280,7 +269,8 @@ export default function AdminPageLayoutManager() {
                   <button
                     onClick={() => moveSection(index, "UP")}
                     disabled={index === 0}
-                    className="p-1.5 rounded hover:bg-slate-100 text-slate-600 disabled:opacity-30"
+                    aria-label={`Move ${sec.name} up`}
+                    className="min-h-[44px] min-w-[44px] inline-flex items-center justify-center rounded hover:bg-slate-100 text-slate-600 disabled:opacity-30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-navy-700"
                     title="Move Up"
                   >
                     <MoveUp className="w-4 h-4" />
@@ -289,7 +279,8 @@ export default function AdminPageLayoutManager() {
                   <button
                     onClick={() => moveSection(index, "DOWN")}
                     disabled={index === sections.length - 1}
-                    className="p-1.5 rounded hover:bg-slate-100 text-slate-600 disabled:opacity-30"
+                    aria-label={`Move ${sec.name} down`}
+                    className="min-h-[44px] min-w-[44px] inline-flex items-center justify-center rounded hover:bg-slate-100 text-slate-600 disabled:opacity-30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-navy-700"
                     title="Move Down"
                   >
                     <MoveDown className="w-4 h-4" />

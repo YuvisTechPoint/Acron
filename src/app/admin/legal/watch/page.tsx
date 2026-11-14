@@ -13,14 +13,17 @@ import {
   Edit2,
   Search,
   X,
-  Scale
+  Scale,
+  Download,
 } from "lucide-react";
 import { platformStore } from "@/lib/store";
+import { useRealtimeLegalWatch } from "@/lib/realtime";
 import { LegalWatchItem } from "@/lib/types";
 import { ConfirmDialog } from "@/components/admin/confirm-dialog";
+import { downloadCsv } from "@/lib/export-csv";
 
 export default function LegalWatchListPage() {
-  const [watchItems, setWatchItems] = useState<LegalWatchItem[]>([]);
+  const watchItems = useRealtimeLegalWatch();
   const [searchTerm, setSearchTerm] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [editingItem, setEditingItem] = useState<LegalWatchItem | null>(null);
@@ -36,14 +39,6 @@ export default function LegalWatchListPage() {
     status: "In Compliance & Tracking",
     impactLevel: "HIGH" as "HIGH" | "MEDIUM" | "ADVISORY",
   });
-
-  const loadData = () => {
-    setWatchItems(platformStore.getLegalWatchItems());
-  };
-
-  useEffect(() => {
-    loadData();
-  }, []);
 
   const triggerToast = (msg: string) => {
     setToastMsg(msg);
@@ -106,7 +101,6 @@ export default function LegalWatchListPage() {
     }
 
     setShowModal(false);
-    loadData();
   };
 
   const handleDelete = (ref: string) => {
@@ -118,7 +112,6 @@ export default function LegalWatchListPage() {
     platformStore.deleteLegalWatchItem(refToDelete);
     triggerToast(`Removed watch item ${refToDelete}`);
     setRefToDelete(null);
-    loadData();
   };
 
   const filtered = watchItems.filter(
@@ -128,6 +121,20 @@ export default function LegalWatchListPage() {
       item.subject.toLowerCase().includes(searchTerm.toLowerCase()) ||
       item.owner.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  const handleExportCSV = () => {
+    const headers = ["Reference ID", "Precedent / Regulation Title", "Subject Matter", "Counsel Owner", "Review Cycle", "Impact Tier", "Status"];
+    const rows = filtered.map((item) => [
+      item.ref,
+      item.title,
+      item.subject,
+      item.owner,
+      item.reviewDate,
+      item.impactLevel || "HIGH",
+      item.status,
+    ]);
+    downloadCsv(`Acorn_Legal_Watch_List_${new Date().toISOString().slice(0, 10)}.csv`, headers, rows);
+  };
 
   return (
     <div className="bg-surface min-h-screen py-8">
@@ -171,13 +178,23 @@ export default function LegalWatchListPage() {
             </div>
           </div>
 
-          <button
-            onClick={openAddModal}
-            className="inline-flex items-center gap-2 px-4 py-2 bg-primary hover:bg-primary-light text-white text-xs font-bold rounded transition shadow"
-          >
-            <Plus className="w-3.5 h-3.5" />
-            <span>Add Regulatory Watch Item</span>
-          </button>
+          <div className="flex flex-wrap items-center gap-2">
+            <button
+              onClick={handleExportCSV}
+              className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-white border border-border text-navy-700 text-xs font-semibold rounded hover:bg-slate-50 transition shadow-sm"
+              title="Download Precedent Watch CSV"
+            >
+              <Download className="w-3.5 h-3.5 text-brass-500" />
+              <span>Export CSV</span>
+            </button>
+            <button
+              onClick={openAddModal}
+              className="inline-flex items-center gap-2 px-4 py-2 bg-primary hover:bg-primary-light text-white text-xs font-bold rounded transition shadow"
+            >
+              <Plus className="w-3.5 h-3.5" />
+              <span>Add Regulatory Watch Item</span>
+            </button>
+          </div>
         </div>
 
         {/* Search */}

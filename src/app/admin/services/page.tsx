@@ -15,12 +15,14 @@ import {
   Eye,
   DollarSign,
   Clock,
+  Download,
 } from "lucide-react";
 import { platformStore } from "@/lib/store";
 import { useRealtimeServices } from "@/lib/realtime";
 import { CustomService } from "@/lib/types";
 import { formatINR } from "@/lib/utils";
 import { ConfirmDialog } from "@/components/admin/confirm-dialog";
+import { downloadCsv } from "@/lib/export-csv";
 
 export default function AdminServicesCataloguePage() {
   const realtimeServices = useRealtimeServices(true);
@@ -111,6 +113,20 @@ export default function AdminServicesCataloguePage() {
     categoryFilter === "ALL" ? true : s.category === categoryFilter
   );
 
+  const handleExportCSV = () => {
+    const headers = ["Service Name", "Category", "Price (INR)", "Turnaround Time", "Popular Badge", "Active Status", "Features / Inclusions"];
+    const rows = filtered.map((s) => [
+      s.name,
+      s.category,
+      s.displayPrice || (s.pricePaise / 100).toFixed(2),
+      s.turnaroundDays,
+      s.isPopular ? "POPULAR" : "STANDARD",
+      s.isActive ? "ACTIVE" : "INACTIVE",
+      s.features?.join(" | ") || "",
+    ]);
+    downloadCsv(`Acorn_Services_Catalogue_${new Date().toISOString().slice(0, 10)}.csv`, headers, rows);
+  };
+
   return (
     <div className="bg-ivory-50 min-h-screen py-8 text-ink">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
@@ -150,13 +166,23 @@ export default function AdminServicesCataloguePage() {
             </p>
           </div>
 
-          <button
-            onClick={() => setIsCreating(true)}
-            className="inline-flex items-center gap-2 px-4 py-2 bg-navy-700 hover:bg-blue-600 text-white text-xs font-bold rounded-btn transition shadow-sm"
-          >
-            <Plus className="w-4 h-4" />
-            <span>Add New Service Package</span>
-          </button>
+          <div className="flex flex-wrap items-center gap-2">
+            <button
+              onClick={handleExportCSV}
+              className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-white border border-border text-navy-700 text-xs font-semibold rounded-btn hover:bg-slate-50 transition shadow-sm"
+              title="Download Services CSV"
+            >
+              <Download className="w-3.5 h-3.5 text-brass-500" />
+              <span>Export CSV</span>
+            </button>
+            <button
+              onClick={() => setIsCreating(true)}
+              className="inline-flex items-center gap-2 px-4 py-2 bg-navy-700 hover:bg-blue-600 text-white text-xs font-bold rounded-btn transition shadow-sm"
+            >
+              <Plus className="w-4 h-4" />
+              <span>Add New Service Package</span>
+            </button>
+          </div>
         </div>
 
         {/* Category Filter Pills */}

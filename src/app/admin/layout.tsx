@@ -44,6 +44,11 @@ import {
   Key,
 } from "lucide-react";
 import { AdminThemeToggle } from "@/components/admin/AdminThemeToggle";
+import {
+  useRealtimeRequests,
+  useRealtimeCases,
+  useRealtimeQuestions,
+} from "@/lib/realtime";
 
 interface NavItem {
   label: string;
@@ -133,6 +138,14 @@ export default function AdminLayout({
   const router = useRouter();
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
   const [theme, setTheme] = useState<"light" | "dark">("light");
+  const requests = useRealtimeRequests();
+  const cases = useRealtimeCases();
+  const questions = useRealtimeQuestions();
+
+  const pendingRequests = requests.filter((r) => r.status === "NEW").length;
+  const activeCases = cases.filter((c) => c.state !== "CLOSED").length;
+  const pendingQA = questions.filter((q) => q.status === "pending_review").length;
+
   const [currentUser, setCurrentUser] = useState({
     name: "Adv. Subhasish Mukherjee",
     role: "Super Admin / Managing Partner",
@@ -280,7 +293,22 @@ export default function AdminLayout({
                           isActive ? "text-brass-500" : "text-slate-400"
                         }`}
                       />
-                      <span className="truncate">{item.label}</span>
+                      <span className="truncate flex-1">{item.label}</span>
+                      {item.href === "/admin/requests" && pendingRequests > 0 && (
+                        <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-brass-500 text-ink-950 font-mono">
+                          {pendingRequests}
+                        </span>
+                      )}
+                      {item.href === "/admin/cases" && activeCases > 0 && (
+                        <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-navy-700 text-ivory-50 font-mono border border-navy-600">
+                          {activeCases}
+                        </span>
+                      )}
+                      {item.href === "/admin/questions" && pendingQA > 0 && (
+                        <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-brass-500 text-ink-950 font-mono">
+                          {pendingQA}
+                        </span>
+                      )}
                     </Link>
                   );
                 })}

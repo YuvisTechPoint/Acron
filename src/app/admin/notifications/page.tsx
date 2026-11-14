@@ -14,14 +14,17 @@ import {
   Filter,
   Plus,
   Send,
-  X
+  X,
+  Download,
 } from "lucide-react";
 import { formatDate } from "@/lib/utils";
 import { platformStore } from "@/lib/store";
+import { useRealtimeNotificationLogs } from "@/lib/realtime";
 import { NotificationLogItem } from "@/lib/types";
+import { downloadCsv } from "@/lib/export-csv";
 
 export default function AdminNotificationCenterPage() {
-  const [logs, setLogs] = useState<NotificationLogItem[]>([]);
+  const logs = useRealtimeNotificationLogs();
   const [emailAlerts, setEmailAlerts] = useState(true);
   const [smsAlerts, setSmsAlerts] = useState(true);
   const [poshMaskingStrict, setPoshMaskingStrict] = useState(true);
@@ -35,14 +38,6 @@ export default function AdminNotificationCenterPage() {
     templateCode: "TMPL-TEST-DISPATCH",
     subject: "Chambers System Test Dispatch - Gateway Operational",
   });
-
-  const loadData = () => {
-    setLogs(platformStore.getNotificationLogs());
-  };
-
-  useEffect(() => {
-    loadData();
-  }, []);
 
   const triggerToast = (msg: string) => {
     setToastMsg(msg);
@@ -61,7 +56,6 @@ export default function AdminNotificationCenterPage() {
 
     triggerToast(`Sent test notification to ${testForm.recipient}`);
     setShowModal(false);
-    loadData();
   };
 
   const handleTogglePref = (type: "email" | "sms" | "posh") => {
@@ -81,6 +75,20 @@ export default function AdminNotificationCenterPage() {
   };
 
   const filtered = logs.filter((l) => channelFilter === "all" || l.channel === channelFilter);
+
+  const handleExportCSV = () => {
+    const headers = ["Notification ID", "Channel", "Recipient (Masked)", "Template Code", "Subject", "Status", "Dispatched At"];
+    const rows = filtered.map((l) => [
+      l.id,
+      l.channel,
+      l.recipient,
+      l.templateCode,
+      l.subject,
+      l.status,
+      formatDate(l.timestamp),
+    ]);
+    downloadCsv(`Acorn_Notification_Logs_${new Date().toISOString().slice(0, 10)}.csv`, headers, rows);
+  };
 
   return (
     <div className="bg-surface min-h-screen py-8">
@@ -123,13 +131,23 @@ export default function AdminNotificationCenterPage() {
             </p>
           </div>
 
-          <button
-            onClick={() => setShowModal(true)}
-            className="inline-flex items-center gap-2 px-4 py-2 bg-primary hover:bg-primary-light text-white text-xs font-bold rounded transition shadow"
-          >
-            <Send className="w-3.5 h-3.5" />
-            <span>Send Test Alert</span>
-          </button>
+          <div className="flex flex-wrap items-center gap-2">
+            <button
+              onClick={handleExportCSV}
+              className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-white border border-border text-navy-700 text-xs font-semibold rounded hover:bg-slate-50 transition shadow-sm"
+              title="Download Notifications CSV"
+            >
+              <Download className="w-3.5 h-3.5 text-brass-500" />
+              <span>Export CSV</span>
+            </button>
+            <button
+              onClick={() => setShowModal(true)}
+              className="inline-flex items-center gap-2 px-4 py-2 bg-primary hover:bg-primary-light text-white text-xs font-bold rounded transition shadow"
+            >
+              <Send className="w-3.5 h-3.5" />
+              <span>Send Test Alert</span>
+            </button>
+          </div>
         </div>
 
         {/* Global Channel Toggles */}

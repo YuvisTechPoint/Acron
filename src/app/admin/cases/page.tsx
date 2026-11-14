@@ -16,11 +16,13 @@ import {
   AlertCircle,
   FileText,
   UserCheck,
+  Download,
 } from "lucide-react";
 import { platformStore } from "@/lib/store";
 import { useRealtimeCases } from "@/lib/realtime";
 import { formatDate } from "@/lib/utils";
 import { POSHCase } from "@/lib/types";
+import { downloadCsv } from "@/lib/export-csv";
 
 export default function AdminCasesPage() {
   const [filterState, setFilterState] = useState<string>("ALL");
@@ -75,6 +77,21 @@ export default function AdminCasesPage() {
     // refresh selectedCase
     const updated = platformStore.getCaseById(selectedCase.id);
     if (updated) setSelectedCase({ ...updated });
+  };
+
+  const handleExportCSV = () => {
+    const headers = ["Docket Number", "Organization", "Stage", "Filed Date", "90-Day Limitation Window", "Days Remaining", "Presiding Officer", "External Member"];
+    const rows = filteredCases.map((c) => [
+      c.caseNumber,
+      c.orgName || c.orgId,
+      c.state,
+      formatDate(c.filedAt),
+      "90 Days (Sec 11(4))",
+      c.daysRemaining90 ?? 90,
+      c.presidingOfficerName || "Designated PO",
+      c.externalMemberName || "Adv. Debjani Sen",
+    ]);
+    downloadCsv(`Acorn_POSH_Dockets_${new Date().toISOString().slice(0, 10)}.csv`, headers, rows);
   };
 
   return (
@@ -196,15 +213,25 @@ export default function AdminCasesPage() {
             ))}
           </div>
 
-          <div className="relative w-full md:w-72">
-            <Search className="w-4 h-4 text-text-muted absolute left-3 top-1/2 -translate-y-1/2" />
-            <input
-              type="text"
-              placeholder="Search docket # or entity..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full text-xs pl-9 pr-4 py-2 bg-ivory-50 border border-border rounded-btn focus:outline-none focus:border-navy-700 text-ink-950"
-            />
+          <div className="flex items-center gap-2 w-full md:w-auto">
+            <div className="relative w-full md:w-72">
+              <Search className="w-4 h-4 text-text-muted absolute left-3 top-1/2 -translate-y-1/2" />
+              <input
+                type="text"
+                placeholder="Search docket # or entity..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-full text-xs pl-9 pr-4 py-2 bg-ivory-50 border border-border rounded-btn focus:outline-none focus:border-navy-700 text-ink-950"
+              />
+            </div>
+            <button
+              onClick={handleExportCSV}
+              className="px-3.5 py-2 bg-white border border-border text-navy-700 text-xs font-semibold rounded hover:bg-slate-50 flex items-center gap-1.5 transition shadow-sm shrink-0"
+              title="Download Masked Dockets CSV"
+            >
+              <Download className="w-3.5 h-3.5 text-brass-500" />
+              <span>Export CSV</span>
+            </button>
           </div>
         </div>
 

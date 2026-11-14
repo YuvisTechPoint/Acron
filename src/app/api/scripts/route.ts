@@ -33,3 +33,26 @@ export async function GET(req: NextRequest) {
   }
 }
 
+// PATCH /api/scripts - Toggle or update a script's enabled state
+export async function PATCH(req: NextRequest) {
+  try {
+    const body = await req.json();
+    const { id, isEnabled } = body;
+    if (!id || typeof isEnabled !== "boolean") {
+      return NextResponse.json({ error: "Missing required fields: id, isEnabled" }, { status: 400 });
+    }
+    const updated = platformStore.updateScript(id, isEnabled);
+    return NextResponse.json({
+      success: true,
+      message: `Script ${id} state updated to ${isEnabled ? "ENABLED" : "DISABLED"}`,
+      script: updated,
+    });
+  } catch (error: any) {
+    return NextResponse.json(
+      { error: "Failed to update script state", details: error.message },
+      { status: 500 }
+    );
+  }
+}
+
+

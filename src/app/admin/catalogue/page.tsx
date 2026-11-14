@@ -12,15 +12,18 @@ import {
   Search,
   Check,
   X,
-  Power
+  Power,
+  Download,
 } from "lucide-react";
 import { formatINR } from "@/lib/utils";
 import { platformStore } from "@/lib/store";
+import { useRealtimeCatalogue } from "@/lib/realtime";
 import { CatalogueFeeItem } from "@/lib/types";
 import { ConfirmDialog } from "@/components/admin/confirm-dialog";
+import { downloadCsv } from "@/lib/export-csv";
 
 export default function AdminPaymentCataloguePage() {
-  const [catalogue, setCatalogue] = useState<CatalogueFeeItem[]>([]);
+  const catalogue = useRealtimeCatalogue();
   const [searchTerm, setSearchTerm] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [editingItem, setEditingItem] = useState<CatalogueFeeItem | null>(null);
@@ -36,14 +39,6 @@ export default function AdminPaymentCataloguePage() {
     gstRatePercent: 18,
     isActive: true,
   });
-
-  const loadData = () => {
-    setCatalogue(platformStore.getCatalogueItems());
-  };
-
-  useEffect(() => {
-    loadData();
-  }, []);
 
   const triggerToast = (msg: string) => {
     setToastMsg(msg);
@@ -107,13 +102,11 @@ export default function AdminPaymentCataloguePage() {
     }
 
     setShowModal(false);
-    loadData();
   };
 
   const handleToggleActive = (item: CatalogueFeeItem) => {
     platformStore.updateCatalogueItem(item.id, { isActive: !item.isActive });
     triggerToast(`${item.code} is now ${!item.isActive ? "Active" : "Inactive"}`);
-    loadData();
   };
 
   const handleDelete = (id: string, name: string) => {
@@ -125,7 +118,6 @@ export default function AdminPaymentCataloguePage() {
     platformStore.deleteCatalogueItem(deleteTarget.id);
     triggerToast(`Removed item ${deleteTarget.name}`);
     setDeleteTarget(null);
-    loadData();
   };
 
   const filtered = catalogue.filter(
@@ -134,6 +126,25 @@ export default function AdminPaymentCataloguePage() {
       item.code.toLowerCase().includes(searchTerm.toLowerCase()) ||
       item.sacCode.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  const handleExportCSV = () => {
+    const headers = ["Item Code", "Service Name", "SAC Code", "Base Fee (INR)", "GST Rate", "Total Payable (INR)", "Status", "Description"];
+    const rows = filtered.map((item) => {
+      const gst = (item.amountPaise * item.gstRatePercent) / 100;
+      const total = item.amountPaise + gst;
+      return [
+        item.code,
+        item.name,
+        item.sacCode,
+        (item.amountPaise / 100).toFixed(2),
+        `${item.gstRatePercent}%`,
+        (total / 100).toFixed(2),
+        item.isActive ? "ACTIVE" : "INACTIVE",
+        item.description,
+      ];
+    });
+    downloadCsv(`Acorn_Fee_Catalogue_${new Date().toISOString().slice(0, 10)}.csv`, headers, rows);
+  };
 
   return (
     <div className="bg-surface min-h-screen py-8">
@@ -176,13 +187,23 @@ export default function AdminPaymentCataloguePage() {
             </p>
           </div>
 
-          <button
-            onClick={openAddModal}
-            className="inline-flex items-center gap-2 px-4 py-2 bg-primary hover:bg-primary-light text-white text-xs font-bold rounded transition shadow"
-          >
-            <Plus className="w-3.5 h-3.5" />
-            <span>Add Fee Schedule Item</span>
-          </button>
+          <div className="flex flex-wrap items-center gap-2">
+            <button
+              onClick={handleExportCSV}
+              className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-white border border-border text-navy-700 text-xs font-semibold rounded hover:bg-slate-50 transition shadow-sm"
+              title="Download Fee Catalogue CSV"
+            >
+              <Download className="w-3.5 h-3.5 text-brass-500" />
+              <span>Export CSV</span>
+            </button>
+            <button
+              onClick={openAddModal}
+              className="inline-flex items-center gap-2 px-4 py-2 bg-primary hover:bg-primary-light text-white text-xs font-bold rounded transition shadow"
+            >
+              <Plus className="w-3.5 h-3.5" />
+              <span>Add Fee Schedule Item</span>
+            </button>
+          </div>
         </div>
 
         {/* Search & Counter Bar */}

@@ -817,6 +817,39 @@ async function runTests() {
     }
   }
 
+  // 2m: Test Scripts API State Toggle & Persistence (/api/scripts)
+  try {
+    const resPatch = await fetch(`${BASE_URL}/api/scripts`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json", Cookie: `acorn_admin_session=${authCookie}` },
+      body: JSON.stringify({
+        id: "scr-1",
+        isEnabled: false,
+      }),
+    });
+    const patchData = await resPatch.json();
+    if (resPatch.status === 200 && patchData.success) {
+      console.log(`  ✔ [PASS] Scripts API PATCH: Successfully updated script state to disabled`);
+      passed++;
+    } else {
+      console.error(`  ✖ [FAIL] Scripts API PATCH: Status ${resPatch.status}`, patchData);
+      failed++;
+    }
+
+    // Re-enable
+    await fetch(`${BASE_URL}/api/scripts`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json", Cookie: `acorn_admin_session=${authCookie}` },
+      body: JSON.stringify({
+        id: "scr-1",
+        isEnabled: true,
+      }),
+    });
+  } catch (err) {
+    console.error(`  ✖ [ERROR] Scripts API PATCH: ${err.message}`);
+    failed++;
+  }
+
   // ----------------------------------------------------------------------
   // 3. Complete Admin Section Routes & End-to-End Accessibility
   // ----------------------------------------------------------------------

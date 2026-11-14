@@ -14,14 +14,17 @@ import {
   Eye,
   FileText,
   X,
-  ExternalLink
+  ExternalLink,
+  Download,
 } from "lucide-react";
 import { platformStore } from "@/lib/store";
+import { useRealtimeKbArticles } from "@/lib/realtime";
 import { KbArticle } from "@/lib/types";
 import { ConfirmDialog } from "@/components/admin/confirm-dialog";
+import { downloadCsv } from "@/lib/export-csv";
 
 export default function AdminKbPage() {
-  const [articles, setArticles] = useState<KbArticle[]>([]);
+  const articles = useRealtimeKbArticles();
   const [searchTerm, setSearchTerm] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("all");
   const [showModal, setShowModal] = useState(false);
@@ -37,14 +40,6 @@ export default function AdminKbPage() {
     content: "",
     isPublished: true,
   });
-
-  const loadData = () => {
-    setArticles(platformStore.getKbArticles());
-  };
-
-  useEffect(() => {
-    loadData();
-  }, []);
 
   const triggerToast = (msg: string) => {
     setToastMsg(msg);
@@ -112,13 +107,11 @@ export default function AdminKbPage() {
     }
 
     setShowModal(false);
-    loadData();
   };
 
   const handleTogglePublish = (article: KbArticle) => {
     platformStore.updateKbArticle(article.id, { isPublished: !article.isPublished });
     triggerToast(`Article status set to ${!article.isPublished ? "Published" : "Draft"}`);
-    loadData();
   };
 
   const handleDelete = (id: string, title: string) => {
@@ -130,7 +123,6 @@ export default function AdminKbPage() {
     platformStore.deleteKbArticle(articleToDelete.id);
     triggerToast(`Deleted article ${articleToDelete.title}`);
     setArticleToDelete(null);
-    loadData();
   };
 
   const filtered = articles.filter((a) => {
@@ -141,6 +133,20 @@ export default function AdminKbPage() {
     const matchesCat = categoryFilter === "all" || a.category === categoryFilter;
     return matchesSearch && matchesCat;
   });
+
+  const handleExportCSV = () => {
+    const headers = ["Article Title", "Slug", "Category", "Read Time (Mins)", "Status", "View Count", "Summary"];
+    const rows = filtered.map((a) => [
+      a.title,
+      a.slug,
+      a.category,
+      a.readingTimeMinutes,
+      a.isPublished ? "PUBLISHED" : "DRAFT",
+      a.views || 0,
+      a.summary,
+    ]);
+    downloadCsv(`Acorn_Knowledge_Base_${new Date().toISOString().slice(0, 10)}.csv`, headers, rows);
+  };
 
   return (
     <div className="bg-surface min-h-screen py-8">
@@ -183,13 +189,23 @@ export default function AdminKbPage() {
             </p>
           </div>
 
-          <button
-            onClick={openAddModal}
-            className="inline-flex items-center gap-2 px-4 py-2 bg-primary hover:bg-primary-light text-white text-xs font-bold rounded transition shadow"
-          >
-            <Plus className="w-3.5 h-3.5" />
-            <span>Publish New Guide</span>
-          </button>
+          <div className="flex flex-wrap items-center gap-2">
+            <button
+              onClick={handleExportCSV}
+              className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-white border border-border text-navy-700 text-xs font-semibold rounded hover:bg-slate-50 transition shadow-sm"
+              title="Download Guides CSV"
+            >
+              <Download className="w-3.5 h-3.5 text-brass-500" />
+              <span>Export CSV</span>
+            </button>
+            <button
+              onClick={openAddModal}
+              className="inline-flex items-center gap-2 px-4 py-2 bg-primary hover:bg-primary-light text-white text-xs font-bold rounded transition shadow"
+            >
+              <Plus className="w-3.5 h-3.5" />
+              <span>Publish New Guide</span>
+            </button>
+          </div>
         </div>
 
         {/* Filters & Search */}

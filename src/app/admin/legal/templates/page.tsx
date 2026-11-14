@@ -2,46 +2,37 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { FileText, ArrowLeft, CheckCircle2, Eye, Edit2, Save, X } from "lucide-react";
-
-interface TemplateItem {
-  code: string;
-  name: string;
-  stage: string;
-  lang: string;
-  version: string;
-  body: string;
-}
-
-const INITIAL_TEMPLATES: TemplateItem[] = [
-  { code: "DOC-01", name: "Written Complaint Record", stage: "Intake", lang: "EN, BN, HI", version: "v2.0", body: "IN THE MATTER OF COMPLAINT UNDER SECTION 9 OF POSH ACT 2013\n\nTo: The Internal Committee\nComplainant: [Full Name of Aggrieved Woman]\nRespondent: [Full Name & Designation]\nDate of Occurrence: [Date]\n\n1. Statement of Incidents and Allegations...\n2. List of Exhibits and Supporting Documents..." },
-  { code: "DOC-02", name: "Acknowledgement of Complaint", stage: "Intake", lang: "EN, BN, HI", version: "v2.0", body: "ACKNOWLEDGEMENT OF FORMAL INTAKE\nRef: ACN-POSH-INTAKE\n\nThis is to acknowledge receipt of the written complaint dated [Date] submitted before the Internal Committee. In accordance with Rule 7 of the POSH Rules 2013, a copy will be forwarded to the Respondent within 7 working days." },
-  { code: "DOC-05", name: "IC Constitution Order (Sec 4)", stage: "Setup", lang: "EN", version: "v2.0", body: "OFFICE ORDER: CONSTITUTION OF INTERNAL COMMITTEE UNDER SECTION 4\n\nPursuant to the Sexual Harassment of Women at Workplace (Prevention, Prohibition and Redressal) Act, 2013, the following Internal Committee is hereby constituted:\n1. Presiding Officer: [Name] (Senior Woman Employee)\n2. External Member: Adv. Debjani Sen (Acorn Legal Consultants)" },
-  { code: "DOC-06", name: "IC Confidentiality Undertaking (Sec 16)", stage: "Case", lang: "EN", version: "v2.0", body: "CONFIDENTIALITY UNDERTAKING UNDER SECTION 16 OF POSH ACT\n\nI hereby solemnly declare that I shall maintain absolute confidentiality concerning all contents of the complaint, evidence, witness testimonies, and findings. I understand that any disclosure attracts penal action under Section 17." },
-  { code: "DOC-11", name: "Conciliation Terms & Outcome Record (Sec 10)", stage: "Conciliation", lang: "EN", version: "v2.0", body: "RECORD OF CONCILIATION UNDER SECTION 10\n\nNote: In strict accordance with the Proviso to Section 10(1), no monetary settlement has been made or accepted as the basis of conciliation." },
-  { code: "DOC-12", name: "Notice of Inquiry to Respondent (Rule 7)", stage: "Notice", lang: "EN, BN, HI", version: "v2.0", body: "FORMAL NOTICE OF INQUIRY TO RESPONDENT\n\nYou are hereby provided with a copy of the complaint filed under Section 9. You are required to submit your written statement with list of documents and witnesses within 10 working days from receipt hereof." },
-  { code: "DOC-14", name: "Interim Relief Recommendation (Sec 12)", stage: "Interim", lang: "EN", version: "v2.0", body: "INTERIM MEASURES RECOMMENDATION UNDER SECTION 12\n\nThe IC hereby recommends to the Employer that pending the inquiry:\n- Transfer the aggrieved woman or respondent to another workplace; or\n- Grant leave to the aggrieved woman up to 3 months." },
-  { code: "DOC-16", name: "Hearing Notice & Summons", stage: "Inquiry", lang: "EN, BN", version: "v2.0", body: "SUMMONS AND NOTICE OF FORMAL HEARING\n\nYou are required to appear in person before the Internal Committee on [Date] at [Time] at [Venue/Virtual Link]. Failure to appear without prior written leave may result in ex-parte proceedings." },
-  { code: "DOC-19", name: "Hearing Minutes of Meeting", stage: "Inquiry", lang: "EN", version: "v2.0", body: "MINUTES OF PROCEEDINGS OF INTERNAL COMMITTEE\nHearing No: [Number]\nPresent: Presiding Officer, External Member, Members, Stenographer.\nSummary of depositions taken under oath..." },
-  { code: "DOC-22", name: "Final Statutory Inquiry Report (Sec 13)", stage: "Report", lang: "EN", version: "v2.0", body: "INQUIRY REPORT UNDER SECTION 13 OF POSH ACT 2013\n\n1. Brief Facts & Background\n2. Findings on each Allegation\n3. Determination & Statutory Recommendations\n4. Directions to Employer" },
-  { code: "DOC-31", name: "Section 21 Annual Report for District Officer", stage: "Reporting", lang: "EN", version: "v2.0", body: "ANNUAL REPORT TO DISTRICT OFFICER (SECTION 21)\nReporting Year: [Calendar Year]\n1. Number of complaints received: [N]\n2. Number disposed of within 90 days: [N]\n3. Number of workshops conducted: [N]" },
-  { code: "DOC-34", name: "Notice of Penal Consequences for Display (Sec 19)", stage: "Display", lang: "EN, BN, HI", version: "v2.0", body: "STATUTORY DISPLAY NOTICE UNDER SECTION 19(b)\nSexual Harassment at Workplace is strictly prohibited. Aggrieved persons may approach the Internal Committee at [Email/Phone]. Retaliation of any form is an independent disciplinary offence." },
-];
+import { FileText, ArrowLeft, CheckCircle2, Eye, Edit2, Save, X, Download } from "lucide-react";
+import { platformStore } from "@/lib/store";
+import { useRealtimeLegalTemplates } from "@/lib/realtime";
+import { LegalTemplateItem } from "@/lib/types";
+import { downloadCsv } from "@/lib/export-csv";
 
 export default function LegalTemplatesConsolePage() {
-  const [templates, setTemplates] = useState<TemplateItem[]>(INITIAL_TEMPLATES);
-  const [editingTemplate, setEditingTemplate] = useState<TemplateItem | null>(null);
+  const templates = useRealtimeLegalTemplates();
+  const [editingTemplate, setEditingTemplate] = useState<LegalTemplateItem | null>(null);
   const [savedSuccess, setSavedSuccess] = useState(false);
 
   const handleSave = (e: React.FormEvent) => {
     e.preventDefault();
     if (!editingTemplate) return;
-    setTemplates((prev) =>
-      prev.map((t) => (t.code === editingTemplate.code ? editingTemplate : t))
-    );
+    platformStore.updateLegalTemplate(editingTemplate.code, editingTemplate.body, editingTemplate.version);
     setEditingTemplate(null);
     setSavedSuccess(true);
     setTimeout(() => setSavedSuccess(false), 2500);
+  };
+
+  const handleExportCSV = () => {
+    const headers = ["Template Code", "Template Name", "Stage", "Languages", "Version", "Clause Summary"];
+    const rows = templates.map((t) => [
+      t.code,
+      t.name,
+      t.stage,
+      t.lang,
+      t.version,
+      t.body.slice(0, 100).replace(/\n/g, " "),
+    ]);
+    downloadCsv(`Acorn_Statutory_Templates_${new Date().toISOString().slice(0, 10)}.csv`, headers, rows);
   };
 
   return (
@@ -77,12 +68,22 @@ export default function LegalTemplatesConsolePage() {
             </p>
           </div>
 
-          <Link
-            href="/admin/legal/rules"
-            className="px-3.5 py-2 border border-border rounded-btn text-xs font-semibold hover:bg-slate-50 text-navy-700 transition"
-          >
-            &larr; View Rules Engine
-          </Link>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={handleExportCSV}
+              className="px-3.5 py-2 bg-white border border-border rounded-btn text-xs font-semibold hover:bg-slate-50 text-navy-700 transition flex items-center gap-1.5 shadow-sm"
+              title="Download Statutory Templates CSV"
+            >
+              <Download className="w-3.5 h-3.5 text-brass-500" />
+              <span>Export CSV</span>
+            </button>
+            <Link
+              href="/admin/legal/rules"
+              className="px-3.5 py-2 border border-border rounded-btn text-xs font-semibold hover:bg-slate-50 text-navy-700 transition"
+            >
+              &larr; View Rules Engine
+            </Link>
+          </div>
         </div>
 
         {savedSuccess && (
@@ -93,7 +94,8 @@ export default function LegalTemplatesConsolePage() {
         )}
 
         <div className="bg-white rounded-card border border-border overflow-hidden shadow-card text-xs">
-          <table className="w-full text-left">
+          <div className="overflow-x-auto">
+            <table className="w-full text-left">
             <thead className="bg-slate-50 border-b border-border text-[11px] uppercase tracking-wider text-ink-secondary font-semibold">
               <tr>
                 <th className="p-3.5">Code</th>
@@ -124,7 +126,8 @@ export default function LegalTemplatesConsolePage() {
                 </tr>
               ))}
             </tbody>
-          </table>
+            </table>
+          </div>
         </div>
 
         {/* Modal: Edit Template */}

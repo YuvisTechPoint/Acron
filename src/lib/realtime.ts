@@ -16,6 +16,35 @@ import {
   ScriptTag,
   LegalRule,
   SystemSettings,
+  CatalogueFeeItem,
+  DeliveryTask,
+  DirectoryItem,
+  HelpdeskTicket,
+  KbArticle,
+  CourtHoliday,
+  LegalWatchItem,
+  LegalTemplateItem,
+  LegalPrecedentItem,
+  LmsCourse,
+  MediaVaultItem,
+  NotificationLogItem,
+  PaymentLinkItem,
+  AdminUserItem,
+  SurveyItem,
+  AuditLogEntry,
+  SeoSettings,
+  SeoRedirectItem,
+  PageContentItem,
+  AIFeatureDefinition,
+  SLOMonitorMetric,
+  TrustDPIARecord,
+  SubProcessorItem,
+  Organization,
+  ICMember,
+  SopItem,
+  GoLiveChecklistItem,
+  OpsTelemetryData,
+  PageSectionItem,
 } from "./types";
 
 let syncDebounceTimer: NodeJS.Timeout | null = null;
@@ -237,3 +266,236 @@ export function useRealtimeSystemSettings(): SystemSettings {
   const getter = useCallback(() => platformStore.getSystemSettings(), []);
   return useRealtimeStore<SystemSettings>("system_settings", getter);
 }
+
+/**
+ * Real-time Payment Fee Catalogue Hook
+ */
+export function useRealtimeCatalogue(): CatalogueFeeItem[] {
+  const getter = useCallback(() => platformStore.getCatalogueItems(), []);
+  return useRealtimeStore<CatalogueFeeItem[]>("catalogue_items", getter);
+}
+
+/**
+ * Real-time Delivery & Fulfillment Tasks Hook
+ */
+export function useRealtimeDeliveryTasks(): DeliveryTask[] {
+  const getter = useCallback(() => platformStore.getDeliveryTasks(), []);
+  return useRealtimeStore<DeliveryTask[]>("delivery_tasks", getter);
+}
+
+/**
+ * Real-time Statutory Directory & Helplines Hook
+ */
+export function useRealtimeDirectory(): DirectoryItem[] {
+  const getter = useCallback(() => platformStore.getDirectory(), []);
+  return useRealtimeStore<DirectoryItem[]>("directory_items", getter);
+}
+
+/**
+ * Real-time Helpdesk & Support Tickets Hook
+ */
+export function useRealtimeHelpdeskTickets(): HelpdeskTicket[] {
+  const getter = useCallback(() => platformStore.getHelpdeskTickets(), []);
+  return useRealtimeStore<HelpdeskTicket[]>("helpdesk_tickets", getter);
+}
+
+/**
+ * Real-time Knowledge Base Articles Hook
+ */
+export function useRealtimeKbArticles(): KbArticle[] {
+  const getter = useCallback(() => platformStore.getKbArticles(), []);
+  return useRealtimeStore<KbArticle[]>("kb_articles", getter);
+}
+
+/**
+ * Real-time Court Holidays & Calendars Hook
+ */
+export function useRealtimeCourtHolidays(): CourtHoliday[] {
+  const getter = useCallback(() => platformStore.getHolidays(), []);
+  return useRealtimeStore<CourtHoliday[]>("court_holidays", getter);
+}
+
+/**
+ * Real-time Legal Precedents & Regulatory Watch Hook
+ */
+export function useRealtimeLegalWatch(): LegalWatchItem[] {
+  const getter = useCallback(() => platformStore.getLegalWatchItems(), []);
+  return useRealtimeStore<LegalWatchItem[]>("legal_watch_items", getter);
+}
+
+/**
+ * Real-time Legal Templates CMS Hook
+ */
+export function useRealtimeLegalTemplates(): LegalTemplateItem[] {
+  const getter = useCallback(() => platformStore.getLegalTemplates(), []);
+  return useRealtimeStore<LegalTemplateItem[]>("legal_templates", getter);
+}
+
+/**
+ * Real-time Judicial Authorities Register Hook
+ */
+export function useRealtimeLegalPrecedents(): LegalPrecedentItem[] {
+  const getter = useCallback(() => platformStore.getLegalPrecedents(), []);
+  return useRealtimeStore<LegalPrecedentItem[]>("legal_precedents", getter);
+}
+
+/**
+ * Real-time LMS Courses & Training Curriculum Hook
+ */
+export function useRealtimeLmsCourses(): LmsCourse[] {
+  const getter = useCallback(() => platformStore.getLmsCourses(), []);
+  return useRealtimeStore<LmsCourse[]>("lms_courses", getter);
+}
+
+/**
+ * Real-time Media Vault Hook
+ */
+export function useRealtimeMediaVault(): MediaVaultItem[] {
+  const getter = useCallback(() => platformStore.getMediaVault(), []);
+  return useRealtimeStore<MediaVaultItem[]>("media_vault", getter);
+}
+
+/**
+ * Real-time Notification Logs Hook
+ */
+export function useRealtimeNotificationLogs(): NotificationLogItem[] {
+  const getter = useCallback(() => platformStore.getNotificationLogs(), []);
+  return useRealtimeStore<NotificationLogItem[]>("notification_logs", getter);
+}
+
+/**
+ * Real-time Payment Links Generator Hook
+ */
+export function useRealtimePaymentLinks(): PaymentLinkItem[] {
+  const getter = useCallback(() => platformStore.getPaymentLinks(), []);
+  return useRealtimeStore<PaymentLinkItem[]>("payment_links", getter);
+}
+
+/**
+ * Real-time Admin Users & Staff RBAC Hook
+ */
+export function useRealtimeAdminUsers(): AdminUserItem[] {
+  const getter = useCallback(() => platformStore.getAdminUsers(), []);
+  return useRealtimeStore<AdminUserItem[]>("admin_users", getter);
+}
+
+/**
+ * Real-time Workplace Climate Surveys Hook
+ */
+export function useRealtimeSurveys(): SurveyItem[] {
+  const getter = useCallback(() => platformStore.getSurveys(), []);
+  return useRealtimeStore<SurveyItem[]>("surveys", getter);
+}
+
+/**
+ * Real-time Cryptographic Audit Trail Hook
+ */
+export function useRealtimeAuditLogs(): AuditLogEntry[] {
+  const getter = useCallback(() => platformStore.getAuditLogs(), []);
+  return useRealtimeStore<AuditLogEntry[]>("audit_logs", getter);
+}
+
+/**
+ * Real-time Global SEO Settings Hook
+ */
+export function useRealtimeSeoSettings(): SeoSettings {
+  const getter = useCallback(() => platformStore.getSeoSettings(), []);
+  return useRealtimeStore<SeoSettings>("seo_settings", getter);
+}
+
+/**
+ * Real-time SEO URL 301 Redirects Hook
+ */
+export function useRealtimeSeoRedirects(): SeoRedirectItem[] {
+  const getter = useCallback(() => platformStore.getSeoRedirects(), []);
+  return useRealtimeStore<SeoRedirectItem[]>("seo_redirects", getter);
+}
+
+/**
+ * Real-time Static Page Content Hook
+ */
+export function useRealtimePages(): PageContentItem[] {
+  const getter = useCallback(() => platformStore.getAllPages(), []);
+  return useRealtimeStore<PageContentItem[]>("static_pages", getter);
+}
+
+/**
+ * Real-time AI Capability Register Hook
+ */
+export function useRealtimeAIFeatures(): AIFeatureDefinition[] {
+  const getter = useCallback(() => platformStore.getAIFeatures(), []);
+  return useRealtimeStore<AIFeatureDefinition[]>("ai_features", getter);
+}
+
+/**
+ * Real-time SRE SLO Monitor Metrics Hook
+ */
+export function useRealtimeSLOMetrics(): SLOMonitorMetric[] {
+  const getter = useCallback(() => platformStore.getSLOMetrics(), []);
+  return useRealtimeStore<SLOMonitorMetric[]>("slo_metrics", getter);
+}
+
+/**
+ * Real-time DPIA & Trust Records Hook
+ */
+export function useRealtimeTrustDPIA(): TrustDPIARecord[] {
+  const getter = useCallback(() => platformStore.getTrustDPIARecords(), []);
+  return useRealtimeStore<TrustDPIARecord[]>("trust_dpia_records", getter);
+}
+
+/**
+ * Real-time Sub-processors Register Hook
+ */
+export function useRealtimeSubProcessors(): SubProcessorItem[] {
+  const getter = useCallback(() => platformStore.getSubProcessors(), []);
+  return useRealtimeStore<SubProcessorItem[]>("sub_processors", getter);
+}
+
+/**
+ * Real-time Organizations Directory Hook
+ */
+export function useRealtimeOrganizations(): Organization[] {
+  const getter = useCallback(() => platformStore.getOrganizations(), []);
+  return useRealtimeStore<Organization[]>("organizations", getter);
+}
+
+/**
+ * Real-time IC Members Roster Hook
+ */
+export function useRealtimeICMembers(orgId?: string): ICMember[] {
+  const getter = useCallback(() => platformStore.getICMembers(orgId), [orgId]);
+  return useRealtimeStore<ICMember[]>("ic_members", getter);
+}
+
+/**
+ * Real-time SOP Recurrence Register Hook
+ */
+export function useRealtimeSopRegister(): SopItem[] {
+  const getter = useCallback(() => platformStore.getSopRegister(), []);
+  return useRealtimeStore<SopItem[]>("sop_register", getter);
+}
+
+/**
+ * Real-time Go-Live Verification Gate Hook
+ */
+export function useRealtimeGoLiveGate(): GoLiveChecklistItem[] {
+  const getter = useCallback(() => platformStore.getGoLiveGate(), []);
+  return useRealtimeStore<GoLiveChecklistItem[]>("golive_gate", getter);
+}
+
+/**
+ * Real-time Ops Command Centre Telemetry Hook
+ */
+export function useRealtimeOpsTelemetry(): OpsTelemetryData {
+  const getter = useCallback(() => platformStore.getOpsTelemetry(), []);
+  return useRealtimeStore<OpsTelemetryData>("ops_telemetry", getter);
+}
+
+/**
+ * Real-time Homepage Sections Layout Hook
+ */
+export function useRealtimePageSections(): PageSectionItem[] {
+  const getter = useCallback(() => platformStore.getPageSections(), []);
+  return useRealtimeStore<PageSectionItem[]>("page_sections", getter);
+}
+

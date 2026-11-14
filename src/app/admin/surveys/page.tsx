@@ -11,14 +11,17 @@ import {
   Edit2,
   Search,
   X,
-  CheckCircle2
+  CheckCircle2,
+  Download,
 } from "lucide-react";
 import { platformStore } from "@/lib/store";
+import { useRealtimeSurveys } from "@/lib/realtime";
 import { SurveyItem } from "@/lib/types";
 import { ConfirmDialog } from "@/components/admin/confirm-dialog";
+import { downloadCsv } from "@/lib/export-csv";
 
 export default function AdminSurveysPage() {
-  const [surveys, setSurveys] = useState<SurveyItem[]>([]);
+  const surveys = useRealtimeSurveys();
   const [searchTerm, setSearchTerm] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [surveyToDelete, setSurveyToDelete] = useState<{ id: string; name: string } | null>(null);
@@ -31,14 +34,6 @@ export default function AdminSurveysPage() {
     status: "Active",
     kAnonymityMet: true,
   });
-
-  const loadData = () => {
-    setSurveys(platformStore.getSurveys());
-  };
-
-  useEffect(() => {
-    loadData();
-  }, []);
 
   const triggerToast = (msg: string) => {
     setToastMsg(msg);
@@ -67,14 +62,12 @@ export default function AdminSurveysPage() {
       status: "Active",
       kAnonymityMet: true,
     });
-    loadData();
   };
 
   const handleToggleStatus = (s: SurveyItem) => {
     const nextStatus = s.status === "Active" ? "Completed" : "Active";
     platformStore.updateSurvey(s.id, { status: nextStatus });
     triggerToast(`Survey status set to ${nextStatus}`);
-    loadData();
   };
 
   const handleDelete = (id: string, name: string) => {
@@ -86,7 +79,6 @@ export default function AdminSurveysPage() {
     platformStore.deleteSurvey(surveyToDelete.id);
     triggerToast(`Removed survey ${surveyToDelete.name}`);
     setSurveyToDelete(null);
-    loadData();
   };
 
   const filtered = surveys.filter(
@@ -94,6 +86,20 @@ export default function AdminSurveysPage() {
       s.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       s.type.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  const handleExportCSV = () => {
+    const headers = ["Survey ID", "Survey Title", "Instrument Type", "Question Count", "Responses Received", "k-Anonymity Verified", "Status"];
+    const rows = filtered.map((s) => [
+      s.id,
+      s.name,
+      s.type,
+      s.questions,
+      s.responses,
+      s.kAnonymityMet ? "VERIFIED (>=5)" : "NOT MET",
+      s.status,
+    ]);
+    downloadCsv(`Acorn_Climate_Surveys_${new Date().toISOString().slice(0, 10)}.csv`, headers, rows);
+  };
 
   return (
     <div className="bg-surface min-h-screen py-8">
@@ -137,13 +143,23 @@ export default function AdminSurveysPage() {
             </div>
           </div>
 
-          <button
-            onClick={() => setShowModal(true)}
-            className="inline-flex items-center gap-2 px-4 py-2 bg-primary hover:bg-primary-light text-white text-xs font-bold rounded transition shadow"
-          >
-            <Plus className="w-3.5 h-3.5" />
-            <span>New Climate Survey</span>
-          </button>
+          <div className="flex flex-wrap items-center gap-2">
+            <button
+              onClick={handleExportCSV}
+              className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-white border border-border text-navy-700 text-xs font-semibold rounded hover:bg-slate-50 transition shadow-sm"
+              title="Download Surveys CSV"
+            >
+              <Download className="w-3.5 h-3.5 text-brass-500" />
+              <span>Export CSV</span>
+            </button>
+            <button
+              onClick={() => setShowModal(true)}
+              className="inline-flex items-center gap-2 px-4 py-2 bg-primary hover:bg-primary-light text-white text-xs font-bold rounded transition shadow"
+            >
+              <Plus className="w-3.5 h-3.5" />
+              <span>New Climate Survey</span>
+            </button>
+          </div>
         </div>
 
         {/* Privacy Notice */}

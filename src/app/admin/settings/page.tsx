@@ -39,7 +39,8 @@ export default function AdminSettingsPage() {
           <div className="flex items-center gap-3">
             <Link
               href="/admin"
-              className="p-1.5 rounded hover:bg-surface text-ink-secondary hover:text-ink transition-colors"
+              aria-label="Back to Admin Dashboard"
+              className="p-2 rounded hover:bg-surface text-ink-secondary hover:text-ink transition-colors min-h-[44px] min-w-[44px] inline-flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
             >
               <ArrowLeft className="w-4 h-4" />
             </Link>
@@ -80,26 +81,30 @@ export default function AdminSettingsPage() {
               Toggle between Razorpay Sandbox Test Mode and Production Live Mode per PRD Section 6.9.
             </p>
 
-            <div className="grid grid-cols-2 gap-3 pt-2">
-              <div
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+              <button
+                type="button"
+                aria-pressed={settings.razorpayMode === "test"}
                 onClick={() => setSettings({ ...settings, razorpayMode: "test" })}
-                className={`p-3.5 rounded border cursor-pointer transition-colors ${
+                className={`p-3.5 rounded border text-left transition-colors min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary ${
                   settings.razorpayMode === "test" ? "bg-primary-light/50 border-primary" : "bg-surface border-border hover:bg-slate-100"
                 }`}
               >
                 <div className="font-bold text-primary">Test / Sandbox Mode</div>
                 <div className="text-[11px] text-ink-secondary mt-0.5">Mock transactions for development &amp; staging</div>
-              </div>
+              </button>
 
-              <div
+              <button
+                type="button"
+                aria-pressed={settings.razorpayMode === "live"}
                 onClick={() => setSettings({ ...settings, razorpayMode: "live" })}
-                className={`p-3.5 rounded border cursor-pointer transition-colors ${
+                className={`p-3.5 rounded border text-left transition-colors min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary ${
                   settings.razorpayMode === "live" ? "bg-primary-light/50 border-primary" : "bg-surface border-border hover:bg-slate-100"
                 }`}
               >
                 <div className="font-bold text-emerald-800">Production Live Mode</div>
                 <div className="text-[11px] text-ink-secondary mt-0.5">Settles live payments into Acorn Bank account</div>
-              </div>
+              </button>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">

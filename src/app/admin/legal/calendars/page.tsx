@@ -10,14 +10,17 @@ import {
   Trash2,
   AlertCircle,
   X,
-  Scale
+  Scale,
+  Download,
 } from "lucide-react";
 import { platformStore } from "@/lib/store";
+import { useRealtimeCourtHolidays } from "@/lib/realtime";
 import { CourtHoliday } from "@/lib/types";
 import { ConfirmDialog } from "@/components/admin/confirm-dialog";
+import { downloadCsv } from "@/lib/export-csv";
 
 export default function LegalCalendarsPage() {
-  const [holidays, setHolidays] = useState<CourtHoliday[]>([]);
+  const holidays = useRealtimeCourtHolidays();
   const [selectedCalendar, setSelectedCalendar] = useState<"wb" | "central">("wb");
   const [showModal, setShowModal] = useState(false);
   const [holidayToDelete, setHolidayToDelete] = useState<{ id: string; name: string } | null>(null);
@@ -30,14 +33,6 @@ export default function LegalCalendarsPage() {
     calendar: "wb" as "wb" | "central",
     affectsLimitation: true,
   });
-
-  const loadData = () => {
-    setHolidays(platformStore.getHolidays());
-  };
-
-  useEffect(() => {
-    loadData();
-  }, []);
 
   const triggerToast = (msg: string) => {
     setToastMsg(msg);
@@ -65,7 +60,6 @@ export default function LegalCalendarsPage() {
       calendar: selectedCalendar,
       affectsLimitation: true,
     });
-    loadData();
   };
 
   const handleDelete = (id: string, name: string) => {
@@ -77,12 +71,23 @@ export default function LegalCalendarsPage() {
     platformStore.deleteHoliday(holidayToDelete.id);
     triggerToast(`Removed holiday ${holidayToDelete.name}`);
     setHolidayToDelete(null);
-    loadData();
   };
 
   const displayedHolidays = holidays.filter(
     (h) => h.calendar === selectedCalendar || (selectedCalendar === "wb" && h.calendar === "central")
   );
+
+  const handleExportCSV = () => {
+    const headers = ["Holiday Date", "Observance Name", "Jurisdiction / Calendar", "Gazette Type", "Extends Limitation (Sec 4)"];
+    const rows = displayedHolidays.map((h) => [
+      h.date,
+      h.name,
+      h.calendar === "wb" ? "West Bengal Courts" : "Central / All-India",
+      h.type,
+      h.affectsLimitation ? "YES (Extends Deadline)" : "NO",
+    ]);
+    downloadCsv(`Acorn_Court_Holidays_${selectedCalendar}_${new Date().toISOString().slice(0, 10)}.csv`, headers, rows);
+  };
 
   return (
     <div className="bg-surface min-h-screen py-8">
@@ -126,22 +131,32 @@ export default function LegalCalendarsPage() {
             </div>
           </div>
 
-          <button
-            onClick={() => {
-              setFormData({
-                date: "2026-11-15",
-                name: "",
-                type: selectedCalendar === "wb" ? "State Gazetted" : "National Gazetted",
-                calendar: selectedCalendar,
-                affectsLimitation: true,
-              });
-              setShowModal(true);
-            }}
-            className="inline-flex items-center gap-2 px-4 py-2 bg-primary hover:bg-primary-light text-white text-xs font-bold rounded transition shadow"
-          >
-            <Plus className="w-3.5 h-3.5" />
-            <span>Add Court Holiday</span>
-          </button>
+          <div className="flex flex-wrap items-center gap-2">
+            <button
+              onClick={handleExportCSV}
+              className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-white border border-border text-navy-700 text-xs font-semibold rounded hover:bg-slate-50 transition shadow-sm"
+              title="Download Holidays CSV"
+            >
+              <Download className="w-3.5 h-3.5 text-brass-500" />
+              <span>Export CSV</span>
+            </button>
+            <button
+              onClick={() => {
+                setFormData({
+                  date: "2026-11-15",
+                  name: "",
+                  type: selectedCalendar === "wb" ? "State Gazetted" : "National Gazetted",
+                  calendar: selectedCalendar,
+                  affectsLimitation: true,
+                });
+                setShowModal(true);
+              }}
+              className="inline-flex items-center gap-2 px-4 py-2 bg-primary hover:bg-primary-light text-white text-xs font-bold rounded transition shadow"
+            >
+              <Plus className="w-3.5 h-3.5" />
+              <span>Add Court Holiday</span>
+            </button>
+          </div>
         </div>
 
         {/* Statutory Info Banner */}

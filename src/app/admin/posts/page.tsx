@@ -13,12 +13,14 @@ import {
   Edit2,
   Save,
   X,
+  Download,
 } from "lucide-react";
 import { platformStore } from "@/lib/store";
 import { useRealtimePosts } from "@/lib/realtime";
 import { formatDate } from "@/lib/utils";
 import { BlogPost } from "@/lib/types";
 import { ConfirmDialog } from "@/components/admin/confirm-dialog";
+import { downloadCsv } from "@/lib/export-csv";
 
 export default function AdminBlogCMSPage() {
   const blogs = useRealtimePosts();
@@ -101,6 +103,21 @@ export default function AdminBlogCMSPage() {
     setPostToDelete(null);
   };
 
+  const handleExportCSV = () => {
+    const headers = ["Article Title", "Slug", "Category", "Author", "Status", "Published Date", "Reading Time", "Summary"];
+    const rows = blogs.map((b) => [
+      b.title,
+      b.slug,
+      b.category,
+      b.author?.name || "Acorn Chambers",
+      b.status,
+      formatDate(b.publishedAt),
+      `${b.readingTimeMinutes} mins`,
+      b.summary,
+    ]);
+    downloadCsv(`Acorn_Editorial_Articles_${new Date().toISOString().slice(0, 10)}.csv`, headers, rows);
+  };
+
   return (
     <div className="bg-ivory-50 min-h-screen py-8 text-ink">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
@@ -138,16 +155,26 @@ export default function AdminBlogCMSPage() {
             </p>
           </div>
 
-          <button
-            onClick={() => {
-              setIsCreating(!isCreating);
-              setEditingPost(null);
-            }}
-            className="px-4 py-2 bg-navy-700 hover:bg-blue-600 text-white text-xs font-bold rounded-btn shadow-sm transition flex items-center gap-1.5"
-          >
-            <Plus className="w-4 h-4" />
-            <span>{isCreating ? "Close Editor" : "New Article"}</span>
-          </button>
+          <div className="flex flex-wrap items-center gap-2">
+            <button
+              onClick={handleExportCSV}
+              className="px-3.5 py-2 bg-white border border-border text-navy-700 text-xs font-semibold rounded-btn hover:bg-slate-50 transition shadow-sm flex items-center gap-1.5"
+              title="Download Articles CSV"
+            >
+              <Download className="w-3.5 h-3.5 text-brass-500" />
+              <span>Export CSV</span>
+            </button>
+            <button
+              onClick={() => {
+                setIsCreating(!isCreating);
+                setEditingPost(null);
+              }}
+              className="px-4 py-2 bg-navy-700 hover:bg-blue-600 text-white text-xs font-bold rounded-btn shadow-sm transition flex items-center gap-1.5"
+            >
+              <Plus className="w-4 h-4" />
+              <span>{isCreating ? "Close Editor" : "New Article"}</span>
+            </button>
+          </div>
         </div>
 
         {/* Modal / Form: Create Post */}

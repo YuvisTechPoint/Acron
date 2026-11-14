@@ -18,6 +18,7 @@ import { platformStore } from "@/lib/store";
 import { useRealtimePayments } from "@/lib/realtime";
 import { formatINR, formatDate, formatDateTime } from "@/lib/utils";
 import { PaymentTransaction } from "@/lib/types";
+import { downloadCsv } from "@/lib/export-csv";
 
 export default function AdminPaymentsPage() {
   const [selectedPayment, setSelectedPayment] = useState<PaymentTransaction | null>(null);
@@ -40,26 +41,19 @@ export default function AdminPaymentsPage() {
 
   const handleExportCSV = () => {
     const headers = ["Receipt Number", "Invoice Number", "Client Name", "GSTIN", "Service Description", "Amount (INR)", "GST 18% (INR)", "Total (INR)", "Status", "Date"];
-    const rows = payments.map((p) => [
-      `"${p.receiptNumber}"`,
-      `"${p.invoiceNumber}"`,
-      `"${p.clientName}"`,
-      `"${p.clientGstin || ""}"`,
-      `"${(p.itemDescription || "").replace(/"/g, '""')}"`,
+    const rows = filteredPayments.map((p) => [
+      p.receiptNumber,
+      p.invoiceNumber,
+      p.clientName,
+      p.clientGstin || "",
+      p.itemDescription || "",
       (p.amountPaise / 100).toFixed(2),
       (p.taxPaise / 100).toFixed(2),
       (p.totalPaise / 100).toFixed(2),
       p.status,
-      `"${formatDate(p.createdAt)}"`,
+      formatDate(p.createdAt),
     ]);
-    const csvContent = "data:text/csv;charset=utf-8," + [headers.join(","), ...rows.map((e) => e.join(","))].join("\n");
-    const encodedUri = encodeURI(csvContent);
-    const link = document.createElement("a");
-    link.setAttribute("href", encodedUri);
-    link.setAttribute("download", `Acorn_Payments_Ledger_${new Date().toISOString().slice(0, 10)}.csv`);
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    downloadCsv(`Acorn_Payments_Ledger_${new Date().toISOString().slice(0, 10)}.csv`, headers, rows);
   };
 
   return (

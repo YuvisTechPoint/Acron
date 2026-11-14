@@ -2,11 +2,12 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { ArrowLeft, Edit2, Save, X, CheckCircle2, Scale, Plus } from "lucide-react";
+import { ArrowLeft, Edit2, Save, X, CheckCircle2, Scale, Plus, Download } from "lucide-react";
 import { platformStore } from "@/lib/store";
 import { useRealtimeLegalRules } from "@/lib/realtime";
 import { LegalRule } from "@/lib/types";
 import { useToast } from "@/components/ui/toast";
+import { downloadCsv } from "@/lib/export-csv";
 
 export default function LegalRulesConsolePage() {
   const { toast } = useToast();
@@ -42,6 +43,18 @@ export default function LegalRulesConsolePage() {
     setTimeout(() => setSavedSuccess(false), 2500);
   };
 
+  const handleExportCSV = () => {
+    const headers = ["Parameter Key", "Configured Value", "Statutory Authority / Source", "Status", "Legal Description"];
+    const rows = rules.map((r) => [
+      r.param,
+      r.value,
+      r.source,
+      r.status,
+      r.description || "",
+    ]);
+    downloadCsv(`Acorn_Statutory_Rules_Registry_${new Date().toISOString().slice(0, 10)}.csv`, headers, rows);
+  };
+
   return (
     <div className="bg-ivory-50 min-h-screen py-8 text-ink">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
@@ -75,7 +88,15 @@ export default function LegalRulesConsolePage() {
             </p>
           </div>
 
-          <div className="flex gap-2">
+          <div className="flex flex-wrap items-center gap-2">
+            <button
+              onClick={handleExportCSV}
+              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-white border border-border text-navy-700 text-xs font-semibold rounded-btn hover:bg-slate-50 transition shadow-sm"
+              title="Download Rules CSV"
+            >
+              <Download className="w-3.5 h-3.5 text-brass-500" />
+              <span>Export CSV</span>
+            </button>
             <Link
               href="/admin/legal/templates"
               className="px-3.5 py-1.5 border border-border text-xs font-semibold rounded-btn hover:bg-slate-50 text-navy-700 transition"
@@ -106,7 +127,8 @@ export default function LegalRulesConsolePage() {
             <span className="text-[11px] text-emerald-700 font-bold">&check; Counsel Dual Approval Active</span>
           </div>
 
-          <table className="w-full text-left">
+          <div className="overflow-x-auto">
+            <table className="w-full text-left">
             <thead className="bg-slate-50 border-b border-border text-[11px] uppercase tracking-wider text-ink-secondary font-semibold">
               <tr>
                 <th className="p-3.5">Parameter Key</th>
@@ -182,7 +204,8 @@ export default function LegalRulesConsolePage() {
                 </tr>
               ))}
             </tbody>
-          </table>
+            </table>
+          </div>
         </div>
       </div>
     </div>

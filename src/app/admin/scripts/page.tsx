@@ -13,21 +13,47 @@ import {
   Plus,
 } from "lucide-react";
 import { platformStore } from "@/lib/store";
+import { useRealtimeScripts } from "@/lib/realtime";
 import { ScriptTag } from "@/lib/types";
 
 export default function AdminScriptsPage() {
   const [masterKillSwitch, setMasterKillSwitch] = useState(false);
-  const [scripts, setScripts] = useState<ScriptTag[]>(platformStore.getScripts());
-  const [selectedScript, setSelectedScript] = useState<ScriptTag | null>(scripts[0] || null);
+  const scripts = useRealtimeScripts();
+  const [selectedScriptId, setSelectedScriptId] = useState<string | null>(null);
+  const [toastMsg, setToastMsg] = useState<string | null>(null);
 
-  const toggleScript = (id: string, currentState: boolean) => {
-    platformStore.updateScript(id, !currentState);
-    setScripts([...platformStore.getScripts()]);
+  const selectedScript = scripts.find((s) => s.id === (selectedScriptId || scripts[0]?.id)) || scripts[0] || null;
+
+  const triggerToast = (msg: string) => {
+    setToastMsg(msg);
+    setTimeout(() => setToastMsg(null), 3000);
+  };
+
+  const toggleScript = async (id: string, currentState: boolean) => {
+    const nextState = !currentState;
+    platformStore.updateScript(id, nextState);
+    triggerToast(`Script ${id} is now ${nextState ? "ENABLED" : "DISABLED"}`);
+
+    try {
+      await fetch("/api/scripts", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id, isEnabled: nextState }),
+      });
+    } catch {}
   };
 
   return (
     <div className="bg-surface min-h-screen py-8">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
+        {/* Toast */}
+        {toastMsg && (
+          <div className="p-3 bg-emerald-50 border border-emerald-300 rounded text-xs text-emerald-900 font-semibold flex items-center gap-2">
+            <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+            <span>{toastMsg}</span>
+          </div>
+        )}
+
         {/* Header */}
         <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-4 bg-white p-6 rounded-card border border-border shadow-card">
           <div className="flex items-center gap-3">
@@ -59,7 +85,6 @@ export default function AdminScriptsPage() {
                 setMasterKillSwitch(next);
                 if (next) {
                   scripts.forEach((s) => platformStore.updateScript(s.id, false));
-                  setScripts([...platformStore.getScripts()]);
                 }
               }}
               className={`p-2 rounded-full transition-colors ${
@@ -90,7 +115,7 @@ export default function AdminScriptsPage() {
               {scripts.map((s) => (
                 <div
                   key={s.id}
-                  onClick={() => setSelectedScript(s)}
+                  onClick={() => setSelectedScriptId(s.id)}
                   className={`p-4 hover:bg-surface cursor-pointer transition-colors space-y-2 ${
                     selectedScript?.id === s.id ? "bg-primary-light/40" : ""
                   }`}
