@@ -817,6 +817,73 @@ async function runTests() {
     }
   }
 
+  // ----------------------------------------------------------------------
+  // 3. Complete Admin Section Routes & End-to-End Accessibility
+  // ----------------------------------------------------------------------
+  console.log("\n--- 3. Complete Admin Section Routes & End-to-End Verification ---");
+
+  const adminRoutesToTest = [
+    "/admin",
+    "/admin/requests",
+    "/admin/requests/SR-1731110000001",
+    "/admin/cases",
+    "/admin/delivery",
+    "/admin/payments",
+    "/admin/payment-links",
+    "/admin/subscriptions",
+    "/admin/directory",
+    "/admin/catalogue",
+    "/admin/kb",
+    "/admin/lms/courses",
+    "/admin/questions",
+    "/admin/faq",
+    "/admin/services",
+    "/admin/legal/rules",
+    "/admin/legal/register",
+    "/admin/legal/templates",
+    "/admin/legal/watch",
+    "/admin/legal/calendars",
+    "/admin/ops",
+    "/admin/ops/gate",
+    "/admin/ops/dr",
+    "/admin/ops/reliability",
+    "/admin/ops/sop",
+    "/admin/site",
+    "/admin/media",
+    "/admin/pages",
+    "/admin/posts",
+    "/admin/scripts",
+    "/admin/seo",
+    "/admin/ai",
+    "/admin/trust",
+    "/admin/audit",
+    "/admin/notifications",
+    "/admin/users",
+    "/admin/reports",
+    "/admin/surveys",
+    "/admin/helpdesk",
+    "/admin/settings",
+  ];
+
+  for (const route of adminRoutesToTest) {
+    try {
+      const res = await fetch(`${BASE_URL}${route}`, {
+        headers: { Cookie: `acorn_admin_session=${authCookie}` },
+        redirect: "manual",
+      });
+      if (res.status === 200) {
+        console.log(`  ✔ [PASS] Admin Route Access: ${route} renders with HTTP 200 OK`);
+        passed++;
+      } else {
+        console.error(`  ✖ [FAIL] Admin Route Access: Expected 200 for ${route}, got ${res.status}`);
+        failed++;
+      }
+    } catch (err) {
+      console.error(`  ✖ [ERROR] Admin Route ${route}: ${err.message}`);
+      failed++;
+    }
+  }
+
   console.log("\n=================================================");
   console.log(`Verification Complete: ${passed} passed, ${failed} failed.`);
   console.log("=================================================");
@@ -830,6 +897,7 @@ async function runTests() {
   if (failed > 0) {
     process.exit(1);
   }
+  process.exit(0);
 }
 
 runTests().catch((e) => {

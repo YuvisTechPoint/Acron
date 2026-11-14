@@ -124,6 +124,7 @@ const ROUTES = [
   "/admin/requests",
   "/admin/requests/req-1",
   "/admin/cases",
+  "/admin/delivery",
   "/admin/payments",
   "/admin/payment-links",
   "/admin/subscriptions",

@@ -140,9 +140,8 @@ export default function PoshRespondentStatusPage() {
                 <div key={h.id || i} className="bg-white p-4 rounded border border-border space-y-2 text-xs">
                   <div className="flex justify-between items-center border-b border-border-subtle pb-2">
                     <span className="font-bold text-ink">Hearing #{h.hearingNumber || i + 1}: {h.agenda}</span>
-                    <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${
-                      h.status === "completed" ? "bg-slate-100 text-slate-800" : "bg-emerald-100 text-emerald-800"
-                    }`}>
+                    <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${h.status === "completed" ? "bg-slate-100 text-slate-800" : "bg-emerald-100 text-emerald-800"
+                      }`}>
                       {h.status ? h.status.toUpperCase() : "SCHEDULED"}
                     </span>
                   </div>

@@ -37,6 +37,11 @@ import {
   Activity,
   CheckCircle2,
   AlertTriangle,
+  PackageCheck,
+  BookMarked,
+  Zap,
+  Bot,
+  Key,
 } from "lucide-react";
 import { AdminThemeToggle } from "@/components/admin/AdminThemeToggle";
 
@@ -58,6 +63,7 @@ const NAV_GROUPS: NavGroup[] = [
       { label: "Dashboard", href: "/admin", icon: LayoutDashboard },
       { label: "Service Requests", href: "/admin/requests", icon: Inbox },
       { label: "Legal Cases", href: "/admin/cases", icon: Briefcase },
+      { label: "Delivery Tracking", href: "/admin/delivery", icon: PackageCheck },
       { label: "Payments", href: "/admin/payments", icon: CreditCard },
       { label: "Payment Links", href: "/admin/payment-links", icon: Link2 },
       { label: "Subscriptions", href: "/admin/subscriptions", icon: CalendarDays },
@@ -79,6 +85,7 @@ const NAV_GROUPS: NavGroup[] = [
     group: "Legal & Regulatory",
     items: [
       { label: "Rules Registry", href: "/admin/legal/rules", icon: Scale },
+      { label: "Compliance Register", href: "/admin/legal/register", icon: BookMarked },
       { label: "Draft Templates", href: "/admin/legal/templates", icon: FileCheck2 },
       { label: "Precedent Watch", href: "/admin/legal/watch", icon: Eye },
       { label: "Compliance Calendars", href: "/admin/legal/calendars", icon: CalendarDays },
@@ -91,6 +98,7 @@ const NAV_GROUPS: NavGroup[] = [
       { label: "Ops Command Centre", href: "/admin/ops", icon: Activity },
       { label: "Go-Live Gate", href: "/admin/ops/gate", icon: CheckCircle2 },
       { label: "DR Drills & Tamper", href: "/admin/ops/dr", icon: AlertTriangle },
+      { label: "Reliability & Uptime", href: "/admin/ops/reliability", icon: Zap },
       { label: "SOP Recurrence", href: "/admin/ops/sop", icon: ClipboardList },
     ],
   },
@@ -103,6 +111,8 @@ const NAV_GROUPS: NavGroup[] = [
       { label: "Articles CMS", href: "/admin/posts", icon: FileCode },
       { label: "Script Injection", href: "/admin/scripts", icon: Code },
       { label: "SEO Meta", href: "/admin/seo", icon: Search },
+      { label: "AI Governance", href: "/admin/ai", icon: Bot },
+      { label: "Trust & Verification", href: "/admin/trust", icon: Key },
       { label: "Audit Logs", href: "/admin/audit", icon: ShieldCheck },
       { label: "Notifications", href: "/admin/notifications", icon: Bell },
       { label: "Users & Roles", href: "/admin/users", icon: Users },

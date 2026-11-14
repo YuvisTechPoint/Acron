@@ -191,6 +191,12 @@ export default function AdminServiceRequestsPage() {
                     <h3 className="font-serif font-bold text-base text-ink mt-0.5">
                       {selectedRequest.subject}
                     </h3>
+                    <Link
+                      href={`/admin/requests/${selectedRequest.id}`}
+                      className="inline-flex items-center gap-1 text-[11px] font-semibold text-primary hover:underline mt-1"
+                    >
+                      <span>Open Full Matter Docket &rarr;</span>
+                    </Link>
                   </div>
                   <span className="px-2.5 py-1 rounded-full text-[10px] font-bold bg-primary text-white">
                     {selectedRequest.status}
