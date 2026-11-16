@@ -78,20 +78,20 @@ export function Footer() {
               </div>
               <div className="flex flex-col">
                 <span className="font-serif text-2xl font-bold tracking-tight text-white leading-none">
-                  ACORN
+                  {siteConfig?.firmName || "ACORN CONSULTANTS"}
                 </span>
                 <span className="font-sans text-[10px] font-semibold tracking-[0.2em] uppercase text-brass-300 mt-1">
-                  Legal Consultants
+                  {siteConfig?.tagline || "Educational, Tax & Legal Consultants"}
                 </span>
               </div>
             </Link>
 
             <p className="font-sans text-xs text-slate-300 leading-relaxed max-w-sm">
-              A specialized legal consultancy in Kolkata delivering thoughtful, precise, and result-oriented solutions for corporate governance, commercial contracts, regulatory affairs, and institutional integrity.
+              Over 15 years of dedicated expertise delivering comprehensive legal advocacy, 30-year property title investigation, society governance, document attestation, and educational consulting.
             </p>
 
             <div className="pt-1 text-xs text-brass-300 font-serif italic">
-              &ldquo;Excellence in Law. Integrity in Practice.&rdquo;
+              &ldquo;Work done well, with a personal touch.&rdquo;
             </div>
 
             <div className="pt-2 flex items-center gap-2 text-[11px] text-slate-400">

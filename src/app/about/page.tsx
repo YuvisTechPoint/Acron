@@ -83,22 +83,22 @@ const VALUES_GRID = [
 
 const TEAM_MEMBERS = [
   {
-    role: "Senior Partner & Practice Lead",
+    role: "Advocate on Panel & Practice Head",
     title: "Advocate & Legal Consultant",
-    note: "[Profile photo to be supplied]",
-    focus: "Commercial Litigation &bull; Arbitration &bull; Corporate Structuring",
+    note: "[Advocate on Panel: Adv. Rajesh Telge]",
+    focus: "Civil & Criminal Matters &bull; 30-Year Title Search &bull; MahaRERA &bull; Succession & Wills",
   },
   {
-    role: "Partner & POSH Practice Head",
-    title: "External Member & Corporate Counsel",
-    note: "[Profile photo to be supplied]",
-    focus: "POSH Act 2013 Inquiries &bull; Employment Law &bull; Policy Governance",
+    role: "Educational Advisory & Academic Lead",
+    title: "Educational & Tax Consultant",
+    note: "[Over 15 Years of Expertise]",
+    focus: "Professional Degree Admissions &bull; University Form Guidance &bull; Tax Advisory",
   },
   {
-    role: "Senior Associate & Documentation Lead",
-    title: "Commercial Contracts Specialist",
-    note: "[Profile photo to be supplied]",
-    focus: "Contract Drafting &bull; Regulatory Compliance &bull; Due Diligence",
+    role: "Society Governance & Documentation Lead",
+    title: "Property & Societies Specialist",
+    note: "[Chambers Advisory]",
+    focus: "Co-operative Society Bye-Laws &bull; GDCA Formations &bull; Doorstep Leave & License",
   },
 ];
 
@@ -130,12 +130,12 @@ export default function AboutPage() {
       {/* Page Header */}
       <section className="pt-32 pb-16 sm:pt-40 sm:pb-24 border-b border-border bg-ivory-50 relative overflow-hidden">
         <div className="max-w-[1240px] mx-auto px-4 sm:px-6 space-y-6">
-          <Eyebrow>ABOUT ACORN LEGAL CONSULTANTS</Eyebrow>
+          <Eyebrow>ABOUT ACORN CONSULTANTS</Eyebrow>
           <h1 className="font-serif text-4xl sm:text-6xl md:text-7xl font-bold tracking-tight text-ink-950 leading-[1.05] max-w-4xl">
-            {pageData.title || "Where legal expertise meets strategic excellence."}
+            {pageData.title || "Over 15 years of expertise in Educational, Tax & Legal Services."}
           </h1>
           <p className="font-sans text-lg sm:text-xl text-ink-secondary max-w-2xl leading-relaxed">
-            {pageData.content || "Founded on the principles of discretion, statutory rigor, and unyielding professional integrity, Acorn Legal Consultants delivers principled counsel to corporate boards, institutions, and individuals across Kolkata and India."}
+            {pageData.content || "Our job starts with you: understanding what you need, so we can offer you options that suit you best. Making sure you receive the dedicated representation, personal care, and high-quality solutions you deserve."}
           </p>
         </div>
       </section>
@@ -152,7 +152,7 @@ export default function AboutPage() {
                   src="/images/hero.jpg"
                   aspect="portrait"
                   label="Chambers Archive & Library"
-                  sublabel="Camac Court, Kolkata"
+                  sublabel="Acorn Consultants"
                   glow
                 />
               </div>
@@ -162,17 +162,17 @@ export default function AboutPage() {
             <div className="lg:col-span-7 space-y-6">
               <Eyebrow>OUR STORY</Eyebrow>
               <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl font-bold text-ink-950 leading-[1.12]">
-                A legacy of thoughtful, <span className="font-serif italic font-normal text-brass-700">restrained</span> counsel.
+                Work done well, with a <span className="font-serif italic font-normal text-brass-700">personal</span> touch.
               </h2>
               <div className="space-y-4 font-sans text-base text-ink-secondary leading-relaxed">
                 <p>
-                  Acorn Legal Consultants was established with a singular conviction: that modern corporate and institutional affairs require counsel who combine exhaustive statutory command with an unhurried, principled standard of care.
+                  With over 15 years of dedicated practice under Advocate on Panel Mr. Rajesh Telge, Acorn Consultants was established to make the legal, tax, and educational systems workable, accessible, and dependable for individuals, businesses, and institutions.
                 </p>
                 <p>
-                  From our chambers situated at Camac Street in the Park Street District of Kolkata, our advocates and corporate consultants advise across diverse commercial sectors—including infrastructure, real estate, education, technology, and manufacturing.
+                  We are committed to providing top-notch support across every stage of your requirements: from Civil, Criminal, and Property litigation to 30-year land title investigation, MahaRERA representation, co-operative society management, statutory Leave &amp; License registration at your doorstep, registered Wills, and official document attestations (State, MEA Apostille &amp; Embassy).
                 </p>
                 <p>
-                  We deliberately remain a focused practice rather than a volume firm. By doing so, we ensure that every client matter receives the personal attention of seasoned counsel, free from procedural bloat or divided loyalties.
+                  No issue is too big or too small. Each engagement benefits from the depth and breadth of our multidisciplinary expertise. We approach every client with a steadfast commitment to integrity, advocacy, and genuine understanding.
                 </p>
               </div>
 

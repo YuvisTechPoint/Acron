@@ -756,15 +756,15 @@ const SEED_AUDIT_LOGS: AuditLogEntry[] = [
 ];
 
 const SEED_SITE_CONFIG: SiteConfig = {
-  firmName: "Acorn Legal Consultants",
-  tagline: "",
-  brandSubline: "Excellence in Law. Integrity in Practice.",
-  founderName: "Adv. Subhasish Mukherjee",
-  founderTitle: "Managing Partner & Senior Counsel",
-  heroHeadline: "Excellence in Law.",
-  heroSubheadline: "Integrity in Practice.",
+  firmName: "Acorn Consultants",
+  tagline: "Educational, Tax & Legal Consultants",
+  brandSubline: "Over 15 Years of Dedicated Practice & Advisory Excellence",
+  founderName: "Adv. Rajesh Telge",
+  founderTitle: "Advocate on Panel & Principal Counsel",
+  heroHeadline: "Excellence in Law & Advisory.",
+  heroSubheadline: "Educational, Tax & Legal Solutions.",
   heroDescription:
-    "A specialized legal consultancy in Kolkata delivering thoughtful, precise, and result-oriented solutions for corporate governance, commercial contracts, regulatory affairs, and institutional integrity.",
+    "Over 15 years of trusted expertise providing dedicated legal advocacy, 30-year property title search, statutory document attestation, society management, and educational consulting with personal client care.",
   heroBgImage: "/images/hero.jpg",
   heroPrimaryCtaText: "Request a Consultation",
   heroPrimaryCtaLink: "/request-service",
@@ -784,15 +784,15 @@ const SEED_SITE_CONFIG: SiteConfig = {
   state: "West Bengal",
   postalCode: "700016",
   receptionPhone: "+91 828 69 36 899",
-  primaryEmail: "contact@acornlegal.in",
-  poshEmail: "posh.desk@acornlegal.in",
-  emergencyPhone: "+91 98300 99999",
+  primaryEmail: "acornconsultant2014@gmail.com",
+  poshEmail: "acornconsultant2014@gmail.com",
+  emergencyPhone: "+91 8369171822",
   operatingHours: "Mon – Sat: 9:30 AM – 7:30 PM IST",
   courtVacationNotice:
     "Chambers open throughout High Court long vacation for urgent mentions & POSH inquiries.",
   googleMapsQuery: "Camac Court, 25 Camac Street, Park Street District, Kolkata 700016",
   footerRollText:
-    "Excellence in Law • Integrity in Practice • Calcutta High Court • POSH Act Advisory • Corporate Governance • Commercial Contracts • Arbitration & Mediation",
+    "Over 15 Years of Practice • Educational, Tax & Legal Consultants • Civil, Criminal & Property Matters • MahaRERA & Title Search • Document Attestation & Apostille • Marriage Registration & Succession",
   disclaimer:
     "As per the rules of the Bar Council of India, law firms are not permitted to solicit work or advertise. By accessing this website, the user acknowledges that the information provided is solely for informational purposes and does not create an advocate-client relationship.",
   pathwaySteps: [

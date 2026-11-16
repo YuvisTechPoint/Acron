@@ -190,17 +190,15 @@ export function Navbar() {
                   isTransparent ? "text-white drop-shadow-sm" : "text-ink-950"
                 }`}
               >
-                Acorn Legal Consultants
+                {siteConfig?.firmName || "Acorn Consultants"}
               </span>
-              {siteConfig?.tagline ? (
-                <span
-                  className={`font-sans text-[10px] font-semibold tracking-[0.2em] uppercase mt-1 transition-colors duration-200 ${
-                    isTransparent ? "text-brass-300 drop-shadow-sm" : "text-brass-700"
-                  }`}
-                >
-                  {siteConfig.tagline}
-                </span>
-              ) : null}
+              <span
+                className={`font-sans text-[10px] font-semibold tracking-[0.2em] uppercase mt-1 transition-colors duration-200 ${
+                  isTransparent ? "text-brass-300 drop-shadow-sm" : "text-brass-700"
+                }`}
+              >
+                {siteConfig?.tagline || "Educational, Tax & Legal Consultants"}
+              </span>
             </div>
           </Link>
 

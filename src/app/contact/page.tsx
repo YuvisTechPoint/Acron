@@ -152,15 +152,21 @@ export default function ContactPage() {
             <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-navy-700">
               <Phone className="w-5 h-5" />
             </div>
-            <h3 className="font-serif text-2xl font-bold text-ink">Chambers Telephony</h3>
-            <div className="space-y-1 text-sm font-sans">
+            <h3 className="font-serif text-2xl font-bold text-ink">Helpline &amp; Advocates</h3>
+            <div className="space-y-2 text-sm font-sans">
               <div>
-                <span className="text-ink-muted text-xs block">Main Chambers Desk</span>
-                <a href={`tel:${siteConfig.receptionPhone || BRAND_CONFIG.phone}`} className="font-semibold text-navy-700 hover:underline">
-                  {siteConfig.receptionPhone || BRAND_CONFIG.phone}
+                <span className="text-ink-muted text-xs block">Main Desk &amp; WhatsApp</span>
+                <a href="https://wa.me/918286936899" target="_blank" rel="noopener noreferrer" className="font-semibold text-navy-700 hover:text-brass-700 hover:underline">
+                  +91 828 69 36 899
                 </a>
               </div>
-              <div className="pt-2">
+              <div className="pt-1">
+                <span className="text-ink-muted text-xs block">Advocate on Panel (Mr. Rajesh Telge)</span>
+                <a href="tel:+918369171822" className="font-semibold text-navy-700 hover:text-brass-700 hover:underline">
+                  +91 8369171822
+                </a>
+              </div>
+              <div className="pt-1">
                 <span className="text-ink-muted text-xs block">Working Hours</span>
                 <span className="text-ink-secondary text-xs">{siteConfig.operatingHours || "Mon – Sat: 9:30 AM – 7:30 PM IST"}</span>
               </div>
@@ -173,18 +179,16 @@ export default function ContactPage() {
               <Mail className="w-5 h-5" />
             </div>
             <h3 className="font-serif text-2xl font-bold text-ink">Email Correspondence</h3>
-            <div className="space-y-1 text-sm font-sans">
+            <div className="space-y-2 text-sm font-sans">
               <div>
-                <span className="text-ink-muted text-xs block">General Inquiries &amp; Conflict Checks</span>
-                <a href={`mailto:${siteConfig.primaryEmail || BRAND_CONFIG.email}`} className="font-semibold text-navy-700 hover:underline">
-                  {siteConfig.primaryEmail || BRAND_CONFIG.email}
+                <span className="text-ink-muted text-xs block">Official Chambers Email</span>
+                <a href={`mailto:${siteConfig.primaryEmail || "acornconsultant2014@gmail.com"}`} className="font-semibold text-navy-700 hover:text-brass-700 hover:underline break-all">
+                  {siteConfig.primaryEmail || "acornconsultant2014@gmail.com"}
                 </a>
               </div>
-              <div className="pt-2">
-                <span className="text-ink-muted text-xs block">POSH Act Compliance Desk</span>
-                <a href={`mailto:${siteConfig.poshEmail || BRAND_CONFIG.poshEmail}`} className="font-semibold text-navy-700 hover:underline">
-                  {siteConfig.poshEmail || BRAND_CONFIG.poshEmail}
-                </a>
+              <div className="pt-1">
+                <span className="text-ink-muted text-xs block">Educational, Tax &amp; Legal Desk</span>
+                <span className="text-xs text-ink-secondary">Over 15 Years of Dedicated Advisory</span>
               </div>
             </div>
           </div>

@@ -57,9 +57,9 @@ export default function ServicesIndexPage() {
         className="py-16 sm:py-24 max-w-[1240px] mx-auto px-4 sm:px-6 relative"
       >
         <div className="divide-y divide-border border-y border-border">
-          {PRACTICE_AREAS.slice(0, 6).map((pa, idx) => {
+          {PRACTICE_AREAS.map((pa, idx) => {
             const isHovered = hoveredIdx === idx;
-            const stepNum = `0${idx + 1}`;
+            const stepNum = String(idx + 1).padStart(2, "0");
 
             return (
               <Link
