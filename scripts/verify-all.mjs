@@ -2,7 +2,8 @@
 import { spawn } from "child_process";
 import fs from "fs";
 
-const BASE_URL = process.env.TEST_BASE_URL || "http://localhost:3000";
+const TEST_PORT = process.env.PORT || "3005";
+const BASE_URL = process.env.TEST_BASE_URL || `http://localhost:${TEST_PORT}`;
 
 let serverProc = null;
 
@@ -12,22 +13,20 @@ async function ensureServerRunning(url) {
     if (res.status === 200) return null;
   } catch {}
 
-  const serverScript = fs.existsSync(".next/standalone/server.js")
-    ? [".next/standalone/server.js"]
-    : ["node_modules/next/dist/bin/next", "start", "-p", "3000"];
+  const serverScript = ["node_modules/next/dist/bin/next", "start", "-p", TEST_PORT];
 
-  console.log(`Starting standalone server via node ${serverScript.join(" ")}...`);
+  console.log(`Starting Acorn production server on port ${TEST_PORT}...`);
   const child = spawn("node", serverScript, {
     stdio: "ignore",
-    env: { ...process.env, PORT: "3000" },
+    env: { ...process.env, PORT: TEST_PORT },
   });
 
-  for (let i = 0; i < 30; i++) {
-    await new Promise((r) => setTimeout(r, 300));
+  for (let i = 0; i < 50; i++) {
+    await new Promise((r) => setTimeout(r, 400));
     try {
-      const res = await fetch(`${url}/api/health`, { signal: AbortSignal.timeout(500) });
+      const res = await fetch(`${url}/api/health`, { signal: AbortSignal.timeout(800) });
       if (res.status === 200) {
-        console.log("Server is ready for verification.\n");
+        console.log(`Acorn server is ready on port ${TEST_PORT} for verification.\n`);
         return child;
       }
     } catch {}

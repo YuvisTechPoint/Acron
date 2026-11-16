@@ -1,13 +1,13 @@
 {
   "version": "3.0.0",
-  "lastUpdated": "2026-11-14T13:21:38.567Z",
+  "lastUpdated": "2026-11-16T20:05:48.576Z",
   "siteConfig": {
     "firmName": "Acorn Legal Consultants",
     "tagline": "",
     "brandSubline": "Excellence in Law. Integrity in Practice.",
     "founderName": "Adv. Subhasish Mukherjee",
     "founderTitle": "Managing Partner & Senior Counsel",
-    "disclaimer": "As per the rules of the Bar Council of India, law firms are not permitted to solicit work or advertise. By accessing this website, the user acknowledges that the information provided is solely for informational purposes and does not create an advocate-client relationship.",
+    "disclaimer": "Bar Council of India Rule 36 verified. Informational chambers portal.",
     "primaryEmail": "contact@acornlegal.in",
     "receptionPhone": "+91 8369171822",
     "addressLine1": "Suite 4B, Camac Court, 25 Camac Street",
@@ -757,9 +757,15 @@
       "description": "We are closing an institutional seed round from Singapore investors and require FDI reporting and RBI filings.",
       "status": "IN_REVIEW",
       "createdAt": "2026-11-05T14:20:00.000Z",
-      "updatedAt": "2026-11-14T13:21:35.407Z",
+      "updatedAt": "2026-11-16T20:05:48.442Z",
       "urgency": "urgent",
       "internalNotes": [
+        {
+          "id": "note-1794859548442",
+          "author": "Admin / Legal Consultant",
+          "content": "Preliminary conflict check passed. Proceeding with fee quote.",
+          "createdAt": "2026-11-16T20:05:48.442Z"
+        },
         {
           "id": "note-1794662495407",
           "author": "Admin / Legal Consultant",
@@ -1110,6 +1116,188 @@
     }
   ],
   "auditLogs": [
+    {
+      "id": "audit-1794859548510-4mu8f",
+      "orgId": "SYSTEM",
+      "actor": "Super Admin",
+      "actorRole": "super_admin",
+      "action": "SYSTEM_SETTINGS_UPDATED",
+      "entityType": "system",
+      "entityId": "sys-01",
+      "timestamp": "2026-11-16T20:05:48.510Z",
+      "details": "Gateway mode=test, retention=3y",
+      "ipAddress": "127.0.0.1",
+      "prevHash": "1ab0ebd95c58ebe2330eaca3b265b81fed2ae8d4c5f942f8422f60e0db6ea3ff",
+      "hash": "5615c0a7cda6140cfbec6b3c40f8762bcad51b2318e0ddc522f6c569cc1b434a"
+    },
+    {
+      "id": "audit-1794859548470-e34g7",
+      "orgId": "SYSTEM",
+      "actor": "Admin",
+      "actorRole": "super_admin",
+      "action": "LEGAL_RULE_MODIFIED",
+      "entityType": "system",
+      "entityId": "sys-01",
+      "timestamp": "2026-11-16T20:05:48.470Z",
+      "details": "Statutory rule parameter inquiry_days updated to \"90\"",
+      "ipAddress": "127.0.0.1",
+      "prevHash": "305e5383f781d2b585b276aefe9118e07ae07d7a384f452b5171388ca0aa3d70",
+      "hash": "1ab0ebd95c58ebe2330eaca3b265b81fed2ae8d4c5f942f8422f60e0db6ea3ff"
+    },
+    {
+      "id": "audit-1794859548455-zosvx",
+      "orgId": "SYSTEM",
+      "actor": "Admin",
+      "actorRole": "super_admin",
+      "action": "CASE_STATUS_UPDATED",
+      "entityType": "system",
+      "entityId": "sys-01",
+      "timestamp": "2026-11-16T20:05:48.455Z",
+      "details": "Case ACN-POSH-2026-0041 transitioned to INQUIRY_IN_PROGRESS",
+      "ipAddress": "127.0.0.1",
+      "prevHash": "c112943a45391af4ab4685b19b45d51f4295cf1004ccc62201c36806a3d64bcd",
+      "hash": "305e5383f781d2b585b276aefe9118e07ae07d7a384f452b5171388ca0aa3d70"
+    },
+    {
+      "id": "audit-1794859548437-7t3vy",
+      "orgId": "SYSTEM",
+      "actor": "Admin",
+      "actorRole": "super_admin",
+      "action": "QA_QUESTION_DELETED",
+      "entityType": "system",
+      "entityId": "sys-01",
+      "timestamp": "2026-11-16T20:05:48.437Z",
+      "details": "Question query QA-1794859548398 removed from queue.",
+      "ipAddress": "127.0.0.1",
+      "prevHash": "6fd85da28428438e043feb60cc3b3620c779c2002352aeb1158c9d833ac92946",
+      "hash": "c112943a45391af4ab4685b19b45d51f4295cf1004ccc62201c36806a3d64bcd"
+    },
+    {
+      "id": "audit-1794859548419-q99be",
+      "orgId": "SYSTEM",
+      "actor": "Adv. Debjani Sen, Head of POSH Practice",
+      "actorRole": "super_admin",
+      "action": "QA_QUESTION_ANSWERED",
+      "entityType": "system",
+      "entityId": "sys-01",
+      "timestamp": "2026-11-16T20:05:48.419Z",
+      "details": "Moderation update applied to question query QA-1794859548398.",
+      "ipAddress": "127.0.0.1",
+      "prevHash": "9fdd5e05380655d3282a739a1773221b794552ec25dd89172f275ba2e04d0d42",
+      "hash": "6fd85da28428438e043feb60cc3b3620c779c2002352aeb1158c9d833ac92946"
+    },
+    {
+      "id": "audit-1794859548398-pm8w7",
+      "orgId": "SYSTEM",
+      "actor": "inquirer@acorn-client.in",
+      "actorRole": "super_admin",
+      "action": "QA_QUESTION_SUBMITTED",
+      "entityType": "system",
+      "entityId": "sys-01",
+      "timestamp": "2026-11-16T20:05:48.398Z",
+      "details": "New legal query ACN-QA-2026-543693 saved in database for moderation.",
+      "ipAddress": "127.0.0.1",
+      "prevHash": "f7cdf5bffa66005c8f2f530675851b83b17a3e17a97befb7d7db6ea566353481",
+      "hash": "9fdd5e05380655d3282a739a1773221b794552ec25dd89172f275ba2e04d0d42"
+    },
+    {
+      "id": "audit-1794859548282-h569p",
+      "orgId": "SYSTEM",
+      "actor": "admin@acornlegal.in",
+      "actorRole": "super_admin",
+      "action": "ADMIN_LOGIN_SUCCESS",
+      "entityType": "auth",
+      "entityId": "admin@acornlegal.in",
+      "timestamp": "2026-11-16T20:05:48.282Z",
+      "details": "Authenticated successfully as Super Admin / Managing Partner",
+      "ipAddress": "127.0.0.1",
+      "prevHash": "34a3df5fee1e51e96dc8da0328f137fc801fd407cb0c76d5dbb2d21dc07ceb46",
+      "hash": "f7cdf5bffa66005c8f2f530675851b83b17a3e17a97befb7d7db6ea566353481"
+    },
+    {
+      "id": "audit-1794859548231-2g08e",
+      "orgId": "SYSTEM",
+      "actor": "Admin",
+      "actorRole": "super_admin",
+      "action": "ADMIN_LOGOUT",
+      "entityType": "auth",
+      "entityId": "session",
+      "timestamp": "2026-11-16T20:05:48.231Z",
+      "details": "Staff admin session terminated",
+      "ipAddress": "127.0.0.1",
+      "prevHash": "48cbffd5ccb43820b3243ed4198f7c91a56f48672185357cc776ba89c2ed4791",
+      "hash": "34a3df5fee1e51e96dc8da0328f137fc801fd407cb0c76d5dbb2d21dc07ceb46"
+    },
+    {
+      "id": "audit-1794859548146-jfeu6",
+      "orgId": "SYSTEM",
+      "actor": "debjani.sen@acornlegal.in",
+      "actorRole": "super_admin",
+      "action": "ADMIN_LOGIN_SUCCESS",
+      "entityType": "auth",
+      "entityId": "debjani.sen@acornlegal.in",
+      "timestamp": "2026-11-16T20:05:48.146Z",
+      "details": "Authenticated successfully as Partner & External Member",
+      "ipAddress": "127.0.0.1",
+      "prevHash": "88d54e0f46ac755871a0d8478ec5965116dca0fc2dca553cf3a20f24601c1bef",
+      "hash": "48cbffd5ccb43820b3243ed4198f7c91a56f48672185357cc776ba89c2ed4791"
+    },
+    {
+      "id": "audit-1794859548086-9sd1r",
+      "orgId": "SYSTEM",
+      "actor": "admin@acornlegal.in",
+      "actorRole": "super_admin",
+      "action": "ADMIN_LOGIN_SUCCESS",
+      "entityType": "auth",
+      "entityId": "admin@acornlegal.in",
+      "timestamp": "2026-11-16T20:05:48.086Z",
+      "details": "Authenticated successfully as Super Admin / Managing Partner",
+      "ipAddress": "127.0.0.1",
+      "prevHash": "ac5709f47cc611f7fe5996b10098d5578f0b75ab775f4bdcc3a671015fe67a61",
+      "hash": "88d54e0f46ac755871a0d8478ec5965116dca0fc2dca553cf3a20f24601c1bef"
+    },
+    {
+      "id": "audit-1794859548066-tjwvq",
+      "orgId": "SYSTEM",
+      "actor": "admin@acornlegal.in",
+      "actorRole": "super_admin",
+      "action": "ADMIN_MFA_FAILED",
+      "entityType": "auth",
+      "entityId": "admin@acornlegal.in",
+      "timestamp": "2026-11-16T20:05:48.066Z",
+      "details": "Invalid 6-digit TOTP security code",
+      "ipAddress": "127.0.0.1",
+      "prevHash": "5cfaa90a54fab394a8e1bb6754e2248e8c52fc4492de2b7b321c962a715cb8c1",
+      "hash": "ac5709f47cc611f7fe5996b10098d5578f0b75ab775f4bdcc3a671015fe67a61"
+    },
+    {
+      "id": "audit-1794859548053-0lfbc",
+      "orgId": "SYSTEM",
+      "actor": "admin@acornlegal.in",
+      "actorRole": "super_admin",
+      "action": "ADMIN_LOGIN_FAILED",
+      "entityType": "auth",
+      "entityId": "admin@acornlegal.in",
+      "timestamp": "2026-11-16T20:05:48.053Z",
+      "details": "Invalid password attempt",
+      "ipAddress": "127.0.0.1",
+      "prevHash": "6b1b67f07f25e83545c9b7fff92dab6a4e15c543f238aaedb7263b6ac07fdeef",
+      "hash": "5cfaa90a54fab394a8e1bb6754e2248e8c52fc4492de2b7b321c962a715cb8c1"
+    },
+    {
+      "id": "audit-1794859548047-8tupc",
+      "orgId": "SYSTEM",
+      "actor": "intruder@malicious.domain",
+      "actorRole": "super_admin",
+      "action": "ADMIN_LOGIN_FAILED",
+      "entityType": "auth",
+      "entityId": "intruder@malicious.domain",
+      "timestamp": "2026-11-16T20:05:48.047Z",
+      "details": "Unrecognized administrator email address",
+      "ipAddress": "127.0.0.1",
+      "prevHash": "42193d851d940f38191e4fba6ba8cb4b40ee809bc152c95c124dee9ac6541498",
+      "hash": "6b1b67f07f25e83545c9b7fff92dab6a4e15c543f238aaedb7263b6ac07fdeef"
+    },
     {
       "id": "audit-1794662497636-4maba",
       "orgId": "SYSTEM",
@@ -3624,7 +3812,7 @@
       "source": "Section 11(4) POSH Act",
       "status": "Active (v1.0)",
       "description": "Mandatory statutory timeline to conclude inquiry",
-      "updatedAt": "2026-11-14"
+      "updatedAt": "2026-11-16"
     },
     {
       "param": "report_days",
@@ -3667,6 +3855,6 @@
     "smtpHost": "email-smtp.ap-south-1.amazonaws.com",
     "smtpFrom": "contact@acornlegal.in",
     "retentionYears": "3",
-    "updatedAt": "2026-11-14T13:21:37.635Z"
+    "updatedAt": "2026-11-16T20:05:48.510Z"
   }
 }
