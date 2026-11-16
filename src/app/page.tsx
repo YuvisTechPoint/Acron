@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -17,6 +17,8 @@ import {
   Eye,
   CheckCircle2,
   ChevronDown,
+  ChevronLeft,
+  ChevronRight,
   Lock,
   Search,
 } from "lucide-react";
@@ -147,6 +149,17 @@ function formatCategory(cat?: string): string {
 
 export default function HomePage() {
   const [activeStep, setActiveStep] = useState(0);
+  const practiceScrollRef = useRef<HTMLDivElement>(null);
+
+  const scrollPractices = (direction: "left" | "right") => {
+    if (!practiceScrollRef.current) return;
+    const scrollAmount = practiceScrollRef.current.clientWidth * 0.8;
+    practiceScrollRef.current.scrollBy({
+      left: direction === "left" ? -scrollAmount : scrollAmount,
+      behavior: "smooth",
+    });
+  };
+
   const siteConfig = useRealtimeSiteConfig();
   const rawFaqs = useRealtimeFaqs();
   const rawPosts = useRealtimePosts();
@@ -494,43 +507,82 @@ export default function HomePage() {
               </Card>
             </div>
 
-            {/* Smaller Cards 3, 4, 5, 6 (Spans 3 cols each on lg, 6 cols on md) */}
-            {PRACTICE_AREAS.slice(2).map((pa, i) => (
-              <div key={pa.slug} className="md:col-span-6 lg:col-span-3">
-                <Card
-                  variant="white"
-                  arrowOnHover
-                  href={`/services/${pa.slug}`}
-                  className="h-full flex flex-col justify-between"
+          </div>
+
+          {/* Secondary Practice Disciplines: 5 Cards in the Same Line Horizontally */}
+          <div className="space-y-4">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <span className="text-brass-600 text-xs">✦</span>
+                <span className="font-sans text-xs font-bold uppercase tracking-wider text-ink-muted">
+                  Institutional &amp; Commercial Practice Disciplines
+                </span>
+              </div>
+              {/* Carousel Navigation Arrows */}
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => scrollPractices("left")}
+                  className="w-8 h-8 rounded-full border border-border bg-white hover:bg-stone-50 hover:border-brass-400 text-ink flex items-center justify-center transition shadow-sm focus:outline-none focus:ring-1 focus:ring-brass-400"
+                  aria-label="Previous practice disciplines"
                 >
-                  <div>
-                    <div className="flex items-center justify-between pb-4 border-b border-border">
-                      <span className="font-serif text-2xl font-bold text-navy-700/25">
-                        0{i + 3}
-                      </span>
-                      <div className="w-9 h-9 rounded-full bg-blue-100 flex items-center justify-center text-navy-700">
-                        {ICON_MAP[pa.icon] || <Compass className="w-4 h-4 text-brass-500" />}
+                  <ChevronLeft className="w-4 h-4 text-ink-secondary hover:text-ink" />
+                </button>
+                <button
+                  type="button"
+                  onClick={() => scrollPractices("right")}
+                  className="w-8 h-8 rounded-full border border-border bg-white hover:bg-stone-50 hover:border-brass-400 text-ink flex items-center justify-center transition shadow-sm focus:outline-none focus:ring-1 focus:ring-brass-400"
+                  aria-label="Next practice disciplines"
+                >
+                  <ChevronRight className="w-4 h-4 text-ink-secondary hover:text-ink" />
+                </button>
+              </div>
+            </div>
+
+            <div
+              ref={practiceScrollRef}
+              className="flex gap-4 sm:gap-5 overflow-x-auto pb-4 pt-1 snap-x snap-mandatory scrollbar-thin scrollbar-thumb-brass-500/20 scrollbar-track-transparent items-stretch"
+              style={{ scrollBehavior: "smooth" }}
+            >
+              {PRACTICE_AREAS.slice(2).map((pa, i) => (
+                <div
+                  key={pa.slug}
+                  className="w-[280px] sm:w-[300px] lg:w-[calc((100%-4*1.25rem)/5)] shrink-0 snap-start flex flex-col justify-between"
+                >
+                  <Card
+                    variant="white"
+                    arrowOnHover
+                    href={`/services/${pa.slug}`}
+                    className="h-full flex flex-col justify-between !p-5 sm:!p-6"
+                  >
+                    <div>
+                      <div className="flex items-center justify-between pb-3.5 border-b border-border">
+                        <span className="font-serif text-2xl font-bold text-navy-700/25">
+                          0{i + 3}
+                        </span>
+                        <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-navy-700 shrink-0">
+                          {ICON_MAP[pa.icon] || <Compass className="w-4 h-4 text-brass-500" />}
+                        </div>
+                      </div>
+
+                      <div className="mt-4 space-y-2">
+                        <h3 className="font-serif text-lg font-bold text-ink-950 leading-snug line-clamp-2">
+                          {pa.title}
+                        </h3>
+                        <p className="font-sans text-xs text-ink-secondary leading-relaxed line-clamp-3">
+                          {pa.shortDesc}
+                        </p>
                       </div>
                     </div>
 
-                    <div className="mt-5 space-y-2">
-                      <h3 className="font-serif text-xl font-bold text-ink-950">
-                        {pa.title}
-                      </h3>
-                      <p className="font-sans text-xs text-ink-secondary leading-relaxed line-clamp-3">
-                        {pa.shortDesc}
-                      </p>
+                    <div className="pt-4 mt-4 border-t border-border flex items-center justify-between text-xs font-semibold text-navy-700">
+                      <span>Consult counsel</span>
+                      <ArrowRight className="w-3.5 h-3.5 text-brass-500 group-hover:translate-x-1 transition-transform" />
                     </div>
-                  </div>
-
-                  <div className="pt-6 mt-4 border-t border-border flex items-center justify-between text-xs font-semibold text-navy-700">
-                    <span>Consult counsel</span>
-                    <ArrowRight className="w-3.5 h-3.5 text-brass-500" />
-                  </div>
-                </Card>
-              </div>
-            ))}
-
+                  </Card>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>
