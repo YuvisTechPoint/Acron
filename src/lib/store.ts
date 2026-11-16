@@ -783,7 +783,7 @@ const SEED_SITE_CONFIG: SiteConfig = {
   city: "Kolkata",
   state: "West Bengal",
   postalCode: "700016",
-  receptionPhone: "+91 (033) 2486-7700",
+  receptionPhone: "+91 828 69 36 899",
   primaryEmail: "contact@acornlegal.in",
   poshEmail: "posh.desk@acornlegal.in",
   emergencyPhone: "+91 98300 99999",
@@ -1230,7 +1230,7 @@ class PlatformStore {
             const bc = new BroadcastChannel("acorn_realtime_sync");
             bc.postMessage({ key, value, timestamp: Date.now() });
             bc.close();
-          } catch {}
+          } catch { }
         }
       }
     } catch (e) {
@@ -1414,7 +1414,7 @@ class PlatformStore {
   }): POSHCase {
     const list = this.getCases();
     const now = new Date();
-    
+
     // Statutory timers calculation
     const noticeDeadline = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000); // 7 statutory days
     const inquiryDeadline = new Date(now.getTime() + 90 * 24 * 60 * 60 * 1000); // 90 days
@@ -1446,10 +1446,10 @@ class PlatformStore {
       witnesses: complaintData.witnesses || [],
       interimReliefRequested: complaintData.interimRelief
         ? {
-            type: complaintData.interimRelief.type,
-            details: complaintData.interimRelief.details,
-            status: "requested",
-          }
+          type: complaintData.interimRelief.type,
+          details: complaintData.interimRelief.details,
+          status: "requested",
+        }
         : undefined,
       filedAt: now.toISOString(),
       limitationStatus: "within_3_months",
@@ -2308,7 +2308,7 @@ class PlatformStore {
     };
     list.unshift(newLink);
     this.set("payment_links", list);
-    this.addAuditLog("Admin", "finance", "PAYMENT_LINK_CREATED", "payment", id, `Generated payment link for ${newLink.clientName} (₹${(newLink.amountPaise/100).toLocaleString()})`);
+    this.addAuditLog("Admin", "finance", "PAYMENT_LINK_CREATED", "payment", id, `Generated payment link for ${newLink.clientName} (₹${(newLink.amountPaise / 100).toLocaleString()})`);
     return newLink;
   }
 

@@ -5,7 +5,7 @@ export const BRAND_CONFIG = {
   shortName: "Acorn Legal",
   tagline: "Excellence in Law. Integrity in Practice.",
   subTagline: "",
-  phone: "+91 (033) 2486-7700",
+  phone: "+91 8369171822",
   emergencyPhone: "+91 98300 12345",
   email: "contact@acornlegal.in",
   poshEmail: "posh.desk@acornlegal.in",

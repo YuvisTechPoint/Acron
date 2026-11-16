@@ -69,11 +69,10 @@ export default function PoshChannelsPage() {
             <div className="flex items-center gap-2">
               <button
                 onClick={() => setIsLowBandwidth(!isLowBandwidth)}
-                className={`px-3 py-1.5 rounded text-xs font-mono border transition ${
-                  isLowBandwidth
+                className={`px-3 py-1.5 rounded text-xs font-mono border transition ${isLowBandwidth
                     ? "bg-amber-400 text-black border-amber-500 font-bold"
                     : "bg-navy-900 text-brass-300 border-brass-500/30"
-                }`}
+                  }`}
               >
                 {isLowBandwidth ? "2G Mode: ON" : "Toggle 2G Text Mode"}
               </button>
@@ -83,10 +82,10 @@ export default function PoshChannelsPage() {
       </div>
 
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 space-y-8">
-        
+
         {/* Channel Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          
+
           {/* Channel 1: WhatsApp Verified Gateway */}
           <div className="bg-white rounded-lg border border-slate-200 p-6 shadow-sm flex flex-col justify-between space-y-4">
             <div className="space-y-3">
@@ -98,7 +97,7 @@ export default function PoshChannelsPage() {
                 Interact with the Chambers guidance concierge via Meta-verified end-to-end encryption. Content-free callbacks only.
               </p>
               <div className="text-[11px] font-mono text-slate-500 bg-slate-50 p-2 rounded">
-                Number: +91 (033) 2486-7700
+                Number: +91 8369171822
               </div>
             </div>
 
