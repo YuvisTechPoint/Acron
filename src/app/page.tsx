@@ -154,12 +154,12 @@ export default function HomePage() {
 
   const effectiveInsights = rawPosts.length > 0
     ? rawPosts.slice(0, 3).map((p) => ({
-        slug: p.slug,
-        category: formatCategory(p.category),
-        date: formatDate(p.publishedAt),
-        title: p.title,
-        excerpt: p.excerpt || p.summary,
-      }))
+      slug: p.slug,
+      category: formatCategory(p.category),
+      date: formatDate(p.publishedAt),
+      title: p.title,
+      excerpt: p.excerpt || p.summary,
+    }))
     : FEATURED_INSIGHTS;
 
   const steps = siteConfig.pathwaySteps && siteConfig.pathwaySteps.length > 0
@@ -169,32 +169,32 @@ export default function HomePage() {
   const principles = siteConfig.principles && siteConfig.principles.length > 0
     ? siteConfig.principles
     : [
-        {
-          num: "Principle I",
-          title: "Integrity",
-          quote: "Upholding the ethical independence and statutory duty of the Bar above all short-term commercial expedience.",
-          desc: "Every opinion rendered is unvarnished, independent, and anchored in statutory authority.",
-        },
-        {
-          num: "Principle II",
-          title: "Strategic Insight",
-          quote: "Anticipating statutory risk and procedural traps before commercial conflict becomes irreparable.",
-          desc: "We formulate proactive dispute-containment strategies that preserve capital and reputational equity.",
-        },
-        {
-          num: "Principle III",
-          title: "Commercial Understanding",
-          quote: "Harmonising strict statutory compliance with the operational realities of modern enterprise.",
-          desc: "Legal solutions designed for real-world execution, cross-border velocity, and institutional scale.",
-        },
-      ];
+      {
+        num: "Principle I",
+        title: "Integrity",
+        quote: "Upholding the ethical independence and statutory duty of the Bar above all short-term commercial expedience.",
+        desc: "Every opinion rendered is unvarnished, independent, and anchored in statutory authority.",
+      },
+      {
+        num: "Principle II",
+        title: "Strategic Insight",
+        quote: "Anticipating statutory risk and procedural traps before commercial conflict becomes irreparable.",
+        desc: "We formulate proactive dispute-containment strategies that preserve capital and reputational equity.",
+      },
+      {
+        num: "Principle III",
+        title: "Commercial Understanding",
+        quote: "Harmonising strict statutory compliance with the operational realities of modern enterprise.",
+        desc: "Legal solutions designed for real-world execution, cross-border velocity, and institutional scale.",
+      },
+    ];
 
   const formattedFaqs = homepageFaqs.length > 0
     ? homepageFaqs.map((f) => ({
-        id: f.id,
-        title: f.question,
-        content: f.answer,
-      }))
+      id: f.id,
+      title: f.question,
+      content: f.answer,
+    }))
     : HOMEPAGE_FAQS;
 
   return (
@@ -266,22 +266,6 @@ export default function HomePage() {
                 >
                   <span>{siteConfig.heroSecondaryCtaText || "Explore our services"}</span>
                   <ArrowRight className="w-4 h-4 text-brass-400" />
-                </Link>
-              </div>
-
-              {/* Metadata Badges Line - Fully Wired & Clickable */}
-              <div className="pt-6 flex flex-wrap items-center gap-x-6 gap-y-2 text-xs sm:text-[13px] font-sans text-slate-300 font-medium">
-                <Link href="/contact" className="flex items-center gap-1.5 hover:text-brass-300 transition-colors cursor-pointer group">
-                  <span className="text-brass-400 font-bold group-hover:scale-125 transition-transform">•</span>
-                  <span>{siteConfig.city || "Kolkata"} Chambers</span>
-                </Link>
-                <Link href="/contact" className="flex items-center gap-1.5 hover:text-brass-300 transition-colors cursor-pointer group">
-                  <span className="text-brass-400 font-bold group-hover:scale-125 transition-transform">•</span>
-                  <span>{siteConfig.addressLine2 || "Park Street District"}</span>
-                </Link>
-                <Link href="/request-service" className="flex items-center gap-1.5 hover:text-brass-300 transition-colors cursor-pointer group">
-                  <span className="text-brass-400 font-bold group-hover:scale-125 transition-transform">•</span>
-                  <span>Confidential Privileged Intake</span>
                 </Link>
               </div>
 
@@ -686,7 +670,7 @@ export default function HomePage() {
                   Safe, <span className="font-serif italic font-normal text-brass-300">compliant</span> workplaces.
                 </h2>
                 <p className="font-sans text-base text-slate-300 leading-relaxed max-w-xl">
-                  Acorn Legal Consultants assists organisations, universities, and corporate boards with end-to-end POSH Act 2013 compliance, independent External Member appointment under Section 4(2)(c), fair inquiry facilitation, and mandatory annual reporting.
+                  Acorn Legal Consultants assists with end-to-end POSH Act 2013 compliance, independent External Member appointment under Section 4(2)(c), fair inquiry facilitation, and mandatory annual reporting.
                 </p>
 
                 <div className="pt-2 flex flex-wrap items-center gap-4">
