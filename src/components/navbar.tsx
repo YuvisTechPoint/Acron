@@ -282,18 +282,26 @@ export function Navbar() {
                 onMouseLeave={handleMouseLeave}
               >
                 <div
-                  className="w-full border-b border-brass-500/60 border-t border-border/60 bg-ivory-50/95 sm:bg-[#FBF9F4]/95 backdrop-blur-2xl shadow-2xl text-ink transition-colors duration-200"
+                  className={`w-full transition-colors duration-200 ${
+                    isTransparent
+                      ? "bg-transparent backdrop-blur-xl border-b border-brass-500/30 border-t border-white/10 text-white shadow-2xl"
+                      : "bg-white/95 backdrop-blur-xl border-b border-border border-t border-border/60 text-ink-950 shadow-2xl"
+                  }`}
                 >
                   <div className="max-w-[1320px] mx-auto px-6 sm:px-8 pt-4.5 pb-4">
                     
                     {/* Top Bar: Editorial Eyebrow & Directory Navigation Link */}
                     <div
-                      className="flex items-center justify-between pb-2.5 mb-3 border-b border-border/70"
+                      className={`flex items-center justify-between pb-2.5 mb-3 border-b ${
+                        isTransparent ? "border-white/15" : "border-border/70"
+                      }`}
                     >
                       <div className="flex items-center gap-2">
-                        <span className="text-[10px] select-none text-brass-600">✦</span>
+                        <span className={`text-[10px] select-none ${isTransparent ? "text-brass-400" : "text-brass-600"}`}>✦</span>
                         <span
-                          className="font-sans text-[10.5px] font-bold uppercase tracking-[0.22em] text-brass-800"
+                          className={`font-sans text-[10.5px] font-bold uppercase tracking-[0.22em] ${
+                            isTransparent ? "text-brass-300" : "text-brass-800"
+                          }`}
                         >
                           Chambers Practice Directory &amp; Advisory Capabilities
                         </span>
@@ -301,11 +309,17 @@ export function Navbar() {
                       <Link
                         href="/services"
                         onClick={() => setMegaMenuOpen(false)}
-                        className="text-[11.5px] font-semibold flex items-center gap-1.5 group transition-colors text-navy-900 hover:text-brass-700"
+                        className={`text-[11.5px] font-semibold flex items-center gap-1.5 group transition-colors ${
+                          isTransparent
+                            ? "text-white/90 hover:text-brass-300"
+                            : "text-navy-900 hover:text-brass-700"
+                        }`}
                       >
                         <span>All Practice Disciplines</span>
                         <ArrowRight
-                          className="w-3 h-3 group-hover:translate-x-1 transition-transform text-brass-600"
+                          className={`w-3 h-3 group-hover:translate-x-1 transition-transform ${
+                            isTransparent ? "text-brass-400" : "text-brass-600"
+                          }`}
                         />
                       </Link>
                     </div>
@@ -326,13 +340,23 @@ export function Navbar() {
                               onClick={() => setMegaMenuOpen(false)}
                               className={`group px-3 py-2 border-l-2 transition-all duration-150 flex items-start gap-2.5 text-left rounded-r ${
                                 isHovered
-                                  ? "border-brass-600 bg-stone-100/90 shadow-sm"
+                                  ? isTransparent
+                                    ? "border-brass-400 bg-white/10 shadow-sm"
+                                    : "border-brass-600 bg-stone-100/90 shadow-sm"
+                                  : isTransparent
+                                  ? "border-transparent hover:border-brass-400/60 hover:bg-white/5"
                                   : "border-transparent hover:border-brass-400 hover:bg-stone-100/50"
                               }`}
                             >
                               <span
                                 className={`font-mono text-[10px] font-bold tracking-wider mt-0.5 select-none transition-colors ${
-                                  isHovered ? "text-brass-700" : "text-brass-600/70"
+                                  isHovered
+                                    ? isTransparent
+                                      ? "text-brass-300"
+                                      : "text-brass-700"
+                                    : isTransparent
+                                    ? "text-brass-400/70"
+                                    : "text-brass-600/70"
                                 }`}
                               >
                                 {numStr}
@@ -341,19 +365,29 @@ export function Navbar() {
                                 <div className="flex items-center justify-between gap-1">
                                   <span
                                     className={`font-serif text-[14.5px] font-bold leading-tight transition-colors ${
-                                      isHovered ? "text-brass-900" : "text-ink-950 group-hover:text-brass-800"
+                                      isHovered
+                                        ? isTransparent
+                                          ? "text-brass-200"
+                                          : "text-brass-900"
+                                        : isTransparent
+                                        ? "text-white group-hover:text-brass-200"
+                                        : "text-ink-950 group-hover:text-brass-800"
                                     }`}
                                   >
                                     {pa.title}
                                   </span>
                                   <ArrowRight
-                                    className={`w-3 h-3 shrink-0 transition-all text-brass-600 ${
+                                    className={`w-3 h-3 shrink-0 transition-all ${
+                                      isTransparent ? "text-brass-400" : "text-brass-600"
+                                    } ${
                                       isHovered ? "opacity-100 translate-x-0.5" : "opacity-0 -translate-x-1"
                                     }`}
                                   />
                                 </div>
                                 <p
-                                  className="font-sans text-[11px] line-clamp-1 leading-snug mt-0.5 text-ink-secondary/90"
+                                  className={`font-sans text-[11px] line-clamp-1 leading-snug mt-0.5 ${
+                                    isTransparent ? "text-slate-300" : "text-ink-secondary/90"
+                                  }`}
                                 >
                                   {pa.shortDesc}
                                 </p>
@@ -365,19 +399,27 @@ export function Navbar() {
 
                       {/* Right: Refined Chambers Dossier Briefing (5 cols) */}
                       <div
-                        className="col-span-12 lg:col-span-5 border-l pl-6 flex flex-col justify-between border-border/80"
+                        className={`col-span-12 lg:col-span-5 border-l pl-6 flex flex-col justify-between ${
+                          isTransparent ? "border-white/15" : "border-border/80"
+                        }`}
                       >
                         <div className="space-y-3">
                           <div
-                            className="flex items-center justify-between pb-1.5 border-b border-border/60"
+                            className={`flex items-center justify-between pb-1.5 border-b ${
+                              isTransparent ? "border-white/15" : "border-border/60"
+                            }`}
                           >
                             <span
-                              className="font-sans text-[10px] uppercase font-bold tracking-[0.18em] text-brass-800"
+                              className={`font-sans text-[10px] uppercase font-bold tracking-[0.18em] ${
+                                isTransparent ? "text-brass-300" : "text-brass-800"
+                              }`}
                             >
                               Chambers Briefing Note
                             </span>
                             <span
-                              className="font-mono text-[10.5px] text-ink-muted"
+                              className={`font-mono text-[10.5px] ${
+                                isTransparent ? "text-slate-400" : "text-ink-muted"
+                              }`}
                             >
                               Camac Street &bull; High Court Bar
                             </span>
@@ -385,22 +427,30 @@ export function Navbar() {
 
                           <div>
                             <h4
-                              className="font-serif font-normal italic text-[21px] leading-tight text-navy-950"
+                              className={`font-serif font-normal italic text-[21px] leading-tight ${
+                                isTransparent ? "text-white" : "text-navy-950"
+                              }`}
                             >
                               {activePractice.title}
                             </h4>
                             <p
-                              className="font-sans text-[11.5px] mt-1.5 leading-relaxed text-ink-secondary"
+                              className={`font-sans text-[11.5px] mt-1.5 leading-relaxed ${
+                                isTransparent ? "text-slate-300" : "text-ink-secondary"
+                              }`}
                             >
                               {activePractice.shortDesc}
                             </p>
                           </div>
 
                           <div
-                            className="pt-2 border-t border-border/60"
+                            className={`pt-2 border-t ${
+                              isTransparent ? "border-white/15" : "border-border/60"
+                            }`}
                           >
                             <span
-                              className="text-[10px] font-bold uppercase tracking-wider block mb-1.5 text-ink-muted"
+                              className={`text-[10px] font-bold uppercase tracking-wider block mb-1.5 ${
+                                isTransparent ? "text-brass-300/80" : "text-ink-muted"
+                              }`}
                             >
                               Counsel Deliverables &amp; Practice Scope:
                             </span>
@@ -408,10 +458,14 @@ export function Navbar() {
                               {activePractice.services?.slice(0, 4).map((item, i) => (
                                 <li
                                   key={i}
-                                  className="flex items-start gap-2 text-[11.5px] leading-snug text-ink-900"
+                                  className={`flex items-start gap-2 text-[11.5px] leading-snug ${
+                                    isTransparent ? "text-slate-200" : "text-ink-900"
+                                  }`}
                                 >
                                   <span
-                                    className="font-serif text-[13px] leading-none mt-0.5 select-none text-brass-600"
+                                    className={`font-serif text-[13px] leading-none mt-0.5 select-none ${
+                                      isTransparent ? "text-brass-400" : "text-brass-600"
+                                    }`}
                                   >
                                     &bull;
                                   </span>
@@ -423,22 +477,34 @@ export function Navbar() {
                         </div>
 
                         <div
-                          className="pt-3 mt-3 border-t flex items-center justify-between border-border/60"
+                          className={`pt-3 mt-3 border-t flex items-center justify-between ${
+                            isTransparent ? "border-white/15" : "border-border/60"
+                          }`}
                         >
                           <Link
                             href={`/services/${activePractice.slug}`}
                             onClick={() => setMegaMenuOpen(false)}
-                            className="px-4 py-1.5 text-[11px] font-semibold tracking-wider uppercase transition-colors shadow-sm inline-flex items-center gap-1.5 group bg-navy-900 hover:bg-navy-800 text-ivory-50 rounded"
+                            className={`px-4 py-1.5 text-[11px] font-semibold tracking-wider uppercase transition-colors shadow-sm inline-flex items-center gap-1.5 group rounded ${
+                              isTransparent
+                                ? "bg-brass-500 hover:bg-brass-400 text-ink-950 font-bold"
+                                : "bg-navy-900 hover:bg-navy-800 text-ivory-50"
+                            }`}
                           >
                             <span>Explore Practice Scope</span>
                             <ArrowRight
-                              className="w-3 h-3 group-hover:translate-x-1 transition-transform text-brass-400"
+                              className={`w-3 h-3 group-hover:translate-x-1 transition-transform ${
+                                isTransparent ? "text-ink-950" : "text-brass-400"
+                              }`}
                             />
                           </Link>
                           <Link
                             href="/request-service"
                             onClick={() => setMegaMenuOpen(false)}
-                            className="text-[11.5px] font-semibold underline underline-offset-4 transition text-brass-800 hover:text-navy-900"
+                            className={`text-[11.5px] font-semibold underline underline-offset-4 transition ${
+                              isTransparent
+                                ? "text-brass-300 hover:text-white"
+                                : "text-brass-800 hover:text-navy-900"
+                            }`}
                           >
                             Book Confidential Intake &rarr;
                           </Link>
@@ -449,13 +515,17 @@ export function Navbar() {
 
                     {/* Bottom Sub-Bar: Clean Editorial Metadata */}
                     <div
-                      className="pt-2.5 mt-3 border-t flex flex-wrap items-center justify-between gap-3 text-[11px] border-border/70 text-ink-secondary"
+                      className={`pt-2.5 mt-3 border-t flex flex-wrap items-center justify-between gap-3 text-[11px] ${
+                        isTransparent
+                          ? "border-white/15 text-slate-300"
+                          : "border-border/70 text-ink-secondary"
+                      }`}
                     >
                       <div className="flex items-center gap-2">
-                        <span className="font-semibold text-ink-950">
+                        <span className={`font-semibold ${isTransparent ? "text-white" : "text-ink-950"}`}>
                           Chambers Retainers:
                         </span>
-                        <span className="text-ink-secondary">
+                        <span className={isTransparent ? "text-slate-300" : "text-ink-secondary"}>
                           Corporate Governance Advisory &bull; POSH IC Member Appointment &bull; Commercial Title &amp; Contracts
                         </span>
                       </div>
@@ -463,15 +533,23 @@ export function Navbar() {
                         <Link
                           href="/posh"
                           onClick={() => setMegaMenuOpen(false)}
-                          className="font-semibold hover:underline text-navy-800 hover:text-brass-700"
+                          className={`font-semibold hover:underline ${
+                            isTransparent
+                              ? "text-brass-300 hover:text-white"
+                              : "text-navy-800 hover:text-brass-700"
+                          }`}
                         >
                           POSH Statutory Portal &rarr;
                         </Link>
-                        <span className="select-none text-border">&bull;</span>
+                        <span className={`select-none ${isTransparent ? "text-white/20" : "text-border"}`}>&bull;</span>
                         <Link
                           href="/request-service"
                           onClick={() => setMegaMenuOpen(false)}
-                          className="font-bold hover:underline text-brass-800 hover:text-navy-900"
+                          className={`font-bold hover:underline ${
+                            isTransparent
+                              ? "text-brass-300 hover:text-white"
+                              : "text-brass-800 hover:text-navy-900"
+                          }`}
                         >
                           Schedule Chambers Consultation &rarr;
                         </Link>
