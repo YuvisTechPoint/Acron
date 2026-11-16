@@ -307,9 +307,11 @@ export default function HomePage() {
                     <span className="font-serif text-2xl sm:text-[28px] font-bold text-brass-300 tracking-wide drop-shadow-md leading-tight mt-1 group-hover:text-white transition-colors">
                       {siteConfig.heroArchTitle || "Chambers of Acorn"}
                     </span>
-                    <span className="font-sans text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.25em] text-brass-400 mt-1 drop-shadow">
-                      {siteConfig.heroArchSubtitle || "CAMAC STREET • KOLKATA"}
-                    </span>
+                    {siteConfig.heroArchSubtitle && siteConfig.heroArchSubtitle !== "CAMAC STREET • KOLKATA" ? (
+                      <span className="font-sans text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.25em] text-brass-400 mt-1 drop-shadow">
+                        {siteConfig.heroArchSubtitle}
+                      </span>
+                    ) : null}
                   </Link>
 
                   {/* Open Middle Area: Transparently frames the senior advocate at desk in heritage library */}

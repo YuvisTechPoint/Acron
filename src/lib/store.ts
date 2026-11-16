@@ -777,7 +777,7 @@ const SEED_SITE_CONFIG: SiteConfig = {
   heroBadge3Title: "Transparency",
   heroBadge3Desc: "Clear scope & accountable advisory",
   heroArchTitle: "Chambers of Acorn",
-  heroArchSubtitle: "CAMAC STREET • KOLKATA",
+  heroArchSubtitle: "",
   addressLine1: "Suite 4B, Camac Court, 25 Camac Street",
   addressLine2: "Park Street District",
   city: "Kolkata",

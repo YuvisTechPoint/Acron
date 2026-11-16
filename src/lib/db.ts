@@ -86,7 +86,7 @@ const INITIAL_SEED: DatabaseSchema = {
     heroBadge3Title: "Transparency",
     heroBadge3Desc: "Clear scope & accountable advisory",
     heroArchTitle: "Chambers of Acorn",
-    heroArchSubtitle: "CAMAC STREET • KOLKATA",
+    heroArchSubtitle: "",
     footerRollText:
       "Acorn Legal Consultants • Excellence in Law • Integrity in Practice • Calcutta High Court • POSH Act Advisory • Corporate Governance • Commercial Contracts • Arbitration & Mediation",
     updatedAt: new Date().toISOString(),
