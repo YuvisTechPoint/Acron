@@ -123,17 +123,15 @@ export default function ICHearingsPage() {
         </div>
 
         {/* Quorum Compliance Gate Card */}
-        <div className={`p-5 rounded-card border shadow-card text-xs space-y-3 ${
-          isQuorumMet ? "bg-emerald-50 border-emerald-200 text-emerald-950" : "bg-red-50 border-red-200 text-red-950"
-        }`}>
+        <div className={`p-5 rounded-card border shadow-card text-xs space-y-3 ${isQuorumMet ? "bg-emerald-50 border-emerald-200 text-emerald-950" : "bg-red-50 border-red-200 text-red-950"
+          }`}>
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2 font-bold text-sm">
               <UserCheck className="w-4 h-4 text-primary" />
               <span>Statutory Quorum Gate (Rule 7 &amp; Section 4)</span>
             </div>
-            <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold ${
-              isQuorumMet ? "bg-emerald-200 text-emerald-900" : "bg-red-200 text-red-900"
-            }`}>
+            <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold ${isQuorumMet ? "bg-emerald-200 text-emerald-900" : "bg-red-200 text-red-900"
+              }`}>
               {isQuorumMet ? "QUORUM SATISFIED" : "QUORUM DEFICIENT"}
             </span>
           </div>

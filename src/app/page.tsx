@@ -743,10 +743,10 @@ export default function HomePage() {
                 <div className="bg-white rounded-card border border-border p-8 h-full flex flex-col justify-between shadow-card card-hover cursor-pointer group-hover:border-brass-400/80 transition-all">
                   <div className="space-y-4">
                     <div className="flex items-center justify-between text-xs">
-                      <span className="font-semibold uppercase tracking-wider text-brass-700">
+                      <span className="font-semibold uppercase tracking-wider text-brass-700" suppressHydrationWarning>
                         {effectiveInsights[0].category}
                       </span>
-                      <span className="text-ink-muted">{effectiveInsights[0].date}</span>
+                      <span className="text-ink-muted" suppressHydrationWarning>{effectiveInsights[0].date}</span>
                     </div>
 
                     <h3 className="font-serif text-2xl sm:text-4xl font-bold text-ink-950 group-hover:text-navy-700 transition-colors leading-[1.2]">
@@ -773,10 +773,10 @@ export default function HomePage() {
                   <div className="bg-white rounded-card border border-border p-6 h-full flex flex-col justify-between shadow-card card-hover cursor-pointer group-hover:border-brass-400/80 transition-all">
                     <div className="space-y-2">
                       <div className="flex items-center justify-between text-xs">
-                        <span className="font-semibold uppercase tracking-wider text-brass-700">
+                        <span className="font-semibold uppercase tracking-wider text-brass-700" suppressHydrationWarning>
                           {art.category}
                         </span>
-                        <span className="text-ink-muted">{art.date}</span>
+                        <span className="text-ink-muted" suppressHydrationWarning>{art.date}</span>
                       </div>
                       <h4 className="font-serif text-xl font-bold text-ink-950 group-hover:text-navy-700 transition-colors">
                         {art.title}

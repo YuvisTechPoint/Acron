@@ -144,13 +144,15 @@ export default function BlogIndexPage() {
               <div className="lg:col-span-7 p-8 sm:p-12 flex flex-col justify-between space-y-6">
                 <div className="space-y-4">
                   <div className="flex items-center gap-3">
-                    <Badge variant="brass">{formatCategory(featured.category)}</Badge>
+                    <span suppressHydrationWarning>
+                      <Badge variant="brass">{formatCategory(featured.category)}</Badge>
+                    </span>
                     <span className="text-xs text-ink-muted flex items-center gap-1">
                       <Clock className="w-3.5 h-3.5" />
                       <span>{featured.readTimeMinutes || featured.readingTimeMinutes || 6} min read</span>
                     </span>
                     <span className="text-xs text-ink-muted">&bull;</span>
-                    <span className="text-xs text-ink-muted">
+                    <span className="text-xs text-ink-muted" suppressHydrationWarning>
                       {formatDate(featured.publishedAt)}
                     </span>
                   </div>
@@ -215,8 +217,10 @@ export default function BlogIndexPage() {
                   >
                     <div className="space-y-3">
                       <div className="flex items-center justify-between text-xs">
-                        <Badge variant="stone">{formatCategory(art.category)}</Badge>
-                        <span className="text-ink-muted">
+                        <span suppressHydrationWarning>
+                          <Badge variant="stone">{formatCategory(art.category)}</Badge>
+                        </span>
+                        <span className="text-ink-muted" suppressHydrationWarning>
                           {formatDate(art.publishedAt)}
                         </span>
                       </div>

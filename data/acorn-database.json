@@ -125,7 +125,8 @@
         "Annual Compliance",
         "Kolkata Jurisprudence"
       ],
-      "readTimeMinutes": 6
+      "readTimeMinutes": 6,
+      "category": "posh_compliance"
     },
     {
       "id": "post-02",
@@ -142,7 +143,8 @@
         "Digital Harassment",
         "Case Law Analysis"
       ],
-      "readTimeMinutes": 8
+      "readTimeMinutes": 8,
+      "category": "posh_compliance"
     },
     {
       "id": "post-03",
@@ -160,7 +162,8 @@
         "Title Search",
         "Kolkata"
       ],
-      "readTimeMinutes": 7
+      "readTimeMinutes": 7,
+      "category": "real_estate"
     }
   ],
   "cases": [

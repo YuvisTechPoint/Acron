@@ -78,7 +78,7 @@ export default function PoshIcDeclarationsPage() {
   return (
     <div className="bg-surface min-h-screen py-8">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 space-y-6">
-        
+
         {/* Navigation Breadcrumb */}
         <div className="flex items-center justify-between">
           <Link
@@ -112,9 +112,8 @@ export default function PoshIcDeclarationsPage() {
           {declarations.map((dec) => (
             <div
               key={dec.id}
-              className={`bg-white p-5 rounded-card border shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-4 transition ${
-                dec.status === 'PENDING_SIGNATURE' ? 'border-amber-300 ring-1 ring-amber-100' : 'border-border'
-              }`}
+              className={`bg-white p-5 rounded-card border shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-4 transition ${dec.status === 'PENDING_SIGNATURE' ? 'border-amber-300 ring-1 ring-amber-100' : 'border-border'
+                }`}
             >
               <div>
                 <div className="flex items-center gap-2">
@@ -238,9 +237,8 @@ export default function PoshIcDeclarationsPage() {
                   type="button"
                   disabled={!confirmedCheck}
                   onClick={handleSign}
-                  className={`px-5 py-2 text-xs font-bold rounded flex items-center gap-1.5 text-white ${
-                    confirmedCheck ? 'bg-primary hover:bg-primary-light shadow' : 'bg-slate-300 cursor-not-allowed'
-                  }`}
+                  className={`px-5 py-2 text-xs font-bold rounded flex items-center gap-1.5 text-white ${confirmedCheck ? 'bg-primary hover:bg-primary-light shadow' : 'bg-slate-300 cursor-not-allowed'
+                    }`}
                 >
                   <CheckCircle2 className="w-4 h-4" />
                   <span>Execute Digital Signature</span>
