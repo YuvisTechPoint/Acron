@@ -79,7 +79,7 @@ export default function ServicesIndexPage() {
 
                   {/* Title & Desc (8 cols) */}
                   <div className="md:col-span-8 space-y-2">
-                    <h2 className="font-serif text-2xl sm:text-4xl font-bold text-ink-950 group-hover:text-navy-700 transition-colors">
+                    <h2 className="font-serif text-2xl sm:text-4xl font-bold text-ink-950 group-hover:text-brass-700 transition-colors">
                       {pa.title}
                     </h2>
                     <p className="font-sans text-sm sm:text-base text-ink-secondary leading-relaxed max-w-2xl">
@@ -89,8 +89,8 @@ export default function ServicesIndexPage() {
 
                   {/* Arrow Action (2 cols) */}
                   <div className="md:col-span-2 flex justify-start md:justify-end items-center">
-                    <div className="w-12 h-12 rounded-full border border-border group-hover:border-brass-500/50 bg-white group-hover:bg-navy-700 flex items-center justify-center transition-all duration-200 shadow-sm">
-                      <ArrowRight className="w-5 h-5 text-brass-500 group-hover:text-ivory-50 group-hover:translate-x-0.5 transition-all" />
+                    <div className="w-12 h-12 rounded-full border border-border group-hover:border-brass-500/50 bg-white group-hover:bg-brass-500 flex items-center justify-center transition-all duration-200 shadow-sm">
+                      <ArrowRight className="w-5 h-5 text-brass-500 group-hover:text-ink-950 group-hover:translate-x-0.5 transition-all" />
                     </div>
                   </div>
 
@@ -143,7 +143,7 @@ export default function ServicesIndexPage() {
               {services.map((s) => (
                 <div
                   key={s.id}
-                  className="p-6 rounded-card border border-border bg-ivory-50/40 hover:bg-white hover:border-navy-700 transition flex flex-col justify-between space-y-6 shadow-sm group"
+                  className="p-6 rounded-card border border-border bg-ivory-50/40 hover:bg-white hover:border-brass-500/60 transition flex flex-col justify-between space-y-6 shadow-sm group"
                 >
                   <div className="space-y-4">
                     <div className="flex justify-between items-center">
@@ -156,7 +156,7 @@ export default function ServicesIndexPage() {
                       </span>
                     </div>
 
-                    <h3 className="font-serif text-xl font-bold text-ink-950 group-hover:text-navy-700 transition">
+                    <h3 className="font-serif text-xl font-bold text-ink-950 group-hover:text-brass-700 transition">
                       {s.name}
                     </h3>
 
@@ -184,10 +184,10 @@ export default function ServicesIndexPage() {
                   <div className="pt-4 border-t border-border">
                     <Link
                       href="/request-service"
-                      className="w-full py-2.5 px-4 bg-navy-700 hover:bg-blue-600 text-white font-sans text-xs font-bold rounded-btn flex items-center justify-center gap-2 shadow-sm transition"
+                      className="w-full py-2.5 px-4 bg-navy-900 hover:bg-navy-800 text-ivory-50 font-sans text-xs font-bold rounded-btn flex items-center justify-center gap-2 shadow-sm transition"
                     >
                       <span>Inquire / Engage Counsel</span>
-                      <ArrowRight className="w-3.5 h-3.5" />
+                      <ArrowRight className="w-3.5 h-3.5 text-brass-400" />
                     </Link>
                   </div>
                 </div>
