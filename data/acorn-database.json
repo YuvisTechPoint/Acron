@@ -2,42 +2,43 @@
   "version": "3.0.0",
   "lastUpdated": "2026-11-16T20:05:48.576Z",
   "siteConfig": {
-    "firmName": "Acorn Legal Consultants",
-    "tagline": "",
-    "brandSubline": "Excellence in Law. Integrity in Practice.",
-    "founderName": "Adv. Subhasish Mukherjee",
-    "founderTitle": "Managing Partner & Senior Counsel",
+    "firmName": "Acorn Consultants",
+    "tagline": "Educational, Tax & Legal Consultants",
+    "brandSubline": "Over 15 Years of Dedicated Practice & Advisory Excellence",
+    "founderName": "Adv. Rajesh Telge",
+    "founderTitle": "Advocate on Panel & Principal Counsel",
     "disclaimer": "Bar Council of India Rule 36 verified. Informational chambers portal.",
-    "primaryEmail": "contact@acornlegal.in",
-    "receptionPhone": "+91 8369171822",
+    "primaryEmail": "acornconsultant2014@gmail.com",
+    "receptionPhone": "+91 828 69 36 899",
     "addressLine1": "Suite 4B, Camac Court, 25 Camac Street",
     "addressLine2": "Park Street District",
     "city": "Kolkata",
     "postalCode": "700016",
     "state": "West Bengal",
     "operatingHours": "Mon – Sat: 9:30 AM – 7:30 PM IST",
-    "heroHeadline": "Excellence in Law.",
-    "heroSubheadline": "Integrity in Practice.",
-    "heroDescription": "A specialized legal consultancy in Kolkata delivering thoughtful, precise, and result-oriented solutions for corporate governance, commercial contracts, regulatory affairs, and institutional integrity.",
-    "footerRollText": "Excellence in Law • Integrity in Practice • Calcutta High Court • POSH Act Advisory • Corporate Governance • Commercial Contracts • Arbitration & Mediation",
-    "emergencyPhone": "+91 98300 99999",
+    "heroHeadline": "Excellence in Law & Advisory.",
+    "heroSubheadline": "Educational, Tax & Legal Solutions.",
+    "heroDescription": "Over 15 years of trusted expertise providing dedicated legal advocacy, 30-year property title search, statutory document attestation, society management, and educational consulting with personal client care.",
+    "footerRollText": "Over 15 Years of Practice • Educational, Tax & Legal Consultants • Civil, Criminal & Property Matters • MahaRERA & Title Search • Document Attestation & Apostille • Marriage Registration & Succession",
+    "emergencyPhone": "+91 8369171822",
     "heroArchSubtitle": ""
   },
   "services": [
     {
       "id": "srv-advisory",
       "slug": "advisory",
-      "name": "Corporate Advisory & Regulatory Compliance",
-      "shortDesc": "Strategic counsel on corporate governance, Companies Act, SEBI mandates, and regulatory oversight.",
-      "description": "Comprehensive corporate advisory services ensuring statutory compliance and strategic risk management.",
+      "name": "Educational, Tax & Legal Advisory",
+      "category": "Corporate & General Advisory",
+      "shortDesc": "Over 15 years of multifaceted expertise delivering customized solutions across educational, tax, and civil legal requirements.",
+      "description": "Comprehensive consulting providing strategic guidance tailored to your specific personal, commercial, or institutional needs.",
       "features": [
-        "Board Advisory & Governance Frameworks",
-        "Companies Act, 2013 Statutory Filings",
-        "FDI & FEMA Cross-Border Structuring",
-        "Regulatory Inspection Representation"
+        "Income Tax & Regulatory Filings Guidance",
+        "Business Reorganizations & Commercial Structuring",
+        "Statutory Licensing & Excise Authorizations",
+        "Personal Client Consultation & Needs Assessment"
       ],
-      "pricePaise": 4500000,
-      "turnaround": "3-5 Working Days",
+      "pricePaise": 2500000,
+      "turnaround": "2-4 Working Days",
       "status": "active",
       "showOnHomepage": true,
       "order": 1
@@ -45,44 +46,161 @@
     {
       "id": "srv-contracts",
       "slug": "legal-documentation",
-      "name": "Commercial Contracts & Documentation",
-      "shortDesc": "Precise drafting, vetting, and negotiation of bespoke commercial agreements and master service contracts.",
-      "description": "Rigorous contract lifecycle management safeguarding enterprise interests.",
+      "name": "Legal Documentation, Contracts & Agreements",
+      "category": "Legal Documentation",
+      "shortDesc": "Precision drafting and registration of Leave & License, Sale Agreements, Power of Attorney, Wills, and commercial bonds.",
+      "description": "Defensive drafting and official registration safeguarding your assets and contractual rights.",
       "features": [
-        "Master Service & Vendor Agreements",
-        "Non-Disclosure & Intellectual Property Assignment",
-        "Shareholders & Joint Venture Agreements",
-        "Employment & Executive Service Contracts"
+        "Leave & License Registration (Doorstep Service)",
+        "General, Special & Irrevocable Power of Attorney (POA)",
+        "Sale & Purchase Agreements with Stamp Duty Verification",
+        "Commercial Loan & Employee Bond Agreements"
       ],
-      "pricePaise": 3500000,
-      "turnaround": "2-4 Working Days",
+      "pricePaise": 1500000,
+      "turnaround": "1-3 Working Days",
       "status": "active",
       "showOnHomepage": true,
       "order": 2
     },
     {
-      "id": "srv-dispute",
-      "slug": "dispute-resolution",
-      "name": "Dispute Resolution & Commercial Arbitration",
-      "shortDesc": "Pre-litigation strategy, statutory mediation, domestic arbitration, and high-stakes negotiation.",
-      "description": "Structured dispute resolution aimed at swift settlement while preserving commercial relationships.",
+      "id": "srv-court-marriage",
+      "slug": "court-marriage-registration",
+      "name": "Court Marriage & Marriage Registration",
+      "category": "Family & Matrimonial",
+      "shortDesc": "End-to-end legal solemnization and statutory marriage registration for all castes, communities, and religions.",
+      "description": "Disciplined legal facilitation under the Special Marriage Act and relevant personal laws with official government certification.",
       "features": [
-        "Arbitration & Conciliation Act Proceedings",
-        "Section 9 & Section 34 Court Applications",
-        "Commercial Contract Breach Settlement",
-        "Insolvency & Bankruptcy Code Representation"
+        "Court Marriage Solemnization for all Castes & Religions",
+        "Official Marriage Certificate Procurement & Verification",
+        "Live-In Relationship Agreements & Affidavits",
+        "Matrimonial In-House Mediation & Conciliation"
       ],
-      "pricePaise": 6500000,
-      "turnaround": "Immediate Priority",
+      "pricePaise": 1200000,
+      "turnaround": "Expedited / Statutory Notice Period",
       "status": "active",
       "showOnHomepage": true,
       "order": 3
     },
     {
+      "id": "srv-title-search",
+      "slug": "real-estate-title-search",
+      "name": "30-Year Property Title Search & MahaRERA",
+      "category": "Real Estate & Property",
+      "shortDesc": "Comprehensive 30-year land title investigation reports, 7/12 extracts, Index-2 verification, and MahaRERA complaints.",
+      "description": "Exhaustive revenue record scrutiny and developer grievance filing safeguarding real estate investments.",
+      "features": [
+        "30-Year Land & Plot Title Investigation Search Reports",
+        "Property Card, 7×12 & 6×12 Extract Procurement",
+        "Search & Official Verification of Index-2 Copies",
+        "RERA & MahaRERA Complaint Filing & Hearing Representation"
+      ],
+      "pricePaise": 2500000,
+      "turnaround": "3-5 Working Days",
+      "status": "active",
+      "showOnHomepage": true,
+      "order": 4
+    },
+    {
+      "id": "srv-attestation",
+      "slug": "document-attestation-apostille",
+      "name": "Document Attestation, MEA Apostille & Gazette",
+      "category": "Statutory Attestations",
+      "shortDesc": "State Home Dept, MEA Apostille, Embassy attestation, Police Clearance (PCC), Domicile, and Gazette name change notifications.",
+      "description": "Authorized statutory attestation and government gazette notifications for domestic and international legal validity.",
+      "features": [
+        "State Home Department, MEA & Embassy Attestations / Apostille",
+        "Official Gazette Notifications (Name Change / Religion / DOB)",
+        "Police Clearance Certificate (PCC) & Domicile Assistance",
+        "Notary Affidavits (Indemnity, Gap & Anti-Ragging Declarations)"
+      ],
+      "pricePaise": 1000000,
+      "turnaround": "2-5 Working Days",
+      "status": "active",
+      "showOnHomepage": true,
+      "order": 5
+    },
+    {
+      "id": "srv-wills-succession",
+      "slug": "wills-probate-succession",
+      "name": "Registered Wills, Probate & Succession Certificates",
+      "category": "Estate & Succession",
+      "shortDesc": "Drafting and registration of testamentary Wills, Probate petitions, Succession Certificates, Gift Deeds, and Release Deeds.",
+      "description": "Structured intergenerational wealth transmission and legal heirship representation.",
+      "features": [
+        "Statutory Drafting & Official Registration of Wills",
+        "High Court & District Court Probate Petitions",
+        "Succession Certificates & Legal Heirship Applications",
+        "Gift Deeds, Release Deeds & Deeds of Rectification"
+      ],
+      "pricePaise": 3000000,
+      "turnaround": "3-7 Working Days",
+      "status": "active",
+      "showOnHomepage": true,
+      "order": 6
+    },
+    {
+      "id": "srv-society-mgmt",
+      "slug": "society-formation-management",
+      "name": "Co-operative Society Formation & Management",
+      "category": "Society Governance",
+      "shortDesc": "Co-operative society formation by approved GDCA auditors, bye-laws compliance, society transfer documentation, and manager advisory.",
+      "description": "Professional housing and commercial society governance as per statutory co-operative society bye-laws.",
+      "features": [
+        "Co-operative Society Formation by Approved GDCA Auditors",
+        "Society Management & Maintenance as per Statutory Bye-Laws",
+        "Member Society Transfer Documentation & NOC Protocols",
+        "Commercial Leave & License Registration at Doorstep"
+      ],
+      "pricePaise": 3500000,
+      "turnaround": "5-10 Working Days",
+      "status": "active",
+      "showOnHomepage": true,
+      "order": 7
+    },
+    {
+      "id": "srv-educational-counseling",
+      "slug": "educational-advisory-admissions",
+      "name": "Educational Guidance & Admissions Counseling",
+      "category": "Educational Advisory",
+      "shortDesc": "Professional degree admissions guidance (Pharmacy, MBBS, MD, Overseas/India), Board/University private enrollment, and RTE assistance.",
+      "description": "Personal guiding mentorship and admissions form-filling guidance for universities, professional degrees, and school RTE programs.",
+      "features": [
+        "College Admissions Guidance (Pharmacy, MBBS, MD, Overseas & India)",
+        "Private 10th (SSC) / 12th (HSC) / Degree Guidance with Study Mentorship",
+        "University & Mumbai University Admissions Form-Filling Assistance",
+        "Caste Validity & Non-Creamy Layer Certificate Procurement"
+      ],
+      "pricePaise": 1500000,
+      "turnaround": "Session / Program Duration",
+      "status": "active",
+      "showOnHomepage": true,
+      "order": 8
+    },
+    {
+      "id": "srv-motor-consumer",
+      "slug": "motor-accident-consumer-claims",
+      "name": "Consumer Court & Motor Accident (MV Act) Claims",
+      "category": "Claims & Representation",
+      "shortDesc": "Consumer Forum appeals, Motor Accident Hit & Run claims under MV Act with monetary compensation, and pre-litigation mediation.",
+      "description": "Aggressive representation before Consumer Commissions and Motor Accident Claims Tribunals.",
+      "features": [
+        "Motor & Road Accident Hit & Run Claims (MV Act Compensation)",
+        "Consumer Forum & State Commission Complaints & Appeals",
+        "Disability or Death Statutory Compensation Petitions",
+        "Pre-Litigation Settlement & Conciliation Practice"
+      ],
+      "pricePaise": 2500000,
+      "turnaround": "Tribunal Schedule",
+      "status": "active",
+      "showOnHomepage": true,
+      "order": 9
+    },
+    {
       "id": "srv-posh",
       "slug": "posh-compliance",
-      "name": "POSH Act 2013 Compliance & IC Advisory",
-      "shortDesc": "Complete statutory compliance, external IC membership, capacity training, and annual reporting desk.",
+      "name": "POSH Act 2013 Compliance & IC Services",
+      "category": "Institutional Governance",
+      "shortDesc": "Statutory Internal Committee (IC) constitution, Section 4(2)(c) external member appointments, employee training, and annual reporting.",
       "description": "End-to-end statutory compliance under the Prevention of Sexual Harassment of Women at Workplace Act, 2013.",
       "features": [
         "Empanelled External Member Representation",
@@ -94,20 +212,7 @@
       "turnaround": "Annual Retainer / On-Demand",
       "status": "active",
       "showOnHomepage": true,
-      "order": 4
-    },
-    {
-      "name": "Automated Verification Retainer Advisory",
-      "category": "Corporate Commercial",
-      "shortDesc": "End-to-end statutory audit and retainer advisory testing.",
-      "pricePaise": 7500000,
-      "turnaround": "3 Business Days",
-      "features": [
-        "Board Advisory",
-        "Statutory Due Diligence"
-      ],
-      "id": "srv-1794234766102",
-      "slug": "automated-verification-retainer-advisory"
+      "order": 10
     }
   ],
   "blogPosts": [
@@ -3739,15 +3844,15 @@
   "team": [
     {
       "id": "team-1",
-      "name": "Adv. Subhasish Mukherjee",
-      "role": "Senior Partner & Practice Lead",
+      "name": "Adv. Rajesh Telge",
+      "role": "Advocate on Panel & Practice Head",
       "title": "Advocate & Legal Consultant",
-      "focus": "Commercial Litigation • Arbitration • Corporate Structuring",
-      "bio": "Over two decades of advocacy experience spanning the Calcutta High Court, NCLT, and arbitral tribunals across India.",
+      "focus": "Civil & Criminal Matters • 30-Year Property Search • MahaRERA • Document Attestation & Succession",
+      "bio": "Distinguished Advocate on Panel with over 15 years of dedicated practice across Civil & Criminal litigation, 30-year property title verification, society governance, and statutory document attestation.",
       "avatarUrl": "/brand/subhasish-profile.png",
-      "email": "subhasish@acornlegal.in",
+      "email": "acornconsultant2014@gmail.com",
       "order": 1,
-      "updatedAt": "2026-11-01T00:00:00Z"
+      "updatedAt": "2026-11-17T00:00:00Z"
     },
     {
       "id": "team-2",
