@@ -50,6 +50,23 @@ export const metadata: Metadata = {
     siteName: "Acorn Legal Consultants",
     locale: "en_IN",
     type: "website",
+    images: [
+      {
+        url: "https://acornlegal.in/logo.png",
+        width: 1200,
+        height: 1200,
+        alt: "Acorn Legal Consultants Crest",
+      },
+    ],
+  },
+  icons: {
+    icon: [
+      { url: "/favicon.ico" },
+      { url: "/favicon.png", type: "image/png" },
+    ],
+    apple: [
+      { url: "/apple-touch-icon.png" },
+    ],
   },
 };
 

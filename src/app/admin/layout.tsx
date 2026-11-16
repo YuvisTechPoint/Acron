@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
+import NextImage from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import {
   LayoutDashboard,
@@ -221,7 +222,18 @@ export default function AdminLayout({
           >
             {mobileSidebarOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </button>
-          <div className="font-serif font-bold text-base text-white">ACORN ADMIN</div>
+          <div className="flex items-center gap-2">
+            <div className="w-7 h-7 rounded bg-navy-900 border border-brass-500/40 overflow-hidden shrink-0">
+              <NextImage
+                src="/brand/logo.png"
+                alt="Acorn Crest"
+                width={28}
+                height={28}
+                className="w-full h-full object-cover"
+              />
+            </div>
+            <div className="font-serif font-bold text-base text-white">ACORN ADMIN</div>
+          </div>
         </div>
 
         <div className="flex items-center gap-2">
@@ -243,18 +255,19 @@ export default function AdminLayout({
         }`}
       >
         <div className="p-5">
-          {/* Logo Monogram */}
+          {/* Official Acorn Crest Brand Logo */}
           <Link
             href="/admin"
             className="flex items-center gap-3 pb-6 border-b border-navy-800/80 group"
           >
-            <div className="w-9 h-9 rounded-btn bg-navy-800 border border-brass-500/40 flex items-center justify-center text-brass-300 shrink-0">
-              <svg viewBox="0 0 32 32" fill="none" className="w-4 h-4">
-                <path
-                  d="M16 6 L7 26 H11 L13.5 20 H18.5 L21 26 H25 L16 6 Z M14.5 17 L16 11.5 L17.5 17 H14.5 Z"
-                  fill="currentColor"
-                />
-              </svg>
+            <div className="w-10 h-10 rounded-md bg-navy-950 border border-brass-500/40 overflow-hidden flex items-center justify-center group-hover:border-brass-400 group-hover:ring-1 group-hover:ring-brass-400/40 transition-all shrink-0">
+              <NextImage
+                src="/brand/logo.png"
+                alt="Acorn Legal Consultants Crest"
+                width={40}
+                height={40}
+                className="w-full h-full object-cover transition-transform duration-200 group-hover:scale-105"
+              />
             </div>
             <div>
               <div className="font-serif text-lg font-bold tracking-tight text-white leading-none">

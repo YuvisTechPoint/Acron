@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import {
   ChevronDown,
@@ -159,21 +160,28 @@ export function Navbar() {
       >
         <div className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center justify-between">
           
-          {/* Logo Lockup: Monogram Box with A + ACORN + LEGAL CONSULTANTS */}
+          {/* Logo Lockup: Official Acorn Crest + ACORN LEGAL CONSULTANTS */}
           <Link
             href="/"
             className="flex items-center gap-3 group focus:outline-none"
             aria-label="Acorn Legal Consultants Home"
           >
-            {/* Monogram A square box */}
+            {/* Authentic Brand Crest Emblem */}
             <div
-              className={`w-10 h-10 rounded-md flex items-center justify-center transition duration-200 border ${
+              className={`w-10 h-10 rounded-md overflow-hidden flex items-center justify-center transition duration-200 border shrink-0 ${
                 isTransparent
-                  ? "bg-navy-900 border-brass-500/40 text-brass-300 shadow-inner group-hover:border-brass-400"
-                  : "bg-navy-800 border-brass-500/40 text-brass-300 shadow-sm group-hover:border-brass-400"
+                  ? "bg-navy-950 border-brass-500/50 shadow-inner group-hover:border-brass-400 group-hover:ring-1 group-hover:ring-brass-400/40"
+                  : "bg-navy-950 border-brass-500/40 shadow-sm group-hover:border-brass-400 group-hover:ring-1 group-hover:ring-brass-400/40"
               }`}
             >
-              <span className="font-serif text-2xl font-bold leading-none select-none text-brass-300">A</span>
+              <Image
+                src="/brand/logo.png"
+                alt="Acorn Legal Consultants Crest"
+                width={40}
+                height={40}
+                className="w-full h-full object-cover transition-transform duration-200 group-hover:scale-105"
+                priority
+              />
             </div>
 
             <div className="flex flex-col">

@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import {
   MapPin,
@@ -66,8 +67,14 @@ export function Footer() {
           {/* Column 1: Firm Identity & Chambers Ethos (4 cols) */}
           <div className="lg:col-span-4 space-y-4">
             <Link href="/" className="inline-flex items-center gap-3 group focus:outline-none">
-              <div className="w-10 h-10 rounded-md bg-navy-900 border border-brass-500/40 flex items-center justify-center text-brass-300 group-hover:border-brass-400 transition-colors shadow-inner">
-                <span className="font-serif text-2xl font-bold leading-none select-none text-brass-300">A</span>
+              <div className="w-10 h-10 rounded-md bg-navy-950 border border-brass-500/40 overflow-hidden flex items-center justify-center group-hover:border-brass-400 group-hover:ring-1 group-hover:ring-brass-400/40 transition-all shadow-inner shrink-0">
+                <Image
+                  src="/brand/logo.png"
+                  alt="Acorn Legal Consultants Crest"
+                  width={40}
+                  height={40}
+                  className="w-full h-full object-cover transition-transform duration-200 group-hover:scale-105"
+                />
               </div>
               <div className="flex flex-col">
                 <span className="font-serif text-2xl font-bold tracking-tight text-white leading-none">
