@@ -410,9 +410,9 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 3. PRACTICE AREAS BENTO: 12-column bento grid, 1 large feature + 5 smaller cards */}
-      <section className="bg-stone-100 py-24 sm:py-32 border-b border-border">
-        <div className="max-w-[1240px] mx-auto px-4 sm:px-6 space-y-16">
+      {/* 3. PRACTICE AREAS BENTO: Edge-to-edge practice disciplines layout */}
+      <section className="bg-stone-100 py-16 sm:py-24 border-b border-border w-full overflow-hidden">
+        <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-10 space-y-12 sm:space-y-14">
 
           <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6">
             <SectionHeading
@@ -541,19 +541,19 @@ export default function HomePage() {
 
             <div
               ref={practiceScrollRef}
-              className="flex gap-4 sm:gap-5 overflow-x-auto pb-4 pt-1 snap-x snap-mandatory scrollbar-thin scrollbar-thumb-brass-500/20 scrollbar-track-transparent items-stretch"
+              className="flex gap-4 sm:gap-5 overflow-x-auto pb-2 pt-1 snap-x snap-mandatory scrollbar-none items-stretch w-full [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
               style={{ scrollBehavior: "smooth" }}
             >
               {PRACTICE_AREAS.slice(2).map((pa, i) => (
                 <div
                   key={pa.slug}
-                  className="w-[280px] sm:w-[300px] lg:w-[calc((100%-4*1.25rem)/5)] shrink-0 snap-start flex flex-col justify-between"
+                  className="w-[280px] sm:w-[320px] lg:w-[calc((100%-4*1.25rem)/5)] shrink-0 snap-start flex flex-col justify-between"
                 >
                   <Card
                     variant="white"
                     arrowOnHover
                     href={`/services/${pa.slug}`}
-                    className="h-full flex flex-col justify-between !p-5 sm:!p-6"
+                    className="h-full flex flex-col justify-between !p-5 sm:!p-6 w-full"
                   >
                     <div>
                       <div className="flex items-center justify-between pb-3.5 border-b border-border">
