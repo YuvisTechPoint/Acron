@@ -88,7 +88,7 @@ const INITIAL_SEED: DatabaseSchema = {
     heroArchTitle: "Chambers of Acorn",
     heroArchSubtitle: "",
     footerRollText:
-      "Acorn Legal Consultants • Excellence in Law • Integrity in Practice • Calcutta High Court • POSH Act Advisory • Corporate Governance • Commercial Contracts • Arbitration & Mediation",
+      "Excellence in Law • Integrity in Practice • Calcutta High Court • POSH Act Advisory • Corporate Governance • Commercial Contracts • Arbitration & Mediation",
     updatedAt: new Date().toISOString(),
   },
   services: [

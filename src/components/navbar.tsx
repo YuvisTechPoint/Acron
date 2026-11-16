@@ -135,15 +135,15 @@ export function Navbar() {
       >
         <div className="footer-ticker-track flex items-center h-full">
           <div className="flex shrink-0 items-center gap-8 px-4 text-[11px] font-serif italic text-brass-300 tracking-wider">
-            <span suppressHydrationWarning>{siteConfig?.footerRollText || "Acorn Legal Consultants • Excellence in Law • Integrity in Practice • Calcutta High Court • POSH Act Advisory • Corporate Governance • Commercial Contracts • Arbitration & Mediation"}</span>
+            <span suppressHydrationWarning>{siteConfig?.footerRollText || "Excellence in Law • Integrity in Practice • Calcutta High Court • POSH Act Advisory • Corporate Governance • Commercial Contracts • Arbitration & Mediation"}</span>
             <span className="text-brass-500/60 not-italic">✦</span>
-            <span suppressHydrationWarning>{siteConfig?.footerRollText || "Acorn Legal Consultants • Excellence in Law • Integrity in Practice • Calcutta High Court • POSH Act Advisory • Corporate Governance • Commercial Contracts • Arbitration & Mediation"}</span>
+            <span suppressHydrationWarning>{siteConfig?.footerRollText || "Excellence in Law • Integrity in Practice • Calcutta High Court • POSH Act Advisory • Corporate Governance • Commercial Contracts • Arbitration & Mediation"}</span>
             <span className="text-brass-500/60 not-italic">✦</span>
           </div>
           <div className="flex shrink-0 items-center gap-8 px-4 text-[11px] font-serif italic text-brass-300 tracking-wider" aria-hidden="true">
-            <span suppressHydrationWarning>{siteConfig?.footerRollText || "Acorn Legal Consultants • Excellence in Law • Integrity in Practice • Calcutta High Court • POSH Act Advisory • Corporate Governance • Commercial Contracts • Arbitration & Mediation"}</span>
+            <span suppressHydrationWarning>{siteConfig?.footerRollText || "Excellence in Law • Integrity in Practice • Calcutta High Court • POSH Act Advisory • Corporate Governance • Commercial Contracts • Arbitration & Mediation"}</span>
             <span className="text-brass-500/60 not-italic">✦</span>
-            <span suppressHydrationWarning>{siteConfig?.footerRollText || "Acorn Legal Consultants • Excellence in Law • Integrity in Practice • Calcutta High Court • POSH Act Advisory • Corporate Governance • Commercial Contracts • Arbitration & Mediation"}</span>
+            <span suppressHydrationWarning>{siteConfig?.footerRollText || "Excellence in Law • Integrity in Practice • Calcutta High Court • POSH Act Advisory • Corporate Governance • Commercial Contracts • Arbitration & Mediation"}</span>
             <span className="text-brass-500/60 not-italic">✦</span>
           </div>
         </div>

@@ -792,7 +792,7 @@ const SEED_SITE_CONFIG: SiteConfig = {
     "Chambers open throughout High Court long vacation for urgent mentions & POSH inquiries.",
   googleMapsQuery: "Camac Court, 25 Camac Street, Park Street District, Kolkata 700016",
   footerRollText:
-    "Acorn Legal Consultants • Excellence in Law • Integrity in Practice • Calcutta High Court • POSH Act Advisory • Corporate Governance • Commercial Contracts • Arbitration & Mediation",
+    "Excellence in Law • Integrity in Practice • Calcutta High Court • POSH Act Advisory • Corporate Governance • Commercial Contracts • Arbitration & Mediation",
   disclaimer:
     "As per the rules of the Bar Council of India, law firms are not permitted to solicit work or advertise. By accessing this website, the user acknowledges that the information provided is solely for informational purposes and does not create an advocate-client relationship.",
   pathwaySteps: [
