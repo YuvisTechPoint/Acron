@@ -69,7 +69,7 @@ export default function AdminPaymentLinksPage() {
       amountPaise: Math.round(form.amount * 100),
       status: "ACTIVE",
       expiresAt: expDate.toISOString(),
-      url: `/pay?amt=${form.amount}&desc=${encodeURIComponent(form.matterRef || "Legal Fee")}`,
+      url: `/pay?amt=${form.amount}&desc=${encodeURIComponent(form.matterRef || "Legal Fee")}&name=${encodeURIComponent(form.clientName)}&email=${encodeURIComponent(form.clientEmail)}`,
     });
 
     triggerToast(`Payment link ${created.id} generated successfully!`);

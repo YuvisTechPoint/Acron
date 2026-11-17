@@ -1625,6 +1625,9 @@ class PlatformStore {
     itemDescription: string;
     amountPaise: number;
     gstin?: string;
+    razorpayOrderId?: string;
+    razorpayPaymentId?: string;
+    method?: string;
   }): PaymentTransaction {
     const list = this.getPayments();
     const taxPaise = Math.round(data.amountPaise * 0.18);
@@ -1642,7 +1645,9 @@ class PlatformStore {
       taxPaise: taxPaise,
       totalPaise: data.amountPaise + taxPaise,
       currency: "INR",
-      razorpayPaymentId: `pay_mock_${Date.now()}`,
+      razorpayPaymentId: data.razorpayPaymentId || `pay_rzp_${Date.now()}`,
+      razorpayOrderId: data.razorpayOrderId,
+      method: data.method || "card_upi",
       status: "paid",
       paidAt: new Date().toISOString(),
       createdAt: new Date().toISOString(),

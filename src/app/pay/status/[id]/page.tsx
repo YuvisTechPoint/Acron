@@ -140,9 +140,18 @@ function PaymentStatusContent() {
               <div className="flex justify-between border-b border-border pb-2.5">
                 <span className="text-slate">Razorpay Payment ID:</span>
                 <span className="font-mono text-slate font-medium">
-                  {`pay_rzp_${paymentId.slice(0, 10) || "Acorn8912"}`}
+                  {recorded.razorpayPaymentId || `pay_rzp_${paymentId.slice(0, 10) || "Acorn8912"}`}
                 </span>
               </div>
+
+              {recorded.razorpayOrderId && (
+                <div className="flex justify-between border-b border-border pb-2.5">
+                  <span className="text-slate">Razorpay Order ID:</span>
+                  <span className="font-mono text-slate font-medium">
+                    {recorded.razorpayOrderId}
+                  </span>
+                </div>
+              )}
 
               <div className="flex justify-between border-b border-border pb-2.5">
                 <span className="text-slate">Date &amp; Time:</span>
