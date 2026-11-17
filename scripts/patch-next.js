@@ -30,3 +30,18 @@ if (fs.existsSync(requireFile)) {
   }
 }
 
+// 3. Patch collect-build-traces.js for missing trace output files
+const tracesFile = 'node_modules/next/dist/build/collect-build-traces.js';
+if (fs.existsSync(tracesFile)) {
+  let content = fs.readFileSync(tracesFile, 'utf8');
+  const target = 'const existingTrace = JSON.parse(await _promises.default.readFile(traceOutputPath, "utf8"));';
+  const replacement = 'let existingTrace = { version: 1, files: [] }; try { existingTrace = JSON.parse(await _promises.default.readFile(traceOutputPath, "utf8")); } catch {}';
+  if (content.includes(target)) {
+    content = content.replace(target, replacement);
+    fs.writeFileSync(tracesFile, content, 'utf8');
+    console.log('✔ Patched collect-build-traces.js safe fallback');
+  } else {
+    console.log('• collect-build-traces.js safe fallback already patched');
+  }
+}
+
