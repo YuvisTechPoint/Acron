@@ -3,7 +3,7 @@ import { spawn } from "child_process";
 import fs from "fs";
 import crypto from "crypto";
 
-const BASE_URL = process.env.TEST_BASE_URL || "http://localhost:3000";
+const BASE_URL = process.env.TEST_BASE_URL || "http://localhost:3005";
 
 let serverProc = null;
 
@@ -15,12 +15,12 @@ async function ensureServerRunning(url) {
 
   const serverScript = fs.existsSync(".next/standalone/server.js")
     ? [".next/standalone/server.js"]
-    : ["node_modules/next/dist/bin/next", "start", "-p", "3000"];
+    : ["node_modules/next/dist/bin/next", "start", "-p", "3005"];
 
   console.log(`Starting standalone server via node ${serverScript.join(" ")}...`);
   const child = spawn("node", serverScript, {
     stdio: "ignore",
-    env: { ...process.env, PORT: "3000" },
+    env: { ...process.env, PORT: "3005" },
   });
 
   for (let i = 0; i < 30; i++) {

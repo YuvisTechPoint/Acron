@@ -28,6 +28,11 @@ import {
 } from "@/components/ui";
 import { ChambersMap } from "@/components/chambers-map";
 import { useToast } from "@/components/ui/toast";
+import {
+  trackConsultationSubmitted,
+  trackPhoneClick,
+  trackWhatsAppClick,
+} from "@/lib/analytics";
 
 export default function ContactPage() {
   const siteConfig = useRealtimeSiteConfig();
@@ -73,6 +78,7 @@ export default function ContactPage() {
 
       const finalRef = refNumber || req.refNumber || `CONT-${Math.floor(100000 + Math.random() * 900000)}`;
       setSubmittedRef(finalRef);
+      trackConsultationSubmitted(finalRef, "General Contact");
       toast({
         title: "Inquiry Transmitted",
         description: `Your communication has been lodged under reference ${finalRef}.`,
@@ -91,6 +97,7 @@ export default function ContactPage() {
       });
       const fallbackRef = req.refNumber || `CONT-${Math.floor(100000 + Math.random() * 900000)}`;
       setSubmittedRef(fallbackRef);
+      trackConsultationSubmitted(fallbackRef, "General Contact");
       toast({
         title: "Inquiry Transmitted",
         description: `Your inquiry has been logged under reference ${fallbackRef}.`,

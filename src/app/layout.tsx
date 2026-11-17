@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import { Cormorant_Garamond, Inter } from "next/font/google";
 import "./globals.css";
 import { Navbar } from "@/components/navbar";
@@ -11,6 +12,7 @@ import { SkipToContent } from "@/components/skip-to-content";
 import { BackToTop } from "@/components/back-to-top";
 import { CleanCopyHandler } from "@/components/clean-copy-handler";
 import { Providers } from "@/components/providers";
+import { AnalyticsTracker } from "@/components/analytics-tracker";
 
 const cormorant = Cormorant_Garamond({
   subsets: ["latin"],
@@ -28,36 +30,56 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://acornlegal.in"),
+  metadataBase: new URL("https://acornconsultants.in"),
   title: {
-    default: "Acorn Legal Consultants | Kolkata | Excellence in Law. Integrity in Practice.",
-    template: "%s | Acorn Legal Consultants",
+    default: "Acorn Consultants | Educational, Tax & Legal Services",
+    template: "%s | Acorn Consultants",
   },
   description:
-    "Acorn Legal Consultants is a professional legal consultancy in Kolkata delivering thoughtful, precise, and result-oriented legal solutions for individuals, businesses, and organisations.",
+    "Over 15 years of expertise in Educational, Tax & Legal Services. Dedicated legal advocacy, 30-year property title search, doorstep Leave & License registration, registered Wills, co-operative society management, MEA Apostille attestation, and educational guidance.",
   keywords: [
-    "Law firm Kolkata",
-    "Legal consultancy West Bengal",
-    "POSH compliance Kolkata",
-    "Internal Committee External Member",
-    "Corporate legal consultant Kolkata",
-    "Dispute resolution Kolkata",
+    "Acorn Consultants",
+    "Educational Tax & Legal Consultants",
+    "Advocate on Panel Rajesh Telge",
+    "Doorstep Leave and License registration",
+    "30 years land title search report",
+    "Court marriage lawyer",
+    "Marriage registration certificate",
+    "Registered Will drafting and execution",
+    "Co-operative housing society formation GDCA auditor",
+    "MahaRERA complaint registration",
+    "Motor accident hit and run claim compensation MV Act",
+    "MEA Apostille and Embassy attestation",
+    "Private 10th SSC 12th coaching guidance",
+    "College admissions guidance MBBS MD Pharmacy",
+    "Mumbai University admission form filling",
+    "School RTE form filling assistance",
+    "POSH compliance and External Member",
   ],
+  alternates: {
+    canonical: "https://acornconsultants.in",
+  },
   openGraph: {
-    title: "Acorn Legal Consultants | Kolkata",
-    description: "Excellence in Law. Integrity in Practice. Professional legal consultancy in Kolkata.",
-    url: "https://acornlegal.in",
-    siteName: "Acorn Legal Consultants",
+    title: "Acorn Consultants | Educational, Tax & Legal Services",
+    description: "Over 15 years of expertise in Educational, Tax & Legal Services. Work done well, with a personal touch.",
+    url: "https://acornconsultants.in",
+    siteName: "Acorn Consultants",
     locale: "en_IN",
     type: "website",
     images: [
       {
-        url: "https://acornlegal.in/logo.png",
+        url: "https://acornconsultants.in/brand/logo.png",
         width: 1200,
         height: 1200,
-        alt: "Acorn Legal Consultants Crest",
+        alt: "Acorn Consultants Emblem",
       },
     ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Acorn Consultants | Educational, Tax & Legal Services",
+    description: "Over 15 years of expertise in Educational, Tax & Legal Services. Work done well, with a personal touch.",
+    images: ["https://acornconsultants.in/brand/logo.png"],
   },
   icons: {
     icon: [
@@ -72,36 +94,74 @@ export const metadata: Metadata = {
 
 const jsonLd = {
   "@context": "https://schema.org",
-  "@type": ["LegalService", "Organization"],
-  name: "Acorn Legal Consultants",
-  alternateName: "Acorn Legal",
-  url: "https://acornlegal.in",
-  logo: "https://acornlegal.in/logo.png",
-  slogan: "Excellence in Law. Integrity in Practice.",
-  description:
-    "A professional legal consultancy delivering thoughtful, precise and result-oriented solutions for individuals, businesses and organisations in Kolkata and West Bengal.",
-  address: {
-    "@type": "PostalAddress",
-    streetAddress: "Suite 4B, Camac Court, 25 Camac Street, Park Street District",
-    addressLocality: "Kolkata",
-    addressRegion: "West Bengal",
-    postalCode: "700016",
-    addressCountry: "IN",
-  },
-  telephone: "+91-33-2486-7700",
-  email: "contact@acornlegal.in",
-  openingHoursSpecification: [
+  "@graph": [
     {
-      "@type": "OpeningHoursSpecification",
-      dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
-      opens: "09:30",
-      closes: "19:30",
+      "@type": ["LegalService", "ProfessionalService", "Organization"],
+      "@id": "https://acornconsultants.in/#organization",
+      name: "Acorn Consultants",
+      alternateName: [
+        "Acorn Legal Consultants",
+        "Acorn Educational, Tax & Legal Consultants",
+      ],
+      url: "https://acornconsultants.in",
+      logo: "https://acornconsultants.in/brand/logo.png",
+      image: "https://acornconsultants.in/brand/hero.png",
+      slogan: "Work done well, with a personal touch.",
+      description:
+        "Over 15 years of expertise in Educational, Tax & Legal Services. Legal representation, 30-year property title searches, doorstep Leave & License registration, registered Wills, co-operative society management, MEA Apostille attestation, and educational consulting.",
+      telephone: "+91-8286936899",
+      email: "acornconsultant2014@gmail.com",
+      priceRange: "₹₹",
+      address: {
+        "@type": "PostalAddress",
+        streetAddress: "Suite 4B, Camac Court, 25 Camac Street, Park Street District",
+        addressLocality: "Kolkata",
+        addressRegion: "West Bengal",
+        postalCode: "700016",
+        addressCountry: "IN",
+      },
+      geo: {
+        "@type": "GeoCoordinates",
+        latitude: 22.5488,
+        longitude: 88.3541,
+      },
+      founder: {
+        "@type": "Person",
+        name: "Adv. Rajesh Telge",
+        jobTitle: "Advocate on Panel & Principal Legal Consultant",
+        telephone: "+91-8369171822",
+      },
+      openingHoursSpecification: [
+        {
+          "@type": "OpeningHoursSpecification",
+          dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+          opens: "09:30",
+          closes: "19:30",
+        },
+      ],
+      areaServed: [
+        { "@type": "AdministrativeArea", name: "Kolkata" },
+        { "@type": "AdministrativeArea", name: "West Bengal" },
+        { "@type": "AdministrativeArea", name: "Maharashtra" },
+        { "@type": "Country", name: "India" },
+      ],
+      sameAs: [
+        "https://acornconsultants.in",
+      ],
     },
     {
-      "@type": "OpeningHoursSpecification",
-      dayOfWeek: ["Saturday"],
-      opens: "10:00",
-      closes: "16:00",
+      "@type": "WebSite",
+      "@id": "https://acornconsultants.in/#website",
+      url: "https://acornconsultants.in",
+      name: "Acorn Consultants",
+      publisher: {
+        "@id": "https://acornconsultants.in/#organization",
+      },
+      potentialAction: {
+        "@type": "SearchAction",
+        target: "https://acornconsultants.in/services?q={search_term_string}",
+        "query-input": "required name=search_term_string",
+      },
     },
   ],
 };
@@ -121,6 +181,9 @@ export default function RootLayout({
       </head>
       <body className="min-h-screen flex flex-col bg-ivory-50 text-ink antialiased font-sans selection:bg-brass-300/30">
         <Providers>
+          <Suspense fallback={null}>
+            <AnalyticsTracker />
+          </Suspense>
           <CleanCopyHandler />
           <SkipToContent />
           <DisclaimerBanner />

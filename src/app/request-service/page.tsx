@@ -19,6 +19,7 @@ import {
 } from "lucide-react";
 import { BRAND_CONFIG, PRACTICE_AREAS } from "@/lib/constants";
 import { platformStore } from "@/lib/store";
+import { trackConsultationSubmitted } from "@/lib/analytics";
 import {
   Button,
   Eyebrow,
@@ -141,6 +142,7 @@ function RequestServiceContent() {
 
       const finalRef = serverRef || savedLocal.refNumber || `ACORN-${new Date().getFullYear()}-${Math.floor(1000 + Math.random() * 9000)}`;
       setRefId(finalRef);
+      trackConsultationSubmitted(finalRef, selectedPractice || "General Advisory");
       toast({
         title: "Brief Lodged With Registry",
         description: `Privileged docket reference ${finalRef} created.`,
@@ -160,6 +162,7 @@ function RequestServiceContent() {
       });
       const finalRef = savedLocal.refNumber || `ACORN-${new Date().getFullYear()}-${Math.floor(1000 + Math.random() * 9000)}`;
       setRefId(finalRef);
+      trackConsultationSubmitted(finalRef, selectedPractice || "General Advisory");
       toast({
         title: "Brief Lodged With Registry",
         description: `Privileged docket reference ${finalRef} created.`,

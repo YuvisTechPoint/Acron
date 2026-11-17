@@ -25,6 +25,7 @@ import {
 import { platformStore } from "@/lib/store";
 import { useRealtimeFaqs } from "@/lib/realtime";
 import { FaqItem } from "@/lib/types";
+import { trackQuestionSubmitted } from "@/lib/analytics";
 
 interface FAQItem {
   id: string;
@@ -161,8 +162,23 @@ export default function FAQPage() {
         }),
       });
     } catch {}
-    setRefId(created.refNumber || `QA-${Math.floor(100000 + Math.random() * 900000)}`);
+    const finalRef = created.refNumber || `QA-${Math.floor(100000 + Math.random() * 900000)}`;
+    setRefId(finalRef);
+    trackQuestionSubmitted(finalRef, "posh_law");
     setFormSubmitted(true);
+  };
+
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: effectiveFaqs.map((f) => ({
+      "@type": "Question",
+      name: f.question,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: f.answer,
+      },
+    })),
   };
 
   const accordionItems = filteredFaqs.map((f) => ({
@@ -199,6 +215,10 @@ export default function FAQPage() {
 
   return (
     <div className="bg-ivory-50 text-ink min-h-screen">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      />
       
       {/* Header */}
       <section className="pt-32 pb-16 sm:pt-40 sm:pb-20 border-b border-border bg-ivory-50">

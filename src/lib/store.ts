@@ -2372,12 +2372,12 @@ class PlatformStore {
   // SEO Defaults & Redirects CRUD
   getSeoSettings(): SeoSettings {
     return this.get("seo_settings", {
-      defaultTitle: "Acorn Legal Consultants | Premier Kolkata Law Firm & POSH Advisory",
-      titleTemplate: "%s | Acorn Legal Consultants",
-      defaultDescription: "Premier legal consultancy in Kolkata specialising in corporate law, commercial litigation, employment law, and POSH Act statutory compliance.",
-      canonicalBase: "https://acornlegal.in",
-      ogImageUrl: "/images/hero.jpg",
-      twitterHandle: "@AcornLegalKolkata",
+      defaultTitle: "Acorn Consultants | Educational, Tax & Legal Services",
+      titleTemplate: "%s | Acorn Consultants",
+      defaultDescription: "Over 15 years of expertise in Educational, Tax & Legal Services. Dedicated legal representation, 30-year property title search, doorstep Leave & License registration, registered Wills, GDCA co-operative society management, attestations, and academic guidance.",
+      canonicalBase: "https://acornconsultants.in",
+      ogImageUrl: "/brand/logo.png",
+      twitterHandle: "@AcornConsultants",
       robotsIndex: true,
       robotsFollow: true,
       updatedAt: new Date().toISOString(),

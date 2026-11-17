@@ -27,6 +27,7 @@ import {
   Rule,
 } from "@/components/ui";
 import { useToast } from "@/components/ui/toast";
+import { trackPaymentCompleted } from "@/lib/analytics";
 
 interface ConsultationOption {
   id: string;
@@ -157,6 +158,12 @@ export default function PayOnlinePage() {
         variant: "success",
       });
 
+      trackPaymentCompleted(
+        recorded.receiptNumber || recorded.id,
+        netAmountPaise,
+        paymentMode === "consultation" ? selectedOption.name : `Invoice: ${invoiceRef}`
+      );
+
       setIsProcessing(false);
       router.push(`/pay/status/${recorded.id}?state=success`);
     } catch {
@@ -174,6 +181,12 @@ export default function PayOnlinePage() {
             : `Settlement of Invoice Ref: ${invoiceRef.trim()}`,
         amountPaise: netAmountPaise,
       });
+
+      trackPaymentCompleted(
+        recorded.receiptNumber || recorded.id,
+        netAmountPaise,
+        paymentMode === "consultation" ? selectedOption.name : `Invoice: ${invoiceRef}`
+      );
 
       setIsProcessing(false);
       router.push(`/pay/status/${recorded.id}?state=success`);

@@ -3,7 +3,7 @@ import { PRACTICE_AREAS } from "@/lib/constants";
 import { platformStore } from "@/lib/store";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = "https://www.acornlegal.in";
+  const baseUrl = "https://acornconsultants.in";
   const now = new Date();
 
   // Core static pages
@@ -18,13 +18,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
       url: `${baseUrl}/about`,
       lastModified: now,
       changeFrequency: "monthly",
-      priority: 0.8,
+      priority: 0.9,
     },
     {
       url: `${baseUrl}/services`,
       lastModified: now,
       changeFrequency: "weekly",
-      priority: 0.9,
+      priority: 0.95,
     },
     {
       url: `${baseUrl}/posh`,
@@ -36,19 +36,19 @@ export default function sitemap(): MetadataRoute.Sitemap {
       url: `${baseUrl}/blog`,
       lastModified: now,
       changeFrequency: "daily",
-      priority: 0.8,
+      priority: 0.85,
     },
     {
       url: `${baseUrl}/faq`,
       lastModified: now,
       changeFrequency: "weekly",
-      priority: 0.8,
+      priority: 0.85,
     },
     {
       url: `${baseUrl}/request-service`,
       lastModified: now,
       changeFrequency: "monthly",
-      priority: 0.8,
+      priority: 0.9,
     },
     {
       url: `${baseUrl}/contact`,
@@ -61,6 +61,24 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: now,
       changeFrequency: "monthly",
       priority: 0.7,
+    },
+    {
+      url: `${baseUrl}/governance/charters`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.6,
+    },
+    {
+      url: `${baseUrl}/governance/pathways`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.6,
+    },
+    {
+      url: `${baseUrl}/governance/sectors`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.6,
     },
     {
       url: `${baseUrl}/privacy`,
@@ -108,7 +126,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     url: `${baseUrl}/blog/${post.slug}`,
     lastModified: new Date(post.publishedAt || now),
     changeFrequency: "monthly",
-    priority: 0.75,
+    priority: 0.8,
   }));
 
   return [...staticRoutes, ...practiceRoutes, ...blogRoutes];

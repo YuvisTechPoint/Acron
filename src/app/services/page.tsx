@@ -32,6 +32,11 @@ import { platformStore } from "@/lib/store";
 import { useRealtimeServices } from "@/lib/realtime";
 import { CustomService } from "@/lib/types";
 import { formatINR } from "@/lib/utils";
+import {
+  trackPhoneClick,
+  trackWhatsAppClick,
+  trackServiceInquiryClick,
+} from "@/lib/analytics";
 
 type CategoryFilter = "all" | "legal_court" | "finance_business" | "careers_attestation" | "education_admissions";
 
@@ -91,8 +96,36 @@ export default function ServicesIndexPage() {
     });
   }, [selectedCategory, searchQuery]);
 
+  const servicesCatalogSchema = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    name: "Acorn Consultants - Products & Services Directory",
+    description:
+      "Comprehensive catalog of 37 specialized educational, taxation, and legal services offered by Acorn Consultants under Advocate on Panel Adv. Rajesh Telge.",
+    itemListElement: ALL_OFFERED_SERVICES.map((s, idx) => ({
+      "@type": "ListItem",
+      position: idx + 1,
+      item: {
+        "@type": "Service",
+        name: s.title,
+        description: s.description,
+        serviceType: s.categoryLabel,
+        provider: {
+          "@type": "LegalService",
+          name: "Acorn Consultants",
+          url: "https://acornconsultants.in",
+        },
+        areaServed: ["Kolkata", "West Bengal", "Maharashtra", "India"],
+      },
+    })),
+  };
+
   return (
     <div className="bg-ivory-50 text-ink min-h-screen">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(servicesCatalogSchema) }}
+      />
       {/* Editorial Header */}
       <section className="pt-32 pb-16 sm:pt-40 sm:pb-24 border-b border-border bg-ivory-50">
         <div className="max-w-[1240px] mx-auto px-4 sm:px-6 space-y-6">
@@ -146,6 +179,7 @@ export default function ServicesIndexPage() {
               <div className="flex flex-wrap sm:flex-nowrap gap-3 shrink-0">
                 <a
                   href="tel:+918286936899"
+                  onClick={() => trackPhoneClick("+91 8286936899", "Main Desk")}
                   className="py-3 px-5 rounded-btn bg-brass-500 hover:bg-brass-400 text-ink-950 font-sans text-xs font-bold flex items-center gap-2 shadow-sm transition"
                 >
                   <Phone className="w-4 h-4" />
@@ -155,6 +189,7 @@ export default function ServicesIndexPage() {
                   href="https://wa.me/918286936899"
                   target="_blank"
                   rel="noopener noreferrer"
+                  onClick={() => trackWhatsAppClick("services_top_banner")}
                   className="py-3 px-5 rounded-btn bg-emerald-600 hover:bg-emerald-500 text-white font-sans text-xs font-bold flex items-center gap-2 shadow-sm transition"
                 >
                   <MessageSquare className="w-4 h-4" />
@@ -299,6 +334,7 @@ export default function ServicesIndexPage() {
                   <div className="pt-4 border-t border-border flex items-center justify-between">
                     <Link
                       href={`/request-service?service=${encodeURIComponent(item.title)}`}
+                      onClick={() => trackServiceInquiryClick(item.title, item.categoryLabel)}
                       className="text-xs font-bold text-navy-700 group-hover:text-brass-700 flex items-center gap-1.5 transition-colors"
                     >
                       <span>Inquire / Book</span>
@@ -309,6 +345,7 @@ export default function ServicesIndexPage() {
                       href="https://wa.me/918286936899"
                       target="_blank"
                       rel="noopener noreferrer"
+                      onClick={() => trackWhatsAppClick(`service_card_${item.id}`)}
                       className="text-[11px] text-ink-muted hover:text-emerald-700 flex items-center gap-1 transition"
                       title="Quick WhatsApp Inquiry"
                     >
