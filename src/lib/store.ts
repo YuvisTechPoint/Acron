@@ -546,10 +546,11 @@ const SEED_QUESTIONS: QuestionAnswer[] = [
 
 const SEED_BLOGS: BlogPost[] = [
   {
-    id: "blog-1",
+    id: "post-01",
     slug: "posh-annual-report-district-officer-west-bengal-guide",
-    title: "Statutory POSH Annual Reporting: Section 21 Guidelines for Kolkata Employers",
-    summary: "A practical guide for employers and Internal Committees in West Bengal on preparing, validating, and submitting the mandatory Section 21 Annual Report to the District Magistrate.",
+    title: "Statutory Filing of POSH Annual Reports to the District Officer in West Bengal",
+    summary: "A comprehensive practical guide on Section 21 statutory reporting obligations for corporate employers in Kolkata.",
+    excerpt: "A comprehensive practical guide on Section 21 statutory reporting obligations for corporate employers in Kolkata.",
     content: `Under Section 21 of the Sexual Harassment of Women at Workplace (Prevention, Prohibition and Redressal) Act, 2013, every Internal Committee (IC) is statutorily mandated to prepare and submit an Annual Compliance Report to both the Employer and the designated District Officer (DO) in each calendar year.
 
 In Kolkata and surrounding districts of West Bengal, the Office of the District Magistrate serves as the regulatory nodal authority. Failure to file this report or maintain compliance exposes the company and directors to statutory penalties under Section 26, including financial fines of up to ₹50,000 for the first offense and potential revocation of municipal trade licenses for repeated defaults.
@@ -564,22 +565,25 @@ In Kolkata and surrounding districts of West Bengal, the Office of the District 
 Acorn Legal Consultants provides automated annual report generation directly through our POSH Org Console, eliminating compliance risks.`,
     author: {
       name: "Adv. Debjani Sen",
-      role: "Partner & Head of POSH Redressal Practice",
+      role: "Senior Counsel & External Member",
     },
-    category: "POSH Compliance",
-    tags: ["POSH Act", "Annual Report", "Compliance", "West Bengal", "District Officer"],
-    readingTimeMinutes: 5,
+    authorName: "Adv. Debjani Sen",
+    category: "posh_compliance",
+    tags: ["POSH Act", "Annual Compliance", "Kolkata Jurisprudence"],
+    readingTimeMinutes: 6,
+    readTimeMinutes: 6,
     status: "published",
-    publishedAt: "2026-10-20T09:00:00Z",
+    publishedAt: "2026-10-15",
     views: 1240,
     seoTitle: "POSH Annual Report Section 21 Filing Guide Kolkata West Bengal",
     seoDescription: "Step-by-step statutory filing guidance for Internal Committees in West Bengal submitting Section 21 reports to the District Magistrate.",
   },
   {
-    id: "blog-2",
+    id: "post-02",
     slug: "remote-work-hybrid-workplace-posh-jurisdiction",
-    title: "The Extended Workplace: POSH Act Applicability in Remote and Hybrid Work Environments",
-    summary: "Exploring landmark High Court rulings on how Slack messages, virtual meetings, offsite retreats, and home offices fall squarely within the definition of workplace under Section 2(o).",
+    title: "Extending POSH Act Jurisdiction to Hybrid Work & Virtual Communications",
+    summary: "Navigating Slack, Zoom, and WhatsApp misconduct under the 'notional extension of workplace' doctrine.",
+    excerpt: "Navigating Slack, Zoom, and WhatsApp misconduct under the 'notional extension of workplace' doctrine.",
     content: `The modern workplace is no longer confined within physical brick-and-mortar office boundaries. With hybrid work, client dinners, and digital communication tools like Microsoft Teams, WhatsApp, and Slack, the legal definition of 'workplace' has expanded significantly.
 
 Section 2(o) of the POSH Act adopts an inclusive definition: 'workplace includes any place visited by the employee arising out of or during the course of employment, including transportation provided by the employer'. 
@@ -588,21 +592,24 @@ Indian High Courts (including the Delhi High Court in *Saurabh Kumar Mallick v. 
 
 Employers must ensure their POSH policies explicitly cover virtual workspaces, remote work conduct, and establish clear digital evidence preservation protocols.`,
     author: {
-      name: "Adv. Subhasish Mukherjee",
-      role: "Managing Partner, Dispute Resolution",
+      name: "Dr. Ananya Mukherjee",
+      role: "Senior Partner, Regulatory Practice",
     },
-    category: "Workplace Law",
-    tags: ["Remote Work", "Hybrid Office", "Digital Harassment", "High Court Rulings"],
-    readingTimeMinutes: 6,
+    authorName: "Dr. Ananya Mukherjee",
+    category: "posh_compliance",
+    tags: ["Hybrid Workplace", "Digital Harassment", "Case Law Analysis"],
+    readingTimeMinutes: 8,
+    readTimeMinutes: 8,
     status: "published",
-    publishedAt: "2026-10-27T10:30:00Z",
+    publishedAt: "2026-10-28",
     views: 890,
   },
   {
-    id: "blog-3",
+    id: "post-03",
     slug: "real-estate-title-due-diligence-kolkata-rajarhat-wbrera",
-    title: "Navigating Land Due Diligence in Greater Kolkata: Mutation, Encumbrances and WBRERA",
-    summary: "Critical legal checks required before acquiring commercial parcels or joint-development rights in Rajarhat New Town, EM Bypass, and Howrah.",
+    title: "Commercial Title Due Diligence & WBRERA Compliance in Rajarhat-New Town",
+    summary: "Mitigating title defects, land ceiling sanctions, and municipal approvals in Bengal commercial transactions.",
+    excerpt: "Mitigating title defects, land ceiling sanctions, and municipal approvals in Bengal commercial transactions.",
     content: `Acquiring land or structuring joint development agreements in Kolkata requires meticulous scrutiny of legacy revenue records, Cadastral Survey (CS), Revisional Survey (RS), and Land Reforms (LR) records spanning at least 30 years.
 
 Key Due Diligence Imperatives:
@@ -611,14 +618,16 @@ Key Due Diligence Imperatives:
 - Search at the Registrar of Assurances, Kolkata for registered encumbrances, lis pendens, or equitable mortgages.
 - Compliance with West Bengal Real Estate Regulatory Authority (WBRERA) project registration mandates before marketing.`,
     author: {
-      name: "Adv. Subhasish Mukherjee",
-      role: "Managing Partner",
+      name: "Adv. Sourav Ganguly",
+      role: "Partner, Commercial & Property Law",
     },
-    category: "Real Estate",
-    tags: ["Real Estate", "WBRERA", "Kolkata Property", "Due Diligence"],
+    authorName: "Adv. Sourav Ganguly",
+    category: "real_estate",
+    tags: ["Real Estate", "WBRERA", "Title Search", "Kolkata"],
     readingTimeMinutes: 7,
+    readTimeMinutes: 7,
     status: "published",
-    publishedAt: "2026-11-02T11:00:00Z",
+    publishedAt: "2026-11-02",
     views: 650,
   },
 ];

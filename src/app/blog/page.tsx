@@ -161,12 +161,13 @@ export default function BlogIndexPage() {
                     <Link
                       href={`/blog/${featured.slug}`}
                       className="hover:text-navy-700 transition"
+                      suppressHydrationWarning
                     >
                       {featured.title}
                     </Link>
                   </h2>
 
-                  <p className="font-sans text-base text-ink-secondary leading-relaxed">
+                  <p className="font-sans text-base text-ink-secondary leading-relaxed" suppressHydrationWarning>
                     {featured.excerpt || featured.summary}
                   </p>
                 </div>
@@ -225,11 +226,17 @@ export default function BlogIndexPage() {
                         </span>
                       </div>
 
-                      <h3 className="font-serif text-2xl font-bold text-ink-950 group-hover:text-navy-700 transition leading-snug">
+                      <h3
+                        className="font-serif text-2xl font-bold text-ink-950 group-hover:text-navy-700 transition leading-snug"
+                        suppressHydrationWarning
+                      >
                         {art.title}
                       </h3>
 
-                      <p className="font-sans text-xs sm:text-sm text-ink-secondary line-clamp-3 leading-relaxed">
+                      <p
+                        className="font-sans text-xs sm:text-sm text-ink-secondary line-clamp-3 leading-relaxed"
+                        suppressHydrationWarning
+                      >
                         {art.excerpt || art.summary}
                       </p>
                     </div>

@@ -107,28 +107,28 @@ const HOMEPAGE_FAQS = [
 
 const FEATURED_INSIGHTS = [
   {
-    slug: "posh-act-external-member-statutory-duties",
+    slug: "posh-annual-report-district-officer-west-bengal-guide",
     category: "POSH Compliance",
-    date: "November 2026",
-    title: "The Statutory Role of the External Member in POSH Act Inquiries",
+    date: "15 Oct 2026",
+    title: "Statutory Filing of POSH Annual Reports to the District Officer in West Bengal",
     excerpt:
-      "A judicial review of Section 4(2)(c) jurisprudence and the imperative of third-party neutrality in workplace inquiry proceedings.",
+      "A comprehensive practical guide on Section 21 statutory reporting obligations for corporate employers in Kolkata.",
   },
   {
-    slug: "commercial-contract-boilerplate-dispute-mitigation",
-    category: "Commercial Law",
-    date: "October 2026",
-    title: "Drafting Dispute Escalation Clauses in High-Value Joint Ventures",
+    slug: "remote-work-hybrid-workplace-posh-jurisdiction",
+    category: "POSH Compliance",
+    date: "28 Oct 2026",
+    title: "Extending POSH Act Jurisdiction to Hybrid Work & Virtual Communications",
     excerpt:
-      "Structuring multi-tier dispute resolution clauses under Indian arbitration jurisprudence to prevent preliminary procedural friction.",
+      "Navigating Slack, Zoom, and WhatsApp misconduct under the 'notional extension of workplace' doctrine.",
   },
   {
-    slug: "directors-fiduciary-governance-fema-compliance",
-    category: "Corporate Advisory",
-    date: "October 2026",
-    title: "Directors' Personal Liability Under Recent Regulatory Amendments",
+    slug: "real-estate-title-due-diligence-kolkata-rajarhat-wbrera",
+    category: "Real Estate & RERA",
+    date: "02 Nov 2026",
+    title: "Commercial Title Due Diligence & WBRERA Compliance in Rajarhat-New Town",
     excerpt:
-      "Statutory duties under the Companies Act 2013 and recent enforcement trends across corporate oversight tribunals.",
+      "Mitigating title defects, land ceiling sanctions, and municipal approvals in Bengal commercial transactions.",
   },
 ];
 
@@ -708,7 +708,7 @@ export default function HomePage() {
                   Safe, <span className="font-serif italic font-normal text-brass-300">compliant</span> workplaces.
                 </h2>
                 <p className="font-sans text-base text-slate-300 leading-relaxed max-w-xl">
-                  Acorn Legal Consultants assists with end-to-end POSH Act 2013 compliance, independent External Member appointment under Section 4(2)(c), fair inquiry facilitation, and mandatory annual reporting.
+                  Independent External Member appointment under Section 4(2)(c), fair inquiry facilitation, and mandatory annual reporting.
                 </p>
 
                 <div className="pt-2 flex flex-wrap items-center gap-4">
@@ -771,11 +771,17 @@ export default function HomePage() {
                       <span className="text-ink-muted" suppressHydrationWarning>{effectiveInsights[0].date}</span>
                     </div>
 
-                    <h3 className="font-serif text-2xl sm:text-4xl font-bold text-ink-950 group-hover:text-navy-700 transition-colors leading-[1.2]">
+                    <h3
+                      className="font-serif text-2xl sm:text-4xl font-bold text-ink-950 group-hover:text-navy-700 transition-colors leading-[1.2]"
+                      suppressHydrationWarning
+                    >
                       {effectiveInsights[0].title}
                     </h3>
 
-                    <p className="font-sans text-base text-ink-secondary leading-relaxed">
+                    <p
+                      className="font-sans text-base text-ink-secondary leading-relaxed"
+                      suppressHydrationWarning
+                    >
                       {effectiveInsights[0].excerpt}
                     </p>
                   </div>
@@ -800,10 +806,16 @@ export default function HomePage() {
                         </span>
                         <span className="text-ink-muted" suppressHydrationWarning>{art.date}</span>
                       </div>
-                      <h4 className="font-serif text-xl font-bold text-ink-950 group-hover:text-navy-700 transition-colors">
+                      <h4
+                        className="font-serif text-xl font-bold text-ink-950 group-hover:text-navy-700 transition-colors"
+                        suppressHydrationWarning
+                      >
                         {art.title}
                       </h4>
-                      <p className="font-sans text-xs text-ink-secondary line-clamp-2 leading-relaxed">
+                      <p
+                        className="font-sans text-xs text-ink-secondary line-clamp-2 leading-relaxed"
+                        suppressHydrationWarning
+                      >
                         {art.excerpt}
                       </p>
                     </div>

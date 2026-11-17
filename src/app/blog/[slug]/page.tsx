@@ -198,11 +198,17 @@ export default function SingleBlogPostPage() {
             </span>
           </div>
 
-          <h1 className="font-serif text-3xl sm:text-5xl md:text-6xl font-bold tracking-tight text-ink-950 leading-[1.14]">
+          <h1
+            className="font-serif text-3xl sm:text-5xl md:text-6xl font-bold tracking-tight text-ink-950 leading-[1.14]"
+            suppressHydrationWarning
+          >
             {post.title}
           </h1>
 
-          <p className="font-sans text-lg sm:text-xl text-ink-secondary leading-relaxed max-w-3xl">
+          <p
+            className="font-sans text-lg sm:text-xl text-ink-secondary leading-relaxed max-w-3xl"
+            suppressHydrationWarning
+          >
             {post.excerpt || post.summary}
           </p>
 
