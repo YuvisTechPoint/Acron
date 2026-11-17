@@ -64,10 +64,9 @@ export async function POST(req: NextRequest) {
     // In sandbox test mode, accept simulated test signatures
     if (!isSignatureValid && isTestMode) {
       if (
-        signature.startsWith("sig_") ||
+        signature.startsWith("sig_test_") ||
         signature.startsWith("mock_") ||
-        signature === "test_signature" ||
-        signature.length >= 10
+        signature === "test_signature"
       ) {
         isSignatureValid = true;
       }

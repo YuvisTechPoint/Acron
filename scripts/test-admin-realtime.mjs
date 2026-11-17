@@ -3,13 +3,39 @@ import { spawn } from "child_process";
 import fs from "fs";
 
 const TEST_PORT = process.env.PORT || "3005";
-const BASE_URL = process.env.TEST_BASE_URL || `http://localhost:${TEST_PORT}`;
+let BASE_URL = process.env.TEST_BASE_URL || `http://localhost:${TEST_PORT}`;
 
 let serverProc = null;
 
 async function ensureServerRunning(url) {
+  if (process.env.TEST_BASE_URL) {
+    try {
+      const res = await fetch(`${process.env.TEST_BASE_URL}/api/health`, { signal: AbortSignal.timeout(3000) });
+      if (res.status === 200) {
+        BASE_URL = process.env.TEST_BASE_URL;
+        return null;
+      }
+    } catch {}
+  }
+
+  // Check if live server is already active on port 3000 or 3001 (with retries)
+  for (let attempt = 0; attempt < 4; attempt++) {
+    for (const host of ["127.0.0.1", "localhost"]) {
+      for (const port of ["3000", "3001"]) {
+        try {
+          const res = await fetch(`http://${host}:${port}/api/health`, { signal: AbortSignal.timeout(4000) });
+          if (res.status === 200) {
+            BASE_URL = `http://${host}:${port}`;
+            return null;
+          }
+        } catch {}
+      }
+    }
+    if (attempt < 3) await new Promise((r) => setTimeout(r, 800));
+  }
+
   try {
-    const res = await fetch(`${url}/api/health`, { signal: AbortSignal.timeout(1000) });
+    const res = await fetch(`${url}/api/health`, { signal: AbortSignal.timeout(3000) });
     if (res.status === 200) return null;
   } catch {}
 
