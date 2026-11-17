@@ -13,7 +13,9 @@ async function ensureServerRunning(url) {
     if (res.status === 200) return null;
   } catch {}
 
-  const serverScript = ["node_modules/next/dist/bin/next", "start", "-p", TEST_PORT];
+  const serverScript = fs.existsSync(".next/standalone/server.js")
+    ? [".next/standalone/server.js"]
+    : ["node_modules/next/dist/bin/next", "start", "-p", TEST_PORT];
 
   console.log(`Starting Acorn production server on port ${TEST_PORT}...`);
   const child = spawn("node", serverScript, {
