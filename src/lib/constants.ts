@@ -38,6 +38,14 @@ export interface OfferedServiceItem {
 export const ALL_OFFERED_SERVICES: OfferedServiceItem[] = [
   // Legal, Court & Matrimonial
   {
+    id: "check-bounce-section-138",
+    title: "Check Bounce & Section 138 NI Act Complaints",
+    category: "legal_court",
+    categoryLabel: "Legal & Court Matters",
+    description: "Statutory 30-day legal demand notice drafting, filing criminal complaints under Section 138 of Negotiable Instruments Act, debt recovery summary suits, and courtroom advocacy.",
+    highlight: "Section 138 Notice",
+  },
+  {
     id: "court-marriage",
     title: "Court Marriage for all Caste & Religions",
     category: "legal_court",
@@ -383,6 +391,50 @@ export const ALL_OFFERED_SERVICES: OfferedServiceItem[] = [
 
 export const PRACTICE_AREAS = [
   {
+    slug: "check-bounce",
+    title: "Check Bounce & Financial Recovery",
+    shortDesc:
+      "Expert 30-day statutory notice drafting, Section 138 Negotiable Instruments Act criminal complaints, Summary Suits for debt recovery, and trial defense before Metropolitan Magistrates.",
+    icon: "Landmark",
+    services: [
+      "Statutory 30-Day Legal Demand Notice Drafting & Speed Post Dispatch",
+      "Section 138 NI Act Criminal Complaint Filing & Trial Advocacy",
+      "Summary Suits (Order 37 CPC) for Commercial Debt Recovery",
+      "Defense Representation Against Wrongful Check Bounce Accusations",
+      "Cheque Dishonour Representation for Businesses, Traders & Individuals",
+      "Pre-Litigation Settlement, Mediation & Recovery Negotiations",
+    ],
+  },
+  {
+    slug: "posh-compliance",
+    title: "POSH Compliance & IC Services",
+    shortDesc:
+      "Compassionate, unbiased support for anyone facing workplace harassment—women and men alike—along with grievance committee setup, independent external counsel, and respectful workplace training.",
+    icon: "ShieldCheck",
+    services: [
+      "Confidential Support & Guidance for Both Women and Men",
+      "Independent & Unbiased External Grievance Committee Members",
+      "Support Against False Accusations & Unfair Workplace Treatment",
+      "Plain-Language Anti-Harassment Policies & Codes of Conduct",
+      "Dignity & Respect Sensitisation Workshops for Teams",
+      "Fair, Empathetic Inquiry Facilitation & Annual Governance",
+    ],
+  },
+  {
+    slug: "real-estate-property",
+    title: "Real Estate, Title Due Diligence & RERA",
+    shortDesc:
+      "Comprehensive 30-year property title search reports, MahaRERA & RERA complaint registration, Property Card, 7/12 extracts, and Index-2 verification.",
+    icon: "Building2",
+    services: [
+      "30-Year Land & Plot Title Investigation Search Reports",
+      "Property Card, 7×12 & 6×12 Extract Procurement",
+      "Search & Official Verification of Index-2 Copies",
+      "RERA & MahaRERA Complaint Registration & Follow-Up",
+      "Conveyance Deeds, Mutation & Regularisation",
+    ],
+  },
+  {
     slug: "advisory",
     title: "Educational, Tax & Legal Advisory",
     shortDesc:
@@ -454,21 +506,6 @@ export const PRACTICE_AREAS = [
     ],
   },
   {
-    slug: "posh-compliance",
-    title: "POSH & Workplace Dignity Support",
-    shortDesc:
-      "Compassionate, unbiased support for anyone facing workplace harassment—women and men alike—along with grievance committee setup, independent external counsel, and respectful workplace training.",
-    icon: "ShieldCheck",
-    services: [
-      "Confidential Support & Guidance for Both Women and Men",
-      "Independent & Unbiased External Grievance Committee Members",
-      "Support Against False Accusations & Unfair Workplace Treatment",
-      "Plain-Language Anti-Harassment Policies & Codes of Conduct",
-      "Dignity & Respect Sensitisation Workshops for Teams",
-      "Fair, Empathetic Inquiry Facilitation & Annual Governance",
-    ],
-  },
-  {
     slug: "employment-labour",
     title: "Labour & Employment Law",
     shortDesc:
@@ -480,20 +517,6 @@ export const PRACTICE_AREAS = [
       "Disciplinary Inquiries & Domestic Enquiries",
       "Retrenchment, Layoff & Closure Compliance",
       "Workplace Safety & Factory Act Audits",
-    ],
-  },
-  {
-    slug: "real-estate-property",
-    title: "Real Estate, Title Due Diligence & RERA",
-    shortDesc:
-      "Comprehensive 30-year property title search reports, MahaRERA & RERA complaint registration, Property Card, 7/12 extracts, and Index-2 verification.",
-    icon: "Building2",
-    services: [
-      "30-Year Land & Plot Title Investigation Search Reports",
-      "Property Card, 7×12 & 6×12 Extract Procurement",
-      "Search & Official Verification of Index-2 Copies",
-      "RERA & MahaRERA Complaint Registration & Follow-Up",
-      "Conveyance Deeds, Mutation & Regularisation",
     ],
   },
 ];

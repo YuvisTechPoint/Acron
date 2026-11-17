@@ -523,7 +523,7 @@ export default function HomePage() {
                 </div>
 
                 <div className="pt-8 mt-6 border-t border-border flex items-center justify-between text-xs font-semibold text-navy-700">
-                  <span>Explore advisory engagements</span>
+                  <span>Explore practice scope</span>
                   <ArrowRight className="w-4 h-4 text-brass-500" />
                 </div>
               </Card>
@@ -534,14 +534,14 @@ export default function HomePage() {
               <Card
                 variant="white"
                 arrowOnHover
-                href={`/services/${PRACTICE_AREAS[1]?.slug || "legal-documentation"}`}
+                href={`/services/${PRACTICE_AREAS[1]?.slug || "posh-compliance"}`}
                 className="h-full flex flex-col justify-between"
               >
                 <div>
                   <div className="flex items-center justify-between pb-4 border-b border-border">
                     <span className="font-serif text-3xl font-bold text-navy-700/25">02</span>
                     <div className="w-9 h-9 rounded-full bg-blue-100 flex items-center justify-center text-navy-700">
-                      {ICON_MAP[PRACTICE_AREAS[1]?.icon || "FileText"]}
+                      {ICON_MAP[PRACTICE_AREAS[1]?.icon || "ShieldCheck"]}
                     </div>
                   </div>
 
@@ -556,7 +556,7 @@ export default function HomePage() {
                 </div>
 
                 <div className="pt-6 mt-4 border-t border-border flex items-center justify-between text-xs font-semibold text-navy-700">
-                  <span>View drafting frameworks</span>
+                  <span>Explore practice scope</span>
                   <ArrowRight className="w-4 h-4 text-brass-500" />
                 </div>
               </Card>

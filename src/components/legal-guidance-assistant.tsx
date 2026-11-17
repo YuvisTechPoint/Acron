@@ -39,6 +39,10 @@ const INITIAL_MESSAGE: ChatMessage = {
 
 const QUICK_TOPICS = [
   {
+    title: "Check Bounce (Sec 138)",
+    question: "What should I do if a cheque given to me has bounced, or if I received a legal notice?",
+  },
+  {
     title: "Workplace Harassment Help",
     question: "How can you help me if I am facing harassment or distress at work?",
   },
@@ -101,6 +105,24 @@ export function LegalGuidanceAssistant() {
 
   const generateReply = (rawText: string): { reply: string; link?: string; linkText?: string; phone?: string } => {
     const text = rawText.toLowerCase();
+
+    // 0. Check Bounce & Financial Recovery
+    if (
+      text.includes("bounce") ||
+      text.includes("cheque") ||
+      text.includes("check") ||
+      text.includes("138") ||
+      text.includes("dishonour") ||
+      text.includes("debt recovery")
+    ) {
+      return {
+        reply:
+          "In check bounce matters, strict timelines apply. Under Section 138 of the Negotiable Instruments Act, a formal 30-day statutory demand notice must be served upon receipt of the bank return memo. If payment is unpaid within 15 days of notice receipt, a criminal complaint can be filed before the Metropolitan Magistrate within 30 days. We handle legal demand notice drafting, criminal trial representation, summary debt recovery suits (Order 37 CPC), and defense against wrongful accusations.",
+        link: "/services/check-bounce",
+        linkText: "Check Bounce Legal Scope",
+        phone: "+918286936899",
+      };
+    }
 
     // 1. Property Title Search & Land Records
     if (

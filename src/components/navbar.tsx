@@ -46,7 +46,7 @@ export function Navbar() {
   const [megaMenuOpen, setMegaMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [hoveredPracticeSlug, setHoveredPracticeSlug] = useState<string>(
-    corePractices[0]?.slug || "advisory"
+    corePractices[0]?.slug || "check-bounce"
   );
   const megaMenuRef = useRef<HTMLDivElement>(null);
   const hoverTimeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -329,7 +329,7 @@ export function Navbar() {
                       
                       {/* Left: 8 Disciplines in 2 columns of 4 - Classical Editorial Rows */}
                       <div className="col-span-12 lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-1.5">
-                        {corePractices.map((pa, idx) => {
+                        {corePractices.slice(0, 8).map((pa, idx) => {
                           const isHovered = hoveredPracticeSlug === pa.slug;
                           const numStr = String(idx + 1).padStart(2, "0");
                           return (
