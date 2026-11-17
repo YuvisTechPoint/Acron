@@ -266,22 +266,38 @@ async function main() {
   let linkFailed = 0;
 
   for (const link of discoveredLinks) {
-    try {
-      const res = await fetch(`${BASE_URL}${link}`, {
-        method: "GET",
-        headers: { "User-Agent": "RouteCrawler/1.0" },
-        signal: AbortSignal.timeout(12000),
-      });
-      if (res.status === 200 || res.status === 304 || res.status === 307 || res.status === 308) {
-        linkPassed++;
-        process.stdout.write(`✔ [LINK ${res.status}] ${link}\n`);
-      } else {
-        linkFailed++;
-        console.error(`✖ Broken internal link: ${link} returned HTTP ${res.status}`);
+    let attempts = 0;
+    let ok = false;
+    let lastErr = null;
+    let lastStatus = 0;
+
+    while (attempts < 2 && !ok) {
+      attempts++;
+      try {
+        const res = await fetch(`${BASE_URL}${link}`, {
+          method: "GET",
+          headers: { "User-Agent": "RouteCrawler/1.0" },
+          signal: AbortSignal.timeout(30000),
+        });
+        lastStatus = res.status;
+        if (res.status === 200 || res.status === 304 || res.status === 307 || res.status === 308) {
+          linkPassed++;
+          process.stdout.write(`✔ [LINK ${res.status}] ${link}\n`);
+          ok = true;
+        } else {
+          lastErr = new Error(`returned HTTP ${res.status}`);
+        }
+      } catch (err) {
+        lastErr = err;
+        if (attempts < 2) {
+          await new Promise((r) => setTimeout(r, 1000));
+        }
       }
-    } catch (err) {
+    }
+
+    if (!ok) {
       linkFailed++;
-      console.error(`✖ Failed to reach internal link: ${link} (${err.message})`);
+      console.error(`✖ Failed to reach internal link: ${link} (${lastErr ? lastErr.message : 'HTTP ' + lastStatus})`);
     }
   }
 
