@@ -165,6 +165,19 @@ export function trackPhoneClick(phone: string, counselName?: string) {
     counsel: counselName || "Chambers Desk",
     category: "engagement",
   });
+
+  // Meta Pixel standard Contact event
+  const win = window as unknown as { fbq?: (...args: unknown[]) => void; gtag?: (...args: unknown[]) => void };
+  if (typeof win.fbq === "function") {
+    win.fbq("track", "Contact", { content_name: "Chambers Telephone", counsel: counselName });
+  }
+  if (typeof win.gtag === "function") {
+    win.gtag("event", "generate_lead", {
+      event_category: "Contact",
+      event_label: "Phone Click",
+      value: 1,
+    });
+  }
 }
 
 /**
@@ -175,6 +188,35 @@ export function trackWhatsAppClick(sourceSection: string) {
     source: sourceSection,
     category: "engagement",
   });
+
+  const win = window as unknown as { fbq?: (...args: unknown[]) => void; gtag?: (...args: unknown[]) => void };
+  if (typeof win.fbq === "function") {
+    win.fbq("track", "Contact", { content_name: "WhatsApp Desk", source: sourceSection });
+  }
+  if (typeof win.gtag === "function") {
+    win.gtag("event", "generate_lead", {
+      event_category: "Contact",
+      event_label: "WhatsApp Click",
+      value: 1,
+    });
+  }
+}
+
+/**
+ * Triggered when a visitor searches or filters the services directory
+ */
+export function trackCatalogSearch(searchQuery: string, categoryFilter: string, resultCount: number) {
+  trackEvent("view_item_list", {
+    search_term: searchQuery,
+    filter_category: categoryFilter,
+    items_count: resultCount,
+    category: "discovery",
+  });
+
+  const win = window as unknown as { fbq?: (...args: unknown[]) => void };
+  if (typeof win.fbq === "function" && searchQuery) {
+    win.fbq("track", "Search", { search_string: searchQuery, content_category: categoryFilter });
+  }
 }
 
 /**
@@ -186,6 +228,11 @@ export function trackServiceInquiryClick(serviceTitle: string, category: string)
     service_category: category,
     category: "conversion_funnel",
   });
+
+  const win = window as unknown as { fbq?: (...args: unknown[]) => void };
+  if (typeof win.fbq === "function") {
+    win.fbq("track", "ViewContent", { content_name: serviceTitle, content_category: category });
+  }
 }
 
 /**
@@ -209,12 +256,30 @@ export function trackConsultationSubmitted(refNumber: string, practiceArea: stri
     value: 1, // Standard lead unit value
   });
 
-  // Explicit Google Ads conversion ping
-  const win = window as unknown as { gtag?: (...args: unknown[]) => void };
+  const win = window as unknown as { gtag?: (...args: unknown[]) => void; fbq?: (...args: unknown[]) => void };
+  
+  // Google Ads conversion ping
   if (typeof win.gtag === "function") {
     win.gtag("event", "conversion", {
       send_to: "AW-CONVERSION_ID/consultation_lead",
       transaction_id: refNumber,
+      value: 1.0,
+      currency: "INR",
+    });
+    win.gtag("event", "generate_lead", {
+      transaction_id: refNumber,
+      currency: "INR",
+      value: 1.0,
+    });
+  }
+
+  // Meta Pixel Lead event
+  if (typeof win.fbq === "function") {
+    win.fbq("track", "Lead", {
+      content_name: practiceArea,
+      content_category: "Legal Consultation",
+      currency: "INR",
+      value: 1.0,
     });
   }
 }
@@ -237,13 +302,31 @@ export function trackPaymentCompleted(
     category: "ecommerce_conversion",
   });
 
-  const win = window as unknown as { gtag?: (...args: unknown[]) => void };
+  const win = window as unknown as { gtag?: (...args: unknown[]) => void; fbq?: (...args: unknown[]) => void };
+  
+  // Google Ads & GA4 Purchase
   if (typeof win.gtag === "function") {
     win.gtag("event", "conversion", {
       send_to: "AW-CONVERSION_ID/payment_success",
       value: valueINR,
       currency: "INR",
       transaction_id: receiptNumber,
+    });
+    win.gtag("event", "purchase", {
+      transaction_id: receiptNumber,
+      value: valueINR,
+      currency: "INR",
+      items: [{ item_name: serviceName, price: valueINR, quantity: 1 }],
+    });
+  }
+
+  // Meta Pixel Purchase event
+  if (typeof win.fbq === "function") {
+    win.fbq("track", "Purchase", {
+      value: valueINR,
+      currency: "INR",
+      content_name: serviceName,
+      content_type: "product",
     });
   }
 }

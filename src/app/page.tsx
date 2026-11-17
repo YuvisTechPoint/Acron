@@ -212,46 +212,116 @@ export default function HomePage() {
 
   return (
     <div className="bg-ivory-50 text-ink selection:bg-brass-300/30">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@graph": [
+              {
+                "@type": "LegalService",
+                "@id": "https://acornconsultants.in/#legalservice",
+                name: "Acorn Consultants - Educational, Tax & Legal Services",
+                description:
+                  "Over 15 years of trusted expertise providing dedicated legal advocacy, 30-year property title search, statutory document attestation, society management, and educational consulting under Advocate on Panel Adv. Rajesh Telge.",
+                url: "https://acornconsultants.in",
+                telephone: "+91-8286936899",
+                priceRange: "₹₹",
+                image: "https://acornconsultants.in/brand/hero.png",
+                address: {
+                  "@type": "PostalAddress",
+                  streetAddress: "Suite 4B, Camac Court, 25 Camac Street",
+                  addressLocality: "Kolkata",
+                  addressRegion: "West Bengal",
+                  postalCode: "700016",
+                  addressCountry: "IN",
+                },
+                founder: {
+                  "@type": "Person",
+                  name: "Adv. Rajesh Telge",
+                  jobTitle: "Advocate on Panel & Principal Legal Consultant",
+                  telephone: "+91-8369171822",
+                },
+              },
+              {
+                "@type": "BreadcrumbList",
+                itemListElement: [
+                  {
+                    "@type": "ListItem",
+                    position: 1,
+                    name: "Home",
+                    item: "https://acornconsultants.in",
+                  },
+                ],
+              },
+            ],
+          }),
+        }}
+      />
 
-      {/* 1. HERO SECTION: Full-bleed Heritage Law Library with Architectural Double Arch */}
-      <section className="relative min-h-[92vh] lg:min-h-[96vh] bg-ink-950 text-white flex flex-col justify-between pt-28 pb-14 sm:pt-32 sm:pb-16 border-b border-navy-800/80 overflow-hidden">
+      {/* 1. HERO SECTION: Full-bleed Heritage Law Library with Editorial Typography & Glassmorphic Dock */}
+      <section className="relative min-h-[92vh] lg:min-h-[96vh] bg-ink-950 text-white flex flex-col justify-between pt-28 pb-12 sm:pt-32 sm:pb-16 border-b border-navy-800/80 overflow-hidden">
         {/* Full-bleed Hero Background Image - Exactly matches user's uploaded master background */}
         <div className="absolute inset-0 z-0 select-none pointer-events-none">
           <Image
             src={siteConfig.heroBgImage || "/images/hero.jpg"}
-            alt="Chambers of Acorn Legal Consultants, Kolkata"
+            alt="Chambers of Acorn - Educational, Tax & Legal Consultants"
             fill
             priority
             quality={100}
-            className="object-cover object-right lg:object-center"
+            className="object-cover object-right lg:object-[center_35%]"
           />
-          {/* Subtle top & bottom edge transition blends */}
-          <div className="absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-ink-950/70 via-ink-950/20 to-transparent pointer-events-none" />
-          <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-ink-950/60 to-transparent pointer-events-none" />
+          {/* Studio Vignette: Deep rich gradient on the left for maximum typographic contrast, fading gently across the advocate and client */}
+          <div className="absolute inset-0 bg-gradient-to-r from-ink-950/95 via-ink-950/75 via-50% to-ink-950/25 lg:to-transparent pointer-events-none" />
+          <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-ink-950/80 via-ink-950/30 to-transparent pointer-events-none" />
+          <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-ink-950/85 to-transparent pointer-events-none" />
         </div>
 
-        <div className="relative z-10 max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8 w-full my-auto py-4">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
+        <div className="relative z-10 max-w-[1380px] mx-auto px-4 sm:px-6 lg:px-8 w-full my-auto py-6 sm:py-8 flex flex-col justify-between min-h-[82vh] lg:min-h-[86vh]">
+          
+          {/* Main Hero Story Grid */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center my-auto">
 
-            {/* Left Column (7 cols): Editorial Headline, Sub-headline, CTAs, Metadata */}
-            <div className="lg:col-span-7 space-y-6 sm:space-y-7 text-left max-w-2xl">
+            {/* Left Column (7-8 cols): Chambers Heritage Eyebrow, Display Headline, Editorial Body, CTAs */}
+            <div className="lg:col-span-8 xl:col-span-7 space-y-6 sm:space-y-7 text-left max-w-2xl">
 
-              {/* Display Headline - Bold & Authoritative */}
-              <h1 className="font-serif text-5xl sm:text-6xl lg:text-[72px] font-bold tracking-tight text-white leading-[1.08] drop-shadow-lg">
-                {siteConfig.heroHeadline || "Excellence in Law."}<br />
-                <span className="font-serif italic font-normal text-brass-400">{siteConfig.heroSubheadline || "Integrity in Practice."}</span>
+              {/* Prestigious Chambers Heritage Pill */}
+              <div className="inline-flex items-center gap-2.5 sm:gap-3 px-3.5 sm:px-4 py-1.5 sm:py-2 rounded-full bg-ink-950/80 border border-brass-500/40 backdrop-blur-md shadow-lg">
+                <div className="w-5 h-5 flex items-center justify-center text-brass-400">
+                  <svg viewBox="0 0 48 48" fill="none" className="w-4 h-4" aria-hidden="true">
+                    <path d="M25 24 C24 21 26 18 28 17 C27 15 26 13 28 11 C29 9 32 8 34 6 C36 7 37 8 37 10 C39 11 40 13 39 15 C41 17 41 19 39 21 C40 23 39 25 36 26 C34 27 32 26 30 28 C28 29 26 27 25 24 Z" fill="currentColor" />
+                    <path d="M23 24 C24 21 22 18 20 17 C21 15 22 13 20 11 C19 9 16 8 14 6 C12 7 11 8 11 10 C9 11 8 13 9 15 C7 17 7 19 9 21 C8 23 9 25 12 26 C14 27 16 26 18 28 C20 29 22 27 23 24 Z" fill="currentColor" />
+                    <path d="M24 6 C26 7 27 9 27 11 C29 12 30 14 29 16 C30 18 29 20 27 21 C26 23 25 24 24 26 C23 24 22 23 21 21 C19 20 18 18 19 16 C18 14 19 12 21 11 C21 9 22 7 24 6 Z" fill="currentColor" />
+                    <path d="M24 26 L24 36" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+                  </svg>
+                </div>
+                <span className="font-serif text-xs sm:text-sm font-bold tracking-wider uppercase text-brass-300">
+                  {siteConfig.heroArchTitle || "Chambers of Acorn"}
+                </span>
+                <span className="text-brass-500/40">•</span>
+                <span className="font-sans text-[10px] sm:text-[11px] font-semibold uppercase tracking-widest text-slate-300">
+                  Over 15 Years of Excellence
+                </span>
+              </div>
+
+              {/* Display Headline - Bold, Authoritative & Balanced */}
+              <h1 className="font-serif text-4xl sm:text-6xl lg:text-[68px] font-bold tracking-tight text-white leading-[1.08] drop-shadow-lg">
+                {siteConfig.heroHeadline || "Excellence in Law & Advisory."}<br />
+                <span className="font-serif italic font-normal text-brass-400">
+                  {siteConfig.heroSubheadline || "Educational, Tax & Legal Solutions."}
+                </span>
               </h1>
 
               {/* Subtitle Paragraph */}
-              <p className="font-sans text-base sm:text-[18px] text-slate-200 leading-[1.65] max-w-xl font-normal drop-shadow">
-                {siteConfig.heroDescription}
+              <p className="font-sans text-base sm:text-lg text-slate-200 leading-[1.68] max-w-xl font-normal drop-shadow">
+                {siteConfig.heroDescription || "Over 15 years of trusted expertise providing dedicated legal advocacy, 30-year property title search, statutory document attestation, society management, and educational consulting with personal client care."}
               </p>
 
               {/* Action Buttons */}
               <div className="pt-2 flex flex-wrap items-center gap-4">
                 <Link
                   href={siteConfig.heroPrimaryCtaLink || "/request-service"}
-                  className="h-[48px] px-6 rounded-btn bg-brass-500 hover:bg-brass-400 text-ink-950 font-sans font-bold text-sm flex items-center gap-2.5 shadow-raised transition-all duration-200 hover:translate-x-0.5"
+                  className="h-[50px] px-7 rounded-btn bg-brass-500 hover:bg-brass-400 text-ink-950 font-sans font-bold text-sm flex items-center gap-2.5 shadow-raised transition-all duration-200 hover:translate-x-0.5"
                 >
                   <span>{siteConfig.heroPrimaryCtaText || "Request a Consultation"}</span>
                   <ArrowRight className="w-4 h-4" />
@@ -259,133 +329,118 @@ export default function HomePage() {
 
                 <Link
                   href={siteConfig.heroSecondaryCtaLink || "/services"}
-                  className="h-[48px] px-6 rounded-btn bg-ink-950/40 hover:bg-ink-950/70 border border-brass-500/50 hover:border-brass-400 text-brass-200 hover:text-white font-sans font-medium text-sm flex items-center gap-2.5 backdrop-blur-sm transition-all duration-200"
+                  className="h-[50px] px-6 rounded-btn bg-ink-950/60 hover:bg-ink-950/80 border border-brass-500/40 hover:border-brass-400 text-brass-200 hover:text-white font-sans font-semibold text-sm flex items-center gap-2.5 backdrop-blur-md transition-all duration-200"
                 >
                   <span>{siteConfig.heroSecondaryCtaText || "Explore our services"}</span>
                   <ArrowRight className="w-4 h-4 text-brass-400" />
                 </Link>
               </div>
 
+              {/* Rapid Telephone Hot-link */}
+              <div className="pt-1 flex items-center gap-3 text-xs text-slate-300">
+                <span className="text-brass-400 font-medium">Direct Chambers Desk:</span>
+                <a
+                  href={`tel:${BRAND_CONFIG.phone}`}
+                  className="font-bold text-white hover:text-brass-300 transition underline underline-offset-4 decoration-brass-500/50"
+                >
+                  {BRAND_CONFIG.phone}
+                </a>
+                <span className="text-slate-500">•</span>
+                <span className="text-emerald-400 flex items-center gap-1.5 font-medium">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                  Available Mon–Sat 9AM–8PM IST
+                </span>
+              </div>
+
             </div>
 
-            {/* Right Column (5 cols): Architectural Double Arch Window Frame & 3 Floating Principle Cards */}
-            <div className="lg:col-span-5 flex justify-center lg:justify-end">
-              <div className="relative w-full max-w-[540px]">
-
-                {/* Double Golden Arch Outer Frame */}
-                <div className="relative w-full min-h-[540px] sm:min-h-[580px] lg:min-h-[620px] rounded-t-full border-[1.5px] border-brass-500/50 p-2 sm:p-2.5 flex flex-col justify-between shadow-2xl">
-
-                  {/* Inner Arch Stroke (Double line effect from reference image) */}
-                  <div className="absolute inset-2 sm:inset-2.5 rounded-t-full border border-brass-500/35 pointer-events-none" />
-
-                  {/* Top Dome with Crest & Typography - Clickable to Chambers Contact */}
-                  <Link href="/contact" className="relative z-10 pt-7 pb-8 px-4 rounded-t-full bg-gradient-to-b from-ink-950/85 via-ink-950/50 to-transparent flex flex-col items-center text-center cursor-pointer group focus:outline-none">
-
-                    {/* Oak Leaf Crest Motif */}
-                    <div className="w-11 h-11 flex items-center justify-center text-brass-400 mb-1 drop-shadow group-hover:scale-105 transition-transform">
-                      <svg viewBox="0 0 48 48" fill="none" className="w-10 h-10" aria-hidden="true">
-                        {/* Right Leaf */}
-                        <path d="M25 24 C24 21 26 18 28 17 C27 15 26 13 28 11 C29 9 32 8 34 6 C36 7 37 8 37 10 C39 11 40 13 39 15 C41 17 41 19 39 21 C40 23 39 25 36 26 C34 27 32 26 30 28 C28 29 26 27 25 24 Z" fill="currentColor" />
-                        {/* Left Leaf */}
-                        <path d="M23 24 C24 21 22 18 20 17 C21 15 22 13 20 11 C19 9 16 8 14 6 C12 7 11 8 11 10 C9 11 8 13 9 15 C7 17 7 19 9 21 C8 23 9 25 12 26 C14 27 16 26 18 28 C20 29 22 27 23 24 Z" fill="currentColor" />
-                        {/* Center Leaf */}
-                        <path d="M24 6 C26 7 27 9 27 11 C29 12 30 14 29 16 C30 18 29 20 27 21 C26 23 25 24 24 26 C23 24 22 23 21 21 C19 20 18 18 19 16 C18 14 19 12 21 11 C21 9 22 7 24 6 Z" fill="currentColor" />
-                        {/* Acorn 1 (Right) */}
-                        <path d="M26 27 C27 25 31 26 31 28 C30 29 29 30 27 30 C26 30 25 29 26 27 Z" fill="currentColor" />
-                        <path d="M26.5 29 C27 33 30 35 30.8 34 C31.5 33 31.2 30 30.5 29 Z" fill="currentColor" opacity="0.9" />
-                        {/* Acorn 2 (Left) */}
-                        <path d="M22 27 C21 25 17 26 17 28 C18 29 19 30 21 30 C22 30 23 29 22 27 Z" fill="currentColor" />
-                        <path d="M21.5 29 C21 33 18 35 17.2 34 C16.5 33 16.8 30 17.5 29 Z" fill="currentColor" opacity="0.9" />
-                        {/* Center Stem */}
-                        <path d="M24 26 L24 36" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
-                      </svg>
-                    </div>
-
-                    <span className="font-serif text-2xl sm:text-[28px] font-bold text-brass-300 tracking-wide drop-shadow-md leading-tight mt-1 group-hover:text-white transition-colors">
-                      {siteConfig.heroArchTitle || "Chambers of Acorn"}
-                    </span>
-                    {siteConfig.heroArchSubtitle && siteConfig.heroArchSubtitle !== "CAMAC STREET • KOLKATA" ? (
-                      <span className="font-sans text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.25em] text-brass-400 mt-1 drop-shadow">
-                        {siteConfig.heroArchSubtitle}
-                      </span>
-                    ) : null}
-                  </Link>
-
-                  {/* Open Middle Area: Transparently frames the senior advocate at desk in heritage library */}
-                  <div className="flex-1 min-h-[160px] sm:min-h-[190px]" />
-
-                  {/* Bottom: 3 Horizontal Glassmorphic Cards (Fully Wired & Clickable) */}
-                  <div className="relative z-10 grid grid-cols-3 gap-2 sm:gap-2.5 pb-2 px-1">
-
-                    {/* Card 1: Discretion */}
-                    <Link
-                      href="/about"
-                      className="bg-ink-950/75 border border-brass-500/35 rounded-lg p-3 sm:p-3.5 flex flex-col justify-between shadow-2xl backdrop-blur-md transition-all duration-200 hover:border-brass-400 hover:bg-ink-950/90 cursor-pointer group focus:outline-none"
-                    >
-                      <div>
-                        <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-white/5 border border-brass-500/30 flex items-center justify-center text-brass-400 mb-2 group-hover:border-brass-400 transition-colors">
-                          <Lock className="w-3.5 h-3.5 text-brass-400 shrink-0" />
-                        </div>
-                        <h3 className="text-xs sm:text-[13px] font-bold text-white tracking-tight mb-1 group-hover:text-brass-300 transition-colors">
-                          {siteConfig.heroBadge1Title || "Discretion"}
-                        </h3>
-                        <p className="text-[10px] sm:text-[11px] text-slate-300 leading-snug">
-                          {siteConfig.heroBadge1Desc || "Absolute privilege & confidentiality"}
-                        </p>
-                      </div>
-                    </Link>
-
-                    {/* Card 2: Diligence */}
-                    <Link
-                      href="/services"
-                      className="bg-ink-950/75 border border-brass-500/35 rounded-lg p-3 sm:p-3.5 flex flex-col justify-between shadow-2xl backdrop-blur-md transition-all duration-200 hover:border-brass-400 hover:bg-ink-950/90 cursor-pointer group focus:outline-none"
-                    >
-                      <div>
-                        <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-white/5 border border-brass-500/30 flex items-center justify-center text-brass-400 mb-2 group-hover:border-brass-400 transition-colors">
-                          <Search className="w-3.5 h-3.5 text-brass-400 shrink-0" />
-                        </div>
-                        <h3 className="text-xs sm:text-[13px] font-bold text-white tracking-tight mb-1 group-hover:text-brass-300 transition-colors">
-                          {siteConfig.heroBadge2Title || "Diligence"}
-                        </h3>
-                        <p className="text-[10px] sm:text-[11px] text-slate-300 leading-snug">
-                          {siteConfig.heroBadge2Desc || "Exhaustive statutory research"}
-                        </p>
-                      </div>
-                    </Link>
-
-                    {/* Card 3: Transparency */}
-                    <Link
-                      href="/request-service"
-                      className="bg-ink-950/75 border border-brass-500/35 rounded-lg p-3 sm:p-3.5 flex flex-col justify-between shadow-2xl backdrop-blur-md transition-all duration-200 hover:border-brass-400 hover:bg-ink-950/90 cursor-pointer group focus:outline-none"
-                    >
-                      <div>
-                        <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-white/5 border border-brass-500/30 flex items-center justify-center text-brass-400 mb-2 group-hover:border-brass-400 transition-colors">
-                          <ShieldCheck className="w-3.5 h-3.5 text-brass-400 shrink-0" />
-                        </div>
-                        <h3 className="text-xs sm:text-[13px] font-bold text-white tracking-tight mb-1 group-hover:text-brass-300 transition-colors">
-                          {siteConfig.heroBadge3Title || "Transparency"}
-                        </h3>
-                        <p className="text-[10px] sm:text-[11px] text-slate-300 leading-snug">
-                          {siteConfig.heroBadge3Desc || "Clear scope & accountable advisory"}
-                        </p>
-                      </div>
-                    </Link>
-
-                  </div>
-
-                  {/* Corner Brass Sparkle Accent (Bottom Right of Arch as in Reference) */}
-                  <div className="absolute -bottom-1 -right-1 sm:-bottom-1.5 sm:-right-1.5 text-brass-400 drop-shadow pointer-events-none">
-                    <svg className="w-4 h-4 sm:w-5 sm:h-5 fill-current" viewBox="0 0 24 24" aria-hidden="true">
-                      <path d="M12 0 L14.5 9.5 L24 12 L14.5 14.5 L12 24 L9.5 14.5 L0 12 L9.5 9.5 Z" />
-                    </svg>
-                  </div>
-
-                </div>
-
+            {/* Right Column: Clean breathing room showcasing the authentic consultation photography */}
+            <div className="lg:col-span-4 xl:col-span-5 hidden lg:flex flex-col justify-start items-end h-full self-start pt-4">
+              {/* Top-Right Floating Chambers Verification Pill */}
+              <div className="bg-ink-950/75 border border-brass-500/35 rounded-full px-4 py-2 backdrop-blur-md shadow-xl flex items-center gap-2.5">
+                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                <span className="font-sans text-xs font-semibold text-slate-200 tracking-wide">
+                  Chambers Advisory Active
+                </span>
+                <span className="text-brass-500/40">•</span>
+                <span className="font-sans text-[11px] text-brass-400 uppercase tracking-wider font-bold">
+                  Kolkata &amp; Mumbai
+                </span>
               </div>
             </div>
 
           </div>
+
+          {/* Bottom Row: 3 Floating Principle Cards in a wide, balanced glassmorphic dock */}
+          <div className="pt-10 sm:pt-14 w-full">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3.5 sm:gap-4 w-full">
+
+              {/* Card 1: Discretion */}
+              <Link
+                href="/about"
+                className="bg-ink-950/70 border border-brass-500/35 hover:border-brass-400/80 rounded-xl p-4 sm:p-5 flex items-start gap-3.5 sm:gap-4 backdrop-blur-xl shadow-2xl transition-all duration-200 hover:bg-ink-950/85 group"
+              >
+                <div className="w-10 h-10 rounded-lg bg-brass-500/10 border border-brass-500/30 flex items-center justify-center text-brass-400 shrink-0 group-hover:border-brass-400 group-hover:scale-105 transition-all">
+                  <Lock className="w-5 h-5 text-brass-400" />
+                </div>
+                <div>
+                  <div className="text-[10px] sm:text-[11px] uppercase tracking-widest text-brass-400 font-bold mb-0.5">
+                    Ethical Governance
+                  </div>
+                  <h3 className="text-sm sm:text-base font-bold text-white group-hover:text-brass-300 transition-colors">
+                    {siteConfig.heroBadge1Title || "Discretion"}
+                  </h3>
+                  <p className="text-xs text-slate-300 leading-snug mt-1">
+                    {siteConfig.heroBadge1Desc || "Absolute privilege & confidentiality across every client matter."}
+                  </p>
+                </div>
+              </Link>
+
+              {/* Card 2: Diligence */}
+              <Link
+                href="/services"
+                className="bg-ink-950/70 border border-brass-500/35 hover:border-brass-400/80 rounded-xl p-4 sm:p-5 flex items-start gap-3.5 sm:gap-4 backdrop-blur-xl shadow-2xl transition-all duration-200 hover:bg-ink-950/85 group"
+              >
+                <div className="w-10 h-10 rounded-lg bg-brass-500/10 border border-brass-500/30 flex items-center justify-center text-brass-400 shrink-0 group-hover:border-brass-400 group-hover:scale-105 transition-all">
+                  <Search className="w-5 h-5 text-brass-400" />
+                </div>
+                <div>
+                  <div className="text-[10px] sm:text-[11px] uppercase tracking-widest text-brass-400 font-bold mb-0.5">
+                    Exhaustive Review
+                  </div>
+                  <h3 className="text-sm sm:text-base font-bold text-white group-hover:text-brass-300 transition-colors">
+                    {siteConfig.heroBadge2Title || "Diligence"}
+                  </h3>
+                  <p className="text-xs text-slate-300 leading-snug mt-1">
+                    {siteConfig.heroBadge2Desc || "Exhaustive statutory research & 30-year property title verification."}
+                  </p>
+                </div>
+              </Link>
+
+              {/* Card 3: Transparency */}
+              <Link
+                href="/request-service"
+                className="bg-ink-950/70 border border-brass-500/35 hover:border-brass-400/80 rounded-xl p-4 sm:p-5 flex items-start gap-3.5 sm:gap-4 backdrop-blur-xl shadow-2xl transition-all duration-200 hover:bg-ink-950/85 group"
+              >
+                <div className="w-10 h-10 rounded-lg bg-brass-500/10 border border-brass-500/30 flex items-center justify-center text-brass-400 shrink-0 group-hover:border-brass-400 group-hover:scale-105 transition-all">
+                  <ShieldCheck className="w-5 h-5 text-brass-400" />
+                </div>
+                <div>
+                  <div className="text-[10px] sm:text-[11px] uppercase tracking-widest text-brass-400 font-bold mb-0.5">
+                    Accountable Counsel
+                  </div>
+                  <h3 className="text-sm sm:text-base font-bold text-white group-hover:text-brass-300 transition-colors">
+                    {siteConfig.heroBadge3Title || "Transparency"}
+                  </h3>
+                  <p className="text-xs text-slate-300 leading-snug mt-1">
+                    {siteConfig.heroBadge3Desc || "Clear fee schedule, documented scope & direct advocate communication."}
+                  </p>
+                </div>
+              </Link>
+
+            </div>
+          </div>
+
         </div>
       </section>
 

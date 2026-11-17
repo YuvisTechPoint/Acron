@@ -163,6 +163,55 @@ const jsonLd = {
         "query-input": "required name=search_term_string",
       },
     },
+    {
+      "@type": "ItemList",
+      "@id": "https://acornconsultants.in/#sitelinks",
+      name: "Chambers Navigation & Core Practice Hubs",
+      itemListElement: [
+        {
+          "@type": "SiteNavigationElement",
+          position: 1,
+          name: "Chambers Overview & Heritage",
+          url: "https://acornconsultants.in",
+        },
+        {
+          "@type": "SiteNavigationElement",
+          position: 2,
+          name: "About Us & Panel Advocates",
+          url: "https://acornconsultants.in/about",
+        },
+        {
+          "@type": "SiteNavigationElement",
+          position: 3,
+          name: "Comprehensive 37 Services Directory",
+          url: "https://acornconsultants.in/services",
+        },
+        {
+          "@type": "SiteNavigationElement",
+          position: 4,
+          name: "Statutory POSH Act 2013 Governance Portal",
+          url: "https://acornconsultants.in/posh",
+        },
+        {
+          "@type": "SiteNavigationElement",
+          position: 5,
+          name: "Statutory Commentary, Precedents & Insights",
+          url: "https://acornconsultants.in/blog",
+        },
+        {
+          "@type": "SiteNavigationElement",
+          position: 6,
+          name: "Frequently Asked Questions & Answers",
+          url: "https://acornconsultants.in/faq",
+        },
+        {
+          "@type": "SiteNavigationElement",
+          position: 7,
+          name: "Chambers Contact & Consultation Intake",
+          url: "https://acornconsultants.in/contact",
+        },
+      ],
+    },
   ],
 };
 

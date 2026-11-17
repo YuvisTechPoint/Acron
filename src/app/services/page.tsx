@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef, useMemo } from "react";
+import React, { useState, useRef, useMemo, useEffect } from "react";
 import Link from "next/link";
 import {
   ArrowRight,
@@ -36,6 +36,7 @@ import {
   trackPhoneClick,
   trackWhatsAppClick,
   trackServiceInquiryClick,
+  trackCatalogSearch,
 } from "@/lib/analytics";
 
 type CategoryFilter = "all" | "legal_court" | "finance_business" | "careers_attestation" | "education_admissions";
@@ -95,6 +96,16 @@ export default function ServicesIndexPage() {
       return matchesCategory && matchesSearch;
     });
   }, [selectedCategory, searchQuery]);
+
+  // Telemetry & Ads tracking for user search intent
+  useEffect(() => {
+    if (searchQuery.trim().length > 2) {
+      const timer = setTimeout(() => {
+        trackCatalogSearch(searchQuery.trim(), selectedCategory, filteredServices.length);
+      }, 600);
+      return () => clearTimeout(timer);
+    }
+  }, [searchQuery, selectedCategory, filteredServices.length]);
 
   const servicesCatalogSchema = {
     "@context": "https://schema.org",
