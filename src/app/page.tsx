@@ -355,19 +355,7 @@ export default function HomePage() {
             </div>
 
             {/* Right Column: Clean breathing room showcasing the authentic consultation photography */}
-            <div className="lg:col-span-4 xl:col-span-5 hidden lg:flex flex-col justify-start items-end h-full self-start pt-4">
-              {/* Top-Right Floating Chambers Verification Pill */}
-              <div className="bg-ink-950/75 border border-brass-500/35 rounded-full px-4 py-2 backdrop-blur-md shadow-xl flex items-center gap-2.5">
-                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                <span className="font-sans text-xs font-semibold text-slate-200 tracking-wide">
-                  Chambers Advisory Active
-                </span>
-                <span className="text-brass-500/40">•</span>
-                <span className="font-sans text-[11px] text-brass-400 uppercase tracking-wider font-bold">
-                  Kolkata &amp; Mumbai
-                </span>
-              </div>
-            </div>
+            <div className="lg:col-span-4 xl:col-span-5 hidden lg:block" />
 
           </div>
 
