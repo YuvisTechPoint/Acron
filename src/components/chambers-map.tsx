@@ -30,7 +30,10 @@ export function ChambersMap({
   const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
     "Camac Court, 25 Camac Street, Park Street area, Kolkata, West Bengal 700016",
   )}`;
-  const directionsUrl = `https://www.google.com/maps/dir/?api=1&destination=${latitude},${longitude}`;
+  // Apple Maps navigation link for direct turn-by-turn driving directions
+  const directionsUrl = `https://maps.apple.com/?daddr=${latitude},${longitude}&q=${encodeURIComponent(
+    "Camac Court Building, 25 Camac Street, Park Street area, Kolkata, West Bengal 700016"
+  )}&dirflg=d`;
 
   // Real-time synced Google Maps embed with satellite/standard parameter toggle
   const embedSrc = `https://maps.google.com/maps?q=${encodeURIComponent(
