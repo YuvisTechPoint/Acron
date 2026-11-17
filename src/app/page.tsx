@@ -87,9 +87,9 @@ const HOMEPAGE_FAQS = [
   },
   {
     id: "faq-2",
-    title: "How does Acorn assist organisations with POSH Act 2013 compliance?",
+    title: "How does Acorn assist individuals and organisations with workplace harassment (POSH)?",
     content:
-      "We serve as independent External Members under Section 4(2)(c) of the POSH Act, draft legally defensible workplace anti-harassment policies, conduct Internal Committee capacity-building workshops, guide confidential inquiries, and prepare mandatory Section 21 Annual Compliance Filings for the District Officer.",
+      "We provide compassionate, complete support for everyone. For individuals—whether female or male—we offer confidential listening, immediate workplace protection, and legal guidance if you are facing harassment, distress, or wrongful accusations. For organisations, we help set up unbiased grievance committees, provide independent external members, conduct respectful workplace training, and ensure fair, dignified resolutions for all parties.",
   },
   {
     id: "faq-3",
@@ -758,20 +758,20 @@ export default function HomePage() {
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center relative z-10">
 
               <div className="lg:col-span-7 space-y-6">
-                <Eyebrow dark>INSTITUTIONAL GOVERNANCE</Eyebrow>
+                <Eyebrow dark>WORKPLACE HARASSMENT &amp; GRIEVANCE SUPPORT</Eyebrow>
                 <h2 className="font-serif text-3xl sm:text-5xl font-bold text-white leading-[1.12]">
-                  Safe, <span className="font-serif italic font-normal text-brass-300">compliant</span> workplaces.
+                  Safe, respectful workplaces <span className="font-serif italic font-normal text-brass-300">for everyone.</span>
                 </h2>
                 <p className="font-sans text-base text-slate-300 leading-relaxed max-w-xl">
-                  Independent External Member appointment under Section 4(2)(c), fair inquiry facilitation, and mandatory annual reporting.
+                  Facing harassment or unfair accusations at work can be deeply stressful. Whether you are a female or male employee seeking guidance, protection, or a fair hearing, or an employer building a culture of mutual respect—our team will stand by you and help you through every aspect with complete privacy.
                 </p>
 
                 <div className="pt-2 flex flex-wrap items-center gap-4">
                   <Button variant="dark-primary" href="/posh" arrow>
-                    Explore POSH Compliance
+                    Get Confidential Support
                   </Button>
                   <Button variant="dark-secondary" href="/posh/start" arrow>
-                    Report a Concern
+                    Report a Workplace Concern
                   </Button>
                 </div>
               </div>

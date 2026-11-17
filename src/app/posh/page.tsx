@@ -35,87 +35,93 @@ import {
 const TIMELINE_STEPS = [
   {
     step: "01",
-    name: "File",
-    desc: "Confidential digital submission with optional pseudonymization and encrypted document deposit under Section 9.",
+    name: "Confidential First Step",
+    desc: "Reach out and share what happened in complete privacy. You can talk to us informally first—no pressure, no judgment, and no premature paperwork.",
   },
   {
     step: "02",
-    name: "Acknowledge",
-    desc: "Formal statutory notice generated and served to respondent within 7 working days with clear opportunity to reply.",
+    name: "Immediate Safety & Comfort",
+    desc: "We ensure you feel safe right away. Whether it is a temporary desk shift, team reassignment, or supportive leave without loss of pay, your well-being comes first.",
   },
   {
     step: "03",
-    name: "Inquire",
-    desc: "Trauma-informed proceedings conducted adhering strictly to principles of natural justice and Section 12 interim relief review.",
+    name: "Respectful, Neutral Dialogue",
+    desc: "Both sides are heard with patience and fairness. We ensure honest communication, unbiased questions, and strict adherence to natural justice for everyone involved.",
   },
   {
     step: "04",
-    name: "Report",
-    desc: "Comprehensive reasoned findings and recommendations delivered to the employer within 10 days of inquiry conclusion.",
+    name: "Constructive Findings & Remedies",
+    desc: "Clear, transparent recommendations to resolve the issue, address misconduct, and restore mutual dignity and psychological safety across the workplace.",
   },
   {
     step: "05",
-    name: "Act",
-    desc: "Employer implementation of Internal Committee directives and corrective measures within statutory 60-day window.",
+    name: "Action with Accountability",
+    desc: "We guide leadership to implement real changes—preventing retaliation, restoring a healthy atmosphere, and supporting everyone's career progression.",
   },
   {
     step: "06",
-    name: "Close",
-    desc: "Confidential archival in compliance with Section 16 non-disclosure mandates and Section 21 Annual Report recording.",
+    name: "Ongoing Well-Being & Peace",
+    desc: "Matters are confidentially archived with ongoing check-ins so everyone feels secure, respected, and empowered moving forward.",
   },
 ];
 
 const ACORN_OFFERINGS = [
   {
-    title: "Statutory Policy Drafting",
-    desc: "Bilingual workplace prevention policies aligned with POSH Act 2013 and specific employer service regulations.",
+    title: "Support for Women in the Workplace",
+    desc: "Compassionate, confidential listening, immediate workplace safeguards, and firm guidance to stop harassment and protect your career.",
   },
   {
-    title: "Internal Committee Constitution",
-    desc: "Structuring compliant IC orders ensuring proper gender parity, presiding officer criteria, and external expertise.",
+    title: "Support for Men & Unfair Accusations",
+    desc: "Fair, objective legal counsel for male employees facing workplace distress, harassment, or wrongful allegations, protecting your reputation and career.",
   },
   {
-    title: "External Member Appointment",
-    desc: "Acorn senior advocates serving as independent External Members under Section 4(2)(c) to guarantee inquiry neutrality.",
+    title: "Independent External Grievance Members",
+    desc: "Experienced senior advocates serving as neutral external members to ensure every inquiry is transparent, empathetic, and free from office politics.",
   },
   {
-    title: "IC Member Capacity Building",
-    desc: "Practical workshops covering natural justice principles, evidentiary standards, cross-examination rules, and report drafting.",
+    title: "Human-Centered Workplace Policies",
+    desc: "Clear, understandable anti-harassment policies and codes of conduct written in plain English so all employees know their rights and responsibilities.",
   },
   {
-    title: "Workplace Sensitization",
-    desc: "Structured employee and management orientation sessions to cultivate a climate of dignity, respect, and compliance.",
+    title: "Interactive Respect & Dignity Workshops",
+    desc: "Engaging, practical sessions for employees and leadership to build mutual respect, healthy boundaries, and a culture of psychological safety.",
   },
   {
-    title: "Section 21 Annual Filings",
-    desc: "Compilation and submission of statutory Annual Compliance Reports to the District Officer / District Magistrate.",
+    title: "Smooth Annual Compliance & Governance",
+    desc: "Stress-free management of annual filings and documentation so employers stay compliant while focusing on their people.",
   },
 ];
 
 const POSH_FAQS = [
   {
     id: "pfaq-1",
-    title: "Which organisations are mandated to constitute an Internal Committee?",
+    title: "Do you help both male and female employees facing workplace issues?",
     content:
-      "Every workplace employing 10 or more employees—across branches, offices, factories, or educational establishments—must constitute an Internal Committee (IC) under Section 4 of the POSH Act 2013. Failure to do so invites statutory fines and license cancellation.",
+      "Yes, absolutely. While the statutory POSH Act has specific legal frameworks, at Acorn we believe dignity belongs to every person. We help female employees seeking protection from harassment, and we also actively support male employees facing toxic workplace behavior, distress, or wrongful or false allegations. Whatever your gender, our team will stand by you and guide you in every aspect.",
   },
   {
     id: "pfaq-2",
-    title: "What is the statutory role of the External Member under Section 4(2)(c)?",
+    title: "What if I am facing false or exaggerated allegations at work?",
     content:
-      "The Act mandates the appointment of at least one member from an NGO or association committed to women's causes, or a person familiar with sexual harassment issues (such as a legal practitioner). The External Member ensures independence, procedural fairness, and adherence to natural justice.",
+      "Facing an unfair or false complaint can be devastating to your career and peace of mind. We provide objective, calm legal guidance to help you articulate the true facts, gather relevant correspondence and evidence, submit a measured response, and ensure that the committee adheres strictly to fairness and natural justice without presumption of guilt.",
   },
   {
     id: "pfaq-3",
-    title: "What is the penalty for non-compliance with the POSH Act?",
+    title: "Will my employer or colleagues find out if I reach out to you?",
     content:
-      "Under Section 26, failure to constitute an IC or contravention of provisions attracts a fine of up to INR 50,000 for the first offense. Repeated violations can result in double penalties and cancellation or non-renewal of business licenses.",
+      "Never. Any consultation with Acorn is held in the strictest confidence under advocate-client privilege. Your employer, colleagues, and management will never know you reached out unless you explicitly authorize us to represent you in formal correspondence.",
   },
   {
     id: "pfaq-4",
-    title: "How does Section 16 protect confidentiality during inquiries?",
+    title: "What makes Acorn's External Committee Members different?",
     content:
-      "Section 16 strictly prohibits the publication or disclosure of the identity of the complainant, respondent, witnesses, or inquiry proceedings to the public or press, subject to statutory penalties under Section 17.",
+      "Our advocates bring deep legal expertise combined with genuine human empathy. We do not act like cold judges or rubber-stamp management decisions. We ensure that every complainant is treated with sensitivity, every respondent receives a fair chance to be heard, and every inquiry reaches an honest, balanced resolution.",
+  },
+  {
+    id: "pfaq-5",
+    title: "Can we resolve a misunderstanding without an aggressive formal inquiry?",
+    content:
+      "Yes. If the concerned person prefers, we can facilitate structured, respectful conciliation or mediation to address the grievance, establish clear professional boundaries, and restore harmony without drawn-out adversarial hearings.",
   },
 ];
 
@@ -140,14 +146,14 @@ export default function PoshPage() {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
             
             <div className="lg:col-span-7 space-y-6">
-              <Eyebrow>POSH ACT 2013 COMPLIANCE &amp; ADVISORY</Eyebrow>
+              <Eyebrow>COMPASSIONATE &amp; CONFIDENTIAL WORKPLACE SUPPORT</Eyebrow>
 
               <h1 className="font-serif text-4xl sm:text-6xl md:text-7xl font-bold tracking-tight text-ink-950 leading-[1.05] max-w-4xl">
-                Safe, <span className="font-serif italic font-normal text-brass-700">compliant</span> workplaces.
+                Safe, respectful workplaces <span className="font-serif italic font-normal text-brass-700">for everyone.</span>
               </h1>
 
               <p className="font-sans text-lg sm:text-xl text-ink-secondary max-w-2xl leading-relaxed">
-                Thoughtful, legally sound guidance for organisations and institutions navigating the Sexual Harassment of Women at Workplace (Prevention, Prohibition and Redressal) Act 2013.
+                Facing workplace harassment or unfair accusations can feel overwhelming and isolating. Whether you are a female or male employee seeking guidance, protection, or a fair hearing, or an employer building a culture of mutual respect—our team will stand by you and help you through every aspect with complete privacy.
               </p>
 
               <div className="pt-4 flex flex-wrap items-center gap-4">
@@ -157,7 +163,7 @@ export default function PoshPage() {
                   href="/request-service?service=POSH%20Compliance"
                   arrow
                 >
-                  Book a POSH consultation
+                  Get confidential support
                 </Button>
                 <Button
                   variant="secondary"
@@ -165,13 +171,13 @@ export default function PoshPage() {
                   href="/posh/start"
                   arrow
                 >
-                  Report a concern
+                  Report a concern privately
                 </Button>
               </div>
 
               <div className="pt-6 border-t border-border/80 flex items-center gap-2 text-xs text-ink-secondary">
                 <Shield className="w-4 h-4 text-brass-500" />
-                <span>Strict Section 16 statutory confidentiality &bull; Independent External Member practice</span>
+                <span>100% Confidential Support &bull; Inclusive Care for Women &amp; Men &bull; Experienced Counsel</span>
               </div>
             </div>
 
@@ -193,34 +199,24 @@ export default function PoshPage() {
         </div>
       </section>
 
-      {/* 1. Why Compliance Matters */}
+      {/* 1. Why Support Matters (Human Care for Everyone) */}
       <section className="py-20 sm:py-28 border-b border-border bg-ivory-50">
         <div className="max-w-[1240px] mx-auto px-4 sm:px-6 space-y-12">
           <SectionHeading
-            eyebrow="STATUTORY MANDATE"
-            title="Why Institutional Compliance Matters"
-            accentWord="Compliance"
-            description="POSH Act adherence is not merely an administrative exercise. It represents a strict fiduciary responsibility for boards, trustees, and management."
+            eyebrow="SUPPORT FOR EVERYONE"
+            title="Standing by You in Every Aspect"
+            accentWord="Aspect"
+            description="Workplace dignity belongs to every person. We provide balanced, empathetic guidance tailored to your specific situation."
           />
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div className="p-8 bg-white rounded-card border border-border shadow-card space-y-3">
               <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-navy-700">
-                <Landmark className="w-5 h-5 text-navy-700" />
-              </div>
-              <h3 className="font-serif text-2xl font-bold text-ink">Statutory Liability</h3>
-              <p className="font-sans text-sm text-ink-secondary leading-relaxed">
-                Section 26 prescribes stringent monetary fines and potential business license revocation for employers failing to constitute an Internal Committee.
-              </p>
-            </div>
-
-            <div className="p-8 bg-white rounded-card border border-border shadow-card space-y-3">
-              <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-navy-700">
                 <ShieldCheck className="w-5 h-5 text-navy-700" />
               </div>
-              <h3 className="font-serif text-2xl font-bold text-ink">Natural Justice Defense</h3>
+              <h3 className="font-serif text-2xl font-bold text-ink">Support for Women</h3>
               <p className="font-sans text-sm text-ink-secondary leading-relaxed">
-                Appellate tribunals routinely strike down flawed inquiries that bypass cross-examination rules or lack independent external supervision.
+                A safe, compassionate space where you are heard and believed. We ensure immediate workplace protections, confidential advice, and firm legal advocacy so you never face harassment alone.
               </p>
             </div>
 
@@ -228,9 +224,19 @@ export default function PoshPage() {
               <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-navy-700">
                 <Users className="w-5 h-5 text-navy-700" />
               </div>
-              <h3 className="font-serif text-2xl font-bold text-ink">Workplace Dignity</h3>
+              <h3 className="font-serif text-2xl font-bold text-ink">Support for Men &amp; Accused Staff</h3>
               <p className="font-sans text-sm text-ink-secondary leading-relaxed">
-                A culture of statutory compliance fosters talent retention, psychological safety, and clear boundaries of professional conduct.
+                Objective, fair legal protection against wrongful allegations or hostile work environments. We ensure your side of the story is articulated clearly and natural justice is strictly respected.
+              </p>
+            </div>
+
+            <div className="p-8 bg-white rounded-card border border-border shadow-card space-y-3">
+              <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-navy-700">
+                <Landmark className="w-5 h-5 text-navy-700" />
+              </div>
+              <h3 className="font-serif text-2xl font-bold text-ink">Healthy Workplace Culture</h3>
+              <p className="font-sans text-sm text-ink-secondary leading-relaxed">
+                Helping organizations build genuine trust, respectful everyday behavior, and neutral grievance committees so all employees feel valued, safe, and productive.
               </p>
             </div>
           </div>
@@ -241,10 +247,10 @@ export default function PoshPage() {
       <section className="py-20 sm:py-28 border-b border-border bg-stone-100">
         <div className="max-w-[1240px] mx-auto px-4 sm:px-6 space-y-12">
           <SectionHeading
-            eyebrow="OUR CAPABILITIES"
-            title="Comprehensive POSH Advisory Solutions"
-            accentWord="Advisory"
-            description="End-to-end statutory support tailored for corporate offices, educational campuses, hospitals, and multinational entities."
+            eyebrow="OUR SUPPORT &amp; SERVICES"
+            title="How We Help You Resolve Issues"
+            accentWord="Issues"
+            description="Practical, compassionate assistance tailored for individuals, leadership teams, colleges, and workplaces across India."
           />
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -268,10 +274,10 @@ export default function PoshPage() {
         <div className="max-w-[1040px] mx-auto px-4 sm:px-6 space-y-12">
           <SectionHeading
             align="center"
-            eyebrow="INQUIRY WORKFLOW"
-            title="The Six-Step Statutory Resolution Lifecycle"
+            eyebrow="A CALM, RESPECTFUL PATHWAY"
+            title="Six Steps to Fair &amp; Lasting Resolution"
             accentWord="Resolution"
-            description="Every matter advances through structured milestones mandated by the POSH Act 2013 and judicial benchmarks."
+            description="We guide you through a calm, transparent process where everyone is treated with dignity, fairness, and care."
           />
 
           <div className="space-y-6">
@@ -299,18 +305,18 @@ export default function PoshPage() {
       <section className="py-20 sm:py-28 border-b border-border bg-stone-100">
         <div className="max-w-[1240px] mx-auto px-4 sm:px-6 space-y-12">
           <SectionHeading
-            eyebrow="INSTITUTIONAL SCOPE"
-            title="Who We Advise"
-            accentWord="Advise"
-            description="We serve as independent statutory counsel across varied workplace environments in Kolkata and nationwide."
+            eyebrow="WHO WE HELP"
+            title="Trusted Guidance for Individuals &amp; Teams"
+            accentWord="Teams"
+            description="We support working professionals, managers, educational campuses, and corporate teams across Kolkata and pan-India."
           />
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {[
-              { title: "Corporate Enterprises", desc: "Multi-locational offices, IT/ITES firms, and manufacturing facilities with 50+ staff." },
-              { title: "Educational Institutions", desc: "Universities, colleges, and schools requiring child and staff protection mechanisms." },
-              { title: "Healthcare Systems", desc: "Hospitals, diagnostic clinics, and medical trusts operating continuous shift work." },
-              { title: "Startups & Emerging Firms", desc: "Growth-stage companies crossing the statutory 10-employee threshold." },
+              { title: "Individual Professionals", desc: "Confidential guidance for women and men facing harassment, discrimination, or false complaints." },
+              { title: "Corporate Enterprises", desc: "Independent grievance committees, fair inquiry handling, and respectful team training." },
+              { title: "Educational Campuses", desc: "Protecting students, faculty, and research scholars with supportive, trauma-informed care." },
+              { title: "Growing Startups", desc: "Building a foundation of trust, clear boundaries, and healthy team culture from day one." },
             ].map((box, i) => (
               <div key={i} className="p-6 bg-white rounded-card border border-border space-y-2">
                 <CheckCircle2 className="w-5 h-5 text-brass-500" />
@@ -328,20 +334,20 @@ export default function PoshPage() {
           <div className="p-8 sm:p-12 bg-blue-100/50 rounded-card border border-blue-100 space-y-6">
             <div className="flex items-center gap-3">
               <KeyRound className="w-6 h-6 text-navy-700" />
-              <Eyebrow>STATUTORY CONFIDENTIALITY ASSURANCE</Eyebrow>
+              <Eyebrow>YOUR PRIVACY IS SACRED</Eyebrow>
             </div>
 
             <h3 className="font-serif text-2xl sm:text-4xl font-bold text-ink-950">
-              Strict Non-Disclosure Under Section 16
+              Complete Discretion &amp; Confidential Protection
             </h3>
 
             <p className="font-sans text-base text-ink leading-relaxed">
-              Section 16 of the POSH Act strictly prohibits the publication, dissemination, or public disclosure of the contents of complaints, the identity and address of aggrieved women, respondents, or witnesses, and any inquiry findings. Acorn maintains an encrypted case environment with strict role-based access.
+              We treat every conversation and concern with the highest standard of privacy. Whether you are reaching out to report a painful incident or seeking advice against an allegation, your identity, documents, and discussions are kept strictly confidential. Nothing is ever made public or discussed with unauthorized peers. You can speak freely knowing you are fully protected.
             </p>
 
             <div className="pt-2 flex items-center gap-2 text-xs font-semibold text-navy-700">
               <CheckCircle2 className="w-4 h-4 text-status-success" />
-              <span>Full compliance with Section 16 &amp; Section 17 penalty protections</span>
+              <span>Full confidentiality protection &bull; Safe, encrypted case management</span>
             </div>
           </div>
         </div>

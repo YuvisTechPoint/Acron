@@ -70,21 +70,21 @@ export default function ServiceDetailPage() {
   const serviceFaqs = [
     {
       id: "sfaq-1",
-      title: `What statutory acts govern ${pa.title} matters?`,
+      title: `What approach does Acorn take when guiding clients in ${pa.title}?`,
       content:
-        "Engagements are anchored in the relevant Central and West Bengal statutes, standard commercial conventions, and judicial precedents established by High Courts and the Supreme Court of India.",
+        "We take a practical, human, and solution-driven approach. Our priority is to listen, understand your unique requirements, and provide clear, actionable guidance that delivers peace of mind and the best outcome for you.",
     },
     {
       id: "sfaq-2",
       title: "How are consultation fees and engagement scopes structured?",
       content:
-        "We operate under transparent, fixed-scope or milestone-based fee structures detailed in a formal Engagement Letter after conflict verification. There are no hidden administrative contingencies.",
+        "We believe in complete transparency and integrity. Our fees are discussed and confirmed upfront with clear scope and zero hidden costs or surprises.",
     },
     {
       id: "sfaq-3",
-      title: "How does counsel maintain confidentiality for sensitive corporate matters?",
+      title: "How is my privacy and confidentiality protected?",
       content:
-        "All communications, draft disclosures, and commercial instruments are protected under statutory advocate-client privilege under Section 126 of the Indian Evidence Act.",
+        "Your trust is paramount. All communications, personal details, and documents are protected with absolute confidentiality under professional legal privilege. We never disclose your information without your explicit consent.",
     },
   ];
 

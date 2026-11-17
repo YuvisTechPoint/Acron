@@ -34,10 +34,26 @@ interface ChatMessage {
 const INITIAL_MESSAGE: ChatMessage = {
   role: "assistant",
   content:
-    "Welcome to the Acorn Statutory Guidance Desk. I provide verified factual guidance on 30-Year Property Title Searches, Doorstep Leave & License, Registered Wills, Housing Society Management, Court Marriage, MEA Apostille Attestation, and POSH Act 2013 Statutory Compliance. How may our chambers assist you today?",
+    "Hello and welcome to Acorn Chambers. We are here to listen and help. Whether you are dealing with workplace harassment, unfair accusations, or distress (we actively support both women and men), or need guidance with property searches, registered wills, society matters, or marriages—our team will support you in every aspect with complete privacy. How can we help you today?",
 };
 
 const QUICK_TOPICS = [
+  {
+    title: "Workplace Harassment Help",
+    question: "How can you help me if I am facing harassment or distress at work?",
+  },
+  {
+    title: "Support for Men & Women",
+    question: "Do you help both male and female employees facing workplace issues?",
+  },
+  {
+    title: "False Accusations Support",
+    question: "What should I do if I am facing false or unfair workplace accusations?",
+  },
+  {
+    title: "Confidential Grievance",
+    question: "How can I report a workplace concern with 100% privacy and protection?",
+  },
   {
     title: "30-Yr Title Search",
     question: "What is included in a 30-year property title search report?",
@@ -51,28 +67,12 @@ const QUICK_TOPICS = [
     question: "What are the legal requirements for drafting and registering a Will?",
   },
   {
-    title: "POSH IC (Sec 4)",
-    question: "What is the mandatory constitution of an Internal Committee under Section 4?",
-  },
-  {
-    title: "POSH Privacy (Sec 16)",
-    question: "What are the strict confidentiality mandates under Section 16 of the POSH Act?",
-  },
-  {
-    title: "POSH Limitation (Sec 9)",
-    question: "What is the limitation period for filing under Section 9 of the POSH Act?",
-  },
-  {
     title: "Court Marriage",
-    question: "What is the procedure for Court Marriage under the Special Marriage Act?",
+    question: "What is the procedure for Court Marriage for couples of all religions?",
   },
   {
-    title: "Society Formation (GDCA)",
+    title: "Society Formation",
     question: "How is a Co-operative Housing Society formed by an approved GDCA Auditor?",
-  },
-  {
-    title: "MEA Apostille",
-    question: "How do I get MEA Apostille or Embassy Attestation for foreign documents?",
   },
   {
     title: "Talk to Counsel",
@@ -213,53 +213,91 @@ export function LegalGuidanceAssistant() {
       };
     }
 
-    // 7. POSH Section 4 - IC Constitution
-    if (text.includes("section 4") || text.includes("constitution") || text.includes("internal committee") || text.includes("external member")) {
+    // 7. Support for Men & Defense Against False Accusations
+    if (
+      text.includes("men") ||
+      text.includes("male") ||
+      text.includes("boy") ||
+      text.includes("guy") ||
+      text.includes("man") ||
+      text.includes("false") ||
+      text.includes("untrue") ||
+      text.includes("unfair accusation") ||
+      text.includes("wrongly accused") ||
+      text.includes("allegation")
+    ) {
       return {
         reply:
-          "Under Section 4(2) of the POSH Act 2013, an employer with 10 or more workers must constitute an Internal Committee comprising: (a) Presiding Officer: a senior woman employee; (b) Minimum two employee members committed to women's causes or legal knowledge; (c) One independent External Member from an NGO or familiar with sexual harassment issues; with at least 50% total women members.",
+          "Yes, we actively support both male and female clients. Dignity, fairness, and natural justice belong to everyone. If you are a male employee facing workplace harassment, toxic treatment, or wrongful and false accusations, our legal team will listen without prejudice, help you articulate the true facts with evidence, submit a measured response, and safeguard your career and reputation.",
         link: "/posh",
-        linkText: "Explore POSH Governance",
+        linkText: "Learn About Our Fair Defense Support",
       };
     }
 
-    // 8. POSH Section 9 - Limitation Period
-    if (text.includes("section 9") || text.includes("limitation") || text.includes("timeline") || text.includes("time limit") || text.includes("90 day")) {
+    // 8. Workplace Harassment & General POSH Help (Women & Men)
+    if (
+      text.includes("harass") ||
+      text.includes("posh") ||
+      text.includes("sexual harassment") ||
+      text.includes("toxic") ||
+      text.includes("distress") ||
+      text.includes("misconduct") ||
+      text.includes("workplace issue")
+    ) {
       return {
         reply:
-          "Section 9(1) of the POSH Act mandates that a written complaint must be lodged within 90 days from the incident date (or last incident in a series). Under the proviso, the IC may condone a delay of up to an additional 90 days (180 days total) for recorded written reasons if satisfied circumstances prevented earlier filing. Complaints beyond 180 days are statutorily barred.",
+          "We provide compassionate, complete help for anyone facing workplace harassment or distress—women and men alike. You do not have to handle this alone. We help you understand your options, arrange immediate safety measures (such as supportive leaves or team adjustments without loss of pay), and ensure your concerns are addressed in a private, fair, and respectful manner.",
         link: "/posh",
-        linkText: "View POSH Statutory Rules",
+        linkText: "Explore Workplace Support",
       };
     }
 
-    // 9. POSH Section 12 - Interim Measures
-    if (text.includes("section 12") || text.includes("interim") || text.includes("relief") || text.includes("transfer") || text.includes("leave")) {
+    // 9. Grievance Committees & Independent External Members
+    if (
+      text.includes("committee") ||
+      text.includes("internal committee") ||
+      text.includes("ic") ||
+      text.includes("external member") ||
+      text.includes("constitution")
+    ) {
       return {
         reply:
-          "Under Section 12, at the written request of the aggrieved woman during a pending inquiry, the IC may recommend to the employer: (a) Transfer of the complainant or respondent to another department/branch; (b) Grant of paid leave up to 3 months (over and above normal statutory leave); or (c) Restraining the respondent from reporting on complainant's appraisal.",
+          "We help workplaces set up transparent, unbiased grievance committees. Our experienced senior advocates serve as independent External Members who bring genuine empathy and strict neutrality, ensuring that all complaints are handled fairly for both the person reporting and the person responding, without corporate bias.",
         link: "/posh",
-        linkText: "POSH Interim Protocols",
+        linkText: "Grievance Committee Support",
       };
     }
 
-    // 10. POSH Section 16 - Confidentiality Mandate
-    if (text.includes("section 16") || text.includes("confidential") || text.includes("privacy") || text.includes("disclosure") || text.includes("leak") || text.includes("secrecy")) {
+    // 10. Privacy & Confidentiality
+    if (
+      text.includes("confidential") ||
+      text.includes("privacy") ||
+      text.includes("secret") ||
+      text.includes("anonymous") ||
+      text.includes("disclosure") ||
+      text.includes("leak")
+    ) {
       return {
         reply:
-          "Section 16 of the POSH Act strictly prohibits publishing, broadcasting, or making known to the public, press, or media the contents of the complaint, identities of complainant, respondent, or witnesses, and inquiry proceedings. This overrides the Right to Information (RTI) Act. Breach attracts statutory penalties under Section 17.",
+          "Your privacy is sacred to us. Every conversation, consultation, and grievance is held in strict confidence. No personal names, circumstances, or documents are ever shared with unauthorized colleagues or made public. You can speak to us with complete peace of mind.",
         link: "/posh",
-        linkText: "Read Confidentiality Guidelines",
+        linkText: "Our Privacy Commitments",
       };
     }
 
-    // 11. POSH Section 21 - Annual Report Filing
-    if (text.includes("section 21") || text.includes("annual report") || text.includes("district officer") || text.includes("annual filing")) {
+    // 11. Timelines & When to Reach Out
+    if (
+      text.includes("time") ||
+      text.includes("timeline") ||
+      text.includes("limitation") ||
+      text.includes("delay") ||
+      text.includes("days")
+    ) {
       return {
         reply:
-          "Under Section 21 of the POSH Act, every Internal Committee is statutorily mandated to prepare and submit an Annual Compliance Report to the Employer and the designated District Officer (DO) / District Magistrate in each calendar year. Failure to file or constitute an IC attracts penalties up to ₹50,000 under Section 26.",
-        link: "/posh/org/reports",
-        linkText: "Annual Reporting Portal",
+          "While it is always best to reach out as soon as possible, we understand that workplace issues take time to process. If some time has passed since the incident occurred, do not hesitate to contact us—there are reasonable legal provisions for condoning delays, and we will guide you through the best path forward.",
+        link: "/posh",
+        linkText: "Speak with Our Counsel",
       };
     }
 
@@ -351,9 +389,10 @@ export function LegalGuidanceAssistant() {
             role: "assistant",
             isAlert: true,
             content:
-              "CRITICAL STATUTORY NOTICE: You appear to be describing an active personal incident. For your legal protection and strict confidentiality under Section 16 of the POSH Act 2013, please DO NOT enter factual allegations or personal details into an automated assistant. Your input has NOT been saved. Please proceed directly to our secure, counsel-monitored filing portal or contact our confidential helpline.",
+              "We hear you, and we are here to support you. To safeguard your complete privacy, please avoid sharing sensitive personal details in this automated chat. Whether you are a female or male employee dealing with workplace harassment, distress, or unfair accusations, our legal team will personally stand by you and guide you through every aspect. Please connect through our confidential intake portal or call our helpline to speak with us in total privacy.",
             link: "/posh/file",
-            linkText: "Open Confidential Filing Portal",
+            linkText: "Connect with Confidential Counsel",
+            phone: "+918286936899",
           },
         ]);
       }, 350);
@@ -431,7 +470,7 @@ export function LegalGuidanceAssistant() {
                   </span>
                 </h3>
                 <p className="font-sans text-[10px] text-slate-300 font-normal">
-                  Educational &amp; Legal Statutory Information
+                  Compassionate &amp; Confidential Support Desk
                 </p>
               </div>
             </div>
@@ -570,7 +609,7 @@ export function LegalGuidanceAssistant() {
             >
               <input
                 type="text"
-                placeholder="Ask about property search, Leave &amp; License, Will, POSH..."
+                placeholder="Ask about workplace support, property search, Leave &amp; License, Will..."
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 disabled={isTyping}

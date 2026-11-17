@@ -37,17 +37,17 @@ interface FAQItem {
 const FAQ_DATA: FAQItem[] = [
   {
     id: "posh-ic-mandate",
-    category: "POSH Compliance",
-    question: "When is an employer legally required to constitute an Internal Committee (IC)?",
+    category: "POSH & Workplace Dignity",
+    question: "Do you help both male and female employees facing workplace harassment or distress?",
     answer:
-      "Under Section 4(1) of the POSH Act 2013, every employer employing 10 or more employees (including permanent, contractual, ad-hoc, and interns) across any branch or administrative unit is statutorily required to constitute an Internal Committee. Failure to constitute an IC attracts penalties up to ₹50,000 under Section 26(1), with repeated non-compliance risking cancellation of corporate registration or operating licenses.",
+      "Yes, absolutely. At Acorn, we believe every person deserves a workplace grounded in dignity, safety, and mutual respect. We provide compassionate, confidential listening and legal protection to women facing harassment, and we actively assist male employees dealing with workplace distress, hostile environments, or unfair accusations. Whatever your gender, our team will stand by you and help you through every aspect.",
   },
   {
     id: "posh-external-member",
-    category: "POSH Compliance",
-    question: "What are the legal qualifications for the External Member on the Internal Committee?",
+    category: "POSH & Workplace Dignity",
+    question: "What should I do if I am facing false or wrongful allegations at work?",
     answer:
-      "Section 4(2)(c) of the POSH Act requires the appointment of at least one member from an NGO or association committed to the cause of women, or a person familiar with issues relating to sexual harassment, such as an experienced advocate. The External Member ensures institutional neutrality, adheres strictly to principles of natural justice, and prevents management bias.",
+      "Facing an unfair or untrue complaint is deeply distressing and can threaten your career and reputation. We provide calm, objective guidance to help you articulate the true facts, gather relevant correspondence and evidence, submit a measured response, and ensure that any workplace grievance committee treats you with strict fairness, patience, and natural justice without presumption of guilt.",
   },
   {
     id: "commercial-contracts-arbitration",
@@ -65,10 +65,10 @@ const FAQ_DATA: FAQItem[] = [
   },
   {
     id: "posh-90-days-timeline",
-    category: "POSH Compliance",
-    question: "What is the statutory limitation period for conducting an inquiry under the POSH Act?",
+    category: "POSH & Workplace Dignity",
+    question: "How does Acorn assist organisations in building respectful, safe workplaces?",
     answer:
-      "Under Section 11(4) of the Act, an inquiry into a complaint must be completed within 90 days. Within 10 days of completing the inquiry, the committee must provide its findings report to the employer. The employer is then obligated under Section 13(4) to implement the recommendations within 60 days.",
+      "We help companies and institutions set up fair, approachable Internal Committees, provide experienced advocates as independent External Members to guarantee neutrality, conduct practical dignity workshops for teams, and draft plain-language policies that foster genuine trust and mutual respect across the entire organization.",
   },
   {
     id: "corporate-fema-compliance",

@@ -455,17 +455,17 @@ export const PRACTICE_AREAS = [
   },
   {
     slug: "posh-compliance",
-    title: "POSH Compliance & IC Services",
+    title: "POSH & Workplace Dignity Support",
     shortDesc:
-      "Statutory Internal Committee (IC) constitution, independent external member representation, policy formulation, e-learning training, and inquiry management.",
+      "Compassionate, unbiased support for anyone facing workplace harassment—women and men alike—along with grievance committee setup, independent external counsel, and respectful workplace training.",
     icon: "ShieldCheck",
     services: [
-      "Section 4(2)(c) IC External Member Appointments",
-      "Comprehensive Workplace Anti-Harassment Policy Drafting",
-      "Statutory 90-Day Inquiry Guidance & Investigation",
-      "Employee & Managerial Sensitisation Workshops",
-      "Section 21 Annual Report Filing with District Officer",
-      "Confidential Digital Complaint Management System",
+      "Confidential Support & Guidance for Both Women and Men",
+      "Independent & Unbiased External Grievance Committee Members",
+      "Support Against False Accusations & Unfair Workplace Treatment",
+      "Plain-Language Anti-Harassment Policies & Codes of Conduct",
+      "Dignity & Respect Sensitisation Workshops for Teams",
+      "Fair, Empathetic Inquiry Facilitation & Annual Governance",
     ],
   },
   {
