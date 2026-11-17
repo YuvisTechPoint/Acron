@@ -30,27 +30,27 @@ import {
 const APPROACH_ROWS = [
   {
     num: "01",
-    title: "Advisory & Regulatory Guidance",
-    desc: "Strategic legal counsel on corporate structuring, statutory compliance, board governance, and risk mitigation tailored to organizational commercial objectives.",
-    focus: "Statutory audits &bull; Director fiduciary duties &bull; FEMA &bull; Corporate governance",
+    title: "Educational Guidance & Admissions Counseling",
+    desc: "Comprehensive coaching for Private 10-SSC / 12- Arts, Commerce, Science and Graduation from government approved boards and universities with guaranteed 100% results coaching. Expert guidance for College Admissions in India & Abroad (MBBS, MD, Pharmacy) and form filling for Mumbai University (June–Sept) and Schools RTE (Oct–Dec).",
+    focus: "Private 10th & 12th Coaching &bull; MBBS &amp; MD Admissions &bull; Mumbai University Forms &bull; RTE Pre-Admissions",
   },
   {
     num: "02",
-    title: "Legal Documentation & Contracts",
-    desc: "Meticulous drafting and vetting of commercial agreements, joint ventures, shareholder pacts, IP covenants, and statutory policies with defensive rigor.",
-    focus: "Master Service Agreements &bull; Shareholder pacts &bull; Commercial leases &bull; NDAs",
+    title: "Taxation, Licensing & Doorstep Registration",
+    desc: "Leave & License Agreement registration completed at your doorstep at convenient timings. Full-service Co-operative Housing Society formation by approved GDCA auditors and society management. Drafting of Sale & Purchase agreements with stamp duty, Power of Attorney, Commercial loan contracts, and State Excise individual liquor licenses.",
+    focus: "Doorstep Leave &amp; License &bull; GDCA Society Formation &bull; Sale Agreements &amp; POA &bull; State Excise Licenses",
   },
   {
     num: "03",
-    title: "Dispute Resolution & Conciliation",
-    desc: "Pre-litigation strategy, structured mediation, and commercial arbitration representation designed to preserve capital and achieve commercial finality.",
-    focus: "Commercial arbitration &bull; Pre-litigation mediation &bull; Statutory notices &bull; Settlements",
+    title: "Legal Documentation, Deeds & Attestations",
+    desc: "Exhaustive 30-year Land & Plot Title Search Reports, Property Cards (7×12 / 6×12 extract), Index-2 verification, Registered Wills, Gift & Release Deeds, Probate / Succession Certificates, Live-in Relationship Agreements, Senior Citizen Cards, and Official Gazette notifications for Name, Religion, or DOB changes.",
+    focus: "30-Year Title Search &bull; Registered WILL &bull; 7×12 Property Card &bull; MEA Apostille &amp; Embassy Attestation",
   },
   {
     num: "04",
-    title: "Tribunal & Statutory Representation",
-    desc: "Disciplined advocacy before quasi-judicial bodies, High Courts, the NCLT, and statutory inquiry committees with uncompromised independence.",
-    focus: "Tribunal representation &bull; NCLT filings &bull; High Court appeals &bull; POSH inquiries",
+    title: "Judicial Advocacy, Matrimonial & Mediation",
+    desc: "Court marriage solemnization for all castes & religions, statutory marriage registration, divorce & domestic violence counsel, Motor & Road Accident hit-and-run compensation (MV Act) for death or disability, MahaRERA complaints against builders, and confidential in-house mediation and counseling.",
+    focus: "Court Marriage (All Castes) &bull; Divorce &amp; Domestic Violence &bull; Motor Accident Claims &bull; In-House Mediation",
   },
 ];
 
@@ -130,12 +130,12 @@ export default function AboutPage() {
       {/* Page Header */}
       <section className="pt-32 pb-16 sm:pt-40 sm:pb-24 border-b border-border bg-ivory-50 relative overflow-hidden">
         <div className="max-w-[1240px] mx-auto px-4 sm:px-6 space-y-6">
-          <Eyebrow>ABOUT ACORN CONSULTANTS</Eyebrow>
+          <Eyebrow>WELCOME TO ACORN CONSULTANTS</Eyebrow>
           <h1 className="font-serif text-4xl sm:text-6xl md:text-7xl font-bold tracking-tight text-ink-950 leading-[1.05] max-w-4xl">
-            {pageData.title || "Over 15 years of expertise in Educational, Tax & Legal Services."}
+            Over 15 years of expertise in Educational, Tax &amp; Legal Services.
           </h1>
-          <p className="font-sans text-lg sm:text-xl text-ink-secondary max-w-2xl leading-relaxed">
-            {pageData.content || "Our job starts with you: understanding what you need, so we can offer you options that suit you best. Making sure you receive the dedicated representation, personal care, and high-quality solutions you deserve."}
+          <p className="font-sans text-lg sm:text-xl text-ink-secondary max-w-3xl leading-relaxed">
+            Our job starts with you: understanding what you need, so we can offer you options that suits you the best. Making sure you get the representation you deserve.
           </p>
         </div>
       </section>
@@ -160,25 +160,49 @@ export default function AboutPage() {
 
             {/* Right 7 Cols: Long-Form Narrative */}
             <div className="lg:col-span-7 space-y-6">
-              <Eyebrow>OUR STORY</Eyebrow>
+              <Eyebrow>ABOUT US</Eyebrow>
               <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl font-bold text-ink-950 leading-[1.12]">
                 Work done well, with a <span className="font-serif italic font-normal text-brass-700">personal</span> touch.
               </h2>
               <div className="space-y-4 font-sans text-base text-ink-secondary leading-relaxed">
                 <p>
-                  With over 15 years of dedicated practice under Advocate on Panel Mr. Rajesh Telge, Acorn Consultants was established to make the legal, tax, and educational systems workable, accessible, and dependable for individuals, businesses, and institutions.
+                  We’re dedicated to ensuring that we take care of all of our clients, and that their needs are met and exceeded. We offer high-quality work and personal client service. We’re committed to providing you with top notch Educational, Tax &amp; legal support.
                 </p>
                 <p>
-                  We are committed to providing top-notch support across every stage of your requirements: from Civil, Criminal, and Property litigation to 30-year land title investigation, MahaRERA representation, co-operative society management, statutory Leave &amp; License registration at your doorstep, registered Wills, and official document attestations (State, MEA Apostille &amp; Embassy).
+                  We serve a wide range of clients, and value every client relationship greatly. Each engagement benefits from the depth and breadth of our expertise. We approach every client with a focus on integrity, advocacy, and understanding. Let us make a law system workable for us..!
                 </p>
-                <p>
-                  No issue is too big or too small. Each engagement benefits from the depth and breadth of our multidisciplinary expertise. We approach every client with a steadfast commitment to integrity, advocacy, and genuine understanding.
+                <p className="font-semibold text-ink-950">
+                  Work done well, with a personal touch. That’s our commitment! No issue is too big or too small. If you have a legal problem, our experts can help you find a SOLUTION.
+                </p>
+              </div>
+
+              {/* Assistance Box */}
+              <div className="p-5 rounded-card bg-stone-100 border border-border space-y-2">
+                <span className="text-xs font-bold uppercase tracking-wider text-brass-700 block">
+                  Not sure what you need, or what it costs? We’re here to help.
+                </span>
+                <p className="text-xs text-ink-secondary leading-relaxed">
+                  Get in touch with us at{" "}
+                  <a href="tel:+918286936899" className="font-semibold text-navy-700 hover:text-brass-700 hover:underline">
+                    +91 8286936899
+                  </a>{" "}
+                  or email us:{" "}
+                  <a href="mailto:acornconsultant2014@gmail.com" className="font-semibold text-navy-700 hover:text-brass-700 hover:underline">
+                    acornconsultant2014@gmail.com
+                  </a>
+                </p>
+                <p className="text-xs text-ink-muted pt-1 border-t border-border/60">
+                  Advocate on Panel: <span className="font-semibold text-ink-950">Mr. Rajesh Telge</span> (
+                  <a href="tel:+918369171822" className="text-navy-700 hover:underline">
+                    +91 8369171822
+                  </a>
+                  )
                 </p>
               </div>
 
               <div className="pt-2 flex items-center gap-4">
                 <Button variant="primary" href="/services" arrow>
-                  Explore Practice Capabilities
+                  Explore All 37 Services
                 </Button>
                 <EditorialLink href="/contact">
                   Visit Chambers
@@ -200,12 +224,12 @@ export default function AboutPage() {
           </div>
 
           <p className="font-serif text-2xl sm:text-4xl md:text-5xl font-medium text-ivory-50 leading-[1.25] tracking-tight">
-            We measure our success not by the volume of dispute filings, but by the disputes prevented, the statutory risks neutralized, and the enduring institutional confidence built.
+            Let us make a law system workable for us..! Work done well, with a personal touch. That’s our commitment! No issue is too big or too small. If you have a legal problem, our experts can help you find a SOLUTION.
           </p>
 
           <div className="pt-4 flex flex-col items-center">
             <span className="font-sans text-xs font-semibold uppercase tracking-[0.2em] text-brass-300">
-              The Acorn Chambers Philosophy
+              The Acorn Consultants Commitment
             </span>
             <div className="w-12 h-[1px] bg-brass-500 mt-3" />
           </div>
