@@ -446,7 +446,7 @@ export function LegalGuidanceAssistant() {
         <button
           type="button"
           onClick={() => setIsOpen(true)}
-          className="fixed bottom-6 right-6 z-40 w-14 h-14 sm:w-16 sm:h-16 rounded-full p-0.5 bg-navy-950/95 backdrop-blur-md shadow-2xl hover:scale-105 active:scale-95 transition-all duration-200 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass-500 focus-visible:ring-offset-2 focus-visible:ring-offset-ink-950 hover:shadow-[0_0_24px_rgba(196,158,95,0.45)] border border-brass-500/40 hover:border-brass-400 overflow-visible"
+          className="fixed bottom-[74px] right-4 sm:bottom-[90px] sm:right-6 z-40 w-13 h-13 w-[52px] h-[52px] sm:w-14 sm:h-14 rounded-full p-0.5 bg-navy-950/95 backdrop-blur-md shadow-2xl hover:scale-105 active:scale-95 transition-all duration-200 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass-500 border border-brass-500/40 hover:border-brass-400 overflow-visible"
           aria-label="Open Statutory Guidance Support Desk"
         >
           {/* Custom Statutory Guidance Badge Icon */}
@@ -470,7 +470,7 @@ export function LegalGuidanceAssistant() {
 
       {/* Slide-Up Guidance Drawer */}
       {isOpen && (
-        <div className="fixed bottom-6 right-6 z-50 w-[360px] sm:w-[430px] h-[550px] max-h-[86vh] bg-white rounded-2xl border border-border shadow-2xl flex flex-col overflow-hidden animate-in fade-in slide-in-from-bottom-4 duration-300">
+        <div className="fixed bottom-4 right-3 sm:bottom-6 sm:right-6 z-50 w-[calc(100vw-24px)] sm:w-[420px] max-w-[430px] h-[550px] max-h-[82vh] bg-white rounded-2xl border border-border shadow-2xl flex flex-col overflow-hidden animate-in fade-in slide-in-from-bottom-4 duration-300">
           
           {/* Header */}
           <div className="bg-navy-950 text-white px-4 py-3 sm:px-5 sm:py-3.5 flex items-center justify-between border-b border-brass-500/30">

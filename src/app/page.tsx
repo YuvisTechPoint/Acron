@@ -322,6 +322,7 @@ export default function HomePage() {
                 src={slide.image}
                 alt={slide.alt}
                 fill
+                sizes="(max-width: 768px) 100vw, 1200px"
                 priority={idx === 0}
                 className="object-cover object-center"
               />
