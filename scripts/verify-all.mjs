@@ -247,9 +247,6 @@ async function main() {
         const matches = html.matchAll(/href="(\/[a-zA-Z0-9_\-\/#]*)"/g);
         for (const match of matches) {
           const href = match[1].split("#")[0]; // remove hash anchor
-          if (href === "/portal" || href === "/portal/payments") {
-            console.log(`[FOUND LINK ${href} IN ROUTE: ${route}]`);
-          }
           if (
             href &&
             href !== "" &&
