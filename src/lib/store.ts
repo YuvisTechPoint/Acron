@@ -1199,11 +1199,28 @@ if (!globalThis.__acorn_server_store__) {
 // Helper to access and mutate localStorage with fallback to in-memory store
 class PlatformStore {
   private isClient = typeof window !== "undefined";
+  private isMounted = false;
   private isHydrating = false;
   private pendingSyncTimers: Record<string, ReturnType<typeof setTimeout>> = {};
 
+  constructor() {
+    if (typeof window !== "undefined") {
+      // In the browser, allow initial React hydration to complete
+      // before reading client-side localStorage, guaranteeing 100% SSR-client parity.
+      setTimeout(() => {
+        this.isMounted = true;
+      }, 0);
+    }
+  }
+
+  public setMounted(mounted = true): void {
+    this.isMounted = mounted;
+  }
+
   private get<T>(key: string, seed: T): T {
-    if (!this.isClient) {
+    // If running on server or during initial client hydration before mount,
+    // return deterministic seed or server store data to prevent Error #418.
+    if (!this.isClient || !this.isMounted) {
       if (globalThis.__acorn_server_store__?.has(key)) {
         return globalThis.__acorn_server_store__.get(key);
       }

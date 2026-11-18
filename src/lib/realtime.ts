@@ -216,6 +216,7 @@ export function useRealtimeStore<T>(key: string, getter: () => T): T {
   }, [getter]);
 
   useEffect(() => {
+    platformStore.setMounted(true);
     refresh();
 
     // 1. Same-window event listener (fired immediately after database hydration & local mutations)

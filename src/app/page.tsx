@@ -393,7 +393,7 @@ export default function HomePage() {
           </h1>
 
           {/* Editorial Paragraph */}
-          <p className="mt-3 font-sans text-[13.5px] text-ink-secondary leading-relaxed">
+          <p suppressHydrationWarning className="mt-3 font-sans text-[13.5px] text-ink-secondary leading-relaxed">
             {siteConfig.heroDescription || "Over 15 years of trusted expertise providing dedicated legal advocacy, 30-year property title search, statutory document attestation, society management, and educational consulting with personal client care."}
           </p>
 
@@ -403,7 +403,7 @@ export default function HomePage() {
               href={siteConfig.heroPrimaryCtaLink || "/request-service"}
               className="w-full h-12 rounded-xl bg-brass-500 hover:bg-brass-400 text-ink-950 font-bold text-sm flex items-center justify-center gap-2 shadow-sm transition active:scale-[0.99]"
             >
-              <span>{siteConfig.heroPrimaryCtaText || "Request a Consultation"}</span>
+              <span suppressHydrationWarning>{siteConfig.heroPrimaryCtaText || "Request a Consultation"}</span>
               <ArrowRight className="w-4 h-4" />
             </Link>
 
@@ -411,7 +411,7 @@ export default function HomePage() {
               href={siteConfig.heroSecondaryCtaLink || "/services"}
               className="w-full h-12 rounded-xl border border-stone-300 hover:border-stone-400 bg-white hover:bg-stone-50 text-ink-950 font-semibold text-sm flex items-center justify-center gap-2 shadow-2xs transition active:scale-[0.99]"
             >
-              <span>{siteConfig.heroSecondaryCtaText || "Explore our services"}</span>
+              <span suppressHydrationWarning>{siteConfig.heroSecondaryCtaText || "Explore our services"}</span>
               <ArrowRight className="w-4 h-4 text-brass-700" />
             </Link>
           </div>
@@ -527,7 +527,7 @@ export default function HomePage() {
                     <path d="M24 26 L24 36" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
                   </svg>
                 </div>
-                <span className="font-serif text-xs sm:text-sm font-bold tracking-wider uppercase text-brass-300">
+                <span suppressHydrationWarning className="font-serif text-xs sm:text-sm font-bold tracking-wider uppercase text-brass-300">
                   {siteConfig.heroArchTitle || "Chambers of Acorn"}
                 </span>
                 <span className="text-brass-500/40">•</span>
@@ -537,7 +537,7 @@ export default function HomePage() {
               </div>
 
               {/* Display Headline - Bold, Authoritative & Balanced */}
-              <h1 className="font-serif text-4xl sm:text-6xl lg:text-[68px] font-bold tracking-tight text-white leading-[1.08] drop-shadow-lg">
+              <h1 suppressHydrationWarning className="font-serif text-4xl sm:text-6xl lg:text-[68px] font-bold tracking-tight text-white leading-[1.08] drop-shadow-lg">
                 {siteConfig.heroHeadline || "Excellence in Law & Advisory."}<br />
                 <span className="font-serif italic font-normal text-brass-400">
                   {siteConfig.heroSubheadline || "Educational, Tax & Legal Solutions."}
@@ -545,7 +545,7 @@ export default function HomePage() {
               </h1>
 
               {/* Subtitle Paragraph */}
-              <p className="font-sans text-base sm:text-lg text-slate-200 leading-[1.68] max-w-xl font-normal drop-shadow">
+              <p suppressHydrationWarning className="font-sans text-base sm:text-lg text-slate-200 leading-[1.68] max-w-xl font-normal drop-shadow">
                 {siteConfig.heroDescription || "Over 15 years of trusted expertise providing dedicated legal advocacy, 30-year property title search, statutory document attestation, society management, and educational consulting with personal client care."}
               </p>
 
@@ -555,7 +555,7 @@ export default function HomePage() {
                   href={siteConfig.heroPrimaryCtaLink || "/request-service"}
                   className="h-[50px] px-7 rounded-btn bg-brass-500 hover:bg-brass-400 text-ink-950 font-sans font-bold text-sm flex items-center gap-2.5 shadow-raised transition-all duration-200 hover:translate-x-0.5"
                 >
-                  <span>{siteConfig.heroPrimaryCtaText || "Request a Consultation"}</span>
+                  <span suppressHydrationWarning>{siteConfig.heroPrimaryCtaText || "Request a Consultation"}</span>
                   <ArrowRight className="w-4 h-4" />
                 </Link>
 
@@ -563,7 +563,7 @@ export default function HomePage() {
                   href={siteConfig.heroSecondaryCtaLink || "/services"}
                   className="h-[50px] px-6 rounded-btn bg-ink-950/60 hover:bg-ink-950/80 border border-brass-500/40 hover:border-brass-400 text-brass-200 hover:text-white font-sans font-semibold text-sm flex items-center gap-2.5 backdrop-blur-md transition-all duration-200"
                 >
-                  <span>{siteConfig.heroSecondaryCtaText || "Explore our services"}</span>
+                  <span suppressHydrationWarning>{siteConfig.heroSecondaryCtaText || "Explore our services"}</span>
                   <ArrowRight className="w-4 h-4 text-brass-400" />
                 </Link>
               </div>
@@ -607,10 +607,10 @@ export default function HomePage() {
                   <div className="text-[10px] sm:text-[11px] uppercase tracking-widest text-brass-400 font-bold mb-0.5">
                     Ethical Governance
                   </div>
-                  <h3 className="text-sm sm:text-base font-bold text-white group-hover:text-brass-300 transition-colors">
+                  <h3 suppressHydrationWarning className="text-sm sm:text-base font-bold text-white group-hover:text-brass-300 transition-colors">
                     {siteConfig.heroBadge1Title || "Discretion"}
                   </h3>
-                  <p className="text-xs text-slate-300 leading-snug mt-1">
+                  <p suppressHydrationWarning className="text-xs text-slate-300 leading-snug mt-1">
                     {siteConfig.heroBadge1Desc || "Absolute privilege & confidentiality across every client matter."}
                   </p>
                 </div>
@@ -628,10 +628,10 @@ export default function HomePage() {
                   <div className="text-[10px] sm:text-[11px] uppercase tracking-widest text-brass-400 font-bold mb-0.5">
                     Exhaustive Review
                   </div>
-                  <h3 className="text-sm sm:text-base font-bold text-white group-hover:text-brass-300 transition-colors">
+                  <h3 suppressHydrationWarning className="text-sm sm:text-base font-bold text-white group-hover:text-brass-300 transition-colors">
                     {siteConfig.heroBadge2Title || "Diligence"}
                   </h3>
-                  <p className="text-xs text-slate-300 leading-snug mt-1">
+                  <p suppressHydrationWarning className="text-xs text-slate-300 leading-snug mt-1">
                     {siteConfig.heroBadge2Desc || "Exhaustive statutory research & 30-year property title verification."}
                   </p>
                 </div>
@@ -649,10 +649,10 @@ export default function HomePage() {
                   <div className="text-[10px] sm:text-[11px] uppercase tracking-widest text-brass-400 font-bold mb-0.5">
                     Accountable Counsel
                   </div>
-                  <h3 className="text-sm sm:text-base font-bold text-white group-hover:text-brass-300 transition-colors">
+                  <h3 suppressHydrationWarning className="text-sm sm:text-base font-bold text-white group-hover:text-brass-300 transition-colors">
                     {siteConfig.heroBadge3Title || "Transparency"}
                   </h3>
-                  <p className="text-xs text-slate-300 leading-snug mt-1">
+                  <p suppressHydrationWarning className="text-xs text-slate-300 leading-snug mt-1">
                     {siteConfig.heroBadge3Desc || "Clear fee schedule, documented scope & direct advocate communication."}
                   </p>
                 </div>

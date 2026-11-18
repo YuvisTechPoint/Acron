@@ -210,6 +210,7 @@ export function Navbar() {
 
             <div className="flex flex-col">
               <span
+                suppressHydrationWarning
                 className={`font-serif text-xl sm:text-2xl font-bold tracking-tight leading-none transition-colors duration-200 ${
                   isTransparent ? "text-ink-950 lg:text-white lg:drop-shadow-sm" : "text-ink-950"
                 }`}
@@ -217,6 +218,7 @@ export function Navbar() {
                 {siteConfig?.firmName || "Acorn Consultants"}
               </span>
               <span
+                suppressHydrationWarning
                 className={`font-sans text-[9px] sm:text-[10px] font-semibold tracking-[0.2em] uppercase mt-1 transition-colors duration-200 ${
                   isTransparent ? "text-brass-700 lg:text-brass-300 lg:drop-shadow-sm" : "text-brass-700"
                 }`}

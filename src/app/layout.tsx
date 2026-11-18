@@ -222,14 +222,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${cormorant.variable} ${inter.variable}`}>
+    <html lang="en" suppressHydrationWarning className={`${cormorant.variable} ${inter.variable}`}>
       <head>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
-      <body className="min-h-screen flex flex-col bg-ivory-50 text-ink antialiased font-sans selection:bg-brass-300/30">
+      <body suppressHydrationWarning className="min-h-screen flex flex-col bg-ivory-50 text-ink antialiased font-sans selection:bg-brass-300/30">
         <Providers>
           <Suspense fallback={null}>
             <AnalyticsTracker />
