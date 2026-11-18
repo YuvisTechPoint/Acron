@@ -79,6 +79,26 @@ export function decryptNarrative(
 }
 
 /**
+ * Serializes an EncryptedPayload into the canonical iv:tag:ciphertext format
+ */
+export function serializeEncryptedPayload(payload: EncryptedPayload): string {
+  return `${payload.iv}:${payload.tag}:${payload.ciphertext}`;
+}
+
+/**
+ * Gracefully decrypts AES-256-GCM ciphertext while passing through plain text seamlessly
+ */
+export function safeDecryptNarrative(text?: string | null, secretKey?: string): string {
+  if (!text || typeof text !== "string") return text || "";
+  if (!text.includes(":") && !text.startsWith("{")) return text;
+  try {
+    return decryptNarrative(text, secretKey);
+  } catch {
+    return text;
+  }
+}
+
+/**
  * Canonical payload serialization for audit log HMAC hashing
  */
 export function canonicalizeAuditPayload(entry: Partial<AuditLogEntry>): string {

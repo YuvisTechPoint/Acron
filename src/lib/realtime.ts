@@ -47,7 +47,22 @@ import {
   PageSectionItem,
 } from "./types";
 
+export type RealtimeSyncStatus = "connected" | "connecting" | "disconnected";
+
+let currentStatus: RealtimeSyncStatus = "connecting";
+let lastSyncTimestamp: Date | null = null;
+const statusListeners = new Set<() => void>();
+
+function notifyStatusChange() {
+  statusListeners.forEach((fn) => {
+    try {
+      fn();
+    } catch {}
+  });
+}
+
 let syncDebounceTimer: NodeJS.Timeout | null = null;
+
 export function syncBackendDatabase() {
   if (syncDebounceTimer) return;
   syncDebounceTimer = setTimeout(async () => {
@@ -59,9 +74,74 @@ export function syncBackendDatabase() {
         if (json && json.data) {
           platformStore.hydrateFromDatabase(json.data);
         }
+        lastSyncTimestamp = new Date();
+        currentStatus = "connected";
+        notifyStatusChange();
       }
-    } catch {}
+    } catch {
+      currentStatus = "disconnected";
+      notifyStatusChange();
+    }
   }, 50);
+}
+
+export async function manualSyncBackend(): Promise<boolean> {
+  try {
+    const res = await fetch("/api/sync");
+    if (res.ok) {
+      const json = await res.json();
+      if (json && json.data) {
+        platformStore.hydrateFromDatabase(json.data);
+      }
+      lastSyncTimestamp = new Date();
+      currentStatus = "connected";
+      notifyStatusChange();
+      return true;
+    }
+    currentStatus = "disconnected";
+    notifyStatusChange();
+    return false;
+  } catch {
+    currentStatus = "disconnected";
+    notifyStatusChange();
+    return false;
+  }
+}
+
+/**
+ * Real-time SSE Connection Status Hook
+ * Returns active connection state, last synchronized timestamp, and manual sync action.
+ */
+export function useRealtimeConnectionStatus() {
+  const [status, setStatus] = useState<RealtimeSyncStatus>(currentStatus);
+  const [lastSync, setLastSync] = useState<Date | null>(lastSyncTimestamp);
+  const [isSyncing, setIsSyncing] = useState<boolean>(false);
+
+  useEffect(() => {
+    const listener = () => {
+      setStatus(currentStatus);
+      setLastSync(lastSyncTimestamp);
+    };
+    statusListeners.add(listener);
+    ensureGlobalSSE();
+    return () => {
+      statusListeners.delete(listener);
+    };
+  }, []);
+
+  const triggerManualSync = useCallback(async () => {
+    setIsSyncing(true);
+    await manualSyncBackend();
+    setIsSyncing(false);
+  }, []);
+
+  return {
+    status,
+    isConnected: status === "connected",
+    lastSync,
+    isSyncing,
+    manualSync: triggerManualSync,
+  };
 }
 
 // Universal Tab Singleton SSE Manager to prevent HTTP/1.1 connection limit exhaustion (max 6 connections)
@@ -83,13 +163,28 @@ function ensureGlobalSSE() {
 
   try {
     globalEventSource = new EventSource("/api/sync/stream");
+    globalEventSource.onopen = () => {
+      currentStatus = "connected";
+      lastSyncTimestamp = new Date();
+      notifyStatusChange();
+    };
+    globalEventSource.addEventListener("connected", () => {
+      currentStatus = "connected";
+      lastSyncTimestamp = new Date();
+      notifyStatusChange();
+    });
     globalEventSource.addEventListener("mutation", () => {
       syncBackendDatabase();
     });
     globalEventSource.onerror = () => {
       // Native browser EventSource automatically attempts exponential reconnection
+      currentStatus = "disconnected";
+      notifyStatusChange();
     };
-  } catch {}
+  } catch {
+    currentStatus = "disconnected";
+    notifyStatusChange();
+  }
 }
 
 function releaseGlobalSSE() {
@@ -99,6 +194,8 @@ function releaseGlobalSSE() {
     if (globalEventSource) {
       globalEventSource.close();
       globalEventSource = null;
+      currentStatus = "disconnected";
+      notifyStatusChange();
     }
   }
 }

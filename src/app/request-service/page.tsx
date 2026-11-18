@@ -121,6 +121,7 @@ function RequestServiceContent() {
           practiceArea: selectedPractice || "General Advisory",
           subject: subject || `Legal Matter: ${selectedPractice}`,
           description,
+          attachments: files.map((f) => f.name),
           preferredMode: "ONLINE_VC",
           urgency: "standard",
         }),
@@ -137,6 +138,7 @@ function RequestServiceContent() {
         serviceCategory: selectedPractice || "corporate_advisory",
         subject: subject || `Legal Matter: ${selectedPractice}`,
         description,
+        attachments: files.map((f) => f.name),
         urgency: "standard",
       });
 

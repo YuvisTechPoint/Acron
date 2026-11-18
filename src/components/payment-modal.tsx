@@ -26,6 +26,7 @@ export function PaymentModal({
   const [gstin, setGstin] = useState("");
   const [isProcessing, setIsProcessing] = useState(false);
   const [completedPayment, setCompletedPayment] = useState<any | null>(null);
+  const [paymentError, setPaymentError] = useState<string | null>(null);
 
   if (!isOpen) return null;
 
@@ -35,46 +36,114 @@ export function PaymentModal({
   const handlePay = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsProcessing(true);
+    setPaymentError(null);
 
     try {
       // 1. Create server-enforced Razorpay Order
-      let orderId = `order_${Math.random().toString(36).substring(2, 14)}`;
-      try {
-        const orderRes = await fetch("/api/payments/create-order", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            amountPaise: totalPaise,
-            clientName: clientName || "Valued Client",
-            clientEmail: clientEmail || "client@domain.com",
-            category,
-          }),
-        });
-        if (orderRes.ok) {
-          const orderData = await orderRes.json();
-          if (orderData.orderId) orderId = orderData.orderId;
-        }
-      } catch (err) {
-        console.warn("Local order creation fallback:", err);
-      }
-
-      // 2. Record payment in platform store with verified order details
-      const recorded = platformStore.recordPayment({
-        clientName: clientName || "Valued Client",
-        clientEmail: clientEmail || "client@domain.com",
-        clientPhone: clientPhone || "+91 98000 00000",
-        serviceCategory: category,
-        itemDescription: serviceTitle,
-        amountPaise,
-        gstin: gstin || undefined,
-        razorpayOrderId: orderId,
-        razorpayPaymentId: `pay_${Math.random().toString(36).substring(2, 14)}`,
+      const orderRes = await fetch("/api/payments/create-order", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          amountPaise: totalPaise,
+          clientName: clientName || "Valued Client",
+          clientEmail: clientEmail || "client@domain.com",
+          category,
+        }),
       });
 
+      if (!orderRes.ok) {
+        throw new Error("Unable to create payment order with chambers gateway.");
+      }
+
+      const orderData = await orderRes.json();
+      const orderId = orderData.orderId;
+      const keyId = orderData.keyId || "rzp_test_AcornMock2026";
+
+      // 2. Check if Razorpay is loaded in browser
+      if (typeof window !== "undefined" && (window as any).Razorpay) {
+        const rzp = new (window as any).Razorpay({
+          key: keyId,
+          amount: totalPaise,
+          currency: "INR",
+          name: "Acorn Legal Consultants",
+          description: serviceTitle,
+          image: "/brand/logo.png",
+          order_id: orderId,
+          prefill: {
+            name: clientName || "Valued Client",
+            email: clientEmail || "client@domain.com",
+            contact: clientPhone || "+91 98000 00000",
+          },
+          theme: {
+            color: "#0b1329",
+          },
+          handler: async function (response: any) {
+            try {
+              // 3. Cryptographic Signature Verification on server
+              const verifyRes = await fetch("/api/payments/verify", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                  razorpay_order_id: response.razorpay_order_id || orderId,
+                  razorpay_payment_id: response.razorpay_payment_id,
+                  razorpay_signature: response.razorpay_signature,
+                  clientName: clientName || "Valued Client",
+                  clientEmail: clientEmail || "client@domain.com",
+                  clientPhone: clientPhone || "+91 98000 00000",
+                  amountPaise,
+                  taxPaise: gstPaise,
+                  totalPaise,
+                  packageCode: category,
+                  packageName: serviceTitle,
+                }),
+              });
+
+              if (!verifyRes.ok) {
+                const errData = await verifyRes.json();
+                throw new Error(errData.error || "Cryptographic verification failed.");
+              }
+
+              const verifyData = await verifyRes.json();
+              setIsProcessing(false);
+              setCompletedPayment(verifyData.transaction || {
+                id: `TXN-${Date.now()}`,
+                receiptNumber: verifyData.receiptNumber,
+                clientName: clientName || "Valued Client",
+                clientEmail: clientEmail || "client@domain.com",
+                clientPhone: clientPhone || "+91 98000 00000",
+                serviceCategory: category,
+                itemDescription: serviceTitle,
+                amountPaise,
+                taxPaise: gstPaise,
+                totalPaise,
+                status: "paid",
+                createdAt: new Date().toISOString(),
+              });
+            } catch (err: any) {
+              setIsProcessing(false);
+              setPaymentError(err?.message || "Payment signature verification failed.");
+            }
+          },
+          modal: {
+            ondismiss: function () {
+              setIsProcessing(false);
+            },
+          },
+        });
+
+        rzp.on("payment.failed", function (resp: any) {
+          setIsProcessing(false);
+          setPaymentError(resp?.error?.description || "Transaction declined by issuing bank.");
+        });
+
+        rzp.open();
+      } else {
+        setIsProcessing(false);
+        setPaymentError("Razorpay checkout modal could not be loaded. Please ensure popup/ad blockers are disabled.");
+      }
+    } catch (err: any) {
       setIsProcessing(false);
-      setCompletedPayment(recorded);
-    } catch {
-      setIsProcessing(false);
+      setPaymentError(err?.message || "Failed to initiate payment gateway.");
     }
   };
 
@@ -192,6 +261,14 @@ export function PaymentModal({
                   Processed securely via Razorpay PCI-DSS compliant 256-bit encrypted gateway. Official tax invoice and payment receipt issued instantly upon authorisation.
                 </span>
               </div>
+
+              {/* Error display */}
+              {paymentError && (
+                <div className="p-3 rounded bg-red-50 border border-red-200 text-red-800 text-xs flex items-center gap-2">
+                  <span className="font-semibold">Payment Error:</span>
+                  <span>{paymentError}</span>
+                </div>
+              )}
 
               {/* Submit CTA */}
               <button

@@ -15,7 +15,28 @@ import {
   LegalRule,
   SystemSettings,
 } from "./types";
-import { computeAuditHash } from "./crypto";
+import {
+  computeAuditHash,
+  encryptNarrative,
+  safeDecryptNarrative,
+  serializeEncryptedPayload,
+} from "./crypto";
+
+export class CrossTenantAccessError extends Error {
+  public readonly code = "CROSS_TENANT_ACCESS_FORBIDDEN";
+  public readonly attemptedOrgId?: string;
+  public readonly authorizedOrgId?: string;
+
+  constructor(attemptedOrgId?: string, authorizedOrgId?: string, message?: string) {
+    super(
+      message ||
+        `Cross-tenant access violation: Caller authorized for org '${authorizedOrgId || "UNKNOWN"}' attempted access to tenant '${attemptedOrgId || "PROTECTED"}'.`
+    );
+    this.name = "CrossTenantAccessError";
+    this.attemptedOrgId = attemptedOrgId;
+    this.authorizedOrgId = authorizedOrgId;
+  }
+}
 
 // Persistent disk path for the database file
 const DATA_DIR = path.join(process.cwd(), "data");
@@ -44,6 +65,8 @@ export interface DatabaseSchema {
   team?: TeamMemberItem[];
   legalRules?: LegalRule[];
   systemSettings?: SystemSettings;
+  customCollections?: Record<string, any>;
+  [key: string]: any;
 }
 
 // Initial Chambers Default Seed (Statutory & Chambers Foundation)
@@ -634,6 +657,7 @@ const INITIAL_SEED: DatabaseSchema = {
     retentionYears: "3",
     updatedAt: new Date().toISOString(),
   },
+  customCollections: {},
 };
 
 /**
@@ -678,6 +702,9 @@ class ProductionDatabase extends EventEmitter {
             }
             if (!parsed.systemSettings || typeof parsed.systemSettings !== "object") {
               parsed.systemSettings = INITIAL_SEED.systemSettings;
+            }
+            if (!parsed.customCollections || typeof parsed.customCollections !== "object") {
+              parsed.customCollections = {};
             }
             return parsed;
           }
@@ -739,32 +766,180 @@ class ProductionDatabase extends EventEmitter {
   }
 
   // -------------------------------------------------------------
-  // Cases Collection (POSH Dockets & Statutory Lifecycle)
+  // Dynamic Realtime Collections & Universal Synchronizer
   // -------------------------------------------------------------
-  getCases(orgId?: string): POSHCase[] {
-    if (orgId) {
-      return this.data.cases.filter((c) => c.orgId === orgId);
+  getCollection(key: string): any {
+    if (key in this.data && key !== "customCollections") {
+      return this.data[key];
     }
-    return [...this.data.cases];
+    if (this.data.customCollections && key in this.data.customCollections) {
+      return this.data.customCollections[key];
+    }
+    return undefined;
   }
 
-  getCaseById(id: string): POSHCase | undefined {
-    return this.data.cases.find((c) => c.id === id || c.caseNumber === id);
+  setCollection(key: string, value: any): void {
+    if (!this.data.customCollections) {
+      this.data.customCollections = {};
+    }
+
+    // Direct mapping to standard schema fields when applicable
+    if (key === "site_config" || key === "siteConfig") {
+      this.data.siteConfig = value;
+    } else if (key === "custom_services" || key === "services_catalogue" || key === "services") {
+      this.data.services = value;
+    } else if (key === "blogs" || key === "blogPosts" || key === "posts") {
+      this.data.blogPosts = value;
+    } else if (key === "cases" || key === "posh_cases") {
+      this.data.cases = value;
+    } else if (key === "qa_list" || key === "questions") {
+      this.data.questions = value;
+    } else if (key === "platform_faqs" || key === "faqs") {
+      this.data.faqs = value;
+    } else if (key === "team_members" || key === "team") {
+      this.data.team = value;
+    } else if (key === "legal_rules" || key === "legalRules") {
+      this.data.legalRules = value;
+    } else if (key === "system_settings" || key === "systemSettings") {
+      this.data.systemSettings = value;
+    } else if (key === "service_requests" || key === "serviceRequests") {
+      this.data.serviceRequests = value;
+    } else if (key === "audit_logs" || key === "auditLogs") {
+      this.data.auditLogs = value;
+    } else if (key === "organizations") {
+      this.data.organizations = value;
+    }
+
+    // Always store under customCollections for generic retrieval & cross-tab sync
+    this.data.customCollections[key] = value;
+
+    this.scheduleSave();
+    this.emit("change", { collection: key, eventType: "COLLECTION_UPDATED", timestamp: new Date().toISOString() });
+  }
+
+  getAllCustomCollections(): Record<string, any> {
+    return { ...(this.data.customCollections || {}) };
+  }
+
+  getAllCollections(): Record<string, any> {
+    const all: Record<string, any> = {
+      siteConfig: this.getSiteConfig(),
+      services: this.getServices(),
+      posts: this.getBlogPosts(),
+      questions: this.getQuestions(),
+      faqs: this.getFaqs(),
+      serviceRequests: this.getServiceRequests(),
+      cases: this.getCases(),
+      team: this.getTeamMembers(),
+      legalRules: this.getLegalRules(),
+      systemSettings: this.getSystemSettings(),
+      organizations: this.getOrganizations(),
+      auditLogs: this.getAuditLogs(),
+    };
+    if (this.data.customCollections) {
+      Object.assign(all, this.data.customCollections);
+    }
+    return all;
+  }
+
+  // -------------------------------------------------------------
+  // Cases Collection (POSH Dockets & Statutory Lifecycle)
+  // -------------------------------------------------------------
+  getCases(orgId?: string, callerOrgId?: string, callerRoles?: string[]): POSHCase[] {
+    const isSuperAdmin = callerRoles?.some((r) =>
+      ["super_admin", "admin_chambers", "admin"].includes(r.toLowerCase())
+    );
+    if (callerOrgId && !isSuperAdmin && orgId && orgId !== callerOrgId) {
+      this.insertAuditLog(
+        "CROSS_TENANT_VIOLATION_BLOCKED",
+        "SECURITY_SUBROUTINE",
+        `Cross-tenant query blocked: tenant '${callerOrgId}' attempted access to '${orgId}'.`,
+        callerOrgId
+      );
+      throw new CrossTenantAccessError(orgId, callerOrgId);
+    }
+
+    let records = this.data.cases;
+    if (orgId) {
+      records = records.filter((c) => c.orgId === orgId);
+    } else if (callerOrgId && !isSuperAdmin) {
+      records = records.filter((c) => c.orgId === callerOrgId);
+    }
+
+    return records.map((c) => ({
+      ...c,
+      detailedStatement: safeDecryptNarrative(c.detailedStatement),
+      summary: safeDecryptNarrative(c.summary),
+    }));
+  }
+
+  getCaseById(id: string, callerOrgId?: string, callerRoles?: string[]): POSHCase | undefined {
+    const c = this.data.cases.find((item) => item.id === id || item.caseNumber === id);
+    if (!c) return undefined;
+
+    const isSuperAdmin = callerRoles?.some((r) =>
+      ["super_admin", "admin_chambers", "admin"].includes(r.toLowerCase())
+    );
+    if (callerOrgId && !isSuperAdmin && c.orgId !== callerOrgId) {
+      this.insertAuditLog(
+        "CROSS_TENANT_VIOLATION_BLOCKED",
+        "SECURITY_SUBROUTINE",
+        `Cross-tenant case read blocked: tenant '${callerOrgId}' attempted to access case '${c.caseNumber}' belonging to '${c.orgId}'.`,
+        callerOrgId
+      );
+      throw new CrossTenantAccessError(c.orgId, callerOrgId);
+    }
+
+    return {
+      ...c,
+      detailedStatement: safeDecryptNarrative(c.detailedStatement),
+      summary: safeDecryptNarrative(c.summary),
+    };
   }
 
   insertCase(poshCase: POSHCase): POSHCase {
+    const encryptedCase: POSHCase = {
+      ...poshCase,
+      detailedStatement: poshCase.detailedStatement
+        ? (poshCase.detailedStatement.includes(":")
+            ? poshCase.detailedStatement
+            : serializeEncryptedPayload(encryptNarrative(poshCase.detailedStatement)))
+        : poshCase.detailedStatement,
+      summary: poshCase.summary
+        ? (poshCase.summary.includes(":")
+            ? poshCase.summary
+            : serializeEncryptedPayload(encryptNarrative(poshCase.summary)))
+        : poshCase.summary,
+    };
+
     return this.mutate("cases", (cases: POSHCase[]) => {
-      cases.unshift(poshCase);
-      return poshCase;
+      cases.unshift(encryptedCase);
+      return {
+        ...encryptedCase,
+        detailedStatement: safeDecryptNarrative(encryptedCase.detailedStatement),
+        summary: safeDecryptNarrative(encryptedCase.summary),
+      };
     }, "CASE_INSERTED");
   }
 
   updateCase(id: string, updates: Partial<POSHCase>): POSHCase | undefined {
+    const encryptedUpdates: Partial<POSHCase> = { ...updates };
+    if (updates.detailedStatement && !updates.detailedStatement.includes(":")) {
+      encryptedUpdates.detailedStatement = serializeEncryptedPayload(encryptNarrative(updates.detailedStatement));
+    }
+    if (updates.summary && !updates.summary.includes(":")) {
+      encryptedUpdates.summary = serializeEncryptedPayload(encryptNarrative(updates.summary));
+    }
+
     return this.mutate("cases", (cases: POSHCase[]) => {
       const idx = cases.findIndex((c) => c.id === id || c.caseNumber === id);
       if (idx !== -1) {
-        cases[idx] = { ...cases[idx], ...updates };
-        return cases[idx];
+        cases[idx] = { ...cases[idx], ...encryptedUpdates };
+        return {
+          ...cases[idx],
+          detailedStatement: safeDecryptNarrative(cases[idx].detailedStatement),
+          summary: safeDecryptNarrative(cases[idx].summary),
+        };
       }
       return undefined;
     }, "CASE_UPDATED");
@@ -1121,7 +1296,7 @@ class ProductionDatabase extends EventEmitter {
         ipAddress: "127.0.0.1",
         prevHash,
       };
-      const hash = computeAuditHash(entryWithoutHash, prevHash);
+      const hash = computeAuditHash(entryWithoutHash);
       const fullEntry: AuditLogEntry = { ...entryWithoutHash, hash };
       logs.unshift(fullEntry);
       return fullEntry;
@@ -1167,6 +1342,9 @@ class ProductionDatabase extends EventEmitter {
 
 // Global Singleton Database Instance across Node.js hot-reloads
 const globalForDb = globalThis as unknown as { __acorn_database_instance__?: ProductionDatabase };
+if (globalForDb.__acorn_database_instance__) {
+  Object.setPrototypeOf(globalForDb.__acorn_database_instance__, ProductionDatabase.prototype);
+}
 export const db = globalForDb.__acorn_database_instance__ ?? new ProductionDatabase();
 if (process.env.NODE_ENV !== "production") {
   globalForDb.__acorn_database_instance__ = db;

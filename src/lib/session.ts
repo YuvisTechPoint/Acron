@@ -1,7 +1,7 @@
 /**
  * Cryptographic Admin Session & Identity Management Module
  * Complies with PRD Section 25 & 26 (Enterprise Session Gate & TOTP MFA Enforcement).
- * Operates isomorphically across Edge Middleware, Next.js Server Actions, and Node.js API routes.
+ * Pure Web Crypto implementation compatible with Next.js Edge Middleware and Node.js.
  */
 
 export interface AdminSessionUser {
@@ -49,13 +49,25 @@ export const AUTHORIZED_ADMIN_ACCOUNTS: Record<string, AdminSessionUser> = {
   },
 };
 
-export const VALID_ADMIN_PASSWORDS = new Set([
-  "AcornLegal@2026",
-  "Admin@2026!",
-  "admin123",
-  "Acorn@2026",
-  "subhasish2026",
-]);
+// Cryptographically salted PBKDF2-SHA256 password hashes (no plaintext passwords)
+export const ADMIN_CREDENTIAL_VAULT: Record<string, { hash: string; salt: string }> = {
+  "admin@acornlegal.in": {
+    hash: "cce18b311dcbb8fa59437c9ecde6b7fad4463eee823c011ea0042ed1cce0709b",
+    salt: "acorn_salt_subhasish_2026",
+  },
+  "subhasish@acornlegal.in": {
+    hash: "cce18b311dcbb8fa59437c9ecde6b7fad4463eee823c011ea0042ed1cce0709b",
+    salt: "acorn_salt_subhasish_2026",
+  },
+  "debjani.sen@acornlegal.in": {
+    hash: "cce18b311dcbb8fa59437c9ecde6b7fad4463eee823c011ea0042ed1cce0709b",
+    salt: "acorn_salt_subhasish_2026",
+  },
+  "support@acornlegal.in": {
+    hash: "cce18b311dcbb8fa59437c9ecde6b7fad4463eee823c011ea0042ed1cce0709b",
+    salt: "acorn_salt_subhasish_2026",
+  },
+};
 
 // In-memory revoked session identifier set for immediate termination
 declare global {
@@ -107,7 +119,7 @@ function hexToBuf(hex: string): Uint8Array {
 
 async function getHmacKey(): Promise<CryptoKey> {
   const enc = new TextEncoder();
-  return crypto.subtle.importKey(
+  return globalThis.crypto.subtle.importKey(
     "raw",
     enc.encode(SESSION_SECRET),
     { name: "HMAC", hash: "SHA-256" },
@@ -125,7 +137,7 @@ export async function createSessionToken(
 ): Promise<string> {
   const now = Date.now();
   const randomBytes = new Uint8Array(12);
-  crypto.getRandomValues(randomBytes);
+  globalThis.crypto.getRandomValues(randomBytes);
   const sessionId = bufToHex(randomBytes.buffer);
 
   const payload: SessionTokenPayload = {
@@ -140,7 +152,7 @@ export async function createSessionToken(
 
   const enc = new TextEncoder();
   const key = await getHmacKey();
-  const signatureBuf = await crypto.subtle.sign("HMAC", key, enc.encode(b64Payload));
+  const signatureBuf = await globalThis.crypto.subtle.sign("HMAC", key, enc.encode(b64Payload));
   const sigHex = bufToHex(signatureBuf);
 
   return `acorn_sess_${b64Payload}.${sigHex}`;
@@ -182,7 +194,7 @@ export async function verifySessionToken(
     const key = await getHmacKey();
     const enc = new TextEncoder();
     const sigBytes = hexToBuf(sigHex);
-    const isValidSig = await crypto.subtle.verify(
+    const isValidSig = await globalThis.crypto.subtle.verify(
       "HMAC",
       key,
       sigBytes as any,
@@ -194,18 +206,19 @@ export async function verifySessionToken(
     }
 
     const payloadJson = fromBase64Url(b64Payload);
-    const payload = JSON.parse(payloadJson) as SessionTokenPayload;
+    const payload: SessionTokenPayload = JSON.parse(payloadJson);
 
-    if (!payload.email || !payload.expiresAt || !payload.sessionId) {
-      return { valid: false, reason: "Missing payload claims" };
-    }
-
+    // Check expiration
     if (Date.now() > payload.expiresAt) {
       return { valid: false, reason: "Session has expired" };
     }
 
-    if (globalThis.__acorn_revoked_sessions__?.has(payload.sessionId)) {
-      return { valid: false, reason: "Session has been revoked" };
+    // Check revocation
+    if (
+      globalThis.__acorn_revoked_sessions__ &&
+      globalThis.__acorn_revoked_sessions__.has(payload.sessionId)
+    ) {
+      return { valid: false, reason: "Session has been revoked by administrative sign-out" };
     }
 
     return { valid: true, user: payload };
@@ -215,18 +228,16 @@ export async function verifySessionToken(
 }
 
 /**
- * Explicitly revokes a session by identifier so it can never be reused.
+ * Revokes a session token immediately by invalidating its session identifier in memory.
  */
-export function revokeSessionToken(token?: string | null): void {
-  if (!token) return;
-  try {
-    const clean = token.trim();
-    if (clean.startsWith("acorn_sess_") && clean.includes(".")) {
-      const b64 = clean.slice("acorn_sess_".length).split(".")[0];
-      const payload = JSON.parse(fromBase64Url(b64)) as SessionTokenPayload;
-      if (payload.sessionId) {
-        globalThis.__acorn_revoked_sessions__?.add(payload.sessionId);
-      }
-    }
-  } catch {}
+export async function revokeSessionToken(token?: string | null): Promise<boolean> {
+  const verified = await verifySessionToken(token);
+  if (!verified.valid || !verified.user) {
+    return false;
+  }
+  if (!globalThis.__acorn_revoked_sessions__) {
+    globalThis.__acorn_revoked_sessions__ = new Set<string>();
+  }
+  globalThis.__acorn_revoked_sessions__.add(verified.user.sessionId);
+  return true;
 }

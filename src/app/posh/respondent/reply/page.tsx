@@ -24,12 +24,24 @@ export default function PoshRespondentReplyPage() {
   const [witnesses, setWitnesses] = useState<Array<{ name: string; role: string; contact: string }>>([
     { name: "", role: "", contact: "" },
   ]);
+  const [attachedFiles, setAttachedFiles] = useState<string[]>([]);
   const [extensionRequested, setExtensionRequested] = useState(false);
   const [extensionGrounds, setExtensionGrounds] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [trackingReceipt, setTrackingReceipt] = useState("");
 
   const poshCase = platformStore.getCaseById(caseNumber);
+
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const list = e.target.files;
+    if (!list) return;
+    const names = Array.from(list).map((f) => f.name);
+    setAttachedFiles((prev) => [...prev, ...names].slice(0, 5));
+  };
+
+  const handleRemoveFile = (index: number) => {
+    setAttachedFiles((prev) => prev.filter((_, i) => i !== index));
+  };
 
   const handleAddWitness = () => {
     setWitnesses([...witnesses, { name: "", role: "", contact: "" }]);
@@ -259,15 +271,45 @@ export default function PoshRespondentReplyPage() {
               <p className="text-xs text-ink-secondary">
                 Upload relevant emails, work logs, attendance records, or messaging transcripts. All files are encrypted at rest with SHA-256 chain-of-custody checksums.
               </p>
-              <div className="border-2 border-dashed border-border rounded p-6 text-center bg-white space-y-2">
+              <div className="border-2 border-dashed border-border rounded p-6 text-center bg-white space-y-2 hover:border-brass-500/50 transition">
                 <Upload className="w-8 h-8 text-primary mx-auto" />
-                <div className="text-xs font-semibold text-ink">
-                  Click to select defense files or drag &amp; drop
-                </div>
+                <label htmlFor="counter-exhibit-file" className="cursor-pointer text-xs font-semibold text-ink hover:text-navy-700 underline block">
+                  Click to select defense counter-exhibits (Max 5 files)
+                </label>
+                <input
+                  id="counter-exhibit-file"
+                  type="file"
+                  multiple
+                  onChange={handleFileUpload}
+                  className="sr-only"
+                />
                 <div className="text-[11px] text-ink-secondary">
                   PDF, DOCX, PNG, JPG &bull; Maximum 25MB per exhibit
                 </div>
               </div>
+
+              {attachedFiles.length > 0 && (
+                <div className="space-y-1.5 pt-1">
+                  <span className="text-[11px] font-semibold text-ink-secondary uppercase tracking-wider">
+                    Attached Counter-Exhibits ({attachedFiles.length}/5):
+                  </span>
+                  {attachedFiles.map((fname, idx) => (
+                    <div key={idx} className="flex items-center justify-between p-2 rounded bg-white border border-border text-xs">
+                      <div className="flex items-center gap-2 truncate">
+                        <FileText className="w-3.5 h-3.5 text-brass-600 shrink-0" />
+                        <span className="truncate">{fname}</span>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => handleRemoveFile(idx)}
+                        className="text-red-600 hover:text-red-800 text-[11px] font-semibold ml-2 shrink-0"
+                      >
+                        Remove
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
 
             {/* Time Extension Request Option */}

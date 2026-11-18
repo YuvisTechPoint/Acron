@@ -3,10 +3,10 @@ import { db } from "@/lib/db";
 import { platformStore } from "@/lib/store";
 import {
   AUTHORIZED_ADMIN_ACCOUNTS,
-  VALID_ADMIN_PASSWORDS,
   createSessionToken,
   AdminSessionUser,
 } from "@/lib/session";
+import { verifyPassword, verifyTOTP } from "@/lib/auth-credentials";
 
 export const dynamic = "force-dynamic";
 
@@ -46,8 +46,8 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Check password
-    const isPasswordValid = VALID_ADMIN_PASSWORDS.has(password) || password === "••••••••••••";
+    // Check salted PBKDF2 password (no plaintext comparisons, no backdoor bypasses)
+    const isPasswordValid = verifyPassword(password, email);
     if (!isPasswordValid) {
       db.insertAuditLog("ADMIN_LOGIN_FAILED", email, "Invalid password attempt", "SYSTEM", "auth", email);
       return NextResponse.json(
@@ -56,8 +56,8 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Check TOTP MFA (6-digit code per PRD Section 26)
-    const isMfaValid = /^\d{6}$/.test(mfaCode);
+    // Check TOTP MFA (RFC 6238 standard verification)
+    const isMfaValid = verifyTOTP(mfaCode);
     if (!isMfaValid) {
       db.insertAuditLog("ADMIN_MFA_FAILED", email, "Invalid 6-digit TOTP security code", "SYSTEM", "auth", email);
       return NextResponse.json(
@@ -85,7 +85,7 @@ export async function POST(req: NextRequest) {
       maxAge: 60 * 60 * 24, // 24 hours
       sameSite: "lax" as const,
       secure: process.env.NODE_ENV === "production",
-      httpOnly: false,
+      httpOnly: false, // Accessible to isomorphic Next.js client store while protected by middleware signature
     };
 
     response.cookies.set("acorn_admin_session", sessionToken, cookieOptions);

@@ -59,6 +59,7 @@ export interface ServiceRequest {
   practiceArea?: string;
   subject: string;
   description: string;
+  attachments?: string[];
   urgency: "standard" | "urgent" | "emergency" | "NORMAL" | "URGENT" | "EMERGENCY" | string;
   status: ServiceRequestStatus;
   assignedTo?: string;

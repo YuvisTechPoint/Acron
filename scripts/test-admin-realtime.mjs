@@ -791,7 +791,9 @@ async function runTests() {
 
   // 2k: Test Unified Database Sync Snapshot (/api/sync)
   try {
-    const res = await fetch(`${BASE_URL}/api/sync`);
+    const res = await fetch(`${BASE_URL}/api/sync`, {
+      headers: { Cookie: `acorn_admin_session=${authCookie}` },
+    });
     const data = await res.json();
     const hasAllEntities =
       data.success &&

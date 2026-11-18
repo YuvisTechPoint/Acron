@@ -588,9 +588,9 @@ export function LegalGuidanceAssistant() {
               <div className="flex items-start">
                 <div className="bg-white border border-border rounded-2xl rounded-bl-sm px-3.5 py-2 text-xs text-ink-muted flex items-center gap-2 shadow-2xs">
                   <div className="flex items-center gap-1">
-                    <span className="w-1.5 h-1.5 rounded-full bg-brass-500 animate-bounce [animation-delay:-0.3s]" />
-                    <span className="w-1.5 h-1.5 rounded-full bg-brass-500 animate-bounce [animation-delay:-0.15s]" />
-                    <span className="w-1.5 h-1.5 rounded-full bg-brass-500 animate-bounce" />
+                    <span className="w-1.5 h-1.5 rounded-full bg-brass-500 animate-pulse motion-reduce:animate-none [animation-delay:-0.3s]" />
+                    <span className="w-1.5 h-1.5 rounded-full bg-brass-500 animate-pulse motion-reduce:animate-none [animation-delay:-0.15s]" />
+                    <span className="w-1.5 h-1.5 rounded-full bg-brass-500 animate-pulse motion-reduce:animate-none" />
                   </div>
                   <span className="text-[11px] font-medium text-slate-500">
                     Checking statutory database...

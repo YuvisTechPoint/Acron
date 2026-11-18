@@ -1196,6 +1196,8 @@ if (!globalThis.__acorn_server_store__) {
 // Helper to access and mutate localStorage with fallback to in-memory store
 class PlatformStore {
   private isClient = typeof window !== "undefined";
+  private isHydrating = false;
+  private pendingSyncTimers: Record<string, ReturnType<typeof setTimeout>> = {};
 
   private get<T>(key: string, seed: T): T {
     if (!this.isClient) {
@@ -1242,23 +1244,81 @@ class PlatformStore {
           } catch { }
         }
       }
+
+      // Automatically sync changes to persistent server database (unless currently hydrating from server)
+      if (!this.isHydrating && typeof window !== "undefined") {
+        this.syncToServer(key, value);
+      }
     } catch (e) {
       console.error("Storage error:", e);
     }
   }
 
+  private syncToServer(key: string, value: any): void {
+    if (typeof window === "undefined") return;
+    if (this.pendingSyncTimers[key]) {
+      clearTimeout(this.pendingSyncTimers[key]);
+    }
+    this.pendingSyncTimers[key] = setTimeout(() => {
+      delete this.pendingSyncTimers[key];
+      fetch("/api/sync", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ key, value }),
+      }).catch((err) => {
+        console.warn(`[Sync] Failed to persist ${key} to server:`, err);
+      });
+    }, 120);
+  }
+
   hydrateFromDatabase(payload: any): void {
     if (!payload || typeof payload !== "object") return;
-    if (payload.siteConfig) this.set("site_config", payload.siteConfig);
-    if (payload.services && Array.isArray(payload.services)) this.set("custom_services", payload.services);
-    if (payload.posts && Array.isArray(payload.posts)) this.set("blogs", payload.posts);
-    if (payload.questions && Array.isArray(payload.questions)) this.set("qa_list", payload.questions);
-    if (payload.faqs && Array.isArray(payload.faqs)) this.set("platform_faqs", payload.faqs);
-    if (payload.serviceRequests && Array.isArray(payload.serviceRequests)) this.set("service_requests", payload.serviceRequests);
-    if (payload.cases && Array.isArray(payload.cases)) this.set("cases", payload.cases);
-    if (payload.team && Array.isArray(payload.team)) this.set("team_members", payload.team);
-    if (payload.legalRules && Array.isArray(payload.legalRules)) this.set("legal_rules", payload.legalRules);
-    if (payload.systemSettings && typeof payload.systemSettings === "object") this.set("system_settings", payload.systemSettings);
+    this.isHydrating = true;
+    try {
+      // Map standard database properties to local storage keys
+      if (payload.siteConfig) this.set("site_config", payload.siteConfig);
+      if (payload.services && Array.isArray(payload.services)) {
+        this.set("custom_services", payload.services);
+        this.set("services_catalogue", payload.services);
+      }
+      if (payload.posts && Array.isArray(payload.posts)) this.set("blogs", payload.posts);
+      if (payload.questions && Array.isArray(payload.questions)) this.set("qa_list", payload.questions);
+      if (payload.faqs && Array.isArray(payload.faqs)) this.set("platform_faqs", payload.faqs);
+      if (payload.serviceRequests && Array.isArray(payload.serviceRequests)) this.set("service_requests", payload.serviceRequests);
+      if (payload.cases && Array.isArray(payload.cases)) {
+        this.set("cases", payload.cases);
+        this.set("posh_cases", payload.cases);
+      }
+      if (payload.team && Array.isArray(payload.team)) this.set("team_members", payload.team);
+      if (payload.legalRules && Array.isArray(payload.legalRules)) this.set("legal_rules", payload.legalRules);
+      if (payload.systemSettings && typeof payload.systemSettings === "object") this.set("system_settings", payload.systemSettings);
+      if (payload.organizations && Array.isArray(payload.organizations)) this.set("organizations", payload.organizations);
+      if (payload.auditLogs && Array.isArray(payload.auditLogs)) this.set("audit_logs", payload.auditLogs);
+
+      // Dynamically hydrate any other collections present in payload
+      for (const [k, val] of Object.entries(payload)) {
+        if (
+          val !== undefined &&
+          val !== null &&
+          k !== "siteConfig" &&
+          k !== "services" &&
+          k !== "posts" &&
+          k !== "questions" &&
+          k !== "faqs" &&
+          k !== "serviceRequests" &&
+          k !== "cases" &&
+          k !== "team" &&
+          k !== "legalRules" &&
+          k !== "systemSettings" &&
+          k !== "organizations" &&
+          k !== "auditLogs"
+        ) {
+          this.set(k, val);
+        }
+      }
+    } finally {
+      this.isHydrating = false;
+    }
 
     if (typeof window !== "undefined") {
       window.dispatchEvent(new CustomEvent("acorn:store_update", { detail: { key: "all" } }));
@@ -1731,7 +1791,7 @@ class PlatformStore {
       hash: computeAuditHash(entryWithoutHash),
     };
     logs.unshift(entry);
-    this.set("audit_logs", logs.slice(0, 100)); // maintain latest 100
+    this.set("audit_logs", logs); // append-only immutable audit trail (no truncation)
   }
 
   // Site Configuration & Hero CMS

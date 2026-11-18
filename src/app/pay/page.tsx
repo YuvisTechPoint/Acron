@@ -145,40 +145,6 @@ function PayOnlineContent() {
     if (Object.keys(errs).length === 0) setStep(3);
   };
 
-  const completeFallbackPayment = (orderId?: string, paymentId?: string) => {
-    const recorded = platformStore.recordPayment({
-      clientName: clientName.trim(),
-      clientEmail: clientEmail.trim(),
-      clientPhone: clientPhone.trim(),
-      serviceCategory:
-        paymentMode === "consultation"
-          ? "Senior Consultation"
-          : `Invoice Settlement (${invoiceRef.trim()})`,
-      itemDescription:
-        paymentMode === "consultation"
-          ? selectedOption.name
-          : `Settlement of Invoice Ref: ${invoiceRef.trim()}`,
-      amountPaise: netAmountPaise,
-      razorpayOrderId: orderId || `order_${Math.random().toString(36).substring(2, 14)}`,
-      razorpayPaymentId: paymentId || `pay_${Math.random().toString(36).substring(2, 14)}`,
-    });
-
-    toast({
-      title: "Payment Processed Successfully",
-      description: `Receipt ${recorded.receiptNumber || recorded.id} verified via Razorpay gateway.`,
-      variant: "success",
-    });
-
-    trackPaymentCompleted(
-      recorded.receiptNumber || recorded.id,
-      netAmountPaise,
-      paymentMode === "consultation" ? selectedOption.name : `Invoice: ${invoiceRef}`
-    );
-
-    setIsProcessing(false);
-    router.push(`/pay/status/${recorded.id}?state=success`);
-  };
-
   const handleFinalSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!agreedTerms) {
@@ -271,8 +237,13 @@ function PayOnlineContent() {
 
               setIsProcessing(false);
               router.push(`/pay/status/${txnId}?state=success`);
-            } catch {
-              completeFallbackPayment(orderId, response.razorpay_payment_id);
+            } catch (err: any) {
+              setIsProcessing(false);
+              toast({
+                title: "Signature Verification Failed",
+                description: err?.message || "Payment signature could not be verified on the server. Please check your bank statement.",
+                variant: "danger",
+              });
             }
           },
         });
@@ -288,11 +259,20 @@ function PayOnlineContent() {
 
         rzp.open();
       } else {
-        // Fallback for sandboxed or adblocked headless browser
-        completeFallbackPayment(orderId);
+        setIsProcessing(false);
+        toast({
+          title: "Payment Gateway Unavailable",
+          description: "Razorpay checkout modal could not be loaded. Please ensure ad blockers allow checkout.razorpay.com and refresh.",
+          variant: "danger",
+        });
       }
-    } catch {
-      completeFallbackPayment();
+    } catch (err: any) {
+      setIsProcessing(false);
+      toast({
+        title: "Order Creation Failed",
+        description: err?.message || "Could not initialize order with Razorpay gateway. Please retry or contact chambers registry.",
+        variant: "danger",
+      });
     }
   };
 

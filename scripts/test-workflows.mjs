@@ -3,6 +3,31 @@ import { spawn } from "child_process";
 import fs from "fs";
 import crypto from "crypto";
 
+const SESSION_SECRET =
+  process.env.ADMIN_SESSION_SECRET ||
+  process.env.SESSION_SECRET ||
+  "acorn-legal-consultants-session-hmac-sha256-key-2026-kolkata-chambers";
+
+function generateAdminToken() {
+  const now = Date.now();
+  const sessionId = crypto.randomBytes(12).toString("hex");
+  const payload = {
+    email: "admin@acornlegal.in",
+    name: "Adv. Subhasish Mukherjee",
+    role: "super_admin",
+    chamber: "Kolkata Chambers",
+    sessionId,
+    createdAt: now,
+    expiresAt: now + 86400 * 1000,
+  };
+  const b64Payload = Buffer.from(JSON.stringify(payload)).toString("base64url");
+  const sigHex = crypto
+    .createHmac("sha256", SESSION_SECRET)
+    .update(b64Payload)
+    .digest("hex");
+  return `acorn_sess_${b64Payload}.${sigHex}`;
+}
+
 let BASE_URL = process.env.TEST_BASE_URL || "http://localhost:3005";
 
 let serverProc = null;
@@ -67,6 +92,11 @@ async function testWorkflows() {
   console.log("Testing interactive workflows and API endpoints...\n");
   let passed = 0;
   let failed = 0;
+  const adminToken = generateAdminToken();
+  const authHeaders = {
+    Cookie: `acorn_admin_session=${adminToken}; acorn_posh_session=${adminToken}; acorn_session=${adminToken}`,
+    Authorization: `Bearer ${adminToken}`,
+  };
 
   // 1. Test Service Request / Contact Intake API
   try {
@@ -261,6 +291,7 @@ async function testWorkflows() {
   try {
     const res = await fetch(`${BASE_URL}/api/cases`, {
       method: "GET",
+      headers: authHeaders,
     });
 
     const data = await res.json();
@@ -389,7 +420,7 @@ async function testWorkflows() {
   try {
     const piiProbe = await fetch(`${BASE_URL}/api/org/webhooks`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json", ...authHeaders },
       body: JSON.stringify({
         endpoint: "https://siem.example.com",
         eventType: "CASE_FILED",
@@ -399,7 +430,7 @@ async function testWorkflows() {
 
     const aiRes = await fetch(`${BASE_URL}/api/ai/timeline_synthesizer`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json", ...authHeaders },
       body: JSON.stringify({ partyConsentConfirmed: true }),
     });
     const aiData = await aiRes.json();
@@ -418,10 +449,10 @@ async function testWorkflows() {
 
   // 12. Test Peer Benchmarks BR-090 Guarantee & Digital Signature Gate
   try {
-    const bmRes = await fetch(`${BASE_URL}/api/org/benchmarks`);
+    const bmRes = await fetch(`${BASE_URL}/api/org/benchmarks`, { headers: authHeaders });
     const bmData = await bmRes.json();
 
-    const sigRes = await fetch(`${BASE_URL}/api/signatures`);
+    const sigRes = await fetch(`${BASE_URL}/api/signatures`, { headers: authHeaders });
     const sigData = await sigRes.json();
 
     const benchmarksValid = bmRes.status === 200 && Array.isArray(bmData.benchmarks) && bmData.benchmarks.every((b) => b.orgCount >= 10);
@@ -476,7 +507,7 @@ async function testWorkflows() {
 
   // 14. Test Persistent Database Engine & Live Sync Snapshot (/api/sync)
   try {
-    const syncRes = await fetch(`${BASE_URL}/api/sync`);
+    const syncRes = await fetch(`${BASE_URL}/api/sync`, { headers: authHeaders });
     const syncData = await syncRes.json();
 
     const isDbSyncValid =
@@ -501,13 +532,13 @@ async function testWorkflows() {
   // 15. Test Version 3.0 Enterprise APIs: SCIM 2.0 (US-226, BR-081) & Omnichannel Intake (US-268)
   try {
     // 15a. SCIM 2.0 List
-    const scimGetRes = await fetch(`${BASE_URL}/api/scim/v2/Users`);
+    const scimGetRes = await fetch(`${BASE_URL}/api/scim/v2/Users`, { headers: authHeaders });
     const scimGetData = await scimGetRes.json();
 
     // 15b. SCIM 2.0 Provision
     const scimPostRes = await fetch(`${BASE_URL}/api/scim/v2/Users`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json", ...authHeaders },
       body: JSON.stringify({
         userName: "test.scim.employee@techkolkata.io",
         name: { formatted: "Test SCIM Employee" },
@@ -520,7 +551,7 @@ async function testWorkflows() {
     // 15c. SCIM 2.0 Deactivate (BR-081)
     const scimPatchRes = await fetch(`${BASE_URL}/api/scim/v2/Users?id=${scimPostData.id || "usr-test"}`, {
       method: "PATCH",
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json", ...authHeaders },
       body: JSON.stringify({
         Operations: [{ op: "replace", path: "active", value: false }],
       }),

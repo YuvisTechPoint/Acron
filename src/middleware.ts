@@ -18,10 +18,6 @@ const CSP_POLICY = [
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
-  const userAgent = request.headers.get("user-agent") || "";
-  const isCrawlerOrTest =
-    userAgent.includes("RouteCrawler") ||
-    request.headers.get("x-bypass-auth") === "true";
 
   // Check session tokens from cookies or Authorization header
   const adminCookieToken =
@@ -43,12 +39,12 @@ export async function middleware(request: NextRequest) {
   if (pathname.startsWith("/admin")) {
     if (pathname === "/admin/login") {
       // If already logged in, redirect directly to admin console
-      if (hasAdminSession && !isCrawlerOrTest) {
+      if (hasAdminSession) {
         return NextResponse.redirect(new URL("/admin", request.url));
       }
     } else {
       // If unauthenticated, redirect to admin login
-      if (!hasAdminSession && !isCrawlerOrTest) {
+      if (!hasAdminSession) {
         const loginUrl = new URL("/admin/login", request.url);
         loginUrl.searchParams.set("callbackUrl", pathname);
         return NextResponse.redirect(loginUrl);
@@ -72,10 +68,36 @@ export async function middleware(request: NextRequest) {
       }
     }
 
-    if (!hasPoshSession && !isCrawlerOrTest) {
+    if (!hasPoshSession) {
       const loginUrl = new URL("/admin/login", request.url);
       loginUrl.searchParams.set("callbackUrl", pathname);
       return NextResponse.redirect(loginUrl);
+    }
+  }
+
+  // 3. Edge Verification for Protected Private APIs (/api/admin/*, /api/org/*, /api/posh/*, /api/scim/*)
+  const isProtectedApi =
+    pathname.startsWith("/api/admin") ||
+    pathname.startsWith("/api/org") ||
+    pathname.startsWith("/api/posh") ||
+    pathname.startsWith("/api/scim");
+
+  if (isProtectedApi && pathname !== "/api/admin/login") {
+    if (!hasAdminSession) {
+      const poshCookieToken = request.cookies.get("acorn_posh_session")?.value;
+      let hasPoshSession = false;
+      if (poshCookieToken && poshCookieToken.trim().length > 0) {
+        const verified = await verifySessionToken(poshCookieToken);
+        if (verified.valid) {
+          hasPoshSession = true;
+        }
+      }
+      if (!hasPoshSession) {
+        return NextResponse.json(
+          { error: "Authentication required: Valid session token must be provided." },
+          { status: 401 }
+        );
+      }
     }
   }
 

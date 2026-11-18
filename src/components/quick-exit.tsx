@@ -14,6 +14,7 @@ export function QuickExit() {
   };
 
   useEffect(() => {
+    if (!isPoshRoute) return;
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
         triggerQuickExit();
@@ -21,7 +22,7 @@ export function QuickExit() {
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, []);
+  }, [isPoshRoute]);
 
   // Show persistently on POSH complainant and inquiry routes
   if (!isPoshRoute) return null;

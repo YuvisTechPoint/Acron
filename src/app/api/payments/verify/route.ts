@@ -61,22 +61,28 @@ export async function POST(req: NextRequest) {
       isSignatureValid = false;
     }
 
-    // In sandbox test mode, accept simulated test signatures
-    if (!isSignatureValid && isTestMode) {
-      if (
-        signature.startsWith("sig_test_") ||
-        signature.startsWith("mock_") ||
-        signature === "test_signature"
-      ) {
-        isSignatureValid = true;
-      }
-    }
-
     if (!isSignatureValid) {
       return NextResponse.json(
         { error: "Payment verification failed: Cryptographic signature mismatch.", verified: false },
         { status: 400 }
       );
+    }
+
+    // Idempotency: return existing verified transaction if already processed
+    const existingTxn = platformStore.getPayments().find(
+      (p) => p.razorpayPaymentId === paymentId || p.paymentId === paymentId
+    );
+    if (existingTxn) {
+      return NextResponse.json({
+        success: true,
+        verified: true,
+        idempotent: true,
+        receiptNumber: existingTxn.receiptNumber,
+        invoiceNumber: existingTxn.invoiceNumber,
+        totalPaise: existingTxn.totalPaise,
+        transaction: existingTxn,
+        message: "Payment already verified (idempotent record).",
+      });
     }
 
     // 2. Server-side Amount Enforcement (all money in paise integers)

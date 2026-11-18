@@ -1,6 +1,32 @@
 // Programmatic route and link verification crawler
 import { spawn } from "child_process";
 import fs from "fs";
+import crypto from "crypto";
+
+const SESSION_SECRET =
+  process.env.ADMIN_SESSION_SECRET ||
+  process.env.SESSION_SECRET ||
+  "acorn-legal-consultants-session-hmac-sha256-key-2026-kolkata-chambers";
+
+function generateAdminToken() {
+  const now = Date.now();
+  const sessionId = crypto.randomBytes(12).toString("hex");
+  const payload = {
+    email: "admin@acornlegal.in",
+    name: "Adv. Subhasish Mukherjee",
+    role: "super_admin",
+    chamber: "Kolkata Chambers",
+    sessionId,
+    createdAt: now,
+    expiresAt: now + 86400 * 1000,
+  };
+  const b64Payload = Buffer.from(JSON.stringify(payload)).toString("base64url");
+  const sigHex = crypto
+    .createHmac("sha256", SESSION_SECRET)
+    .update(b64Payload)
+    .digest("hex");
+  return `acorn_sess_${b64Payload}.${sigHex}`;
+}
 
 const TEST_PORT = process.env.PORT || "3005";
 let BASE_URL = process.env.TEST_BASE_URL || `http://localhost:${TEST_PORT}`;
@@ -215,11 +241,16 @@ async function main() {
   let passed = 0;
   let failed = 0;
   const discoveredLinks = new Set();
+  const testAdminToken = generateAdminToken();
+  const authHeaders = {
+    Cookie: `acorn_admin_session=${testAdminToken}; acorn_posh_session=${testAdminToken}; acorn_session=${testAdminToken}`,
+    Authorization: `Bearer ${testAdminToken}`,
+  };
 
   for (const route of ROUTES) {
     const url = `${BASE_URL}${route}`;
     try {
-      const res = await fetch(url, { headers: { "User-Agent": "RouteCrawler/1.0" } });
+      const res = await fetch(url, { headers: authHeaders });
       const html = await res.text();
       const hasCaseNotFound = route.includes("/posh/ic/cases/") && (html.includes("Case not found") || html.includes("Case docket not found"));
 
@@ -266,38 +297,38 @@ async function main() {
   let linkFailed = 0;
 
   for (const link of discoveredLinks) {
-    let attempts = 0;
-    let ok = false;
+    let success = false;
     let lastErr = null;
-    let lastStatus = 0;
+    let status = 0;
 
-    while (attempts < 2 && !ok) {
-      attempts++;
+    for (let attempt = 1; attempt <= 2 && !success; attempt++) {
       try {
         const res = await fetch(`${BASE_URL}${link}`, {
           method: "GET",
-          headers: { "User-Agent": "RouteCrawler/1.0" },
+          headers: authHeaders,
           signal: AbortSignal.timeout(30000),
         });
-        lastStatus = res.status;
+        status = res.status;
         if (res.status === 200 || res.status === 304 || res.status === 307 || res.status === 308) {
+          success = true;
           linkPassed++;
           process.stdout.write(`✔ [LINK ${res.status}] ${link}\n`);
-          ok = true;
-        } else {
-          lastErr = new Error(`returned HTTP ${res.status}`);
         }
       } catch (err) {
         lastErr = err;
-        if (attempts < 2) {
+        if (attempt < 2) {
           await new Promise((r) => setTimeout(r, 1000));
         }
       }
     }
 
-    if (!ok) {
+    if (!success) {
       linkFailed++;
-      console.error(`✖ Failed to reach internal link: ${link} (${lastErr ? lastErr.message : 'HTTP ' + lastStatus})`);
+      if (lastErr) {
+        console.error(`✖ Failed to reach internal link: ${link} (${lastErr.message})`);
+      } else {
+        console.error(`✖ Broken internal link: ${link} returned HTTP ${status}`);
+      }
     }
   }
 

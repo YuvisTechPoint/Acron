@@ -48,51 +48,85 @@ export default function PoshBreakGlassPage() {
   const { toast } = useToast();
   const [logs, setLogs] = useState<BreakGlassLog[]>(INITIAL_LOGS);
   const [showModal, setShowModal] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
   const [form, setForm] = useState({
     caseNumber: "POSH-TECHKOL-2026-0014",
-    authorizedBy: "Adv. Subhasish Mukherjee (Managing Partner)",
+    primaryAuthorizer: "Adv. Subhasish Mukherjee (Managing Partner)",
+    secondaryAuthorizer: "Adv. Debjani Sen (External Member & Ethics Counsel)",
+    secondaryApproverCode: "",
     reasonCategory: "Urgent Police / Cyber Cell Subpoena",
     justification: "",
-    emergencyPin: ""
   });
-  const [activeSession, setActiveSession] = useState<string | null>(null);
+  const [activeSession, setActiveSession] = useState<{
+    caseNumber: string;
+    token: string;
+    expiresAt: string;
+  } | null>(null);
 
-  const handleTrigger = (e: React.FormEvent) => {
+  const handleTrigger = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (form.emergencyPin !== "ACORN-9900") {
+    setSubmitting(true);
+
+    try {
+      const res = await fetch("/api/posh/breakglass", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          caseNumber: form.caseNumber,
+          primaryAuthorizer: form.primaryAuthorizer,
+          secondaryAuthorizer: form.secondaryAuthorizer,
+          secondaryApproverCode: form.secondaryApproverCode,
+          reasonCategory: form.reasonCategory,
+          justification: form.justification,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        toast({
+          title: "Dual Authorization Denied",
+          description: data.error?.message || "Failed to authorize emergency break-glass override.",
+          variant: "danger",
+        });
+        setSubmitting(false);
+        return;
+      }
+
+      const newLog: BreakGlassLog = {
+        id: `BG-2026-00${logs.length + 1}`,
+        caseNumber: form.caseNumber,
+        orgName: "Kolkata Cloud Technologies Pvt Ltd",
+        authorizedBy: `${form.primaryAuthorizer} & ${form.secondaryAuthorizer}`,
+        reasonCategory: form.reasonCategory,
+        justification: form.justification,
+        timestamp: new Date().toISOString(),
+        ipAddress: "103.21.244.18 (Kolkata Chambers)",
+        durationMinutes: 120,
+      };
+
+      setLogs([newLog, ...logs]);
+      setActiveSession({
+        caseNumber: form.caseNumber,
+        token: data.token,
+        expiresAt: data.expiresAt,
+      });
+      setShowModal(false);
+
       toast({
-        title: "Security Override Denied",
-        description: "Invalid Security Override Passcode. Access attempt logged in immutable audit vault.",
+        title: "Dual-Approved Break-Glass Protocol Active",
+        description: `Emergency access unlocked for matter ${form.caseNumber}. Session expires in 120 minutes.`,
+        variant: "warning",
+      });
+    } catch (err: any) {
+      toast({
+        title: "Network Failure",
+        description: err.message || "Could not reach security authorization service.",
         variant: "danger",
       });
-      return;
+    } finally {
+      setSubmitting(false);
     }
-
-    const newLog: BreakGlassLog = {
-      id: `BG-2026-00${logs.length + 1}`,
-      caseNumber: form.caseNumber,
-      orgName: "Kolkata Cloud Technologies Pvt Ltd",
-      authorizedBy: form.authorizedBy,
-      reasonCategory: form.reasonCategory,
-      justification: form.justification,
-      timestamp: new Date().toISOString(),
-      ipAddress: "103.21.244.18 (Kolkata Chambers)",
-      durationMinutes: 60
-    };
-
-    setLogs([newLog, ...logs]);
-    setActiveSession(form.caseNumber);
-    setShowModal(false);
-    platformStore.addAuditLog(
-      "BREAK_GLASS_TRIGGERED",
-      form.authorizedBy,
-      `Emergency break-glass access invoked for case ${form.caseNumber}. Reason: ${form.reasonCategory}`
-    );
-    toast({
-      title: "Break-Glass Protocol Activated",
-      description: `Emergency access unlocked for matter ${form.caseNumber}. Session expires in 60 minutes.`,
-      variant: "warning",
-    });
   };
 
   return (
@@ -144,11 +178,11 @@ export default function PoshBreakGlassPage() {
             <div className="flex items-center gap-2 font-medium">
               <Clock className="w-4 h-4 text-amber-600 animate-spin" />
               <span>
-                Active Break-Glass Session for <strong>{activeSession}</strong>: Time remaining 58 minutes.
+                Active Break-Glass Session for <strong>{activeSession.caseNumber}</strong>: Time remaining 120 minutes (Dual-Authorized).
               </span>
             </div>
             <Link
-              href={`/posh/ic/cases/CASE-001`}
+              href={`/posh/ic/cases/${activeSession.caseNumber}`}
               className="px-3 py-1 bg-amber-600 text-white rounded font-bold hover:bg-amber-700 transition"
             >
               Access Case File
@@ -228,7 +262,7 @@ export default function PoshBreakGlassPage() {
                 <h3 className="font-serif text-lg font-bold text-red-950">Statutory Break-Glass Verification</h3>
               </div>
               <p className="text-xs text-slate-600 mb-4">
-                This emergency operation will decrypt the restricted case file for 60 minutes. An immediate notification will be dispatched to the Presiding Officer and Acorn Compliance Officer.
+                Dual authorization under PRD Section 25: Two distinct senior counsel credentials required to unlock restricted case files. Session automatically expires in 120 minutes with forensic audit logging.
               </p>
 
               <form onSubmit={handleTrigger} className="space-y-3 text-xs">
@@ -270,17 +304,41 @@ export default function PoshBreakGlassPage() {
                   />
                 </div>
 
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+                  <div>
+                    <label className="font-bold text-slate-700 block mb-1">Primary Authorizer (Lead Counsel) *</label>
+                    <input
+                      type="text"
+                      required
+                      value={form.primaryAuthorizer}
+                      onChange={(e) => setForm({ ...form, primaryAuthorizer: e.target.value })}
+                      className="w-full p-2 border border-border rounded bg-slate-50"
+                    />
+                  </div>
+                  <div>
+                    <label className="font-bold text-slate-700 block mb-1">Secondary Approver (Ethics Counsel) *</label>
+                    <input
+                      type="text"
+                      required
+                      value={form.secondaryAuthorizer}
+                      onChange={(e) => setForm({ ...form, secondaryAuthorizer: e.target.value })}
+                      className="w-full p-2 border border-border rounded bg-slate-50"
+                    />
+                  </div>
+                </div>
+
                 <div>
-                  <label className="font-bold text-red-900 block mb-1">Authorized Managing Partner Passcode *</label>
+                  <label className="font-bold text-red-900 block mb-1">Secondary Approver 6-Digit Verification Code *</label>
                   <input
                     type="password"
                     required
-                    value={form.emergencyPin}
-                    onChange={(e) => setForm({ ...form, emergencyPin: e.target.value })}
-                    placeholder="Enter security override code (ACORN-9900)"
-                    className="w-full p-2 border border-red-300 rounded bg-red-50/50"
+                    maxLength={10}
+                    value={form.secondaryApproverCode}
+                    onChange={(e) => setForm({ ...form, secondaryApproverCode: e.target.value })}
+                    placeholder="Enter secondary approver 6-digit TOTP / security code"
+                    className="w-full p-2 border border-red-300 rounded bg-red-50/50 font-mono tracking-widest text-center"
                   />
-                  <span className="text-[10px] text-slate-500 mt-0.5 block">Test pass: <code>ACORN-9900</code></span>
+                  <span className="text-[10px] text-slate-500 mt-0.5 block">Requires valid dual cryptographic signature from secondary approver.</span>
                 </div>
 
                 <div className="flex justify-end gap-2 pt-4 border-t border-border">
@@ -293,9 +351,10 @@ export default function PoshBreakGlassPage() {
                   </button>
                   <button
                     type="submit"
-                    className="px-4 py-2 bg-red-700 hover:bg-red-800 text-white font-bold rounded shadow transition"
+                    disabled={submitting}
+                    className="px-4 py-2 bg-red-700 hover:bg-red-800 text-white font-bold rounded shadow transition disabled:opacity-50"
                   >
-                    Authorize &amp; Decrypt
+                    {submitting ? "Verifying Signatures..." : "Dual-Authorize & Decrypt (2h TTL)"}
                   </button>
                 </div>
               </form>

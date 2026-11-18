@@ -43,12 +43,14 @@ import {
   Zap,
   Bot,
   Key,
+  RefreshCw,
 } from "lucide-react";
 import { AdminThemeToggle } from "@/components/admin/AdminThemeToggle";
 import {
   useRealtimeRequests,
   useRealtimeCases,
   useRealtimeQuestions,
+  useRealtimeConnectionStatus,
 } from "@/lib/realtime";
 
 interface NavItem {
@@ -142,6 +144,7 @@ export default function AdminLayout({
   const requests = useRealtimeRequests();
   const cases = useRealtimeCases();
   const questions = useRealtimeQuestions();
+  const { status: sseStatus, isConnected, lastSync, isSyncing, manualSync } = useRealtimeConnectionStatus();
 
   const pendingRequests = requests.filter((r) => r.status === "NEW").length;
   const activeCases = cases.filter((c) => c.state !== "CLOSED").length;
@@ -237,6 +240,33 @@ export default function AdminLayout({
         </div>
 
         <div className="flex items-center gap-2">
+          {/* Mobile Realtime Status & Manual Sync */}
+          <button
+            onClick={() => manualSync()}
+            disabled={isSyncing}
+            className={`p-1.5 rounded transition flex items-center gap-1 ${
+              isConnected
+                ? "text-emerald-400 hover:text-emerald-300"
+                : sseStatus === "connecting"
+                ? "text-amber-400 hover:text-amber-300"
+                : "text-red-400 hover:text-red-300"
+            }`}
+            title={
+              isSyncing
+                ? "Syncing database..."
+                : isConnected
+                ? "Live sync active. Tap to refresh."
+                : "Reconnecting... Tap to force sync."
+            }
+            aria-label="Synchronize database"
+          >
+            <RefreshCw className={`w-3.5 h-3.5 ${isSyncing ? "animate-spin" : ""}`} />
+            <span
+              className={`w-1.5 h-1.5 rounded-full ${
+                isConnected ? "bg-emerald-400 animate-pulse" : "bg-amber-400 animate-ping"
+              }`}
+            />
+          </button>
           <AdminThemeToggle compact />
           <Link
             href="/"
@@ -363,10 +393,53 @@ export default function AdminLayout({
           </div>
 
           <div className="flex items-center gap-5">
-            {/* Live Operational Indicator */}
-            <div className="flex items-center gap-2 text-xs font-medium text-ink-secondary">
-              <span className="w-2 h-2 rounded-full bg-status-success animate-pulse" />
-              <span>Production Platform v2.0</span>
+            {/* Live Realtime SSE Connection & Synchronization Indicator */}
+            <div className="flex items-center gap-2.5">
+              <div
+                className={`flex items-center gap-2 px-2.5 py-1 rounded-full text-xs font-medium border ${
+                  isConnected
+                    ? "bg-emerald-50 text-emerald-800 border-emerald-200 dark:bg-emerald-950/40 dark:text-emerald-300 dark:border-emerald-800/60"
+                    : sseStatus === "connecting"
+                    ? "bg-amber-50 text-amber-800 border-amber-200 dark:bg-amber-950/40 dark:text-amber-300 dark:border-amber-800/60"
+                    : "bg-red-50 text-red-800 border-red-200 dark:bg-red-950/40 dark:text-red-300 dark:border-red-800/60"
+                }`}
+                title={
+                  isConnected
+                    ? "Live SSE stream connected. Changes persist across browsers in real-time."
+                    : "Connecting to real-time database stream..."
+                }
+              >
+                <span
+                  className={`w-2 h-2 rounded-full ${
+                    isConnected
+                      ? "bg-status-success animate-pulse"
+                      : sseStatus === "connecting"
+                      ? "bg-status-warning animate-ping"
+                      : "bg-status-error"
+                  }`}
+                />
+                <span className="font-mono text-[11px] font-semibold tracking-wide">
+                  {isConnected ? "Live Sync Active" : sseStatus === "connecting" ? "Connecting..." : "Offline"}
+                </span>
+              </div>
+
+              {/* One-Click Manual Sync Trigger */}
+              <button
+                onClick={() => manualSync()}
+                disabled={isSyncing}
+                className="flex items-center gap-1.5 px-2.5 py-1 rounded-btn border border-border text-xs font-medium text-ink-secondary hover:text-navy-900 hover:border-navy-400 bg-white hover:bg-ivory-100 dark:bg-ink-900 dark:border-navy-800 dark:text-slate-300 dark:hover:text-white dark:hover:bg-navy-800 transition shadow-xs disabled:opacity-60 cursor-pointer"
+                title={lastSync ? `Last synced at ${lastSync.toLocaleTimeString("en-IN")}. Click to sync immediately.` : "Click to sync immediately."}
+                aria-label="Force synchronize database"
+              >
+                <RefreshCw className={`w-3.5 h-3.5 ${isSyncing ? "animate-spin text-brass-500" : "text-ink-muted dark:text-slate-400"}`} />
+                <span>{isSyncing ? "Syncing..." : "Sync"}</span>
+              </button>
+
+              {lastSync && (
+                <span className="text-[10px] text-ink-muted dark:text-slate-500 font-mono hidden xl:inline">
+                  {lastSync.toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit", second: "2-digit" })}
+                </span>
+              )}
             </div>
 
             <div className="w-[1px] h-4 bg-border" />

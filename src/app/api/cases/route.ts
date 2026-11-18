@@ -3,6 +3,7 @@ import { db } from "@/lib/db";
 import { platformStore } from "@/lib/store";
 import { POSHCase } from "@/lib/types";
 import { canAccessCase } from "@/lib/rules/access";
+import { verifySessionToken } from "@/lib/session";
 
 export const dynamic = "force-dynamic";
 
@@ -84,24 +85,69 @@ export async function GET(req: NextRequest) {
     const orgId = searchParams.get("orgId") || undefined;
     const requestedCaseId = searchParams.get("id");
 
-    const callerRole = req.headers.get("x-user-role") as any || "super_admin";
-    const callerOrgId = req.headers.get("x-user-org") || orgId || "SYSTEM";
-    const callerId = req.headers.get("x-user-id") || "usr-current";
+    const sessionCookie =
+      req.cookies.get("acorn_admin_session")?.value ||
+      req.cookies.get("acorn_posh_session")?.value ||
+      req.cookies.get("acorn_session")?.value ||
+      (req.headers.get("authorization")?.startsWith("Bearer ")
+        ? req.headers.get("authorization")!.slice(7)
+        : null);
+
+    if (!sessionCookie) {
+      return NextResponse.json(
+        { error: "Authentication required: Missing session token." },
+        { status: 401 }
+      );
+    }
+
+    const verified = await verifySessionToken(sessionCookie);
+    if (!verified.valid || !verified.user) {
+      return NextResponse.json(
+        { error: "Forbidden: Invalid or expired session token." },
+        { status: 403 }
+      );
+    }
+
+    const user = verified.user;
+    const userRoleStr = (user.role || "").toLowerCase();
+    const effectiveRole =
+      userRoleStr.includes("super_admin") || userRoleStr.includes("managing partner")
+        ? "super_admin"
+        : userRoleStr.includes("external") || userRoleStr.includes("partner")
+        ? "ic_external_member"
+        : userRoleStr.includes("ic") || userRoleStr.includes("presiding")
+        ? "ic_presiding_officer"
+        : "hr_admin";
+
+    const callerOrgId = (user as any).orgId || orgId || "SYSTEM";
+    const callerId = user.sessionId || user.email;
 
     const userContext = {
       id: callerId,
-      name: "Authorized Reviewer",
-      email: "authorized@acornlegal.in",
-      roles: [callerRole],
+      name: user.name,
+      email: user.email,
+      roles: [effectiveRole],
       orgId: callerOrgId,
       status: "active" as const,
       mfaEnabled: true,
       locale: "en" as const,
-      createdAt: new Date().toISOString(),
+      createdAt: new Date(user.createdAt || Date.now()).toISOString(),
     };
 
     if (requestedCaseId) {
-      const caseRecord = db.getCaseById(requestedCaseId);
+      let caseRecord;
+      try {
+        caseRecord = db.getCaseById(requestedCaseId, userContext.orgId, userContext.roles);
+      } catch (err: any) {
+        if (err.name === "CrossTenantAccessError") {
+          return NextResponse.json(
+            { error: "Access forbidden: Cross-tenant boundary violation" },
+            { status: 403 }
+          );
+        }
+        throw err;
+      }
+
       if (!caseRecord) {
         return NextResponse.json({ error: "Case docket not found" }, { status: 404 });
       }
@@ -126,7 +172,18 @@ export async function GET(req: NextRequest) {
       });
     }
 
-    const cases = db.getCases(orgId);
+    let cases;
+    try {
+      cases = db.getCases(orgId, userContext.orgId, userContext.roles);
+    } catch (err: any) {
+      if (err.name === "CrossTenantAccessError") {
+        return NextResponse.json(
+          { error: "Access forbidden: Cross-tenant boundary violation" },
+          { status: 403 }
+        );
+      }
+      throw err;
+    }
 
     const safeCases = cases.map((c) => {
       const hasAccess = canAccessCase(userContext, c);

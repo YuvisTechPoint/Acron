@@ -101,11 +101,18 @@ export function ChambersMap({
 
         {/* Location Badge Overlay (Bottom Left) */}
         <div className="absolute bottom-3 left-3 z-20 flex flex-wrap items-center gap-2 pointer-events-none">
-          <div className="px-3 py-1.5 rounded-btn text-[11px] font-medium bg-navy-950/90 text-slate-200 border border-navy-800 backdrop-blur-md shadow-sm pointer-events-auto flex items-center gap-1.5">
-            <MapPin className="w-3.5 h-3.5 text-brass-400" />
+          <a
+            href={directionsUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            title="Open directions to Camac Court in Apple Maps"
+            aria-label="Open directions to Camac Court in Apple Maps"
+            className="px-3 py-1.5 rounded-btn text-[11px] font-medium bg-navy-950/90 hover:bg-navy-900 text-slate-200 hover:text-white border border-navy-800 backdrop-blur-md shadow-sm pointer-events-auto flex items-center gap-1.5 transition group"
+          >
+            <MapPin className="w-3.5 h-3.5 text-brass-400 group-hover:scale-110 transition-transform" />
             <span className="text-white font-semibold">Camac Court</span>
             <span className="text-slate-400">&bull; 25 Camac St</span>
-          </div>
+          </a>
         </div>
       </div>
 
@@ -140,6 +147,8 @@ export function ChambersMap({
             href={directionsUrl}
             target="_blank"
             rel="noopener noreferrer"
+            title="Get turn-by-turn driving directions in Apple Maps"
+            aria-label="Get turn-by-turn driving directions in Apple Maps"
             className="inline-flex items-center gap-1.5 font-semibold text-brass-700 hover:text-navy-900 transition underline underline-offset-2"
           >
             <Navigation className="w-3.5 h-3.5" />
@@ -152,6 +161,8 @@ export function ChambersMap({
             href={googleMapsUrl}
             target="_blank"
             rel="noopener noreferrer"
+            title="Open location in Google Maps"
+            aria-label="Open location in Google Maps"
             className="inline-flex items-center gap-1.5 font-semibold text-navy-700 hover:text-blue-600 transition underline underline-offset-2"
           >
             <span>Open in Google Maps</span>
