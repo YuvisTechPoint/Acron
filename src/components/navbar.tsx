@@ -18,6 +18,7 @@ import {
   HelpCircle,
   ArrowRight,
   CheckCircle2,
+  Search,
 } from "lucide-react";
 import { BRAND_CONFIG, PRACTICE_AREAS } from "@/lib/constants";
 import { useRealtimeSiteConfig, useRealtimeServices } from "@/lib/realtime";
@@ -126,9 +127,24 @@ export function Navbar() {
 
   return (
     <>
-      {/* Sticky / Scrolled Top Chambers Ticker Ribbon (Positioned Above the Header when Scrolled) */}
+      {/* 1. Mobile Top Notice Ribbon (vibemusic pattern: persistent on mobile) */}
       <div
-        className={`fixed top-0 left-0 right-0 z-50 border-b border-navy-800/80 bg-ink-950 overflow-hidden select-none transition-all duration-300 ${
+        className="lg:hidden fixed top-0 left-0 right-0 z-50 h-7 bg-navy-950 border-b border-navy-800 flex items-center justify-between px-3 text-[10.5px] font-medium text-brass-300 select-none shadow-xs"
+        aria-label="Chambers Mobile Notice Ribbon"
+      >
+        <div className="flex items-center gap-1.5 truncate">
+          <ShieldCheck className="w-3.5 h-3.5 text-brass-400 shrink-0" />
+          <span className="truncate">100% Privileged &amp; Confidential</span>
+        </div>
+        <div className="flex items-center gap-1.5 shrink-0 pl-2 text-slate-300">
+          <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+          <span>15+ Yrs Bar Practice</span>
+        </div>
+      </div>
+
+      {/* 2. Desktop Scrolled Top Chambers Ticker Ribbon */}
+      <div
+        className={`hidden lg:block fixed top-0 left-0 right-0 z-50 border-b border-navy-800/80 bg-ink-950 overflow-hidden select-none transition-all duration-300 ${
           scrolled ? "h-7 opacity-100 translate-y-0" : "h-0 opacity-0 -translate-y-full pointer-events-none"
         }`}
         aria-label="Chambers Scrolled Header Ribbon"
@@ -158,11 +174,11 @@ export function Navbar() {
       />
 
       <header
-        className={`fixed left-0 right-0 z-40 transition-all duration-300 ${
-          scrolled ? "top-7 h-[72px]" : "top-0 h-[84px]"
+        className={`fixed left-0 right-0 z-40 transition-all duration-300 top-7 h-[62px] lg:top-0 lg:h-[84px] ${
+          scrolled ? "lg:top-7 lg:h-[72px]" : ""
         } ${
           isTransparent
-            ? "bg-transparent text-white border-b border-white/10"
+            ? "bg-white text-ink-950 border-b border-stone-200 lg:bg-transparent lg:text-white lg:border-white/10"
             : "bg-white/95 backdrop-blur-md text-ink-950 border-b border-border shadow-card"
         }`}
       >
@@ -194,15 +210,15 @@ export function Navbar() {
 
             <div className="flex flex-col">
               <span
-                className={`font-serif text-2xl font-bold tracking-tight leading-none transition-colors duration-200 ${
-                  isTransparent ? "text-white drop-shadow-sm" : "text-ink-950"
+                className={`font-serif text-xl sm:text-2xl font-bold tracking-tight leading-none transition-colors duration-200 ${
+                  isTransparent ? "text-ink-950 lg:text-white lg:drop-shadow-sm" : "text-ink-950"
                 }`}
               >
                 {siteConfig?.firmName || "Acorn Consultants"}
               </span>
               <span
-                className={`font-sans text-[10px] font-semibold tracking-[0.2em] uppercase mt-1 transition-colors duration-200 ${
-                  isTransparent ? "text-brass-300 drop-shadow-sm" : "text-brass-700"
+                className={`font-sans text-[9px] sm:text-[10px] font-semibold tracking-[0.2em] uppercase mt-1 transition-colors duration-200 ${
+                  isTransparent ? "text-brass-700 lg:text-brass-300 lg:drop-shadow-sm" : "text-brass-700"
                 }`}
               >
                 {siteConfig?.tagline || "Educational, Tax & Legal Consultants"}
@@ -650,23 +666,32 @@ export function Navbar() {
             </Link>
           </div>
 
-          {/* Mobile Menu Hamburger */}
-          <div className="lg:hidden flex items-center gap-2">
+          {/* Mobile Navigation Controls (vibemusic pattern: Search, Phone, Menu) */}
+          <div className="lg:hidden flex items-center gap-1.5">
+            <Link
+              href="/services"
+              className={`p-2 rounded-btn ${
+                isTransparent ? "text-ink-700 lg:text-white" : "text-ink-700"
+              }`}
+              aria-label="Search practice disciplines"
+            >
+              <Search className="w-5 h-5 text-ink-secondary" />
+            </Link>
             <a
               href={`tel:${BRAND_CONFIG.phone}`}
               className={`p-2 rounded-btn border ${
                 isTransparent
-                  ? "text-brass-300 border-white/20"
+                  ? "text-brass-700 border-stone-200 lg:text-brass-300 lg:border-white/20"
                   : "text-navy-700 border-border"
               }`}
               aria-label="Call chambers"
             >
-              <Phone className="w-4 h-4 text-brass-500" />
+              <Phone className="w-4 h-4 text-brass-600" />
             </a>
             <button
               onClick={() => setMobileMenuOpen(true)}
               className={`p-2 rounded-btn ${
-                isTransparent ? "text-white" : "text-ink-950"
+                isTransparent ? "text-ink-950 lg:text-white" : "text-ink-950"
               }`}
               aria-label="Open mobile navigation"
             >

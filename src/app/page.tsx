@@ -149,7 +149,24 @@ function formatCategory(cat?: string): string {
 
 export default function HomePage() {
   const [activeStep, setActiveStep] = useState(0);
+  const [currentMobileSlide, setCurrentMobileSlide] = useState(0);
+  const [touchStartX, setTouchStartX] = useState<number | null>(null);
   const practiceScrollRef = useRef<HTMLDivElement>(null);
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setTouchStartX(e.touches[0].clientX);
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (touchStartX === null) return;
+    const diff = touchStartX - e.changedTouches[0].clientX;
+    if (diff > 50) {
+      setCurrentMobileSlide((prev) => (prev === 2 ? 0 : prev + 1));
+    } else if (diff < -50) {
+      setCurrentMobileSlide((prev) => (prev === 0 ? 2 : prev - 1));
+    }
+    setTouchStartX(null);
+  };
 
   const scrollPractices = (direction: "left" | "right") => {
     if (!practiceScrollRef.current) return;
@@ -210,6 +227,33 @@ export default function HomePage() {
     }))
     : HOMEPAGE_FAQS;
 
+  const bannerSlides = [
+    {
+      id: "slide-hero",
+      tag: "Advocacy & Chambers Counsel",
+      title: siteConfig.heroArchTitle || "Chambers of Acorn",
+      subtitle: "Excellence in Law. Integrity in Practice.",
+      image: siteConfig.heroBgImage || "/images/hero.jpg",
+      alt: "Chambers of Acorn consultation desk",
+    },
+    {
+      id: "slide-posh",
+      tag: "Workplace Harassment Protection",
+      title: "POSH Statutory Compliance Hub",
+      subtitle: "Confidential Grievance Redressal & IC Advisory",
+      image: "/images/posh.png",
+      alt: "POSH Statutory Compliance Desk",
+    },
+    {
+      id: "slide-property",
+      tag: "Real Estate & Commercial Diligence",
+      title: "30-Year Property Verification",
+      subtitle: "Title Due Diligence & RERA Advisory",
+      image: "/images/hero-custom-bg.jpg",
+      alt: "Property Title Verification & Due Diligence",
+    },
+  ];
+
   return (
     <div className="bg-ivory-50 text-ink selection:bg-brass-300/30">
       <script
@@ -259,8 +303,195 @@ export default function HomePage() {
         }}
       />
 
-      {/* 1. HERO SECTION: Full-bleed Heritage Law Library with Editorial Typography & Glassmorphic Dock */}
-      <section className="relative min-h-[92vh] lg:min-h-[96vh] bg-ink-950 text-white flex flex-col justify-between pt-28 pb-12 sm:pt-32 sm:pb-16 border-b border-navy-800/80 overflow-hidden">
+      {/* 1A. MOBILE PHONE HERO & BANNER (vibemusic pattern: < lg screens) */}
+      <section className="block lg:hidden bg-white pt-[89px] border-b border-stone-200">
+        {/* Standalone Visual Banner Carousel Card (aspect 16:9, clean imagery, arrows & indicators) */}
+        <div
+          className="relative w-full aspect-[16/9] sm:aspect-[2/1] max-h-[260px] bg-navy-950 overflow-hidden select-none border-b border-stone-200"
+          onTouchStart={handleTouchStart}
+          onTouchEnd={handleTouchEnd}
+        >
+          {bannerSlides.map((slide, idx) => (
+            <div
+              key={slide.id}
+              className={`absolute inset-0 transition-opacity duration-300 ease-in-out ${
+                currentMobileSlide === idx ? "opacity-100 z-10" : "opacity-0 z-0 pointer-events-none"
+              }`}
+            >
+              <Image
+                src={slide.image}
+                alt={slide.alt}
+                fill
+                priority={idx === 0}
+                className="object-cover object-center"
+              />
+              {/* Subtle bottom vignette to ensure tag & title contrast */}
+              <div className="absolute inset-0 bg-gradient-to-t from-navy-950/85 via-navy-950/20 to-transparent pointer-events-none" />
+
+              {/* Bottom slide metadata pill */}
+              <div className="absolute bottom-3 left-3.5 right-14 z-10 pointer-events-none">
+                <span className="inline-block px-2 py-0.5 rounded text-[10px] font-bold tracking-wider uppercase bg-brass-500 text-ink-950 shadow-xs mb-1">
+                  {slide.tag}
+                </span>
+                <h2 className="font-serif text-sm sm:text-base font-bold text-white line-clamp-1 drop-shadow">
+                  {slide.title}
+                </h2>
+              </div>
+            </div>
+          ))}
+
+          {/* Left Arrow Button */}
+          <button
+            type="button"
+            onClick={() => setCurrentMobileSlide((prev) => (prev === 0 ? bannerSlides.length - 1 : prev - 1))}
+            className="absolute left-2.5 top-1/2 -translate-y-1/2 z-20 w-8 h-8 rounded-full bg-white/90 hover:bg-white text-ink-950 shadow-md backdrop-blur-xs flex items-center justify-center transition active:scale-95 border border-stone-200"
+            aria-label="Previous slide"
+          >
+            <ChevronLeft className="w-4 h-4" />
+          </button>
+
+          {/* Right Arrow Button */}
+          <button
+            type="button"
+            onClick={() => setCurrentMobileSlide((prev) => (prev === bannerSlides.length - 1 ? 0 : prev + 1))}
+            className="absolute right-2.5 top-1/2 -translate-y-1/2 z-20 w-8 h-8 rounded-full bg-white/90 hover:bg-white text-ink-950 shadow-md backdrop-blur-xs flex items-center justify-center transition active:scale-95 border border-stone-200"
+            aria-label="Next slide"
+          >
+            <ChevronRight className="w-4 h-4" />
+          </button>
+
+          {/* Slide Dots Indicator */}
+          <div className="absolute bottom-2.5 right-3 z-20 flex items-center gap-1 bg-navy-950/70 px-2 py-1 rounded-full backdrop-blur-xs">
+            {bannerSlides.map((_, idx) => (
+              <button
+                key={idx}
+                onClick={() => setCurrentMobileSlide(idx)}
+                aria-label={`Go to slide ${idx + 1}`}
+                className={`h-1.5 rounded-full transition-all ${
+                  currentMobileSlide === idx ? "w-4 bg-brass-400" : "w-1.5 bg-white/50"
+                }`}
+              />
+            ))}
+          </div>
+        </div>
+
+        {/* Clean Ivory/White Content Block directly UNDER the Banner */}
+        <div className="px-5 pt-5 pb-7 text-left bg-white">
+          {/* Eyebrow Pill */}
+          <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-brass-500/10 border border-brass-500/30 text-brass-800 text-[11px] font-bold tracking-wider uppercase mb-3">
+            <span>Chambers of Acorn</span>
+            <span>•</span>
+            <span>15+ Years of Excellence</span>
+          </div>
+
+          {/* High-Contrast Bold 3-Tier Headline (vibemusic pattern) */}
+          <h1 className="font-serif text-[30px] sm:text-4xl font-bold tracking-tight text-ink-950 leading-[1.12]">
+            Excellence in Law.<br />
+            <span className="font-serif italic font-normal text-brass-700">Integrity in Practice.</span><br />
+            Strategic Counsel.
+          </h1>
+
+          {/* Editorial Paragraph */}
+          <p className="mt-3 font-sans text-[13.5px] text-ink-secondary leading-relaxed">
+            {siteConfig.heroDescription || "Over 15 years of trusted expertise providing dedicated legal advocacy, 30-year property title search, statutory document attestation, society management, and educational consulting with personal client care."}
+          </p>
+
+          {/* Stacked Full-Width Action Buttons */}
+          <div className="mt-5 space-y-2.5">
+            <Link
+              href={siteConfig.heroPrimaryCtaLink || "/request-service"}
+              className="w-full h-12 rounded-xl bg-brass-500 hover:bg-brass-400 text-ink-950 font-bold text-sm flex items-center justify-center gap-2 shadow-sm transition active:scale-[0.99]"
+            >
+              <span>{siteConfig.heroPrimaryCtaText || "Request a Consultation"}</span>
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+
+            <Link
+              href={siteConfig.heroSecondaryCtaLink || "/services"}
+              className="w-full h-12 rounded-xl border border-stone-300 hover:border-stone-400 bg-white hover:bg-stone-50 text-ink-950 font-semibold text-sm flex items-center justify-center gap-2 shadow-2xs transition active:scale-[0.99]"
+            >
+              <span>{siteConfig.heroSecondaryCtaText || "Explore our services"}</span>
+              <ArrowRight className="w-4 h-4 text-brass-700" />
+            </Link>
+          </div>
+
+          {/* Hotline & Response Time Notice */}
+          <div className="mt-3.5 flex items-center justify-between text-[11.5px] text-ink-muted px-1">
+            <div className="flex items-center gap-1.5">
+              <span className="text-brass-800 font-semibold">Chambers Desk:</span>
+              <a href={`tel:${BRAND_CONFIG.phone}`} className="font-bold text-ink-950 underline underline-offset-2">
+                {BRAND_CONFIG.phone}
+              </a>
+            </div>
+            <div className="flex items-center gap-1 text-emerald-700 font-medium">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+              <span>Mon–Sat 9AM–8PM</span>
+            </div>
+          </div>
+
+          {/* 2x2 Feature / Trust Box (vibemusic pattern) */}
+          <div className="mt-5 rounded-2xl border border-stone-200 bg-stone-50/70 p-3.5 shadow-2xs">
+            <div className="grid grid-cols-2 divide-x divide-stone-200">
+              {/* Col 1 Top */}
+              <div className="pr-3 pb-3">
+                <span className="text-[10px] font-semibold text-brass-700 block mb-0.5">
+                  Direct Privilege
+                </span>
+                <div className="text-[17px] font-bold text-ink-950 leading-tight">
+                  Privileged
+                </div>
+                <span className="text-[9px] font-bold uppercase tracking-wider text-ink-muted block mt-0.5">
+                  100% CONFIDENTIAL
+                </span>
+              </div>
+
+              {/* Col 2 Top */}
+              <div className="pl-3 pb-3">
+                <span className="text-[10px] font-semibold text-emerald-700 block mb-0.5">
+                  Pan-India Reach
+                </span>
+                <div className="text-[17px] font-bold text-ink-950 leading-tight">
+                  Expedited
+                </div>
+                <span className="text-[9px] font-bold uppercase tracking-wider text-ink-muted block mt-0.5">
+                  HIGH COURTS &amp; TRIBUNALS
+                </span>
+              </div>
+            </div>
+
+            <div className="border-t border-stone-200 grid grid-cols-2 divide-x divide-stone-200 pt-3">
+              {/* Col 1 Bottom */}
+              <div className="pr-3">
+                <span className="text-[10px] font-semibold text-brass-700 block mb-0.5">
+                  Commercial Matters
+                </span>
+                <div className="text-[17px] font-bold text-ink-950 leading-tight">
+                  Strategic
+                </div>
+                <span className="text-[9px] font-bold uppercase tracking-wider text-ink-muted block mt-0.5">
+                  PROMPT ASSIGNMENT
+                </span>
+              </div>
+
+              {/* Col 2 Bottom */}
+              <div className="pl-3">
+                <span className="text-[10px] font-semibold text-blue-700 block mb-0.5">
+                  Statutory Diligence
+                </span>
+                <div className="text-[17px] font-bold text-ink-950 leading-tight">
+                  Rigorous
+                </div>
+                <span className="text-[9px] font-bold uppercase tracking-wider text-ink-muted block mt-0.5">
+                  30-YEAR TITLE DUE DILIGENCE
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 1B. DESKTOP HERO SECTION: Full-bleed Heritage Law Library (preserved on >= lg screens) */}
+      <section className="hidden lg:flex relative min-h-[96vh] bg-ink-950 text-white flex-col justify-between pt-32 pb-16 border-b border-navy-800/80 overflow-hidden">
         {/* Full-bleed Hero Background Image - Exactly matches user's uploaded master background */}
         <div className="absolute inset-0 z-0 select-none pointer-events-none">
           <Image
