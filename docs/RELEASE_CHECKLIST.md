@@ -14,6 +14,11 @@ The following environment variables are validated by the platform runtime:
 - `NODE_ENV` (`production`)
 - `PORT` (`3000` or hosting provider dynamic port)
 - `NEXT_PUBLIC_APP_URL` (`https://acornconsultants.in`)
+- `SESSION_SECRET` (Cryptographic HMAC-SHA256 session signature key)
+- `ENCRYPTION_KEY` (AES-256-GCM narrative vault 32-byte secret)
+- `AUDIT_HMAC_SECRET` (Append-only audit trail HMAC verification secret)
+- `BREAK_GLASS_SECRET` (Emergency dual-approval break-glass signature secret)
+- `SIGNATURE_KEY_SECRET` (Digital e-sign HMAC verification key)
 - `RAZORPAY_KEY_ID` (Public client gateway key)
 - `RAZORPAY_KEY_SECRET` (Server-side HMAC-SHA256 signature secret)
 - `RAZORPAY_WEBHOOK_SECRET` (Cryptographic webhook signature validator)
@@ -28,10 +33,11 @@ The following environment variables are validated by the platform runtime:
 - [x] **Production Static Prerender:** `npm run build` compiled 135 of 135 pages with zero errors.
 - [x] **Type Safety:** Strict TypeScript compilation (`tsc --noEmit`) completed with 0 diagnostics.
 - [x] **ESLint Linting:** `next lint` completed with 0 errors and 0 warnings.
-- [x] **Unit Test Suite:** 35 of 35 authoritative statutory, cryptographic, and access-control unit tests passed.
-- [x] **Interactive Workflows & APIs:** 15 of 15 end-to-end API and workflow verification suites passed.
-- [x] **HTTP Route Crawler:** 140 of 140 targeted application routes verified with HTTP 200 responses.
-- [x] **Internal Hyperlinks:** 125 of 125 discovered hyperlinks confirmed live with zero 404s.
+- [x] **Unit Test Suite:** 35 of 35 authoritative statutory, cryptographic, and access-control unit tests passed (100%).
+- [x] **Real-Time Admin Suite:** 76 of 76 admin consoles, API mutations, and auth gates passed (100%).
+- [x] **Interactive Workflows & APIs:** 15 of 15 end-to-end API and workflow verification suites passed (100%).
+- [x] **HTTP Route Crawler:** 143 of 143 targeted application routes verified with HTTP 200 responses.
+- [x] **Internal Hyperlinks:** 127 of 127 discovered hyperlinks confirmed live with zero 404s.
 - [x] **Web App Manifest:** PWA Manifest `/manifest.webmanifest` generated with brand icons and standalone mode.
 - [x] **AEO & LLM Search Engine File:** `/llms.txt` deployed with verified chambers registry for ChatGPT Search, Perplexity, Claude, and Gemini.
 - [x] **Search Engine Optimization (SEO):** Trilingual Schema.org JSON-LD (`LegalService`, `Organization`, `WebSite`, `SearchAction`), XML Sitemap, and multi-bot `robots.txt` active.
