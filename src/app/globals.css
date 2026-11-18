@@ -318,6 +318,29 @@ button:focus-visible .footer-roll-text__track,
   animation-play-state: paused;
 }
 
+/* Auto-Rolling Practice Cards (Vibe Music Pattern) */
+@keyframes auto-rolling-cards-scroll {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+.auto-rolling-cards-track {
+  display: flex;
+  width: max-content;
+  animation: auto-rolling-cards-scroll 46s linear infinite;
+  will-change: transform;
+}
+
+.auto-rolling-cards-track:hover,
+.auto-rolling-cards-container:hover .auto-rolling-cards-track,
+.auto-rolling-cards-track:focus-within {
+  animation-play-state: paused;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .footer-roll-text__track {
     transition: none;
@@ -329,8 +352,10 @@ button:focus-visible .footer-roll-text__track,
   .group:hover .footer-roll-text__track {
     transform: none;
   }
-  .footer-ticker-track {
+  .footer-ticker-track,
+  .auto-rolling-cards-track {
     animation: none;
+    transform: none !important;
   }
 }
 

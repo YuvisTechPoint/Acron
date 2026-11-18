@@ -28,59 +28,32 @@ function generateAdminToken() {
   return `acorn_sess_${b64Payload}.${sigHex}`;
 }
 
-const TEST_PORT = process.env.PORT || "3005";
-let BASE_URL = process.env.TEST_BASE_URL || `http://localhost:${TEST_PORT}`;
+const BASE_URL = process.env.TEST_BASE_URL || "http://localhost:3000";
 
 let serverProc = null;
 
 async function ensureServerRunning(url) {
-  if (process.env.TEST_BASE_URL) {
-    try {
-      const res = await fetch(`${process.env.TEST_BASE_URL}/api/health`, { signal: AbortSignal.timeout(3000) });
-      if (res.status === 200) {
-        BASE_URL = process.env.TEST_BASE_URL;
-        return null;
-      }
-    } catch {}
-  }
-
-  // Check if live server is already active on port 3000 or 3001 (with retries)
-  for (let attempt = 0; attempt < 4; attempt++) {
-    for (const host of ["127.0.0.1", "localhost"]) {
-      for (const port of ["3000", "3001"]) {
-        try {
-          const res = await fetch(`http://${host}:${port}/api/health`, { signal: AbortSignal.timeout(4000) });
-          if (res.status === 200) {
-            BASE_URL = `http://${host}:${port}`;
-            return null;
-          }
-        } catch {}
-      }
-    }
-    if (attempt < 3) await new Promise((r) => setTimeout(r, 800));
-  }
-
   try {
-    const res = await fetch(`${url}/api/health`, { signal: AbortSignal.timeout(3000) });
+    const res = await fetch(`${url}/api/health`, { signal: AbortSignal.timeout(1000) });
     if (res.status === 200) return null;
   } catch {}
 
   const serverScript = fs.existsSync(".next/standalone/server.js")
     ? [".next/standalone/server.js"]
-    : ["node_modules/next/dist/bin/next", "start", "-p", TEST_PORT];
+    : ["node_modules/next/dist/bin/next", "start", "-p", "3000"];
 
-  console.log(`Starting Acorn production server on port ${TEST_PORT}...`);
+  console.log(`Starting standalone server via node ${serverScript.join(" ")}...`);
   const child = spawn("node", serverScript, {
     stdio: "ignore",
-    env: { ...process.env, PORT: TEST_PORT },
+    env: { ...process.env, PORT: "3000" },
   });
 
-  for (let i = 0; i < 50; i++) {
-    await new Promise((r) => setTimeout(r, 400));
+  for (let i = 0; i < 30; i++) {
+    await new Promise((r) => setTimeout(r, 300));
     try {
-      const res = await fetch(`${url}/api/health`, { signal: AbortSignal.timeout(800) });
+      const res = await fetch(`${url}/api/health`, { signal: AbortSignal.timeout(500) });
       if (res.status === 200) {
-        console.log(`Acorn server is ready on port ${TEST_PORT} for verification.\n`);
+        console.log("Server is ready for verification.\n");
         return child;
       }
     } catch {}
@@ -239,15 +212,25 @@ const ROUTES = [
 
 async function main() {
   serverProc = await ensureServerRunning(BASE_URL);
-  console.log(`Starting crawl of ${ROUTES.length} routes on ${BASE_URL}...\n`);
-  let passed = 0;
-  let failed = 0;
-  const discoveredLinks = new Set();
   const testAdminToken = generateAdminToken();
   const authHeaders = {
     Cookie: `acorn_admin_session=${testAdminToken}; acorn_posh_session=${testAdminToken}; acorn_session=${testAdminToken}`,
     Authorization: `Bearer ${testAdminToken}`,
   };
+
+  // Warm up root page to ensure cold-start compilation is completed
+  for (let w = 0; w < 3; w++) {
+    try {
+      const warm = await fetch(`${BASE_URL}/`, { headers: authHeaders, signal: AbortSignal.timeout(6000) });
+      if (warm.status === 200) break;
+    } catch {}
+    await new Promise((r) => setTimeout(r, 500));
+  }
+
+  console.log(`Starting crawl of ${ROUTES.length} routes on ${BASE_URL}...\n`);
+  let passed = 0;
+  let failed = 0;
+  const discoveredLinks = new Set();
 
   for (const route of ROUTES) {
     const url = `${BASE_URL}${route}`;
@@ -264,6 +247,9 @@ async function main() {
         const matches = html.matchAll(/href="(\/[a-zA-Z0-9_\-\/#]*)"/g);
         for (const match of matches) {
           const href = match[1].split("#")[0]; // remove hash anchor
+          if (href === "/portal" || href === "/portal/payments") {
+            console.log(`[FOUND LINK ${href} IN ROUTE: ${route}]`);
+          }
           if (
             href &&
             href !== "" &&

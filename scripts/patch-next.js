@@ -15,22 +15,7 @@ if (fs.existsSync(fontLoaderFile)) {
   }
 }
 
-// 2. Patch server require.js for fallback pages
-const requireFile = 'node_modules/next/dist/server/require.js';
-if (fs.existsSync(requireFile)) {
-  let content = fs.readFileSync(requireFile, 'utf8');
-  const target = 'if (!pagePath) {\n        pagePath = checkManifest(pagesManifest);\n    }';
-  const replacement = 'if (!pagePath) {\n        pagePath = checkManifest(pagesManifest);\n    }\n    if (!pagePath && _fs.existsSync(_path.default.join(serverBuildPath, "pages", `${page}.js`))) {\n        pagePath = _path.default.join("pages", `${page}.js`);\n    }';
-  if (content.includes(target)) {
-    content = content.replace(target, replacement);
-    fs.writeFileSync(requireFile, content, 'utf8');
-    console.log('✔ Patched require.js fallback for pages');
-  } else {
-    console.log('• require.js fallback already patched');
-  }
-}
-
-// 3. Patch collect-build-traces.js for missing trace output files
+// 2. Patch collect-build-traces.js for missing trace output files
 const tracesFile = 'node_modules/next/dist/build/collect-build-traces.js';
 if (fs.existsSync(tracesFile)) {
   let content = fs.readFileSync(tracesFile, 'utf8');
