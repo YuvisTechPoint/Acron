@@ -36,26 +36,14 @@ export default function PoshOrgPreventionPage() {
   const orgs = platformStore.getOrganizations();
   const activeOrg = orgs.find((o) => o.id === selectedOrgId) || orgs[0];
 
-  const [riskFactors, setRiskFactors] = useState<RiskFactor[]>([
-    {
-      area: "Hybrid & Remote Messaging Channels",
-      level: "Medium Risk",
-      finding: "After-hours messaging on personal WhatsApp accounts reported by 18% of junior female staff.",
-      action: "Mandate official Slack/Teams channels and issue night-time communication blackout directive.",
-    },
-    {
-      area: "Official Off-Site Client Dinners & Travel",
-      level: "Low Risk",
-      finding: "Clear travel policy with verified single-room corporate accommodation and dedicated transport.",
-      action: "Maintain quarterly vendor cab safety inspections.",
-    },
-    {
-      area: "Late Evening Shift Operations (Sector V DC)",
-      level: "Controlled Risk",
-      finding: "Security guard accompaniment and GPS tracking enabled on all night transport drops.",
-      action: "Periodic safety audits conducted by Acorn Legal external advisor.",
-    },
-  ]);
+  const [riskFactors, setRiskFactors] = useState<RiskFactor[]>(() =>
+    platformStore.getOrgRiskFactors(selectedOrgId)
+  );
+
+  const handleOrgChange = (orgId: string) => {
+    setSelectedOrgId(orgId);
+    setRiskFactors(platformStore.getOrgRiskFactors(orgId));
+  };
 
   const [showAddModal, setShowAddModal] = useState(false);
   const [newArea, setNewArea] = useState("");
@@ -81,7 +69,8 @@ export default function PoshOrgPreventionPage() {
       action: newAction.trim(),
     };
 
-    setRiskFactors((prev) => [newFactor, ...prev]);
+    platformStore.addOrgRiskFactor(selectedOrgId, newFactor);
+    setRiskFactors(platformStore.getOrgRiskFactors(selectedOrgId));
     setNewArea("");
     setNewFinding("");
     setNewAction("");
@@ -171,7 +160,7 @@ export default function PoshOrgPreventionPage() {
               <select
                 id="org-select"
                 value={selectedOrgId}
-                onChange={(e) => setSelectedOrgId(e.target.value)}
+                onChange={(e) => handleOrgChange(e.target.value)}
                 className="px-3 py-2 min-h-[44px] bg-white border border-border rounded text-xs font-semibold text-ink shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
               >
                 {orgs.map((o) => (

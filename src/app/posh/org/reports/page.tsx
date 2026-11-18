@@ -28,11 +28,22 @@ export default function PoshOrgReportsPage() {
   const orgs = platformStore.getOrganizations();
   const activeOrg = orgs.find((o) => o.id === selectedOrgId) || orgs[0];
 
-  const [ackNumber, setAckNumber] = useState("DO/KOL/POSH/2025/ACK-092");
-  const [ackDate, setAckDate] = useState("2026-01-22");
+  const [ackNumber, setAckNumber] = useState(
+    activeOrg.lastAnnualReportAck || "DO/KOL/POSH/2025/ACK-092"
+  );
+  const [ackDate, setAckDate] = useState(
+    activeOrg.lastAnnualReportAckDate || "2026-01-22"
+  );
   const [showAckModal, setShowAckModal] = useState(false);
   const [newAckNumber, setNewAckNumber] = useState("");
   const [newAckDate, setNewAckDate] = useState(new Date().toISOString().split("T")[0]);
+
+  const handleOrgChange = (orgId: string) => {
+    setSelectedOrgId(orgId);
+    const org = orgs.find((o) => o.id === orgId) || orgs[0];
+    setAckNumber(org.lastAnnualReportAck || "DO/KOL/POSH/2025/ACK-092");
+    setAckDate(org.lastAnnualReportAckDate || "2026-01-22");
+  };
 
   const statutoryMetrics = {
     received: 4, // Note: suppressed in public views if < 5 per privacy rules
@@ -53,14 +64,20 @@ export default function PoshOrgReportsPage() {
       });
       return;
     }
-    setAckNumber(newAckNumber.trim());
+    const updatedAck = newAckNumber.trim();
+    setAckNumber(updatedAck);
     setAckDate(newAckDate);
+    platformStore.updateOrganization(activeOrg.id, {
+      lastAnnualReportAck: updatedAck,
+      lastAnnualReportAckDate: newAckDate,
+      annualReportStatus: "submitted_to_do",
+    });
     setShowAckModal(false);
     setNewAckNumber("");
 
     toast({
       title: "DO Filing Acknowledgement Updated",
-      description: `Receipt ${newAckNumber.trim()} recorded for Calendar Year ${reportYear}.`,
+      description: `Receipt ${updatedAck} recorded for Calendar Year ${reportYear}.`,
       variant: "success",
     });
   };
@@ -120,7 +137,7 @@ export default function PoshOrgReportsPage() {
               <select
                 id="org-select-reports"
                 value={selectedOrgId}
-                onChange={(e) => setSelectedOrgId(e.target.value)}
+                onChange={(e) => handleOrgChange(e.target.value)}
                 className="px-3 py-2 min-h-[44px] bg-white border border-border rounded text-xs font-semibold text-ink shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
               >
                 {orgs.map((o) => (

@@ -165,8 +165,38 @@ export interface Organization {
   policyAcknowledgedPct: number;
   lastAnnualReportYear: number;
   annualReportStatus: "draft" | "submitted_to_do" | "pending";
+  lastAnnualReportAck?: string;
+  lastAnnualReportAckDate?: string;
   planTier: "basic" | "retainer_standard" | "retainer_enterprise" | string;
   createdAt: string;
+}
+
+export interface RiskFactorItem {
+  area: string;
+  level: "Low Risk" | "Medium Risk" | "Controlled Risk" | "High Risk";
+  finding: string;
+  action: string;
+}
+
+export interface OrgCourseItem {
+  code: string;
+  title: string;
+  target: string;
+  completionRate: number;
+  totalAssigned: number;
+  completedCount: number;
+  status: string;
+}
+
+export interface OrgSupportTicket {
+  id: string;
+  subject: string;
+  priority: string;
+  caseRef: string;
+  status: string;
+  sla: string;
+  createdAt: string;
+  description?: string;
 }
 
 export interface ICMember {

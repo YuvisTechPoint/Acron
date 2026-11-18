@@ -57,6 +57,9 @@ import {
   GoLiveChecklistItem,
   OpsTelemetryData,
   PageSectionItem,
+  RiskFactorItem,
+  OrgCourseItem,
+  OrgSupportTicket,
 } from "./types";
 import {
   generateServiceRequestRef,
@@ -1661,6 +1664,113 @@ class PlatformStore {
       this.set("organizations", orgs);
       this.addAuditLog("Admin", "super_admin", "ORGANIZATION_UPDATED", "policy", id, `Updated organization subscription: ${orgs[idx].name}`);
     }
+  }
+
+  // Organisation Prevention Risk Factors
+  getOrgRiskFactors(orgId: string = "org-1"): RiskFactorItem[] {
+    return this.get(`risk_factors_${orgId}`, [
+      {
+        area: "Hybrid & Remote Messaging Channels",
+        level: "Medium Risk",
+        finding: "After-hours messaging on personal WhatsApp accounts reported by 18% of junior female staff.",
+        action: "Mandate official Slack/Teams channels and issue night-time communication blackout directive.",
+      },
+      {
+        area: "Official Off-Site Client Dinners & Travel",
+        level: "Low Risk",
+        finding: "Clear travel policy with verified single-room corporate accommodation and dedicated transport.",
+        action: "Maintain quarterly vendor cab safety inspections.",
+      },
+      {
+        area: "Late Evening Shift Operations (Sector V DC)",
+        level: "Controlled Risk",
+        finding: "Security guard accompaniment and GPS tracking enabled on all night transport drops.",
+        action: "Periodic safety audits conducted by Acorn Legal external advisor.",
+      },
+    ]);
+  }
+
+  addOrgRiskFactor(orgId: string, factor: RiskFactorItem): RiskFactorItem {
+    const list = this.getOrgRiskFactors(orgId);
+    list.unshift(factor);
+    this.set(`risk_factors_${orgId}`, list);
+    this.addAuditLog(orgId, "risk_officer", "RISK_FACTOR_ADDED", "policy", `rf-${Date.now()}`, `Added prevention safeguard: ${factor.area}`);
+    return factor;
+  }
+
+  // Organisation Training & LMS Courses
+  getOrgCourses(orgId: string = "org-1"): OrgCourseItem[] {
+    return this.get(`org_courses_${orgId}`, [
+      {
+        code: "LMS-EMP-2026",
+        title: "Statutory Employee POSH Sensitisation & Workplace Rights (2026)",
+        target: "All Regular & Contractual Employees",
+        completionRate: 94,
+        totalAssigned: 420,
+        completedCount: 395,
+        status: "Active & Mandatory",
+      },
+      {
+        code: "LMS-IC-2026",
+        title: "Internal Committee (IC) Capacity Building & Natural Justice Mastery",
+        target: "Presiding Officer & IC Members",
+        completionRate: 100,
+        totalAssigned: 5,
+        completedCount: 5,
+        status: "Completed & Certified",
+      },
+      {
+        code: "LMS-MGR-2026",
+        title: "Managerial Anti-Retaliation & Incident Escalation Protocol",
+        target: "People Managers & Team Leads",
+        completionRate: 88,
+        totalAssigned: 60,
+        completedCount: 53,
+        status: "In Progress",
+      },
+    ]);
+  }
+
+  addOrgCourse(orgId: string, course: OrgCourseItem): OrgCourseItem {
+    const list = this.getOrgCourses(orgId);
+    list.push(course);
+    this.set(`org_courses_${orgId}`, list);
+    this.addAuditLog(orgId, "lms_admin", "TRAINING_BATCH_ENROLLED", "system", course.code, `Enrolled training batch: ${course.title} (${course.totalAssigned} learners)`);
+    return course;
+  }
+
+  // Organisation Legal Advisory Support Tickets
+  getOrgSupportTickets(orgId: string = "org-1"): OrgSupportTicket[] {
+    return this.get(`org_tickets_${orgId}`, [
+      {
+        id: "TCK-2026-041",
+        subject: "Clarification on Notice Delivery via Personal WhatsApp",
+        priority: "P2 - High",
+        caseRef: "POSH-TECHKOL-2026-0014",
+        status: "In Progress (Adv. Debjani Sen)",
+        sla: "Resolution due within 4h",
+        createdAt: "2026-11-08 09:30 AM",
+        description: "Need counsel advice on whether delivery proof on personal messaging apps satisfies Rule 7 requirement.",
+      },
+      {
+        id: "TCK-2026-018",
+        subject: "Annual DO West Bengal Form Submission Attestation",
+        priority: "P3 - Standard",
+        caseRef: "N/A",
+        status: "Resolved",
+        sla: "Met (1.5h turnaround)",
+        createdAt: "2026-10-20 11:15 AM",
+        description: "Chambers counsel attestation completed for 2025 filing.",
+      },
+    ]);
+  }
+
+  addOrgSupportTicket(orgId: string, ticket: OrgSupportTicket): OrgSupportTicket {
+    const list = this.getOrgSupportTickets(orgId);
+    list.unshift(ticket);
+    this.set(`org_tickets_${orgId}`, list);
+    this.addAuditLog(orgId, "org_admin", "SUPPORT_TICKET_OPENED", "system", ticket.id, `Opened counsel inquiry: ${ticket.subject}`);
+    return ticket;
   }
 
   // IC Members

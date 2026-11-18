@@ -41,28 +41,14 @@ export default function PoshOrgSupportPage() {
   const [description, setDescription] = useState("");
   const [statusFilter, setStatusFilter] = useState<"ALL" | "IN_PROGRESS" | "RESOLVED">("ALL");
 
-  const [tickets, setTickets] = useState<SupportTicket[]>([
-    {
-      id: "TCK-2026-041",
-      subject: "Clarification on Notice Delivery via Personal WhatsApp",
-      priority: "P2 - High",
-      caseRef: "POSH-TECHKOL-2026-0014",
-      status: "In Progress (Adv. Debjani Sen)",
-      sla: "Resolution due within 4h",
-      createdAt: "2026-11-08 09:30 AM",
-      description: "Need counsel advice on whether delivery proof on personal messaging apps satisfies Rule 7 requirement.",
-    },
-    {
-      id: "TCK-2026-018",
-      subject: "Annual DO West Bengal Form Submission Attestation",
-      priority: "P3 - Standard",
-      caseRef: "N/A",
-      status: "Resolved",
-      sla: "Met (1.5h turnaround)",
-      createdAt: "2026-10-20 11:15 AM",
-      description: "Chambers counsel attestation completed for 2025 filing.",
-    },
-  ]);
+  const [tickets, setTickets] = useState<SupportTicket[]>(() =>
+    platformStore.getOrgSupportTickets(selectedOrgId)
+  );
+
+  const handleOrgChange = (orgId: string) => {
+    setSelectedOrgId(orgId);
+    setTickets(platformStore.getOrgSupportTickets(orgId));
+  };
 
   const handleCreateTicket = (e: React.FormEvent) => {
     e.preventDefault();
@@ -102,7 +88,8 @@ export default function PoshOrgSupportPage() {
       description: description.trim(),
     };
 
-    setTickets((prev) => [newTicket, ...prev]);
+    platformStore.addOrgSupportTicket(selectedOrgId, newTicket);
+    setTickets(platformStore.getOrgSupportTickets(selectedOrgId));
     setTicketSubject("");
     setCaseReference("");
     setDescription("");
@@ -162,7 +149,7 @@ export default function PoshOrgSupportPage() {
             <select
               id="org-select-support"
               value={selectedOrgId}
-              onChange={(e) => setSelectedOrgId(e.target.value)}
+              onChange={(e) => handleOrgChange(e.target.value)}
               className="px-3 py-2 min-h-[44px] bg-white border border-border rounded text-xs font-semibold text-ink shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
             >
               {orgs.map((o) => (

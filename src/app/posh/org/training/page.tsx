@@ -19,16 +19,7 @@ import {
 import { platformStore } from "@/lib/store";
 import { downloadFile } from "@/lib/utils";
 import { useToast } from "@/components/ui/toast";
-
-interface CourseItem {
-  code: string;
-  title: string;
-  target: string;
-  completionRate: number;
-  totalAssigned: number;
-  completedCount: number;
-  status: string;
-}
+import type { OrgCourseItem } from "@/lib/types";
 
 export default function PoshOrgTrainingPage() {
   const { toast } = useToast();
@@ -36,35 +27,14 @@ export default function PoshOrgTrainingPage() {
   const orgs = platformStore.getOrganizations();
   const activeOrg = orgs.find((o) => o.id === selectedOrgId) || orgs[0];
 
-  const [courses, setCourses] = useState<CourseItem[]>([
-    {
-      code: "LMS-EMP-2026",
-      title: "Statutory Employee POSH Sensitisation & Workplace Rights (2026)",
-      target: "All Regular & Contractual Employees",
-      completionRate: 94,
-      totalAssigned: 420,
-      completedCount: 395,
-      status: "Active & Mandatory",
-    },
-    {
-      code: "LMS-IC-2026",
-      title: "Internal Committee (IC) Capacity Building & Natural Justice Mastery",
-      target: "Presiding Officer & IC Members",
-      completionRate: 100,
-      totalAssigned: 5,
-      completedCount: 5,
-      status: "Completed & Certified",
-    },
-    {
-      code: "LMS-MGR-2026",
-      title: "Managerial Anti-Retaliation & Incident Escalation Protocol",
-      target: "People Managers & Team Leads",
-      completionRate: 88,
-      totalAssigned: 60,
-      completedCount: 53,
-      status: "In Progress",
-    },
-  ]);
+  const [courses, setCourses] = useState<OrgCourseItem[]>(() =>
+    platformStore.getOrgCourses("org-1")
+  );
+
+  const handleOrgChange = (newOrgId: string) => {
+    setSelectedOrgId(newOrgId);
+    setCourses(platformStore.getOrgCourses(newOrgId));
+  };
 
   const [showEnrolModal, setShowEnrolModal] = useState(false);
   const [batchTitle, setBatchTitle] = useState("");
@@ -83,7 +53,7 @@ export default function PoshOrgTrainingPage() {
     }
 
     const newCode = `LMS-MOD-${Math.floor(100 + Math.random() * 900)}-2026`;
-    const newCourse: CourseItem = {
+    const newCourse: OrgCourseItem = {
       code: newCode,
       title: batchTitle.trim(),
       target: batchTarget.trim(),
@@ -93,7 +63,8 @@ export default function PoshOrgTrainingPage() {
       status: "Enrolment Dispatched",
     };
 
-    setCourses((prev) => [...prev, newCourse]);
+    platformStore.addOrgCourse(selectedOrgId, newCourse);
+    setCourses(platformStore.getOrgCourses(selectedOrgId));
     setShowEnrolModal(false);
     setBatchTitle("");
     setBatchTarget("");
@@ -151,7 +122,7 @@ export default function PoshOrgTrainingPage() {
             <select
               id="org-select-training"
               value={selectedOrgId}
-              onChange={(e) => setSelectedOrgId(e.target.value)}
+              onChange={(e) => handleOrgChange(e.target.value)}
               className="px-3 py-2 min-h-[44px] bg-white border border-border rounded text-xs font-semibold text-ink shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
             >
               {orgs.map((o) => (
