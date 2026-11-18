@@ -104,8 +104,9 @@ const NAV_GROUPS: NavGroup[] = [
     group: "Operations & Launch",
     items: [
       { label: "Ops Command Centre", href: "/admin/ops", icon: Activity },
+      { label: "CERT-In War-Room", href: "/ops", icon: AlertTriangle },
       { label: "Go-Live Gate", href: "/admin/ops/gate", icon: CheckCircle2 },
-      { label: "DR Drills & Tamper", href: "/admin/ops/dr", icon: AlertTriangle },
+      { label: "DR Drills & Tamper", href: "/admin/ops/dr", icon: ShieldCheck },
       { label: "Reliability & Uptime", href: "/admin/ops/reliability", icon: Zap },
       { label: "SOP Recurrence", href: "/admin/ops/sop", icon: ClipboardList },
     ],

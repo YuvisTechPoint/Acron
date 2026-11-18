@@ -157,7 +157,12 @@ export default function PoshOrgConsolePage() {
                 <div className="font-serif font-bold text-2xl text-ink mt-1">
                   {activeOrg.policyAcknowledgedPct}%
                 </div>
-                <div className="text-[11px] text-emerald-700 mt-1">&bull; Digital employee signatures</div>
+                <Link
+                  href="/posh/signatures"
+                  className="text-[11px] text-emerald-700 hover:text-emerald-900 underline mt-1 inline-block"
+                >
+                  &bull; Digital employee signatures &rarr;
+                </Link>
               </div>
 
               <div className="bg-surface p-5 rounded-card border border-border shadow-card">

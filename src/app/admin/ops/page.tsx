@@ -82,6 +82,13 @@ export default function OpsCommandCentrePage() {
             >
               DR &amp; Audit Drills
             </Link>
+            <Link
+              href="/ops"
+              className="px-4 py-2 bg-red-800 hover:bg-red-900 text-white text-xs font-semibold rounded-btn shadow-sm transition inline-flex items-center gap-1.5"
+            >
+              <AlertTriangle className="w-3.5 h-3.5" />
+              <span>CERT-In War-Room</span>
+            </Link>
           </div>
         </div>
 
@@ -177,19 +184,19 @@ export default function OpsCommandCentrePage() {
         </div>
 
         {/* Quick Navigation Panels */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           <Link
             href="/admin/ops/gate"
             className="p-6 bg-white rounded-card border border-border shadow-card hover:border-brass-500/50 transition group space-y-3"
           >
             <div className="flex justify-between items-center">
               <span className="font-serif text-lg font-bold text-ink group-hover:text-navy-700 transition">
-                17-Item Go-Live Readiness Gate
+                17-Item Go-Live Gate
               </span>
               <ArrowRight className="w-4 h-4 text-brass-500 group-hover:translate-x-1 transition-transform" />
             </div>
             <p className="text-xs text-ink-secondary leading-relaxed">
-              Verify security sign-offs, legal counsel certifications, pen-test remediation, and recovery drills.
+              Verify security sign-offs, counsel certifications, pen-test remediation, and recovery drills.
             </p>
           </Link>
 
@@ -199,7 +206,7 @@ export default function OpsCommandCentrePage() {
           >
             <div className="flex justify-between items-center">
               <span className="font-serif text-lg font-bold text-ink group-hover:text-navy-700 transition">
-                DR Drills &amp; Tamper Verification
+                DR &amp; Tamper Verification
               </span>
               <ArrowRight className="w-4 h-4 text-brass-500 group-hover:translate-x-1 transition-transform" />
             </div>
@@ -219,7 +226,22 @@ export default function OpsCommandCentrePage() {
               <ArrowRight className="w-4 h-4 text-brass-500 group-hover:translate-x-1 transition-transform" />
             </div>
             <p className="text-xs text-ink-secondary leading-relaxed">
-              Monitor scheduled operating procedures, statutory annual report deadlines, and key rotation cycles.
+              Monitor scheduled operating procedures, statutory report deadlines, and key rotation cycles.
+            </p>
+          </Link>
+
+          <Link
+            href="/ops"
+            className="p-6 bg-white rounded-card border border-red-200 shadow-card hover:border-red-400 transition group space-y-3"
+          >
+            <div className="flex justify-between items-center">
+              <span className="font-serif text-lg font-bold text-red-950 group-hover:text-red-700 transition">
+                CERT-In War-Room
+              </span>
+              <ArrowRight className="w-4 h-4 text-red-600 group-hover:translate-x-1 transition-transform" />
+            </div>
+            <p className="text-xs text-ink-secondary leading-relaxed">
+              6-hour regulatory countdown clock, 11-step incident response playbook, and evidentiary freeze.
             </p>
           </Link>
         </div>

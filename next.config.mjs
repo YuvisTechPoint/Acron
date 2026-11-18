@@ -13,6 +13,40 @@ const nextConfig = {
   typescript: {
     ignoreBuildErrors: false,
   },
+  async redirects() {
+    return [
+      {
+        source: "/practice-areas",
+        destination: "/services",
+        permanent: true,
+      },
+      {
+        source: "/admin/legal",
+        destination: "/admin/legal/rules",
+        permanent: false,
+      },
+      {
+        source: "/admin/lms",
+        destination: "/admin/lms/courses",
+        permanent: false,
+      },
+      {
+        source: "/posh/ic/cases",
+        destination: "/posh/ic",
+        permanent: false,
+      },
+      {
+        source: "/pay/status",
+        destination: "/pay",
+        permanent: false,
+      },
+      {
+        source: "/lp",
+        destination: "/services",
+        permanent: false,
+      },
+    ];
+  },
   async headers() {
     return [
       {
