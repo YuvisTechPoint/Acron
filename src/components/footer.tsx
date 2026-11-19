@@ -137,7 +137,7 @@ export function Footer() {
                 <button
                   type="button"
                   onClick={() => toggleAccordion("01")}
-                  className="w-full flex items-center justify-between text-left group lg:pointer-events-none mb-3 lg:mb-4 focus:outline-none"
+                  className="w-full min-h-[44px] flex items-center justify-between text-left group lg:pointer-events-none mb-2 lg:mb-4 focus:outline-none py-1 cursor-pointer"
                   aria-expanded={openAccordions["01"]}
                 >
                   <h4 className="font-sans text-[11px] font-semibold uppercase tracking-[0.18em] text-brass-400 flex items-center gap-1.5">
@@ -177,7 +177,7 @@ export function Footer() {
                 <button
                   type="button"
                   onClick={() => toggleAccordion("02")}
-                  className="w-full flex items-center justify-between text-left group lg:pointer-events-none mb-3 lg:mb-4 focus:outline-none"
+                  className="w-full min-h-[44px] flex items-center justify-between text-left group lg:pointer-events-none mb-2 lg:mb-4 focus:outline-none py-1 cursor-pointer"
                   aria-expanded={openAccordions["02"]}
                 >
                   <h4 className="font-sans text-[11px] font-semibold uppercase tracking-[0.18em] text-brass-400 flex items-center gap-1.5">
@@ -248,7 +248,7 @@ export function Footer() {
                 <button
                   type="button"
                   onClick={() => toggleAccordion("03")}
-                  className="w-full flex items-center justify-between text-left group lg:pointer-events-none mb-3 lg:mb-4 focus:outline-none"
+                  className="w-full min-h-[44px] flex items-center justify-between text-left group lg:pointer-events-none mb-2 lg:mb-4 focus:outline-none py-1 cursor-pointer"
                   aria-expanded={openAccordions["03"]}
                 >
                   <h4 className="font-sans text-[11px] font-semibold uppercase tracking-[0.18em] text-brass-400 flex items-center gap-1.5">
@@ -379,7 +379,7 @@ export function Footer() {
               onClick={toggleFooterBody}
               aria-expanded={isBodyOpen}
               aria-controls="footer-directory-body"
-              className="inline-flex items-center gap-2 px-3.5 py-1.5 min-h-[36px] rounded-full bg-navy-900 hover:bg-navy-800 border border-brass-500/40 hover:border-brass-400 text-brass-300 hover:text-white text-[11px] font-semibold tracking-wider uppercase transition-all shadow-sm group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass-500"
+              className="inline-flex items-center gap-2 px-4 py-2 min-h-[44px] rounded-full bg-navy-900 hover:bg-navy-800 border border-brass-500/40 hover:border-brass-400 text-brass-300 hover:text-white text-[11px] font-semibold tracking-wider uppercase transition-all shadow-sm group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass-500 cursor-pointer"
             >
               <span className={`w-1.5 h-1.5 rounded-full transition-colors ${isBodyOpen ? "bg-brass-400" : "bg-emerald-400 animate-pulse"}`} />
               <span>{isBodyOpen ? "Collapse Directory" : "Expand Directory"}</span>
@@ -408,28 +408,28 @@ export function Footer() {
           </div>
 
           {/* Legal Navigation Links with Rollable Text */}
-          <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1.5 text-[11px] text-slate-400">
-            <Link href="/privacy" className="hover:text-brass-300 transition group inline-flex items-center">
+          <div className="flex flex-wrap items-center justify-center gap-x-3.5 gap-y-1 text-[11px] text-slate-400">
+            <Link href="/privacy" className="hover:text-brass-300 transition group inline-flex items-center min-h-[36px] sm:min-h-0 py-1 px-1">
               <FooterRollText>Privacy Policy</FooterRollText>
             </Link>
             <span className="text-navy-700 select-none">&bull;</span>
-            <Link href="/terms" className="hover:text-brass-300 transition group inline-flex items-center">
+            <Link href="/terms" className="hover:text-brass-300 transition group inline-flex items-center min-h-[36px] sm:min-h-0 py-1 px-1">
               <FooterRollText>Terms</FooterRollText>
             </Link>
             <span className="text-navy-700 select-none">&bull;</span>
-            <Link href="/cookies" className="hover:text-brass-300 transition group inline-flex items-center">
+            <Link href="/cookies" className="hover:text-brass-300 transition group inline-flex items-center min-h-[36px] sm:min-h-0 py-1 px-1">
               <FooterRollText>Cookie Policy</FooterRollText>
             </Link>
             <span className="text-navy-700 select-none">&bull;</span>
-            <Link href="/refund-policy" className="hover:text-brass-300 transition group inline-flex items-center">
+            <Link href="/refund-policy" className="hover:text-brass-300 transition group inline-flex items-center min-h-[36px] sm:min-h-0 py-1 px-1">
               <FooterRollText>Refund Policy</FooterRollText>
             </Link>
             <span className="text-navy-700 select-none">&bull;</span>
-            <Link href="/disclaimer" className="hover:text-brass-300 transition group inline-flex items-center">
+            <Link href="/disclaimer" className="hover:text-brass-300 transition group inline-flex items-center min-h-[36px] sm:min-h-0 py-1 px-1">
               <FooterRollText>Disclaimer</FooterRollText>
             </Link>
             <span className="text-navy-700 select-none">&bull;</span>
-            <Link href="/verify" className="hover:text-brass-300 transition group inline-flex items-center">
+            <Link href="/verify" className="hover:text-brass-300 transition group inline-flex items-center min-h-[36px] sm:min-h-0 py-1 px-1">
               <FooterRollText>Verification</FooterRollText>
             </Link>
           </div>
@@ -441,7 +441,7 @@ export function Footer() {
               onClick={scrollToTop}
               title="Return to top of page"
               aria-label="Scroll back to top of page"
-              className="w-10 h-10 rounded-full bg-navy-900 border border-brass-500/35 hover:border-brass-400 text-brass-300 hover:text-white flex items-center justify-center transition-all duration-300 shadow-sm group hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass-500"
+              className="w-11 h-11 min-w-[44px] min-h-[44px] rounded-full bg-navy-900 border border-brass-500/35 hover:border-brass-400 text-brass-300 hover:text-white flex items-center justify-center transition-all duration-300 shadow-sm group hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass-500 cursor-pointer"
             >
               <ArrowUp className="w-4 h-4 group-hover:-translate-y-0.5 transition-transform" />
             </button>

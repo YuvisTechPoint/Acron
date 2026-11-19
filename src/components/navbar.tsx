@@ -96,6 +96,18 @@ export function Navbar() {
     setMegaMenuOpen(false);
   }, [pathname, isAdminOrConsole]);
 
+  // Lock body scroll when mobile menu is open to prevent background scrolling
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [mobileMenuOpen]);
+
   // Handle escape key to close mega menu and mobile menu
   useEffect(() => {
     if (isAdminOrConsole) return;
@@ -672,8 +684,8 @@ export function Navbar() {
           <div className="lg:hidden flex items-center gap-1.5">
             <Link
               href="/services"
-              className={`p-2 rounded-btn ${
-                isTransparent ? "text-ink-700 lg:text-white" : "text-ink-700"
+              className={`w-11 h-11 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-btn transition-colors ${
+                isTransparent ? "text-ink-700 lg:text-white hover:bg-white/10" : "text-ink-700 hover:bg-stone-100"
               }`}
               aria-label="Search practice disciplines"
             >
@@ -681,10 +693,10 @@ export function Navbar() {
             </Link>
             <a
               href={`tel:${BRAND_CONFIG.phone}`}
-              className={`p-2 rounded-btn border ${
+              className={`w-11 h-11 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-btn border transition-colors ${
                 isTransparent
-                  ? "text-brass-700 border-stone-200 lg:text-brass-300 lg:border-white/20"
-                  : "text-navy-700 border-border"
+                  ? "text-brass-700 border-stone-200 hover:bg-stone-100 lg:text-brass-300 lg:border-white/20 lg:hover:bg-white/10"
+                  : "text-navy-700 border-border hover:bg-stone-100"
               }`}
               aria-label="Call chambers"
             >
@@ -692,8 +704,8 @@ export function Navbar() {
             </a>
             <button
               onClick={() => setMobileMenuOpen(true)}
-              className={`p-2 rounded-btn ${
-                isTransparent ? "text-ink-950 lg:text-white" : "text-ink-950"
+              className={`w-11 h-11 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-btn transition-colors ${
+                isTransparent ? "text-ink-950 lg:text-white hover:bg-white/10" : "text-ink-950 hover:bg-stone-100"
               }`}
               aria-label="Open mobile navigation"
             >
@@ -707,14 +719,14 @@ export function Navbar() {
       {/* Full-Screen Ink-950 Mobile Drawer */}
       {mobileMenuOpen && (
         <div
-          className="fixed inset-0 z-50 bg-ink-950 text-white lg:hidden flex flex-col justify-between p-6 animate-fade-up overflow-y-auto"
+          className="fixed inset-0 z-50 bg-ink-950 text-white lg:hidden flex flex-col justify-between p-5 sm:p-6 animate-fade-up overflow-y-auto"
           role="dialog"
           aria-modal="true"
         >
           <div>
-            <div className="flex items-center justify-between pb-6 border-b border-navy-800">
-              <Link href="/" className="flex items-center gap-2.5">
-                <div className="w-9 h-9 rounded-md bg-navy-800 border border-brass-500/30 flex items-center justify-center text-brass-300">
+            <div className="flex items-center justify-between pb-5 border-b border-navy-800">
+              <Link href="/" onClick={() => setMobileMenuOpen(false)} className="flex items-center gap-2.5">
+                <div className="w-10 h-10 rounded-md bg-navy-800 border border-brass-500/30 flex items-center justify-center text-brass-300">
                   <span className="font-serif text-xl font-bold">A</span>
                 </div>
                 <div>
@@ -726,7 +738,7 @@ export function Navbar() {
               </Link>
               <button
                 onClick={() => setMobileMenuOpen(false)}
-                className="p-2 text-slate-400 hover:text-white rounded-btn"
+                className="w-11 h-11 min-w-[44px] min-h-[44px] flex items-center justify-center text-slate-400 hover:text-white rounded-btn transition-colors"
                 aria-label="Close menu"
               >
                 <X className="w-6 h-6" />
@@ -734,7 +746,7 @@ export function Navbar() {
             </div>
 
             {/* Staggered Large Serif Links */}
-            <nav className="flex flex-col gap-4 py-8">
+            <nav className="flex flex-col gap-2 py-6">
               {[
                 { name: "Home", href: "/" },
                 { name: "About Chambers", href: "/about" },
@@ -748,7 +760,8 @@ export function Navbar() {
                 <Link
                   key={item.href}
                   href={item.href}
-                  className="font-serif text-2xl sm:text-3xl font-medium text-white/90 hover:text-brass-300 transition py-1"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="font-serif text-2xl font-medium text-white/90 hover:text-brass-300 transition min-h-[44px] flex items-center py-2 px-1 rounded-md hover:bg-white/5"
                   style={{ animationDelay: `${idx * 50}ms` }}
                 >
                   {item.name}

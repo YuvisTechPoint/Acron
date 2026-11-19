@@ -443,7 +443,7 @@ export default function HomePage() {
           <button
             type="button"
             onClick={() => setCurrentMobileSlide((prev) => (prev === 0 ? bannerSlides.length - 1 : prev - 1))}
-            className="absolute left-2.5 top-1/2 -translate-y-1/2 z-20 w-8 h-8 rounded-full bg-white/90 hover:bg-white text-ink-950 shadow-md backdrop-blur-xs flex items-center justify-center transition active:scale-95 border border-stone-200"
+            className="absolute left-2 top-1/2 -translate-y-1/2 z-20 w-10 h-10 min-w-[40px] min-h-[40px] rounded-full bg-white/95 hover:bg-white text-ink-950 shadow-md backdrop-blur-xs flex items-center justify-center transition active:scale-95 border border-stone-200 cursor-pointer"
             aria-label="Previous slide"
           >
             <ChevronLeft className="w-4 h-4" />
@@ -453,21 +453,21 @@ export default function HomePage() {
           <button
             type="button"
             onClick={() => setCurrentMobileSlide((prev) => (prev === bannerSlides.length - 1 ? 0 : prev + 1))}
-            className="absolute right-2.5 top-1/2 -translate-y-1/2 z-20 w-8 h-8 rounded-full bg-white/90 hover:bg-white text-ink-950 shadow-md backdrop-blur-xs flex items-center justify-center transition active:scale-95 border border-stone-200"
+            className="absolute right-2 top-1/2 -translate-y-1/2 z-20 w-10 h-10 min-w-[40px] min-h-[40px] rounded-full bg-white/95 hover:bg-white text-ink-950 shadow-md backdrop-blur-xs flex items-center justify-center transition active:scale-95 border border-stone-200 cursor-pointer"
             aria-label="Next slide"
           >
             <ChevronRight className="w-4 h-4" />
           </button>
 
           {/* Slide Dots Indicator */}
-          <div className="absolute bottom-2.5 right-3 z-20 flex items-center gap-1 bg-navy-950/70 px-2 py-1 rounded-full backdrop-blur-xs">
+          <div className="absolute bottom-2.5 right-3 z-20 flex items-center gap-1.5 bg-navy-950/80 px-2.5 py-1.5 rounded-full backdrop-blur-xs">
             {bannerSlides.map((_, idx) => (
               <button
                 key={idx}
                 onClick={() => setCurrentMobileSlide(idx)}
                 aria-label={`Go to slide ${idx + 1}`}
-                className={`h-1.5 rounded-full transition-all ${
-                  currentMobileSlide === idx ? "w-4 bg-brass-400" : "w-1.5 bg-white/50"
+                className={`transition-all duration-300 rounded-full cursor-pointer p-1 -m-0.5 ${
+                  currentMobileSlide === idx ? "w-4 h-1.5 bg-brass-400" : "w-1.5 h-1.5 bg-white/50 hover:bg-white"
                 }`}
               />
             ))}
