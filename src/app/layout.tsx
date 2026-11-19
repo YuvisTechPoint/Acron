@@ -12,6 +12,7 @@ import { CookieBanner } from "@/components/cookie-banner";
 import { SkipToContent } from "@/components/skip-to-content";
 import { BackToTop } from "@/components/back-to-top";
 import { CleanCopyHandler } from "@/components/clean-copy-handler";
+import { ChunkRecovery } from "@/components/chunk-recovery";
 import { Providers } from "@/components/providers";
 import { AnalyticsTracker } from "@/components/analytics-tracker";
 
@@ -231,6 +232,7 @@ export default function RootLayout({
       </head>
       <body suppressHydrationWarning className="min-h-screen flex flex-col bg-ivory-50 text-ink antialiased font-sans selection:bg-brass-300/30">
         <Providers>
+          <ChunkRecovery />
           <Suspense fallback={null}>
             <AnalyticsTracker />
           </Suspense>

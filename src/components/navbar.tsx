@@ -700,14 +700,23 @@ export function Navbar() {
         >
           <div>
             <div className="flex items-center justify-between pb-5 border-b border-navy-800">
-              <Link href="/" onClick={() => setMobileMenuOpen(false)} className="flex items-center gap-2.5">
-                <div className="w-10 h-10 rounded-md bg-navy-800 border border-brass-500/30 flex items-center justify-center text-brass-300">
-                  <span className="font-serif text-xl font-bold">A</span>
+              <Link href="/" onClick={() => setMobileMenuOpen(false)} className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-md bg-navy-950 border border-brass-500/40 overflow-hidden flex items-center justify-center shrink-0 shadow-inner">
+                  <Image
+                    src="/brand/logo.png"
+                    alt="Acorn Legal Consultants Crest"
+                    width={40}
+                    height={40}
+                    className="w-full h-full object-cover"
+                    priority
+                  />
                 </div>
                 <div>
-                  <div className="font-serif font-bold text-xl text-white">ACORN</div>
-                  <div className="text-[9px] font-semibold uppercase tracking-[0.2em] text-brass-300">
-                    Legal Consultants
+                  <div className="font-serif font-bold text-xl text-white leading-none">
+                    {siteConfig?.firmName || "ACORN"}
+                  </div>
+                  <div className="text-[9px] font-semibold uppercase tracking-[0.2em] text-brass-300 mt-1">
+                    {siteConfig?.tagline || "Legal Consultants"}
                   </div>
                 </div>
               </Link>

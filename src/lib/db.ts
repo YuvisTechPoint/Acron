@@ -674,6 +674,7 @@ class ProductionDatabase extends EventEmitter {
 
   constructor() {
     super();
+    this.setMaxListeners(100);
     this.data = this.loadDatabase();
   }
 
