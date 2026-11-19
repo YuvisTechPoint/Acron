@@ -321,6 +321,7 @@ export function Footer() {
               </span>
               <button
                 type="button"
+                id="footer-directory-fold-btn"
                 onClick={toggleFooterBody}
                 className="inline-flex items-center gap-1.5 px-3 py-1 rounded bg-navy-900 hover:bg-navy-800 border border-brass-500/30 hover:border-brass-400 text-brass-300 hover:text-white text-[11px] font-sans font-medium transition group focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-brass-500"
                 title="Roll fold directory"
@@ -374,6 +375,7 @@ export function Footer() {
             {/* Rolling Collapsible Toggle Button */}
             <button
               type="button"
+              id="footer-directory-toggle-btn"
               onClick={toggleFooterBody}
               aria-expanded={isBodyOpen}
               aria-controls="footer-directory-body"

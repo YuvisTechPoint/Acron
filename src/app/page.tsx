@@ -475,13 +475,6 @@ export default function HomePage() {
 
         {/* Clean Ivory/White Content Block directly UNDER the Banner */}
         <div className="px-5 pt-5 pb-7 text-left bg-white">
-          {/* Eyebrow Pill */}
-          <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-brass-500/10 border border-brass-500/30 text-brass-800 text-[11px] font-bold tracking-wider uppercase mb-3">
-            <span>Chambers of Acorn</span>
-            <span>•</span>
-            <span>15+ Years of Excellence</span>
-          </div>
-
           {/* High-Contrast Bold 3-Tier Headline (vibemusic pattern) */}
           <h1 className="font-serif text-[30px] sm:text-4xl font-bold tracking-tight text-ink-950 leading-[1.12]">
             Excellence in Law.<br />
