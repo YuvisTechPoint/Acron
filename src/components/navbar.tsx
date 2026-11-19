@@ -185,8 +185,10 @@ export function Navbar() {
       />
 
       <header
-        className={`fixed left-0 right-0 z-40 transition-all duration-300 top-7 h-[62px] lg:top-0 lg:h-[84px] ${
-          scrolled ? "lg:top-7 lg:h-[72px]" : ""
+        className={`fixed left-0 right-0 z-40 transition-all duration-300 ${
+          scrolled
+            ? "top-7 h-[62px] lg:top-7 lg:h-[72px]"
+            : "top-0 h-[62px] lg:top-0 lg:h-[84px]"
         } ${
           isTransparent
             ? "bg-white text-ink-950 border-b border-stone-200 lg:bg-transparent lg:text-white lg:border-white/10"
@@ -276,7 +278,6 @@ export function Navbar() {
 
             {/* Mega Menu Trigger with Smooth Hover & Click Control */}
             <div
-              className="relative"
               ref={megaMenuRef}
               onMouseEnter={handleMouseEnter}
               onMouseLeave={handleMouseLeave}
@@ -304,11 +305,9 @@ export function Navbar() {
                 />
               </button>
 
-              {/* Full-Width Edge-to-Edge Classical Editorial Mega Menu */}
+              {/* Full-Width Edge-to-Edge Classical Editorial Mega Menu (Seamlessly Docked to Header Bottom) */}
               <div
-                className={`fixed left-0 right-0 w-full z-50 transition-all duration-300 ease-out ${
-                  scrolled ? "top-[99px]" : "top-[84px]"
-                } ${
+                className={`absolute top-full left-0 right-0 w-full z-50 transition-all duration-300 ease-out ${
                   megaMenuOpen
                     ? "opacity-100 visible translate-y-0 pointer-events-auto"
                     : "opacity-0 invisible -translate-y-2 pointer-events-none"
