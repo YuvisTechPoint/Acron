@@ -6,7 +6,6 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import {
   MapPin,
-  Phone,
   Mail,
   Clock,
   ChevronDown,
@@ -15,7 +14,7 @@ import {
   ExternalLink,
 } from "lucide-react";
 import { BRAND_CONFIG, PRACTICE_AREAS } from "@/lib/constants";
-import { FooterRollText, FooterClock } from "@/components/footer-roll-text";
+import { FooterRollText } from "@/components/footer-roll-text";
 import { ChambersMap } from "@/components/chambers-map";
 import { useRealtimeSiteConfig } from "@/lib/realtime";
 import { FooterChambersDispatch } from "@/components/footer-chambers-dispatch";
@@ -26,34 +25,12 @@ export function Footer() {
   const siteConfig = useRealtimeSiteConfig();
   const [showMapModal, setShowMapModal] = useState(false);
 
-  // Master rolling collapsible state for upper footer body
-  const [isBodyOpen, setIsBodyOpen] = useState(true);
-
   // Foldable accordion state for mobile/tablet screens within the directory
   const [openAccordions, setOpenAccordions] = useState<Record<string, boolean>>({
     "01": true,
     "02": false,
     "03": false,
   });
-
-  useEffect(() => {
-    try {
-      const saved = sessionStorage.getItem("acorn_footer_collapsed");
-      if (saved === "true") {
-        setIsBodyOpen(false);
-      }
-    } catch {}
-  }, []);
-
-  const toggleFooterBody = () => {
-    setIsBodyOpen((prev) => {
-      const next = !prev;
-      try {
-        sessionStorage.setItem("acorn_footer_collapsed", next ? "false" : "true");
-      } catch {}
-      return next;
-    });
-  };
 
   const toggleAccordion = (id: string) => {
     setOpenAccordions((prev) => ({
@@ -81,18 +58,10 @@ export function Footer() {
     <footer className="relative bg-ink-950 text-white border-t border-navy-800">
 
       {/* ─────────────────────────────────────────────────────────────
-          1. ROLLING FOLDABLE DIRECTORY BODY (COLLAPSIBLE UPPER FOOTER)
+          1. DIRECTORY BODY & CHAMBERS DISPATCH
          ───────────────────────────────────────────────────────────── */}
-      <div
-        id="footer-directory-body"
-        aria-hidden={!isBodyOpen}
-        className={`grid transition-[grid-template-rows,opacity] duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] ${
-          isBodyOpen
-            ? "grid-rows-[1fr] opacity-100"
-            : "grid-rows-[0fr] opacity-0 pointer-events-none"
-        }`}
-      >
-        <div className="min-h-0 overflow-hidden">
+      <div id="footer-directory-body">
+        <div className="overflow-hidden">
           {/* Main 4-Column Directory Grid */}
           <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 pt-14 sm:pt-16 pb-12">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 lg:gap-12">
@@ -277,7 +246,7 @@ export function Footer() {
                       </span>
                     </div>
                     <div className="flex items-center gap-2.5">
-                      <Phone className="w-4 h-4 text-brass-400 shrink-0" />
+                      <span className="text-[10px] font-mono font-bold text-brass-400 shrink-0 tracking-wider">TEL &bull;</span>
                       <a href={`tel:${siteConfig?.receptionPhone || BRAND_CONFIG.phone}`} className="hover:text-brass-300 transition-colors">
                         {siteConfig?.receptionPhone || BRAND_CONFIG.phone}
                       </a>
@@ -321,25 +290,6 @@ export function Footer() {
             </div>
           </div>
 
-          {/* Quick Fold Strip (at the boundary where the user drew the red line) */}
-          <div className="border-t border-navy-800/80 bg-navy-950/70 py-2.5 px-4 sm:px-6 lg:px-8">
-            <div className="max-w-[1280px] mx-auto flex items-center justify-between gap-4">
-              <span className="text-[11px] font-mono tracking-wider text-slate-400 uppercase">
-                Acorn Legal Consultants &bull; Practice &amp; Advisory Directory
-              </span>
-              <button
-                type="button"
-                id="footer-directory-fold-btn"
-                onClick={toggleFooterBody}
-                className="inline-flex items-center gap-1.5 px-3 py-1 rounded bg-navy-900 hover:bg-navy-800 border border-brass-500/30 hover:border-brass-400 text-brass-300 hover:text-white text-[11px] font-sans font-medium transition group focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-brass-500"
-                title="Roll fold directory"
-              >
-                <span>Fold Directory</span>
-                <ChevronDown className="w-3.5 h-3.5 text-brass-400 rotate-180 group-hover:-translate-y-0.5 transition-transform" />
-              </button>
-            </div>
-          </div>
-
           {/* Aesthetic Brand Watermark */}
           <div className="border-t border-navy-800/50 bg-ink-950/90 overflow-hidden">
             <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-6 text-center pointer-events-none select-none" aria-hidden="true">
@@ -352,54 +302,9 @@ export function Footer() {
       </div>
 
       {/* ─────────────────────────────────────────────────────────────
-          2. STATIC LOWER FOOTER SECTION (ALWAYS ANCHORED)
+          2. ANCHORED LOWER FOOTER BASE
          ───────────────────────────────────────────────────────────── */}
       <div className="border-t border-navy-800 bg-ink-950 relative z-20 shadow-[0_-4px_20px_rgba(0,0,0,0.35)]">
-
-        {/* Upper Tier: Clock, Scope Ticker & Rolling Directory Toggle Controller */}
-        <div className="border-b border-navy-800/80 bg-navy-950/80 py-2.5 px-4 sm:px-6 lg:px-8">
-          <div className="max-w-[1280px] mx-auto flex flex-wrap items-center justify-between gap-3 text-xs">
-
-            {/* Live IST Chambers Clock */}
-            <div className="flex items-center gap-3">
-              <FooterClock />
-              <span className="hidden md:inline text-navy-700 select-none">&bull;</span>
-              <span className="hidden md:inline text-[11px] font-mono text-slate-400 tracking-wider">
-                CALCUTTA HIGH COURT JURISDICTION
-              </span>
-            </div>
-
-            {/* Scope Category Badges */}
-            <div className="hidden lg:flex items-center gap-2 text-[10px] font-sans font-semibold tracking-[0.18em] uppercase text-brass-400/90">
-              <span>DISPUTES</span>
-              <span className="text-navy-700 select-none">&bull;</span>
-              <span>CORPORATE GOVERNANCE</span>
-              <span className="text-navy-700 select-none">&bull;</span>
-              <span>POSH REDRESSAL</span>
-              <span className="text-navy-700 select-none">&bull;</span>
-              <span>CONVEYANCING</span>
-            </div>
-
-            {/* Rolling Collapsible Toggle Button */}
-            <button
-              type="button"
-              id="footer-directory-toggle-btn"
-              onClick={toggleFooterBody}
-              aria-expanded={isBodyOpen}
-              aria-controls="footer-directory-body"
-              className="inline-flex items-center gap-2 px-4 py-2 min-h-[44px] rounded-full bg-navy-900 hover:bg-navy-800 border border-brass-500/40 hover:border-brass-400 text-brass-300 hover:text-white text-[11px] font-semibold tracking-wider uppercase transition-all shadow-sm group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass-500 cursor-pointer"
-            >
-              <span className={`w-1.5 h-1.5 rounded-full transition-colors ${isBodyOpen ? "bg-brass-400" : "bg-emerald-400 animate-pulse"}`} />
-              <span>{isBodyOpen ? "Collapse Directory" : "Expand Directory"}</span>
-              <ChevronDown
-                className={`w-3.5 h-3.5 text-brass-400 transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${
-                  isBodyOpen ? "rotate-180" : "rotate-0"
-                }`}
-              />
-            </button>
-
-          </div>
-        </div>
 
         {/* Lower Tier: Copyright, Legal Navigation Links & Back-To-Top */}
         <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex flex-col md:flex-row items-center justify-between gap-4 text-xs font-sans text-slate-400">

@@ -6,7 +6,6 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import {
   ChevronDown,
-  Phone,
   Menu,
   X,
   Briefcase,
@@ -653,21 +652,8 @@ export function Navbar() {
             </Link>
           </nav>
 
-          {/* Right Action: Chambers Telephone & Primary Consultation Button */}
+          {/* Right Action: Primary Consultation Button */}
           <div className="hidden sm:flex items-center gap-3">
-            <a
-              href={`tel:${siteConfig?.receptionPhone || BRAND_CONFIG.phone}`}
-              title={`Call Chambers: ${siteConfig?.receptionPhone || BRAND_CONFIG.phone}`}
-              className={`w-11 h-11 rounded-full transition border flex items-center justify-center ${
-                isTransparent
-                  ? "bg-navy-900/60 border-white/20 text-brass-300 hover:text-white hover:border-brass-400 backdrop-blur-sm"
-                  : "border-border text-navy-700 hover:text-brass-700 hover:bg-surface"
-              }`}
-              aria-label="Call Acorn Legal Consultants"
-            >
-              <Phone className={`w-4 h-4 ${isTransparent ? "text-brass-400" : "text-brass-600"}`} />
-            </a>
-
             <Link
               href="/request-service"
               className={`min-h-[44px] px-5 rounded-btn flex items-center justify-center text-xs font-bold uppercase tracking-[0.14em] transition-all duration-200 shadow-sm ${
@@ -680,7 +666,7 @@ export function Navbar() {
             </Link>
           </div>
 
-          {/* Mobile Navigation Controls (vibemusic pattern: Search, Phone, Menu) */}
+          {/* Mobile Navigation Controls */}
           <div className="lg:hidden flex items-center gap-1.5">
             <Link
               href="/services"
@@ -691,17 +677,6 @@ export function Navbar() {
             >
               <Search className="w-5 h-5 text-ink-secondary" />
             </Link>
-            <a
-              href={`tel:${BRAND_CONFIG.phone}`}
-              className={`w-11 h-11 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-btn border transition-colors ${
-                isTransparent
-                  ? "text-brass-700 border-stone-200 hover:bg-stone-100 lg:text-brass-300 lg:border-white/20 lg:hover:bg-white/10"
-                  : "text-navy-700 border-border hover:bg-stone-100"
-              }`}
-              aria-label="Call chambers"
-            >
-              <Phone className="w-4 h-4 text-brass-600" />
-            </a>
             <button
               onClick={() => setMobileMenuOpen(true)}
               className={`w-11 h-11 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-btn transition-colors ${
@@ -776,7 +751,6 @@ export function Navbar() {
               href={`tel:${BRAND_CONFIG.phone}`}
               className="w-full h-[52px] px-4 rounded-btn border border-brass-500/40 text-ivory-50 flex items-center justify-center gap-2 font-semibold text-xs tracking-wider uppercase hover:bg-navy-800 transition"
             >
-              <Phone className="w-4 h-4 text-brass-300" />
               <span>Chambers: {BRAND_CONFIG.phone}</span>
             </a>
 
