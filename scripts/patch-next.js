@@ -63,13 +63,13 @@ if (fs.existsSync(buildIndexFile)) {
   console.log('• build index.js safe fallbacks ready');
 }
 
-// 4. Patch server require.js for fallback built-in pages
+// 4. Patch server require.js for fallback built-in pages and app routes
 const requireFile = 'node_modules/next/dist/server/require.js';
 if (fs.existsSync(requireFile)) {
   let content = fs.readFileSync(requireFile, 'utf8');
   if (!content.includes('next/dist/pages')) {
     const target = 'if (!pagePath) {\n        pagePath = checkManifest(pagesManifest);\n    }';
-    const replacement = 'if (!pagePath) {\n        pagePath = checkManifest(pagesManifest);\n    }\n    if (!pagePath && (page === "/_document" || page === "/_app" || page === "/_error")) {\n        try {\n            const fallbackPath = require.resolve("next/dist/pages" + page);\n            pagePathCache == null ? void 0 : pagePathCache.set(cacheKey, fallbackPath);\n            return fallbackPath;\n        } catch {}\n    }';
+    const replacement = 'if (appPathsManifest) {\n        if (!pagePath) {\n            const appPageKey = page === "/" ? "/page" : `${page}/page`;\n            pagePath = appPathsManifest[appPageKey] || appPathsManifest[`${page}/route`];\n        }\n    }\n    if (!pagePath) {\n        pagePath = checkManifest(pagesManifest);\n    }\n    if (!pagePath && (page === "/_document" || page === "/_app" || page === "/_error")) {\n        try {\n            const fallbackPath = require.resolve("next/dist/pages" + page);\n            pagePathCache == null ? void 0 : pagePathCache.set(cacheKey, fallbackPath);\n            return fallbackPath;\n        } catch {}\n    }';
     if (content.includes(target)) {
       content = content.replace(target, replacement);
       fs.writeFileSync(requireFile, content, 'utf8');
