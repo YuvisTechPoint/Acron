@@ -18,6 +18,7 @@ import { BRAND_CONFIG, PRACTICE_AREAS } from "@/lib/constants";
 import { FooterRollText, FooterClock } from "@/components/footer-roll-text";
 import { ChambersMap } from "@/components/chambers-map";
 import { useRealtimeSiteConfig } from "@/lib/realtime";
+import { FooterChambersDispatch } from "@/components/footer-chambers-dispatch";
 
 export function Footer() {
   const pathname = usePathname();
@@ -310,6 +311,13 @@ export function Footer() {
                 </div>
               </div>
 
+            </div>
+
+            {/* ─────────────────────────────────────────────────────────────
+                CHAMBERS DISPATCH & STATUTORY INTELLIGENCE (INTEGRATED FOOTER)
+               ───────────────────────────────────────────────────────────── */}
+            <div className="mt-12 pt-8 border-t border-navy-800/80">
+              <FooterChambersDispatch />
             </div>
           </div>
 

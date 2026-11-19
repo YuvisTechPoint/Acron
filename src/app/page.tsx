@@ -41,7 +41,6 @@ import {
   LineReveal,
   GoverningPrincipleScrollReveal,
 } from "@/components/ui";
-import { VibeNewsletterSection } from "@/components/vibe-newsletter-section";
 
 const ICON_MAP: Record<string, React.ReactNode> = {
   Briefcase: <Briefcase className="w-5 h-5 text-brass-500" />,
@@ -1355,11 +1354,6 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-
-      {/* ─────────────────────────────────────────────────────────────
-          12. VIBE MUSIC STYLE SUBSCRIPTION & TRUST MATRIX
-         ───────────────────────────────────────────────────────────── */}
-      <VibeNewsletterSection />
 
     </div>
   );

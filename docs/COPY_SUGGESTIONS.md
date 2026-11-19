@@ -31,15 +31,18 @@
 
 ---
 
-## 5. Homepage Vibe-Style Dispatch & Newsletter Section
-- **User Requested Text (Verbatim):**
-  - *Title:* "Inside Vibe Music"
-  - *Subtitle:* "Subscribe for the latest product drops, restock alerts, and exclusive deals from India's trusted gear destination."
-  - *Form Fields:* FIRST NAME, LAST NAME, EMAIL ADDRESS, Sign up
-  - *Consent Checkbox:* "Email me about new gear, restocks, and Vibe Music updates."
-- **Editorial Legal Adaptation Recommendation:**
-  - *Title:* "Inside Acorn"
-  - *Subtitle:* "Subscribe for the latest statutory briefings, regulatory alerts, and legal insights from Kolkata's trusted counsel destination."
-  - *Consent Checkbox:* "Email me about statutory alerts, legal briefings, and Acorn updates."
-- **Implementation Status:** Implemented in `src/components/vibe-newsletter-section.tsx` with high-converting responsive fields matching the Vibe Music layout pattern exactly, equipped with an interactive 1-click mode toggle pill so counsel can view both the verbatim requested spec and the legal chamber adaptation.
+## 5. Chambers Dispatch & Statutory Intelligence Subscription (Integrated Footer)
+- **Directive:** Per client instructions, all consumer retail wording ("product drops", "restock alerts", "gear") and retail blue palette (`#1546e8`) from consumer gear references have been completely excised.
+- **Institutional Implementation:** Implemented as a bespoke, quiet-authority legal dispatch desk directly integrated into the footer (`src/components/footer-chambers-dispatch.tsx`) right above the ACORN watermark as designated by counsel:
+  - *Eyebrow:* `CHAMBERS DISPATCH • STATUTORY INTELLIGENCE`
+  - *Title:* `Stay informed on statutory compliance & judicial precedents.`
+  - *Subtitle:* `Receive concise legal intelligence, regulatory updates, and corporate governance briefings curated by senior counsel for corporate boards, compliance officers, and institutional leadership.`
+  - *Credentials Bar:*
+    1. `Quarterly Legal Gazette`: Statutory digests, High Court precedents & compliance revisions.
+    2. `Institutional Discretion`: Privileged counsel distribution roster. Zero commercial tracking.
+    3. `Regulatory Precision`: Companies Act, POSH IC mandates & WBRERA governance commentary.
+  - *Form Inputs:* First Name, Last Name, Corporate / Professional Email Address, Subscribe Button.
+  - *Consent Checkbox:* `I wish to receive quarterly statutory bulletins and chambers advisories. Privileged communication under Bar Council standards. Zero commercial spam.`
+  - *Security Guarantee:* `Strict Confidentiality • Encrypted Transmission • Zero Commercial Sharing`.
+- **Implementation Status:** Active and fully responsive across 360px–1536px viewports in `src/components/footer-chambers-dispatch.tsx` and wired into `src/components/footer.tsx`. Home page cleanly transitions from Confidential Intake into the editorial footer.
 
