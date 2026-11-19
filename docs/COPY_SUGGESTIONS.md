@@ -28,3 +28,18 @@
 
 ## 4. Retainer Payment Terms (`/pay`)
 - *Suggestion:* Specify that all advance professional fee deposits are credited to a dedicated client ledger and adjusted against periodic invoices upon milestone deliverables.
+
+---
+
+## 5. Homepage Vibe-Style Dispatch & Newsletter Section
+- **User Requested Text (Verbatim):**
+  - *Title:* "Inside Vibe Music"
+  - *Subtitle:* "Subscribe for the latest product drops, restock alerts, and exclusive deals from India's trusted gear destination."
+  - *Form Fields:* FIRST NAME, LAST NAME, EMAIL ADDRESS, Sign up
+  - *Consent Checkbox:* "Email me about new gear, restocks, and Vibe Music updates."
+- **Editorial Legal Adaptation Recommendation:**
+  - *Title:* "Inside Acorn"
+  - *Subtitle:* "Subscribe for the latest statutory briefings, regulatory alerts, and legal insights from Kolkata's trusted counsel destination."
+  - *Consent Checkbox:* "Email me about statutory alerts, legal briefings, and Acorn updates."
+- **Implementation Status:** Implemented in `src/components/vibe-newsletter-section.tsx` with high-converting responsive fields matching the Vibe Music layout pattern exactly, equipped with an interactive 1-click mode toggle pill so counsel can view both the verbatim requested spec and the legal chamber adaptation.
+
