@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Plus, Minus } from "lucide-react";
 
 export interface AccordionItem {
@@ -25,6 +25,12 @@ export function Accordion({
   const [openIds, setOpenIds] = useState<string[]>(
     defaultOpenId ? [defaultOpenId] : []
   );
+
+  useEffect(() => {
+    if (defaultOpenId && openIds.length === 0) {
+      setOpenIds([defaultOpenId]);
+    }
+  }, [defaultOpenId]);
 
   const toggleItem = (id: string) => {
     if (allowMultiple) {

@@ -86,28 +86,28 @@ const HOW_WE_WORK_STEPS = [
 
 const HOMEPAGE_FAQS = [
   {
-    id: "faq-1",
-    title: "What legal advisory areas does Acorn Legal Consultants cover?",
+    id: "faq-posh-ic-mandate",
+    title: "When is an employer legally required to constitute an Internal Committee (IC)?",
     content:
-      "We provide specialized counsel in Corporate Advisory & Commercial Governance, Legal Documentation & Contracts, Commercial Dispute Resolution & Arbitration, and comprehensive POSH Act 2013 institutional compliance for enterprises, startups, and educational institutions in Kolkata and across India.",
+      "Under Section 4(1) of the POSH Act 2013, every employer employing 10 or more employees (including permanent, contractual, ad-hoc, and interns) across any branch or administrative unit is statutorily required to constitute an Internal Committee. Failure to constitute an IC attracts penalties up to ₹50,000 under Section 26(1), with repeated non-compliance risking cancellation of corporate registration or operating licenses.",
   },
   {
-    id: "faq-2",
-    title: "How does Acorn assist individuals and organisations with workplace harassment (POSH)?",
+    id: "faq-posh-external-member",
+    title: "What are the legal qualifications for the External Member on the Internal Committee?",
     content:
-      "We provide compassionate, complete support for everyone. For individuals—whether female or male—we offer confidential listening, immediate workplace protection, and legal guidance if you are facing harassment, distress, or wrongful accusations. For organisations, we help set up unbiased grievance committees, provide independent external members, conduct respectful workplace training, and ensure fair, dignified resolutions for all parties.",
+      "Section 4(2)(c) of the POSH Act requires the appointment of at least one member from an NGO or association committed to the cause of women, or a person familiar with issues relating to sexual harassment, such as an experienced advocate. The External Member ensures institutional neutrality, adheres strictly to principles of natural justice, and prevents management bias.",
   },
   {
-    id: "faq-3",
-    title: "How quickly does counsel respond to consultation requests?",
+    id: "faq-chambers-conflict-protocol",
+    title: "How does Acorn Legal Consultants conduct conflict of interest verification?",
     content:
-      "All formal consultation submissions and privileged intake enquiries receive written or telephonic response within one business day following routine conflict-of-interest verification.",
+      "Prior to accepting any formal brief or executing an engagement letter, chambers personnel conduct an exhaustive conflict check across active advisory clients, respondent parties, and affiliated corporate groups to preserve independence and advocate-client privilege.",
   },
   {
-    id: "faq-4",
-    title: "Where are your chambers located in Kolkata?",
+    id: "faq-chambers-fee-structures",
+    title: "How are consultation fees and advisory scopes billed?",
     content:
-      "Our chambers are situated at Suite 4B, Camac Court, 25 Camac Street, in the Park Street District of Kolkata, West Bengal 700016. In-person consultations are available by prior appointment.",
+      "We provide clear, written Engagement Letters detailing professional scope and milestone-based or retainer billing. In strict compliance with Bar Council of India guidelines, we do not solicit contingent or outcome-based fee arrangements.",
   },
 ];
 
@@ -282,12 +282,17 @@ export default function HomePage() {
     setTouchStartX(null);
   };
 
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   const siteConfig = useRealtimeSiteConfig();
   const rawFaqs = useRealtimeFaqs();
   const rawPosts = useRealtimePosts();
   const homepageFaqs = rawFaqs.filter((f) => f.showOnHomepage).sort((a, b) => a.order - b.order);
 
-  const effectiveInsights = rawPosts.length > 0
+  const effectiveInsights = (mounted && rawPosts.length > 0)
     ? rawPosts.slice(0, 3).map((p) => ({
       slug: p.slug,
       category: formatCategory(p.category),
@@ -324,7 +329,7 @@ export default function HomePage() {
       },
     ];
 
-  const formattedFaqs = homepageFaqs.length > 0
+  const formattedFaqs = (mounted && homepageFaqs.length > 0)
     ? homepageFaqs.map((f) => ({
       id: f.id,
       title: f.question,

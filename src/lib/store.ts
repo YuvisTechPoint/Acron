@@ -1204,13 +1204,8 @@ class PlatformStore {
   private pendingSyncTimers: Record<string, ReturnType<typeof setTimeout>> = {};
 
   constructor() {
-    if (typeof window !== "undefined") {
-      // In the browser, allow initial React hydration to complete
-      // before reading client-side localStorage, guaranteeing 100% SSR-client parity.
-      setTimeout(() => {
-        this.isMounted = true;
-      }, 0);
-    }
+    // Platform store initialized in SSR-safe mode.
+    // Client components mount before accessing browser storage.
   }
 
   public setMounted(mounted = true): void {
