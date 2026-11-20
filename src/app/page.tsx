@@ -21,6 +21,7 @@ import {
   ChevronRight,
   Lock,
   Search,
+  Scale,
   Play,
   Pause,
 } from "lucide-react";
@@ -407,190 +408,144 @@ export default function HomePage() {
         }}
       />
 
-      {/* 1A. MOBILE PHONE HERO & BANNER (vibemusic pattern: < lg screens) */}
-      <section className="block lg:hidden bg-white pt-[89px] border-b border-stone-200">
-        {/* Standalone Visual Banner Carousel Card (aspect 16:9, clean imagery, arrows & indicators) */}
+      {/* 1A. MOBILE PHONE HERO: Integrated High-End Editorial Experience (< lg screens) */}
+      <section className="block lg:hidden relative bg-navy-950 text-white pt-[76px] pb-12 border-b border-navy-800/80 overflow-hidden">
+        {/* Full atmospheric background image with smooth slide cross-fade */}
         <div
-          className="relative w-full aspect-[16/9] sm:aspect-[2/1] max-h-[260px] bg-navy-950 overflow-hidden select-none border-b border-stone-200"
+          className="relative min-h-[520px] sm:min-h-[580px] w-full flex flex-col justify-between overflow-hidden"
           onTouchStart={handleTouchStart}
           onTouchEnd={handleTouchEnd}
         >
-          {bannerSlides.map((slide, idx) => (
-            <div
-              key={slide.id}
-              className={`absolute inset-0 transition-opacity duration-300 ease-in-out ${
-                currentMobileSlide === idx ? "opacity-100 z-10" : "opacity-0 z-0 pointer-events-none"
-              }`}
-            >
-              <Image
-                src={slide.image}
-                alt={slide.alt}
-                fill
-                sizes="(max-width: 768px) 100vw, 1200px"
-                priority={idx === 0}
-                className="object-cover object-center"
-              />
-              {/* Subtle bottom vignette to ensure tag & title contrast */}
-              <div className="absolute inset-0 bg-gradient-to-t from-navy-950/85 via-navy-950/20 to-transparent pointer-events-none" />
-
-              {/* Bottom slide metadata pill */}
-              <div className="absolute bottom-3 left-3.5 right-14 z-10 pointer-events-none">
-                <span className="inline-block px-2 py-0.5 rounded text-[10px] font-bold tracking-wider uppercase bg-brass-500 text-ink-950 shadow-xs mb-1">
-                  {slide.tag}
-                </span>
-                <h2 className="font-serif text-sm sm:text-base font-bold text-white line-clamp-1 drop-shadow">
-                  {slide.title}
-                </h2>
-              </div>
-            </div>
-          ))}
-
-          {/* Left Arrow Button */}
-          <button
-            type="button"
-            onClick={() => setCurrentMobileSlide((prev) => (prev === 0 ? bannerSlides.length - 1 : prev - 1))}
-            className="absolute left-2 top-1/2 -translate-y-1/2 z-20 w-10 h-10 min-w-[40px] min-h-[40px] rounded-full bg-white/95 hover:bg-white text-ink-950 shadow-md backdrop-blur-xs flex items-center justify-center transition active:scale-95 border border-stone-200 cursor-pointer"
-            aria-label="Previous slide"
-          >
-            <ChevronLeft className="w-4 h-4" />
-          </button>
-
-          {/* Right Arrow Button */}
-          <button
-            type="button"
-            onClick={() => setCurrentMobileSlide((prev) => (prev === bannerSlides.length - 1 ? 0 : prev + 1))}
-            className="absolute right-2 top-1/2 -translate-y-1/2 z-20 w-10 h-10 min-w-[40px] min-h-[40px] rounded-full bg-white/95 hover:bg-white text-ink-950 shadow-md backdrop-blur-xs flex items-center justify-center transition active:scale-95 border border-stone-200 cursor-pointer"
-            aria-label="Next slide"
-          >
-            <ChevronRight className="w-4 h-4" />
-          </button>
-
-          {/* Slide Dots Indicator */}
-          <div className="absolute bottom-2.5 right-3 z-20 flex items-center gap-1.5 bg-navy-950/80 px-2.5 py-1.5 rounded-full backdrop-blur-xs">
-            {bannerSlides.map((_, idx) => (
-              <button
-                key={idx}
-                type="button"
-                onClick={() => setCurrentMobileSlide(idx)}
-                aria-label={`Go to slide ${idx + 1}`}
-                className={`transition-all duration-300 rounded-full cursor-pointer p-1 -m-0.5 ${
-                  currentMobileSlide === idx ? "w-4 h-1.5 bg-brass-400" : "w-1.5 h-1.5 bg-white/50 hover:bg-white"
+          {/* Background image layer */}
+          <div className="absolute inset-0 z-0 select-none pointer-events-none">
+            {bannerSlides.map((slide, idx) => (
+              <div
+                key={slide.id}
+                className={`absolute inset-0 transition-opacity duration-700 ease-in-out ${
+                  currentMobileSlide === idx ? "opacity-100 z-10" : "opacity-0 z-0 pointer-events-none"
                 }`}
-              ></button>
+              >
+                <Image
+                  src={slide.image}
+                  alt={slide.alt}
+                  fill
+                  sizes="(max-width: 1024px) 100vw, 1200px"
+                  priority={idx === 0}
+                  className="object-cover"
+                  style={{ objectPosition: "68% 22%" }}
+                />
+              </div>
             ))}
+            {/* Cinematic multi-stop gradient overlay for pristine contrast and depth */}
+            <div className="absolute inset-0 bg-gradient-to-b from-navy-950/80 via-navy-950/92 via-45% to-navy-950 z-15 pointer-events-none" />
           </div>
-        </div>
 
-        {/* Clean Ivory/White Content Block directly UNDER the Banner */}
-        <div className="px-5 pt-5 pb-7 text-left bg-white">
-          {/* High-Contrast Bold 3-Tier Headline (vibemusic pattern) */}
-          <h1 className="font-serif text-[30px] sm:text-4xl font-bold tracking-tight text-ink-950 leading-[1.12]">
-            Excellence in Law.<br />
-            <span className="font-serif italic font-normal text-brass-700">Integrity in Practice.</span><br />
-            Strategic Counsel.
-          </h1>
+          {/* Interactive Segmented Slide Selector Tabs */}
+          <div className="relative z-20 px-4 pt-3">
+            <div className="flex items-center justify-between gap-1.5 p-1 rounded-full bg-navy-900/90 border border-white/15 backdrop-blur-md shadow-lg">
+              {bannerSlides.map((slide, idx) => {
+                const isActive = currentMobileSlide === idx;
+                const shortLabels = ["⚖️ Chambers", "🛡️ POSH Hub", "📜 Property"];
+                return (
+                  <button
+                    key={slide.id}
+                    type="button"
+                    onClick={() => setCurrentMobileSlide(idx)}
+                    className={`flex-1 py-1.5 px-2 rounded-full text-[11px] sm:text-xs font-semibold tracking-wide transition-all duration-300 text-center truncate cursor-pointer ${
+                      isActive
+                        ? "bg-brass-500 text-ink-950 font-bold shadow-xs scale-[1.02]"
+                        : "text-slate-300 hover:text-white hover:bg-white/5"
+                    }`}
+                  >
+                    {shortLabels[idx] || slide.tag}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
 
-          {/* Editorial Paragraph */}
-          <p suppressHydrationWarning className="mt-3 font-sans text-[13.5px] text-ink-secondary leading-relaxed">
-            {siteConfig.heroDescription || "Over 15 years of trusted expertise providing dedicated legal advocacy, 30-year property title search, statutory document attestation, society management, and educational consulting with personal client care."}
-          </p>
+          {/* Core Content Container */}
+          <div className="relative z-20 px-5 pt-6 pb-4 space-y-4 text-left my-auto">
+            {/* Chambers Eyebrow Badge */}
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-navy-900/90 border border-brass-500/40 text-brass-300 text-[10.5px] font-semibold tracking-widest uppercase shadow-md backdrop-blur-md">
+              <Scale className="w-3.5 h-3.5 text-brass-400 shrink-0" />
+              <span>Advocates &amp; Chambers Counsel • Est. 2014</span>
+            </div>
 
-          {/* Stacked Full-Width Action Buttons */}
-          <div className="mt-5 space-y-2.5">
-            <Link
-              href={siteConfig.heroPrimaryCtaLink || "/request-service"}
-              className="w-full h-12 rounded-xl bg-brass-500 hover:bg-brass-400 text-ink-950 font-bold text-sm flex items-center justify-center gap-2 shadow-sm transition active:scale-[0.99]"
+            {/* High-Contrast Bold 3-Tier Headline */}
+            <h1 suppressHydrationWarning className="font-serif text-[29px] sm:text-[36px] font-bold tracking-tight text-white leading-[1.12] drop-shadow-[0_2px_10px_rgba(0,0,0,0.8)]">
+              {siteConfig.heroHeadline || "Excellence in Law & Advisory."}<br />
+              <span className="font-serif italic font-normal text-brass-300 text-[24px] sm:text-[30px] block mt-1">
+                {siteConfig.heroSubheadline || "Educational, Tax & Legal Solutions."}
+              </span>
+            </h1>
+
+            {/* Editorial Paragraph */}
+            <p suppressHydrationWarning className="font-sans text-[13.5px] sm:text-sm text-slate-200 leading-relaxed font-normal drop-shadow-[0_1px_6px_rgba(0,0,0,0.8)]">
+              {siteConfig.heroDescription || "Over 15 years of trusted expertise providing dedicated legal advocacy, 30-year property title search, statutory document attestation, society management, and educational consulting with personal client care."}
+            </p>
+
+            {/* Stacked Full-Width Action Buttons */}
+            <div className="pt-2 space-y-2.5">
+              <Link
+                href={siteConfig.heroPrimaryCtaLink || "/request-service"}
+                className="w-full h-12 rounded-xl bg-gradient-to-r from-brass-500 via-brass-400 to-brass-500 hover:from-brass-400 hover:to-brass-300 text-ink-950 font-sans font-bold text-sm flex items-center justify-center gap-2 shadow-[0_4px_20px_rgba(176,141,87,0.35)] active:scale-[0.98] transition-all"
+              >
+                <span suppressHydrationWarning>{siteConfig.heroPrimaryCtaText || "Request a Consultation"}</span>
+                <ArrowRight className="w-4 h-4" />
+              </Link>
+
+              <Link
+                href={siteConfig.heroSecondaryCtaLink || "/services"}
+                className="w-full h-12 rounded-xl border border-white/20 hover:border-brass-400/60 bg-white/10 hover:bg-white/15 text-white font-sans font-semibold text-sm flex items-center justify-center gap-2 backdrop-blur-md active:scale-[0.98] transition-all"
+              >
+                <span suppressHydrationWarning>{siteConfig.heroSecondaryCtaText || "Explore our services"}</span>
+                <ArrowRight className="w-4 h-4 text-brass-400" />
+              </Link>
+            </div>
+
+            {/* 1-Tap Direct Chambers Telephone Card */}
+            <a
+              href={`tel:${BRAND_CONFIG.phone}`}
+              className="flex items-center justify-between p-3.5 rounded-xl bg-navy-900/95 border border-brass-500/35 text-white backdrop-blur-md active:bg-navy-800 transition shadow-sm mt-3"
             >
-              <span suppressHydrationWarning>{siteConfig.heroPrimaryCtaText || "Request a Consultation"}</span>
-              <ArrowRight className="w-4 h-4" />
-            </Link>
-
-            <Link
-              href={siteConfig.heroSecondaryCtaLink || "/services"}
-              className="w-full h-12 rounded-xl border border-stone-300 hover:border-stone-400 bg-white hover:bg-stone-50 text-ink-950 font-semibold text-sm flex items-center justify-center gap-2 shadow-2xs transition active:scale-[0.99]"
-            >
-              <span suppressHydrationWarning>{siteConfig.heroSecondaryCtaText || "Explore our services"}</span>
-              <ArrowRight className="w-4 h-4 text-brass-700" />
-            </Link>
-          </div>
-
-          {/* Hotline & Response Time Notice */}
-          <div className="mt-3.5 flex items-center justify-between text-[11.5px] text-ink-muted px-1">
-            <div className="flex items-center gap-1.5">
-              <span className="text-brass-800 font-semibold">Chambers Desk:</span>
-              <a href={`tel:${BRAND_CONFIG.phone}`} className="font-bold text-ink-950 underline underline-offset-2">
-                {BRAND_CONFIG.phone}
-              </a>
-            </div>
-            <div className="flex items-center gap-1 text-emerald-700 font-medium">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-              <span>Mon–Sat 9AM–8PM</span>
-            </div>
-          </div>
-
-          {/* 2x2 Feature / Trust Box (vibemusic pattern) */}
-          <div className="mt-5 rounded-2xl border border-stone-200 bg-stone-50/70 p-3.5 shadow-2xs">
-            <div className="grid grid-cols-2 divide-x divide-stone-200">
-              {/* Col 1 Top */}
-              <div className="pr-3 pb-3">
-                <span className="text-[10px] font-semibold text-brass-700 block mb-0.5">
-                  Direct Privilege
-                </span>
-                <div className="text-[17px] font-bold text-ink-950 leading-tight">
-                  Privileged
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 rounded-full bg-brass-500/20 border border-brass-500/40 flex items-center justify-center text-brass-300 shrink-0">
+                  <Phone className="w-4 h-4 text-brass-400" />
                 </div>
-                <span className="text-[9px] font-bold uppercase tracking-wider text-ink-muted block mt-0.5">
-                  100% CONFIDENTIAL
-                </span>
+                <div>
+                  <div className="text-[10px] uppercase tracking-wider text-brass-300/90 font-semibold">Chambers Desk</div>
+                  <div className="text-sm font-bold text-white tracking-wide">{BRAND_CONFIG.phone}</div>
+                </div>
               </div>
+              <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-500/20 border border-emerald-500/30 text-[10.5px] font-medium text-emerald-300">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                <span>Mon–Sat 9AM–8PM</span>
+              </div>
+            </a>
 
-              {/* Col 2 Top */}
-              <div className="pl-3 pb-3">
-                <span className="text-[10px] font-semibold text-emerald-700 block mb-0.5">
-                  Pan-India Reach
-                </span>
-                <div className="text-[17px] font-bold text-ink-950 leading-tight">
-                  Expedited
-                </div>
-                <span className="text-[9px] font-bold uppercase tracking-wider text-ink-muted block mt-0.5">
-                  HIGH COURTS &amp; TRIBUNALS
-                </span>
+            {/* 3 Trust Pillar Micro-Cards */}
+            <div className="grid grid-cols-3 gap-2 pt-2 text-center">
+              <div className="p-2.5 rounded-xl bg-navy-900/85 border border-white/15 backdrop-blur-sm">
+                <span className="text-[11px] font-bold text-brass-400 uppercase tracking-wider block">15+ Yrs</span>
+                <span className="text-[10px] text-slate-300 leading-tight block mt-0.5">Bar Practice</span>
+              </div>
+              <div className="p-2.5 rounded-xl bg-navy-900/85 border border-white/15 backdrop-blur-sm">
+                <span className="text-[11px] font-bold text-emerald-400 uppercase tracking-wider block">100%</span>
+                <span className="text-[10px] text-slate-300 leading-tight block mt-0.5">Confidential</span>
+              </div>
+              <div className="p-2.5 rounded-xl bg-navy-900/85 border border-white/15 backdrop-blur-sm">
+                <span className="text-[11px] font-bold text-blue-400 uppercase tracking-wider block">30-Year</span>
+                <span className="text-[10px] text-slate-300 leading-tight block mt-0.5">Title Search</span>
               </div>
             </div>
 
-            <div className="border-t border-stone-200 grid grid-cols-2 divide-x divide-stone-200 pt-3">
-              {/* Col 1 Bottom */}
-              <div className="pr-3">
-                <span className="text-[10px] font-semibold text-brass-700 block mb-0.5">
-                  Commercial Matters
-                </span>
-                <div className="text-[17px] font-bold text-ink-950 leading-tight">
-                  Strategic
-                </div>
-                <span className="text-[9px] font-bold uppercase tracking-wider text-ink-muted block mt-0.5">
-                  PROMPT ASSIGNMENT
-                </span>
-              </div>
-
-              {/* Col 2 Bottom */}
-              <div className="pl-3">
-                <span className="text-[10px] font-semibold text-blue-700 block mb-0.5">
-                  Statutory Diligence
-                </span>
-                <div className="text-[17px] font-bold text-ink-950 leading-tight">
-                  Rigorous
-                </div>
-                <span className="text-[9px] font-bold uppercase tracking-wider text-ink-muted block mt-0.5">
-                  30-YEAR TITLE DUE DILIGENCE
-                </span>
-              </div>
-            </div>
           </div>
         </div>
       </section>
 
       {/* 1B. DESKTOP HERO SECTION: Full-bleed Heritage Law Library (preserved on >= lg screens) */}
-      <section className="hidden lg:flex relative min-h-[96vh] bg-ink-950 text-white flex-col justify-between pt-32 pb-16 border-b border-navy-800/80 overflow-hidden">
+      <section className="hidden lg:flex relative min-h-[88vh] xl:min-h-[92vh] bg-ink-950 text-white flex-col justify-between pt-24 pb-6 xl:pt-28 xl:pb-8 border-b border-navy-800/80 overflow-hidden">
         {/* Full-bleed Hero Background Image - Exactly matches user's uploaded master background */}
         <div className="absolute inset-0 z-0 select-none pointer-events-none">
           <Image
@@ -599,15 +554,16 @@ export default function HomePage() {
             fill
             priority
             quality={100}
-            className="object-cover object-right lg:object-[center_35%]"
+            className="object-cover"
+            style={{ objectPosition: "85% 30%" }}
           />
-          {/* Studio Vignette: Deep rich gradient on the left for maximum typographic contrast, fading gently across the advocate and client */}
-          <div className="absolute inset-0 bg-gradient-to-r from-ink-950/95 via-ink-950/75 via-50% to-ink-950/25 lg:to-transparent pointer-events-none" />
-          <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-ink-950/80 via-ink-950/30 to-transparent pointer-events-none" />
-          <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-ink-950/85 to-transparent pointer-events-none" />
+          {/* Studio Vignette: Deep rich gradient on left for typographic contrast, fading gently across the advocate and client */}
+          <div className="absolute inset-0 bg-gradient-to-r from-ink-950/98 via-ink-950/75 via-48% to-ink-950/20 lg:to-transparent pointer-events-none" />
+          <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-ink-950/80 via-ink-950/20 to-transparent pointer-events-none" />
+          <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-ink-950/90 via-ink-950/40 to-transparent pointer-events-none" />
         </div>
 
-        <div className="relative z-10 max-w-[1380px] mx-auto px-4 sm:px-6 lg:px-8 w-full my-auto py-6 sm:py-8 flex flex-col justify-between min-h-[82vh] lg:min-h-[86vh]">
+        <div className="relative z-10 max-w-[1380px] mx-auto px-4 sm:px-6 lg:px-8 w-full my-auto py-4 sm:py-6 flex flex-col justify-between min-h-[80vh] lg:min-h-[82vh]">
           
           {/* Main Hero Story Grid */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center my-auto">
@@ -615,16 +571,22 @@ export default function HomePage() {
             {/* Left Column (7-8 cols): Display Headline, Editorial Body, CTAs */}
             <div className="lg:col-span-8 xl:col-span-7 space-y-6 sm:space-y-7 text-left max-w-2xl">
 
+              {/* Chambers Eyebrow Emblem */}
+              <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-navy-900/80 border border-brass-500/40 backdrop-blur-md text-brass-300 text-xs font-semibold tracking-[0.16em] uppercase shadow-lg">
+                <Scale className="w-4 h-4 text-brass-400" />
+                <span>Advocates &amp; Chambers Counsel • Est. 2014</span>
+              </div>
+
               {/* Display Headline - Bold, Authoritative & Balanced */}
-              <h1 suppressHydrationWarning className="font-serif text-4xl sm:text-6xl lg:text-[68px] font-bold tracking-tight text-white leading-[1.08] drop-shadow-lg">
+              <h1 suppressHydrationWarning className="font-serif text-4xl sm:text-6xl lg:text-[68px] font-bold tracking-tight text-white leading-[1.08] drop-shadow-xl">
                 {siteConfig.heroHeadline || "Excellence in Law & Advisory."}<br />
-                <span className="font-serif italic font-normal text-brass-400">
+                <span className="font-serif italic font-normal text-brass-300">
                   {siteConfig.heroSubheadline || "Educational, Tax & Legal Solutions."}
                 </span>
               </h1>
 
               {/* Subtitle Paragraph */}
-              <p suppressHydrationWarning className="font-sans text-base sm:text-lg text-slate-200 leading-[1.68] max-w-xl font-normal drop-shadow">
+              <p suppressHydrationWarning className="font-sans text-base sm:text-lg text-slate-200/95 leading-[1.68] max-w-xl font-normal drop-shadow">
                 {siteConfig.heroDescription || "Over 15 years of trusted expertise providing dedicated legal advocacy, 30-year property title search, statutory document attestation, society management, and educational consulting with personal client care."}
               </p>
 
@@ -632,7 +594,7 @@ export default function HomePage() {
               <div className="pt-2 flex flex-wrap items-center gap-4">
                 <Link
                   href={siteConfig.heroPrimaryCtaLink || "/request-service"}
-                  className="h-[50px] px-7 rounded-btn bg-brass-500 hover:bg-brass-400 text-ink-950 font-sans font-bold text-sm flex items-center gap-2.5 shadow-raised transition-all duration-200 hover:translate-x-0.5"
+                  className="h-[52px] px-8 rounded-xl bg-gradient-to-r from-brass-500 via-brass-400 to-brass-500 hover:from-brass-400 hover:to-brass-300 text-ink-950 font-sans font-bold text-sm flex items-center gap-2.5 shadow-[0_4px_24px_rgba(176,141,87,0.38)] hover:shadow-[0_6px_30px_rgba(176,141,87,0.55)] transition-all duration-200 hover:translate-x-0.5 active:scale-[0.98]"
                 >
                   <span suppressHydrationWarning>{siteConfig.heroPrimaryCtaText || "Request a Consultation"}</span>
                   <ArrowRight className="w-4 h-4" />
@@ -640,7 +602,7 @@ export default function HomePage() {
 
                 <Link
                   href={siteConfig.heroSecondaryCtaLink || "/services"}
-                  className="h-[50px] px-6 rounded-btn bg-ink-950/60 hover:bg-ink-950/80 border border-brass-500/40 hover:border-brass-400 text-brass-200 hover:text-white font-sans font-semibold text-sm flex items-center gap-2.5 backdrop-blur-md transition-all duration-200"
+                  className="h-[52px] px-7 rounded-xl bg-navy-950/70 hover:bg-navy-900/90 border border-white/20 hover:border-brass-400/80 text-white hover:text-brass-200 font-sans font-semibold text-sm flex items-center gap-2.5 backdrop-blur-md shadow-lg transition-all duration-200 active:scale-[0.98]"
                 >
                   <span suppressHydrationWarning>{siteConfig.heroSecondaryCtaText || "Explore our services"}</span>
                   <ArrowRight className="w-4 h-4 text-brass-400" />
@@ -648,18 +610,21 @@ export default function HomePage() {
               </div>
 
               {/* Rapid Telephone Hot-link */}
-              <div className="pt-1 flex items-center gap-3 text-xs text-slate-300">
-                <span className="text-brass-400 font-medium">Direct Chambers Desk:</span>
+              <div className="pt-1 flex flex-wrap items-center gap-3 text-xs text-slate-300">
                 <a
                   href={`tel:${BRAND_CONFIG.phone}`}
-                  className="font-bold text-white hover:text-brass-300 transition underline underline-offset-4 decoration-brass-500/50"
+                  className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-navy-900/80 border border-brass-500/30 text-white hover:border-brass-400 hover:text-brass-300 transition-all backdrop-blur-sm"
                 >
-                  {BRAND_CONFIG.phone}
+                  <Phone className="w-3.5 h-3.5 text-brass-400" />
+                  <span className="text-slate-300 font-medium">Chambers Desk:</span>
+                  <span className="font-bold">{BRAND_CONFIG.phone}</span>
                 </a>
-                <span className="text-slate-500">•</span>
-                <span className="text-emerald-400 flex items-center gap-1.5 font-medium">
+                <span className="text-emerald-400 inline-flex items-center gap-1.5 font-medium px-3 py-1.5 rounded-full bg-navy-900/60 border border-emerald-500/30 backdrop-blur-sm">
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
                   Available Mon–Sat 9AM–8PM IST
+                </span>
+                <span className="text-slate-400/80 hidden xl:inline text-[11px] font-sans">
+                  • Bar Council of India Compliant
                 </span>
               </div>
 
@@ -671,13 +636,13 @@ export default function HomePage() {
           </div>
 
           {/* Bottom Row: 3 Floating Principle Cards in a wide, balanced glassmorphic dock */}
-          <div className="pt-10 sm:pt-14 w-full">
+          <div className="pt-8 sm:pt-10 w-full">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-3.5 sm:gap-4 w-full">
 
               {/* Card 1: Discretion */}
               <Link
                 href="/about"
-                className="bg-ink-950/70 border border-brass-500/35 hover:border-brass-400/80 rounded-xl p-4 sm:p-5 flex items-start gap-3.5 sm:gap-4 backdrop-blur-xl shadow-2xl transition-all duration-200 hover:bg-ink-950/85 group"
+                className="bg-navy-950/75 border border-white/10 hover:border-brass-400/70 rounded-xl p-4 sm:p-5 flex items-start gap-3.5 sm:gap-4 backdrop-blur-xl shadow-2xl transition-all duration-200 hover:bg-navy-900/80 group"
               >
                 <div className="w-10 h-10 rounded-lg bg-brass-500/10 border border-brass-500/30 flex items-center justify-center text-brass-400 shrink-0 group-hover:border-brass-400 group-hover:scale-105 transition-all">
                   <Lock className="w-5 h-5 text-brass-400" />
@@ -698,7 +663,7 @@ export default function HomePage() {
               {/* Card 2: Diligence */}
               <Link
                 href="/services"
-                className="bg-ink-950/70 border border-brass-500/35 hover:border-brass-400/80 rounded-xl p-4 sm:p-5 flex items-start gap-3.5 sm:gap-4 backdrop-blur-xl shadow-2xl transition-all duration-200 hover:bg-ink-950/85 group"
+                className="bg-navy-950/75 border border-white/10 hover:border-brass-400/70 rounded-xl p-4 sm:p-5 flex items-start gap-3.5 sm:gap-4 backdrop-blur-xl shadow-2xl transition-all duration-200 hover:bg-navy-900/80 group"
               >
                 <div className="w-10 h-10 rounded-lg bg-brass-500/10 border border-brass-500/30 flex items-center justify-center text-brass-400 shrink-0 group-hover:border-brass-400 group-hover:scale-105 transition-all">
                   <Search className="w-5 h-5 text-brass-400" />
@@ -719,7 +684,7 @@ export default function HomePage() {
               {/* Card 3: Transparency */}
               <Link
                 href="/request-service"
-                className="bg-ink-950/70 border border-brass-500/35 hover:border-brass-400/80 rounded-xl p-4 sm:p-5 flex items-start gap-3.5 sm:gap-4 backdrop-blur-xl shadow-2xl transition-all duration-200 hover:bg-ink-950/85 group"
+                className="bg-navy-950/75 border border-white/10 hover:border-brass-400/70 rounded-xl p-4 sm:p-5 flex items-start gap-3.5 sm:gap-4 backdrop-blur-xl shadow-2xl transition-all duration-200 hover:bg-navy-900/80 group"
               >
                 <div className="w-10 h-10 rounded-lg bg-brass-500/10 border border-brass-500/30 flex items-center justify-center text-brass-400 shrink-0 group-hover:border-brass-400 group-hover:scale-105 transition-all">
                   <ShieldCheck className="w-5 h-5 text-brass-400" />
