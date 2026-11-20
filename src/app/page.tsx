@@ -605,27 +605,8 @@ export default function HomePage() {
           {/* Main Hero Story Grid */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center my-auto">
 
-            {/* Left Column (7-8 cols): Chambers Heritage Eyebrow, Display Headline, Editorial Body, CTAs */}
+            {/* Left Column (7-8 cols): Display Headline, Editorial Body, CTAs */}
             <div className="lg:col-span-8 xl:col-span-7 space-y-6 sm:space-y-7 text-left max-w-2xl">
-
-              {/* Prestigious Chambers Heritage Pill */}
-              <div className="inline-flex items-center gap-2.5 sm:gap-3 px-3.5 sm:px-4 py-1.5 sm:py-2 rounded-full bg-ink-950/80 border border-brass-500/40 backdrop-blur-md shadow-lg">
-                <div className="w-5 h-5 flex items-center justify-center text-brass-400">
-                  <svg viewBox="0 0 48 48" fill="none" className="w-4 h-4" aria-hidden="true">
-                    <path d="M25 24 C24 21 26 18 28 17 C27 15 26 13 28 11 C29 9 32 8 34 6 C36 7 37 8 37 10 C39 11 40 13 39 15 C41 17 41 19 39 21 C40 23 39 25 36 26 C34 27 32 26 30 28 C28 29 26 27 25 24 Z" fill="currentColor" />
-                    <path d="M23 24 C24 21 22 18 20 17 C21 15 22 13 20 11 C19 9 16 8 14 6 C12 7 11 8 11 10 C9 11 8 13 9 15 C7 17 7 19 9 21 C8 23 9 25 12 26 C14 27 16 26 18 28 C20 29 22 27 23 24 Z" fill="currentColor" />
-                    <path d="M24 6 C26 7 27 9 27 11 C29 12 30 14 29 16 C30 18 29 20 27 21 C26 23 25 24 24 26 C23 24 22 23 21 21 C19 20 18 18 19 16 C18 14 19 12 21 11 C21 9 22 7 24 6 Z" fill="currentColor" />
-                    <path d="M24 26 L24 36" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
-                  </svg>
-                </div>
-                <span suppressHydrationWarning className="font-serif text-xs sm:text-sm font-bold tracking-wider uppercase text-brass-300">
-                  {siteConfig.heroArchTitle || "Chambers of Acorn"}
-                </span>
-                <span className="text-brass-500/40">•</span>
-                <span className="font-sans text-[10px] sm:text-[11px] font-semibold uppercase tracking-widest text-slate-300">
-                  Over 15 Years of Excellence
-                </span>
-              </div>
 
               {/* Display Headline - Bold, Authoritative & Balanced */}
               <h1 suppressHydrationWarning className="font-serif text-4xl sm:text-6xl lg:text-[68px] font-bold tracking-tight text-white leading-[1.08] drop-shadow-lg">
