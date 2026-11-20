@@ -43,6 +43,7 @@ import {
 } from "@/components/ui";
 import { FooterChambersDispatch } from "@/components/footer-chambers-dispatch";
 import { EngagementProtocol } from "@/components/home/engagement-protocol";
+import { ChambersLeadership } from "@/components/home/chambers-leadership";
 
 const ICON_MAP: Record<string, React.ReactNode> = {
   Briefcase: <Briefcase className="w-5 h-5 text-brass-500" />,
@@ -1066,7 +1067,10 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 6. POSH FEATURE: Dark navy panel with arch placeholder, calm tone */}
+      {/* 6. CHAMBERS LEADERSHIP & SENIOR ADVOCATES: Humanized, Professional Counsel Focus */}
+      <ChambersLeadership />
+
+      {/* 7. POSH FEATURE: Dark navy panel with arch placeholder, calm tone */}
       <section className="bg-ivory-50 py-24 sm:py-32 border-b border-border">
         <div className="max-w-[1240px] mx-auto px-4 sm:px-6">
           <div className="bg-navy-900 rounded-card border border-navy-800 p-8 sm:p-14 text-white shadow-raised relative overflow-hidden">

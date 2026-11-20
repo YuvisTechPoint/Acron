@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import {
   Briefcase,
@@ -101,6 +102,16 @@ const TEAM_MEMBERS = [
     focus: "Co-operative Society Bye-Laws &bull; GDCA Formations &bull; Doorstep Leave & License",
   },
 ];
+
+const getTeamPortrait = (name: string, role: string) => {
+  if (name.includes("Rajesh") || role.includes("Practice Head")) {
+    return "/images/hero-1.png";
+  }
+  if (name.includes("Academic") || role.includes("Educational")) {
+    return "/brand/statutory-guidance-full.jpg";
+  }
+  return "/images/posh-compliance-desk.jpg";
+};
 
 export default function AboutPage() {
   const [pageData, setPageData] = useState(platformStore.getPageContent("about"));
@@ -319,33 +330,74 @@ export default function AboutPage() {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {teamMembers.map((member, index) => (
-              <div key={member.id || index} className="space-y-5">
-                {/* Arch-shaped portrait placeholder */}
-                <div className="w-full h-[380px] arch-mask bg-gradient-to-b from-navy-900 via-navy-800 to-ink-950 border border-brass-500/25 flex flex-col items-center justify-center p-6 text-center shadow-card relative group">
-                  <div className="w-14 h-14 rounded-full bg-navy-800 border border-brass-500/40 flex items-center justify-center mb-3 text-brass-300">
-                    <Briefcase className="w-6 h-6" />
+              <div key={member.id || index} className="space-y-5 bg-white p-5 rounded-2xl border border-border shadow-card flex flex-col justify-between hover:border-brass-400 transition-all">
+                <div className="space-y-5">
+                  {/* Arch-shaped portrait with real counsel photography */}
+                  <div className="w-full h-[360px] arch-mask relative overflow-hidden border border-brass-500/30 shadow-sm bg-navy-950 group">
+                    <Image
+                      src={getTeamPortrait(member.name, member.role)}
+                      alt={member.name}
+                      fill
+                      sizes="(max-width: 768px) 100vw, 360px"
+                      className="object-cover object-top group-hover:scale-105 transition-transform duration-700"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-navy-950 via-navy-950/25 to-transparent" />
+
+                    {/* Floating Bottom Card */}
+                    <div className="absolute bottom-3 left-3 right-3 p-3.5 rounded-xl bg-navy-900/90 backdrop-blur-md border border-brass-500/30 text-white space-y-1">
+                      <div className="flex items-center justify-between text-xs">
+                        <span className="text-brass-300 font-semibold tracking-wider uppercase text-[10px]">
+                          Practice Lead
+                        </span>
+                        <span className="text-emerald-400 font-mono text-[10px] flex items-center gap-1">
+                          <CheckCircle2 className="w-3 h-3" />
+                          Verified Counsel
+                        </span>
+                      </div>
+                      <div className="font-serif font-bold text-lg text-white">
+                        {member.name}
+                      </div>
+                      <div className="text-[11px] text-slate-300 truncate">
+                        {member.role}
+                      </div>
+                    </div>
                   </div>
-                  <span className="font-serif text-2xl font-bold text-white">
-                    {member.name}
-                  </span>
-                  <span className="font-sans text-xs text-brass-300 uppercase tracking-widest mt-1">
-                    {member.role}
-                  </span>
+
+                  <div className="space-y-2">
+                    <h3 className="font-serif text-xl font-bold text-ink-950">
+                      {member.title}
+                    </h3>
+                    {member.bio && (
+                      <p className="font-sans text-xs text-ink-secondary leading-relaxed">
+                        {member.bio}
+                      </p>
+                    )}
+                    <div
+                      className="font-sans text-xs text-brass-700 font-medium leading-relaxed pt-1"
+                      dangerouslySetInnerHTML={{ __html: member.focus }}
+                    />
+                  </div>
                 </div>
 
-                <div className="space-y-1.5">
-                  <h3 className="font-serif text-xl font-bold text-ink-950">
-                    {member.title}
-                  </h3>
-                  {member.bio && (
-                    <p className="font-sans text-xs text-ink-secondary leading-relaxed">
-                      {member.bio}
-                    </p>
+                <div className="pt-4 border-t border-border flex items-center justify-between text-xs">
+                  {member.name.includes("Rajesh") ? (
+                    <a
+                      href="tel:+918369171822"
+                      className="inline-flex items-center gap-1.5 font-bold text-navy-800 hover:text-brass-700 transition"
+                    >
+                      <Phone className="w-3.5 h-3.5 text-brass-600" />
+                      <span>Call: +91 8369171822</span>
+                    </a>
+                  ) : (
+                    <span className="text-ink-muted text-[11px]">Direct Chambers Review</span>
                   )}
-                  <div
-                    className="font-sans text-xs text-brass-700 font-medium leading-relaxed pt-1"
-                    dangerouslySetInnerHTML={{ __html: member.focus }}
-                  />
+                  <Link
+                    href="/request-service"
+                    className="font-semibold text-brass-700 hover:text-navy-900 inline-flex items-center gap-1 group"
+                  >
+                    <span>Consult Counsel</span>
+                    <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
+                  </Link>
                 </div>
               </div>
             ))}
