@@ -6,7 +6,6 @@ import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
 import { DisclaimerBanner } from "@/components/disclaimer-banner";
 import { AssistantWidget } from "@/components/assistant-widget";
-import { WhatsAppFloatingButton } from "@/components/whatsapp-floating-button";
 import { QuickExit } from "@/components/quick-exit";
 import { CookieBanner } from "@/components/cookie-banner";
 import { SkipToContent } from "@/components/skip-to-content";
@@ -248,7 +247,6 @@ export default function RootLayout({
           <CookieBanner />
           <BackToTop />
           <AssistantWidget />
-          <WhatsAppFloatingButton />
         </Providers>
       </body>
     </html>
