@@ -254,6 +254,11 @@ const VIBE_STYLE_TRUST_ITEMS = [
   },
 ];
 
+const ROLLING_TRUST_ITEMS = [
+  ...VIBE_STYLE_TRUST_ITEMS,
+  ...VIBE_STYLE_TRUST_ITEMS,
+];
+
 export default function HomePage() {
   const [activeStep, setActiveStep] = useState(0);
   const [currentMobileSlide, setCurrentMobileSlide] = useState(0);
@@ -954,12 +959,13 @@ export default function HomePage() {
               </div>
             </div>
 
-            {/* Bottom Row: 5-Card Trust & Fulfillment Matrix (Matching Vibe Music Pattern) */}
+            {/* Bottom Row: 5-Card Trust & Fulfillment Matrix (Static on Desktop, Auto-Scrolling on Mobile) */}
             <div className="pt-8 border-t border-border">
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3.5 sm:gap-4">
+              {/* Desktop View: Static 5-Column Grid */}
+              <div className="hidden lg:grid lg:grid-cols-5 gap-3.5 sm:gap-4">
                 {VIBE_STYLE_TRUST_ITEMS.map((item, idx) => (
                   <Link
-                    key={idx}
+                    key={`desktop-${idx}`}
                     href={item.href}
                     className="group p-4 sm:p-5 rounded-xl bg-stone-50/70 hover:bg-white border border-border hover:border-brass-300 hover:shadow-sm transition-all duration-200 flex flex-col justify-between"
                   >
@@ -980,6 +986,39 @@ export default function HomePage() {
                     </div>
                   </Link>
                 ))}
+              </div>
+
+              {/* Mobile Phone View: Auto-Scrolling Horizontal Track */}
+              <div className="lg:hidden overflow-hidden relative py-1 -mx-4 sm:-mx-6 px-4 sm:px-6">
+                {/* Left & Right subtle edge fade gradient masks */}
+                <div className="pointer-events-none absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-stone-100 via-stone-100/80 to-transparent z-10" />
+                <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-stone-100 via-stone-100/80 to-transparent z-10" />
+
+                <div className="trust-matrix-mobile-track flex gap-3.5">
+                  {ROLLING_TRUST_ITEMS.map((item, idx) => (
+                    <Link
+                      key={`mobile-trust-${idx}`}
+                      href={item.href}
+                      className="w-[260px] sm:w-[280px] shrink-0 p-4 sm:p-5 rounded-xl bg-white border border-border/90 hover:border-brass-300 shadow-xs hover:shadow-sm transition-all duration-200 flex flex-col justify-between group active:scale-[0.99]"
+                    >
+                      <div>
+                        <span className="font-sans text-[10px] font-bold uppercase tracking-wider text-navy-700/80 group-hover:text-brass-600 transition-colors">
+                          {item.tag}
+                        </span>
+                        <h4 className="font-sans text-sm font-bold text-ink-950 mt-1.5 group-hover:text-navy-700 transition-colors">
+                          {item.title}
+                        </h4>
+                        <p className="font-sans text-xs text-ink-secondary mt-1.5 leading-relaxed line-clamp-2">
+                          {item.desc}
+                        </p>
+                      </div>
+                      <div className="mt-3 flex items-center gap-1 text-[11px] font-medium text-navy-700 group-hover:text-brass-600 group-hover:translate-x-0.5 transition-all">
+                        <span>Learn more</span>
+                        <ArrowRight className="w-3 h-3 text-brass-500" />
+                      </div>
+                    </Link>
+                  ))}
+                </div>
               </div>
             </div>
           </div>

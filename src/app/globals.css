@@ -341,6 +341,29 @@ button:focus-visible .footer-roll-text__track,
   animation-play-state: paused;
 }
 
+/* Auto-Rolling Trust Matrix on Mobile */
+@keyframes trust-matrix-scroll {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+.trust-matrix-mobile-track {
+  display: flex;
+  width: max-content;
+  animation: trust-matrix-scroll 24s linear infinite;
+  will-change: transform;
+}
+
+.trust-matrix-mobile-track:hover,
+.trust-matrix-mobile-track:active,
+.trust-matrix-mobile-track:focus-within {
+  animation-play-state: paused;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .footer-roll-text__track {
     transition: none;
@@ -353,7 +376,8 @@ button:focus-visible .footer-roll-text__track,
     transform: none;
   }
   .footer-ticker-track,
-  .auto-rolling-cards-track {
+  .auto-rolling-cards-track,
+  .trust-matrix-mobile-track {
     animation: none;
     transform: none !important;
   }
