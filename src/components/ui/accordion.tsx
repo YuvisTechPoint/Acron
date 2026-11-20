@@ -37,11 +37,11 @@ export function Accordion({
   };
 
   return (
-    <div className={`divide-y divide-border border-y border-border ${className}`}>
+    <div className={`divide-y divide-border border-y border-border ${className}`} suppressHydrationWarning>
       {items.map((item) => {
         const isOpen = openIds.includes(item.id);
         return (
-          <div key={item.id} className="py-5 transition-colors">
+          <div key={item.id} className="py-5 transition-colors" suppressHydrationWarning>
             <button
               type="button"
               onClick={() => toggleItem(item.id)}
@@ -51,8 +51,8 @@ export function Accordion({
               <span className="font-serif text-lg sm:text-xl font-medium text-ink group-hover:text-navy-700 transition-colors">
                 {item.title}
               </span>
-              <div
-                className={`w-7 h-7 rounded-full flex items-center justify-center shrink-0 border transition-all duration-200 ${
+              <span
+                className={`w-7 h-7 rounded-full inline-flex items-center justify-center shrink-0 border transition-all duration-200 ${
                   isOpen
                     ? "bg-navy-700 text-ivory-50 border-navy-700"
                     : "bg-surface border-border text-ink-secondary group-hover:border-navy-700 group-hover:text-navy-700"
@@ -63,7 +63,7 @@ export function Accordion({
                 ) : (
                   <Plus className="w-3.5 h-3.5 transition-transform duration-200" />
                 )}
-              </div>
+              </span>
             </button>
             <div
               className={`grid transition-all duration-240 ease-luxury overflow-hidden ${

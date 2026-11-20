@@ -369,12 +369,12 @@ export default function ICTriagePage() {
                     : "bg-white text-ink border-border hover:bg-surface"
                 }`}
               >
-                <div className="font-bold text-sm">Admit Docket</div>
-                <div className="text-[11px] opacity-80 mt-1">
+                <span className="block font-bold text-sm">Admit Docket</span>
+                <span className="block text-[11px] opacity-80 mt-1">
                   {limitationEvaluation.status === "STATUTORILY_BARRED"
                     ? "Disabled: Barred by statute (> 6 months)."
                     : "All statutory criteria satisfied. Proceed to notice & inquiry."}
-                </div>
+                </span>
               </button>
 
               <button
@@ -389,12 +389,12 @@ export default function ICTriagePage() {
                     : "bg-white text-ink border-border hover:bg-surface"
                 }`}
               >
-                <div className="font-bold text-sm">Condone Delay</div>
-                <div className="text-[11px] opacity-80 mt-1">
+                <span className="block font-bold text-sm">Condone Delay</span>
+                <span className="block text-[11px] opacity-80 mt-1">
                   {limitationEvaluation.status === "STATUTORILY_BARRED"
                     ? "Disabled: Condonation ceiling exceeded."
                     : "Admit under Proviso to Sec 9(1) with recorded grounds."}
-                </div>
+                </span>
               </button>
 
               <button
@@ -406,10 +406,10 @@ export default function ICTriagePage() {
                     : "bg-white text-ink border-border hover:bg-surface"
                 }`}
               >
-                <div className="font-bold text-sm">Refer to Local Committee</div>
-                <div className="text-[11px] opacity-80 mt-1">
+                <span className="block font-bold text-sm">Refer to Local Committee</span>
+                <span className="block text-[11px] opacity-80 mt-1">
                   Harassment alleged against employer or outside workplace scope.
-                </div>
+                </span>
               </button>
             </div>
 

@@ -63,10 +63,10 @@ export default function RightsChartersPage() {
                   : "bg-slate-50 text-slate-700 border-border hover:bg-slate-100"
               }`}
             >
-              <div className="text-xs font-bold">1. Complainant Charter</div>
-              <div className={`text-[10px] mt-0.5 ${activeCharter === "COMPLAINANT" ? "text-slate-200" : "text-slate-500"}`}>
+              <span className="block text-xs font-bold">1. Complainant Charter</span>
+              <span className={`block text-[10px] mt-0.5 ${activeCharter === "COMPLAINANT" ? "text-slate-200" : "text-slate-500"}`}>
                 Protections &amp; Interim Relief
-              </div>
+              </span>
             </button>
 
             <button
@@ -77,10 +77,10 @@ export default function RightsChartersPage() {
                   : "bg-slate-50 text-slate-700 border-border hover:bg-slate-100"
               }`}
             >
-              <div className="text-xs font-bold">2. Respondent Charter</div>
-              <div className={`text-[10px] mt-0.5 ${activeCharter === "RESPONDENT" ? "text-slate-200" : "text-slate-500"}`}>
+              <span className="block text-xs font-bold">2. Respondent Charter</span>
+              <span className={`block text-[10px] mt-0.5 ${activeCharter === "RESPONDENT" ? "text-slate-200" : "text-slate-500"}`}>
                 Natural Justice &amp; Fair Trial
-              </div>
+              </span>
             </button>
 
             <button
@@ -91,10 +91,10 @@ export default function RightsChartersPage() {
                   : "bg-slate-50 text-slate-700 border-border hover:bg-slate-100"
               }`}
             >
-              <div className="text-xs font-bold">3. IC Code of Conduct</div>
-              <div className={`text-[10px] mt-0.5 ${activeCharter === "IC" ? "text-slate-200" : "text-slate-500"}`}>
+              <span className="block text-xs font-bold">3. IC Code of Conduct</span>
+              <span className={`block text-[10px] mt-0.5 ${activeCharter === "IC" ? "text-slate-200" : "text-slate-500"}`}>
                 Neutrality &amp; Sec 16 Secrecy
-              </div>
+              </span>
             </button>
 
             <button
@@ -105,10 +105,10 @@ export default function RightsChartersPage() {
                   : "bg-slate-50 text-slate-700 border-border hover:bg-slate-100"
               }`}
             >
-              <div className="text-xs font-bold">4. Employer Mandates</div>
-              <div className={`text-[10px] mt-0.5 ${activeCharter === "EMPLOYER" ? "text-slate-200" : "text-slate-500"}`}>
+              <span className="block text-xs font-bold">4. Employer Mandates</span>
+              <span className={`block text-[10px] mt-0.5 ${activeCharter === "EMPLOYER" ? "text-slate-200" : "text-slate-500"}`}>
                 Sec 19 &amp; Sec 26 Penalties
-              </div>
+              </span>
             </button>
           </div>
         </div>

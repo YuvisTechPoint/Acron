@@ -142,10 +142,10 @@ export default function ComplainantMotionsPage() {
                       : "border-border text-slate-600 hover:bg-slate-50"
                   }`}
                 >
-                  <div className="text-xs">Section 10 Conciliation</div>
-                  <div className="text-[11px] font-normal text-slate-500 mt-0.5">
+                  <span className="block text-xs">Section 10 Conciliation</span>
+                  <span className="block text-[11px] font-normal text-slate-500 mt-0.5">
                     Request amicable resolution (apology, behavioral agreement) prior to formal inquiry.
-                  </div>
+                  </span>
                 </button>
 
                 <button
@@ -157,10 +157,10 @@ export default function ComplainantMotionsPage() {
                       : "border-border text-slate-600 hover:bg-slate-50"
                   }`}
                 >
-                  <div className="text-xs">Withdrawal of Complaint</div>
-                  <div className="text-[11px] font-normal text-slate-500 mt-0.5">
+                  <span className="block text-xs">Withdrawal of Complaint</span>
+                  <span className="block text-[11px] font-normal text-slate-500 mt-0.5">
                     Formal application to discontinue proceedings with anti-coercion review.
-                  </div>
+                  </span>
                 </button>
               </div>
             </div>

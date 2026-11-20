@@ -90,8 +90,8 @@ export default function AdminSettingsPage() {
                   settings.razorpayMode === "test" ? "bg-primary-light/50 border-primary" : "bg-surface border-border hover:bg-slate-100"
                 }`}
               >
-                <div className="font-bold text-primary">Test / Sandbox Mode</div>
-                <div className="text-[11px] text-ink-secondary mt-0.5">Mock transactions for development &amp; staging</div>
+                <span className="block font-bold text-primary">Test / Sandbox Mode</span>
+                <span className="block text-[11px] text-ink-secondary mt-0.5">Mock transactions for development &amp; staging</span>
               </button>
 
               <button
@@ -102,8 +102,8 @@ export default function AdminSettingsPage() {
                   settings.razorpayMode === "live" ? "bg-primary-light/50 border-primary" : "bg-surface border-border hover:bg-slate-100"
                 }`}
               >
-                <div className="font-bold text-emerald-800">Production Live Mode</div>
-                <div className="text-[11px] text-ink-secondary mt-0.5">Settles live payments into Acorn Bank account</div>
+                <span className="block font-bold text-emerald-800">Production Live Mode</span>
+                <span className="block text-[11px] text-ink-secondary mt-0.5">Settles live payments into Acorn Bank account</span>
               </button>
             </div>
 

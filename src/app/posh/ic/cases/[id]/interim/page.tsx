@@ -123,10 +123,10 @@ export default function ICInterimReliefPage() {
                   : "bg-white text-ink border-border hover:bg-surface"
               }`}
             >
-              <div className="font-bold">Workplace Transfer</div>
-              <div className="text-[10px] opacity-80 mt-1">
+              <span className="block font-bold">Workplace Transfer</span>
+              <span className="block text-[10px] opacity-80 mt-1">
                 Transfer complainant or respondent to another site (Sec 12(1)(a)).
-              </div>
+              </span>
             </button>
 
             <button
@@ -138,10 +138,10 @@ export default function ICInterimReliefPage() {
                   : "bg-white text-ink border-border hover:bg-surface"
               }`}
             >
-              <div className="font-bold">Paid Leave (Up to 3 Mo.)</div>
-              <div className="text-[10px] opacity-80 mt-1">
+              <span className="block font-bold">Paid Leave (Up to 3 Mo.)</span>
+              <span className="block text-[10px] opacity-80 mt-1">
                 In addition to normal leave entitlements (Sec 12(1)(b)).
-              </div>
+              </span>
             </button>
 
             <button
@@ -153,10 +153,10 @@ export default function ICInterimReliefPage() {
                   : "bg-white text-ink border-border hover:bg-surface"
               }`}
             >
-              <div className="font-bold">Restraining Directive</div>
-              <div className="text-[10px] opacity-80 mt-1">
+              <span className="block font-bold">Restraining Directive</span>
+              <span className="block text-[10px] opacity-80 mt-1">
                 Restrain contact, floor access, and communication.
-              </div>
+              </span>
             </button>
 
             <button
@@ -168,10 +168,10 @@ export default function ICInterimReliefPage() {
                   : "bg-white text-ink border-border hover:bg-surface"
               }`}
             >
-              <div className="font-bold">Appraisal Immunity</div>
-              <div className="text-[10px] opacity-80 mt-1">
+              <span className="block font-bold">Appraisal Immunity</span>
+              <span className="block text-[10px] opacity-80 mt-1">
                 Restrain respondent from reporting on work performance.
-              </div>
+              </span>
             </button>
           </div>
 

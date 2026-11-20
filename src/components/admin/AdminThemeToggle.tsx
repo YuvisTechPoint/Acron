@@ -76,13 +76,13 @@ export function AdminThemeToggle({ compact = false, className = "" }: AdminTheme
           : "bg-white border-border text-slate-700 hover:bg-slate-50 hover:text-primary"
       } ${className}`}
     >
-      <div className="relative w-4 h-4 flex items-center justify-center">
+      <span className="relative w-4 h-4 inline-flex items-center justify-center">
         {isDark ? (
           <Sun className="w-3.5 h-3.5 text-brass-400 animate-fadeIn" />
         ) : (
           <Moon className="w-3.5 h-3.5 text-navy-700 animate-fadeIn" />
         )}
-      </div>
+      </span>
       <span className="font-sans font-medium text-[11px]">
         {isDark ? "Dark Mode" : "Light Mode"}
       </span>

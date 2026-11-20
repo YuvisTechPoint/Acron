@@ -268,10 +268,10 @@ export function Footer() {
                         onClick={() => setShowMapModal(true)}
                         className="w-full inline-flex items-center justify-between gap-2 px-3 py-2.5 min-h-[44px] rounded-md bg-navy-900 hover:bg-navy-800 border border-brass-500/30 text-brass-300 text-xs font-semibold tracking-wide transition group shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass-500"
                       >
-                        <div className="flex items-center gap-2">
+                        <span className="flex items-center gap-2">
                           <span className="w-2 h-2 rounded-full bg-brass-400 animate-pulse" />
                           <span className="text-[11px] font-sans">Chambers Map</span>
-                        </div>
+                        </span>
                         <ExternalLink className="w-3.5 h-3.5 text-brass-400 group-hover:translate-x-0.5 transition-transform" />
                       </button>
                     </div>

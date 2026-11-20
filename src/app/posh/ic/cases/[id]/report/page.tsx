@@ -142,10 +142,10 @@ export default function ICReportPage() {
                     : "bg-white text-ink border-border hover:bg-surface"
                 }`}
               >
-                <div className="font-bold text-sm">Charges Substantiated</div>
-                <div className="text-[11px] opacity-80 mt-1">
+                <span className="block font-bold text-sm">Charges Substantiated</span>
+                <span className="block text-[11px] opacity-80 mt-1">
                   Harassment established; recommend disciplinary action and Sec 15 compensation.
-                </div>
+                </span>
               </button>
 
               <button
@@ -157,10 +157,10 @@ export default function ICReportPage() {
                     : "bg-white text-ink border-border hover:bg-surface"
                 }`}
               >
-                <div className="font-bold text-sm">Not Substantiated</div>
-                <div className="text-[11px] opacity-80 mt-1">
+                <span className="block font-bold text-sm">Not Substantiated</span>
+                <span className="block text-[11px] opacity-80 mt-1">
                   Insufficient evidence; recommend that no action be taken against respondent.
-                </div>
+                </span>
               </button>
 
               <button
@@ -172,10 +172,10 @@ export default function ICReportPage() {
                     : "bg-white text-ink border-border hover:bg-surface"
                 }`}
               >
-                <div className="font-bold text-sm">Conciliation Settlement</div>
-                <div className="text-[11px] opacity-80 mt-1">
+                <span className="block font-bold text-sm">Conciliation Settlement</span>
+                <span className="block text-[11px] opacity-80 mt-1">
                   Matter disposed under Section 10 terms with employer recording.
-                </div>
+                </span>
               </button>
             </div>
 

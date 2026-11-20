@@ -450,7 +450,7 @@ export function LegalGuidanceAssistant() {
           aria-label="Open Statutory Guidance Support Desk"
         >
           {/* Custom Statutory Guidance Badge Icon */}
-          <div className="relative w-full h-full rounded-full overflow-hidden flex items-center justify-center bg-navy-950">
+          <span className="relative w-full h-full rounded-full overflow-hidden flex items-center justify-center bg-navy-950">
             <Image
               src="/brand/statutory-guidance-icon.png"
               alt="Statutory Guidance"
@@ -459,7 +459,7 @@ export function LegalGuidanceAssistant() {
               priority
               className="w-full h-full object-cover select-none group-hover:scale-105 transition-transform duration-200"
             />
-          </div>
+          </span>
 
           {/* Hover Tooltip Label */}
           <span className="pointer-events-none absolute right-full mr-3.5 top-1/2 -translate-y-1/2 px-3 py-1.5 rounded-md bg-navy-950/95 backdrop-blur-sm text-ivory-50 text-xs font-semibold tracking-wide border border-brass-500/40 shadow-xl opacity-0 group-hover:opacity-100 transition-all duration-200 whitespace-nowrap translate-x-2 group-hover:translate-x-0">

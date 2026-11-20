@@ -470,12 +470,13 @@ export default function HomePage() {
             {bannerSlides.map((_, idx) => (
               <button
                 key={idx}
+                type="button"
                 onClick={() => setCurrentMobileSlide(idx)}
                 aria-label={`Go to slide ${idx + 1}`}
                 className={`transition-all duration-300 rounded-full cursor-pointer p-1 -m-0.5 ${
                   currentMobileSlide === idx ? "w-4 h-1.5 bg-brass-400" : "w-1.5 h-1.5 bg-white/50 hover:bg-white"
                 }`}
-              />
+              ></button>
             ))}
           </div>
         </div>
@@ -1216,7 +1217,7 @@ export default function HomePage() {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
 
             {/* Accordion on Left (7 cols) */}
-            <div className="lg:col-span-7 space-y-8">
+            <div className="lg:col-span-7 space-y-8" suppressHydrationWarning>
               <SectionHeading
                 eyebrow="CLARITY &amp; PROCEDURE"
                 title="Frequently Asked Questions"

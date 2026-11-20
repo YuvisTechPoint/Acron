@@ -157,12 +157,12 @@ export default function SectorOverlaysPage() {
                 }`}
               >
                 <Icon className={`w-6 h-6 mb-3 ${isSelected ? 'text-gold' : 'text-primary'}`} />
-                <div>
-                  <div className="font-bold text-xs leading-snug">{s.name}</div>
-                  <div className={`text-[10px] mt-1 font-mono ${isSelected ? 'text-slate-200' : 'text-slate-500'}`}>
+                <span className="block">
+                  <span className="block font-bold text-xs leading-snug">{s.name}</span>
+                  <span className={`block text-[10px] mt-1 font-mono ${isSelected ? 'text-slate-200' : 'text-slate-500'}`}>
                     {s.code}
-                  </div>
-                </div>
+                  </span>
+                </span>
               </button>
             );
           })}

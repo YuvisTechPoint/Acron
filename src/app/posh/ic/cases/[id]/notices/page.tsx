@@ -140,10 +140,10 @@ export default function ICNoticesPage() {
                   : "bg-white text-ink border-border hover:bg-surface"
               }`}
             >
-              <div className="font-bold">Section 11 Notice to Respondent</div>
-              <div className="text-[11px] opacity-80 mt-1">
+              <span className="block font-bold">Section 11 Notice to Respondent</span>
+              <span className="block text-[11px] opacity-80 mt-1">
                 Serves complaint copy; sets 10-day reply timer.
-              </div>
+              </span>
             </button>
 
             <button
@@ -155,10 +155,10 @@ export default function ICNoticesPage() {
                   : "bg-white text-ink border-border hover:bg-surface"
               }`}
             >
-              <div className="font-bold">Sec 11(3) CPC Witness Summons</div>
-              <div className="text-[11px] opacity-80 mt-1">
+              <span className="block font-bold">Sec 11(3) CPC Witness Summons</span>
+              <span className="block text-[11px] opacity-80 mt-1">
                 Compels attendance &amp; document production.
-              </div>
+              </span>
             </button>
 
             <button
@@ -170,10 +170,10 @@ export default function ICNoticesPage() {
                   : "bg-white text-ink border-border hover:bg-surface"
               }`}
             >
-              <div className="font-bold">Oral Hearing Notice</div>
-              <div className="text-[11px] opacity-80 mt-1">
+              <span className="block font-bold">Oral Hearing Notice</span>
+              <span className="block text-[11px] opacity-80 mt-1">
                 Notice of deposition date, time &amp; chamber venue.
-              </div>
+              </span>
             </button>
           </div>
 

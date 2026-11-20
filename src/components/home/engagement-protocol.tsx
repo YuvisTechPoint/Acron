@@ -251,8 +251,8 @@ export function EngagementProtocol({ steps }: EngagementProtocolProps) {
                           : "bg-surface border border-border text-ink-muted"
                       }`}
                     >
-                      <div className="text-[11px] font-mono leading-none">{isPast ? "✓" : st.num}</div>
-                      <div className="text-[8.5px] truncate mt-0.5">{st.title}</div>
+                      <span className="block text-[11px] font-mono leading-none">{isPast ? "✓" : st.num}</span>
+                      <span className="block text-[8.5px] truncate mt-0.5">{st.title}</span>
                     </button>
                   );
                 })}
