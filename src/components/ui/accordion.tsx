@@ -27,8 +27,8 @@ export function Accordion({
   );
 
   useEffect(() => {
-    if (defaultOpenId && openIds.length === 0) {
-      setOpenIds([defaultOpenId]);
+    if (defaultOpenId) {
+      setOpenIds((prev) => (prev.length === 0 ? [defaultOpenId] : prev));
     }
   }, [defaultOpenId]);
 
