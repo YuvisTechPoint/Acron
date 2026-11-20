@@ -139,40 +139,27 @@ export function Navbar() {
 
   return (
     <>
-      {/* 1. Mobile Top Notice Ribbon (vibemusic pattern: persistent on mobile) */}
+      {/* Chambers Rolling Ticker Ribbon (Blue background with crisp white rolling text on both mobile and desktop) */}
       <div
-        className="lg:hidden fixed top-0 left-0 right-0 z-50 h-7 bg-navy-950 border-b border-navy-800 flex items-center justify-between px-3 text-[10.5px] font-medium text-brass-300 select-none shadow-xs"
-        aria-label="Chambers Mobile Notice Ribbon"
-      >
-        <div className="flex items-center gap-1.5 truncate">
-          <ShieldCheck className="w-3.5 h-3.5 text-brass-400 shrink-0" />
-          <span className="truncate">100% Privileged &amp; Confidential</span>
-        </div>
-        <div className="flex items-center gap-1.5 shrink-0 pl-2 text-slate-300">
-          <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
-          <span>15+ Yrs Bar Practice</span>
-        </div>
-      </div>
-
-      {/* 2. Desktop Scrolled Top Chambers Ticker Ribbon */}
-      <div
-        className={`hidden lg:block fixed top-0 left-0 right-0 z-50 border-b border-navy-800/80 bg-ink-950 overflow-hidden select-none transition-all duration-300 ${
-          scrolled ? "h-7 opacity-100 translate-y-0" : "h-0 opacity-0 -translate-y-full pointer-events-none"
+        className={`fixed top-0 left-0 right-0 z-50 border-b border-navy-600/50 bg-navy-700 overflow-hidden select-none shadow-xs transition-all duration-300 ${
+          scrolled
+            ? "h-7 opacity-100 translate-y-0"
+            : "h-7 opacity-100 translate-y-0 lg:h-0 lg:opacity-0 lg:-translate-y-full lg:pointer-events-none"
         }`}
-        aria-label="Chambers Scrolled Header Ribbon"
+        aria-label="Chambers Rolling Ticker Ribbon"
       >
         <div className="footer-ticker-track flex items-center h-full">
-          <div className="flex shrink-0 items-center gap-8 px-4 text-[11px] font-serif italic text-brass-300 tracking-wider">
-            <span suppressHydrationWarning>{siteConfig?.footerRollText || "Excellence in Law • Integrity in Practice • Calcutta High Court • POSH Act Advisory • Corporate Governance • Commercial Contracts • Arbitration & Mediation"}</span>
-            <span className="text-brass-500/60 not-italic">✦</span>
-            <span suppressHydrationWarning>{siteConfig?.footerRollText || "Excellence in Law • Integrity in Practice • Calcutta High Court • POSH Act Advisory • Corporate Governance • Commercial Contracts • Arbitration & Mediation"}</span>
-            <span className="text-brass-500/60 not-italic">✦</span>
+          <div className="flex shrink-0 items-center gap-6 sm:gap-8 px-3 sm:px-4 text-[10.5px] sm:text-[11px] font-serif italic text-white tracking-wider">
+            <span suppressHydrationWarning>{siteConfig?.footerRollText || "Over 15 Years of Practice • Educational, Tax & Legal Consultants • Civil, Criminal & Property Matters • MahaRERA & Title Search • Document Attestation & Apostille • Marriage Registration & Succession"}</span>
+            <span className="text-white/60 not-italic">✦</span>
+            <span suppressHydrationWarning>{siteConfig?.footerRollText || "Over 15 Years of Practice • Educational, Tax & Legal Consultants • Civil, Criminal & Property Matters • MahaRERA & Title Search • Document Attestation & Apostille • Marriage Registration & Succession"}</span>
+            <span className="text-white/60 not-italic">✦</span>
           </div>
-          <div className="flex shrink-0 items-center gap-8 px-4 text-[11px] font-serif italic text-brass-300 tracking-wider" aria-hidden="true">
-            <span suppressHydrationWarning>{siteConfig?.footerRollText || "Excellence in Law • Integrity in Practice • Calcutta High Court • POSH Act Advisory • Corporate Governance • Commercial Contracts • Arbitration & Mediation"}</span>
-            <span className="text-brass-500/60 not-italic">✦</span>
-            <span suppressHydrationWarning>{siteConfig?.footerRollText || "Excellence in Law • Integrity in Practice • Calcutta High Court • POSH Act Advisory • Corporate Governance • Commercial Contracts • Arbitration & Mediation"}</span>
-            <span className="text-brass-500/60 not-italic">✦</span>
+          <div className="flex shrink-0 items-center gap-6 sm:gap-8 px-3 sm:px-4 text-[10.5px] sm:text-[11px] font-serif italic text-white tracking-wider" aria-hidden="true">
+            <span suppressHydrationWarning>{siteConfig?.footerRollText || "Over 15 Years of Practice • Educational, Tax & Legal Consultants • Civil, Criminal & Property Matters • MahaRERA & Title Search • Document Attestation & Apostille • Marriage Registration & Succession"}</span>
+            <span className="text-white/60 not-italic">✦</span>
+            <span suppressHydrationWarning>{siteConfig?.footerRollText || "Over 15 Years of Practice • Educational, Tax & Legal Consultants • Civil, Criminal & Property Matters • MahaRERA & Title Search • Document Attestation & Apostille • Marriage Registration & Succession"}</span>
+            <span className="text-white/60 not-italic">✦</span>
           </div>
         </div>
       </div>
@@ -189,7 +176,7 @@ export function Navbar() {
         className={`fixed left-0 right-0 z-40 transition-all duration-300 ${
           scrolled
             ? "top-7 h-[62px] lg:top-7 lg:h-[72px]"
-            : "top-0 h-[62px] lg:top-0 lg:h-[84px]"
+            : "top-7 h-[62px] lg:top-0 lg:h-[84px]"
         } ${
           isTransparent
             ? "bg-white text-ink-950 border-b border-stone-200 lg:bg-transparent lg:text-white lg:border-white/10"
