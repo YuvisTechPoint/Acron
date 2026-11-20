@@ -71,10 +71,10 @@ export default function PoshAssistedIntakePage() {
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
         
         {/* Navigation Breadcrumb */}
-        <div className="flex items-center justify-between border-b border-border pb-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-border pb-4">
           <Link
             href="/posh"
-            className="inline-flex items-center gap-2 text-xs font-semibold text-ink-secondary hover:text-navy-900 transition-colors"
+            className="inline-flex items-center gap-2 text-xs font-semibold text-ink-secondary hover:text-navy-900 transition-colors min-h-[44px] px-2 -ml-2 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-navy-900"
           >
             <ArrowLeft className="w-3.5 h-3.5" />
             <span>&larr; Back to POSH Redressal Hub</span>

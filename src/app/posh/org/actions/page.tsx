@@ -52,16 +52,16 @@ export default function PoshOrgActionsPage() {
     <div className="bg-ivory-50 min-h-screen py-10 text-ink">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 space-y-8">
         {/* Navigation Breadcrumb */}
-        <div className="flex items-center justify-between border-b border-border pb-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-border pb-4">
           <Link
             href="/posh/org"
-            className="inline-flex items-center gap-2 text-xs font-semibold text-ink-secondary hover:text-primary transition-colors"
+            className="inline-flex items-center gap-2 text-xs font-semibold text-ink-secondary hover:text-primary transition-colors min-h-[44px] px-2 -ml-2 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
           >
             <ArrowLeft className="w-3.5 h-3.5" />
             <span>&larr; Back to Organisation Console ({activeOrg.name})</span>
           </Link>
           <div className="flex items-center gap-3 text-xs">
-            <Link href="/posh/org/reports" className="text-primary font-semibold hover:underline">
+            <Link href="/posh/org/reports" className="text-primary font-semibold hover:underline min-h-[44px] flex items-center px-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded">
               Annual Reports (O-07) &rarr;
             </Link>
           </div>
