@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Suspense } from "react";
 import { Cormorant_Garamond, Inter } from "next/font/google";
 import "./globals.css";
@@ -14,6 +14,7 @@ import { CleanCopyHandler } from "@/components/clean-copy-handler";
 import { ChunkRecovery } from "@/components/chunk-recovery";
 import { Providers } from "@/components/providers";
 import { AnalyticsTracker } from "@/components/analytics-tracker";
+import { PWARegister } from "@/components/pwa-register";
 
 const cormorant = Cormorant_Garamond({
   subsets: ["latin"],
@@ -29,6 +30,10 @@ const inter = Inter({
   variable: "--font-inter",
   display: "swap",
 });
+
+export const viewport: Viewport = {
+  themeColor: "#1F3864",
+};
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://acornconsultants.in"),
@@ -60,6 +65,7 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "https://acornconsultants.in",
   },
+  manifest: "/manifest.json",
   openGraph: {
     title: "Acorn Consultants | Educational, Tax & Legal Services",
     description: "Over 15 years of expertise in Educational, Tax & Legal Services. Work done well, with a personal touch.",
@@ -231,6 +237,7 @@ export default function RootLayout({
       </head>
       <body suppressHydrationWarning className="min-h-screen flex flex-col bg-ivory-50 text-ink antialiased font-sans selection:bg-brass-300/30">
         <Providers>
+          <PWARegister />
           <ChunkRecovery />
           <Suspense fallback={null}>
             <AnalyticsTracker />

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Offline Assistance | Acorn Legal Consultants</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: #FBF9F4;
+      color: #1B1F27;
+      margin: 0;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      text-align: center;
+    }
+    .card {
+      background: #FFFFFF;
+      border: 1px solid #E2E8F0;
+      border-radius: 12px;
+      padding: 32px;
+      max-width: 520px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+    }
+    h1 {
+      font-size: 22px;
+      color: #1F3864;
+      margin-bottom: 8px;
+    }
+    p {
+      color: #5B6573;
+      font-size: 14px;
+      line-height: 1.6;
+      margin-bottom: 24px;
+    }
+    .emergency-list {
+      text-align: left;
+      background: #F8FAFC;
+      border-left: 4px solid #1F3864;
+      padding: 16px;
+      border-radius: 6px;
+      margin-bottom: 24px;
+    }
+    .emergency-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 6px 0;
+      font-size: 13px;
+      border-bottom: 1px dashed #E2E8F0;
+    }
+    .emergency-item:last-child {
+      border-bottom: none;
+    }
+    .emergency-item strong {
+      color: #1F3864;
+    }
+    .btn {
+      display: inline-block;
+      background: #1F3864;
+      color: #FFFFFF;
+      padding: 10px 20px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <img src="/brand/logo.png" alt="Acorn Legal" style="width: 56px; height: 56px; margin-bottom: 16px;" />
+    <h1>You are currently offline</h1>
+    <p>The network connection is unavailable. Essential statutory helplines and Chambers contact numbers are preserved below for your immediate safety.</p>
+
+    <div class="emergency-list">
+      <div class="emergency-item">
+        <span>National Women Helpline:</span>
+        <strong>181 (Toll-Free, 24x7)</strong>
+      </div>
+      <div class="emergency-item">
+        <span>Police & National Emergency:</span>
+        <strong>112 (Pan-India)</strong>
+      </div>
+      <div class="emergency-item">
+        <span>NALSA Legal Aid Helpline:</span>
+        <strong>15100</strong>
+      </div>
+      <div class="emergency-item">
+        <span>Tele-MANAS Mental Health:</span>
+        <strong>14416 (24x7)</strong>
+      </div>
+      <div class="emergency-item">
+        <span>Chambers Senior Counsel Desk:</span>
+        <strong>+91 8369171822</strong>
+      </div>
+    </div>
+
+    <a href="/" class="btn" onclick="window.location.reload(); return false;">Retry Connection</a>
+  </div>
+</body>
+</html>

@@ -450,6 +450,55 @@ async function runUnitTests() {
     assert(false, `Admin Legal Governance test failed: ${err.message}`);
   }
 
+  // =========================================================================
+  // 6. Phase 7 Statutory Remedies, Sector Overlays & Multi-Channel Engine
+  // =========================================================================
+  console.log("\n--- 6. Phase 7 Gap Closure, Sector Overlays & PWA Infrastructure ---");
+
+  try {
+    const smsModule = loadTsModule("src/lib/sms-whatsapp.ts");
+
+    // 6.1 Content-Free Notification Dispatch (Constitution Rule 3)
+    const cleanMsg = "[Acorn Portal] Notice for Docket CASE-2026-089 (ORG-TCS-01): Status update recorded.";
+    assert(
+      smsModule.validateRule3Compliance(cleanMsg) === true,
+      "Multi-channel SMS/WhatsApp engine passes valid content-free template"
+    );
+
+    let caughtViolation = false;
+    try {
+      smsModule.validateRule3Compliance("Notice regarding sexual harassment allegation against manager.");
+    } catch (e) {
+      caughtViolation = e.message.includes("CONSTITUTION RULE 3 VIOLATION");
+    }
+    assert(
+      caughtViolation,
+      "Multi-channel notification engine strictly rejects forbidden personal or case narrative words"
+    );
+
+    // 6.2 Progressive Web App Manifest & Service Worker Integrity
+    const manifestPath = path.resolve("public/manifest.json");
+    assert(fs.existsSync(manifestPath), "PWA manifest.json exists in public/");
+
+    const manifestJson = JSON.parse(fs.readFileSync(manifestPath, "utf8"));
+    assert(
+      manifestJson.display === "standalone" && manifestJson.theme_color === "#1F3864",
+      "PWA manifest enforces standalone display mode and Acorn #1F3864 brand theme"
+    );
+
+    const swPath = path.resolve("public/sw.js");
+    assert(fs.existsSync(swPath), "Service worker sw.js exists with offline fallback");
+
+    const offlinePath = path.resolve("public/offline.html");
+    const offlineContent = fs.readFileSync(offlinePath, "utf8");
+    assert(
+      offlineContent.includes("181") && offlineContent.includes("112") && offlineContent.includes("15100"),
+      "Offline fallback preserves statutory emergency helplines (181, 112, 15100)"
+    );
+  } catch (err) {
+    assert(false, `Phase 7 infrastructure tests failed: ${err.message}`);
+  }
+
   // Summary
   console.log("\n=================================================");
   console.log(`Unit Test Suite Results: ${passed} passed, ${failed} failed.`);

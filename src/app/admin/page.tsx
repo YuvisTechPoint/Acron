@@ -19,6 +19,9 @@ import {
   ClipboardList,
   AlertTriangle,
   Server,
+  Layers,
+  FlaskConical,
+  FileCheck2,
 } from "lucide-react";
 import { platformStore } from "@/lib/store";
 import {
@@ -396,6 +399,39 @@ export default function AdminDashboardPage() {
             <div>
               <div className="font-semibold text-ink">Tamper-Evident Audit Log</div>
               <div className="text-[11px] text-ink-secondary">System-wide operational tracking</div>
+            </div>
+          </Link>
+
+          <Link
+            href="/posh/admin/overlays"
+            className="p-4 bg-white rounded border border-border hover:bg-surface transition-colors flex items-center gap-3 text-xs"
+          >
+            <Layers className="w-5 h-5 text-navy-700" />
+            <div>
+              <div className="font-semibold text-ink">Sector Overlays (SCT-01–17)</div>
+              <div className="text-[11px] text-ink-secondary">Dual-approved regulatory matrices</div>
+            </div>
+          </Link>
+
+          <Link
+            href="/admin/legal/sandbox"
+            className="p-4 bg-white rounded border border-border hover:bg-surface transition-colors flex items-center gap-3 text-xs"
+          >
+            <FlaskConical className="w-5 h-5 text-amber-700" />
+            <div>
+              <div className="font-semibold text-ink">Amendment Sandbox (LAW-37)</div>
+              <div className="text-[11px] text-ink-secondary">40-scenario statutory simulation</div>
+            </div>
+          </Link>
+
+          <Link
+            href="/admin/contracts"
+            className="p-4 bg-white rounded border border-border hover:bg-surface transition-colors flex items-center gap-3 text-xs"
+          >
+            <FileCheck2 className="w-5 h-5 text-emerald-700" />
+            <div>
+              <div className="font-semibold text-ink">Contracts &amp; Offboarding</div>
+              <div className="text-[11px] text-ink-secondary">MSAs, KMS key revocation &amp; seals</div>
             </div>
           </Link>
         </div>

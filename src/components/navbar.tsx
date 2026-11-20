@@ -747,6 +747,7 @@ export function Navbar() {
                 { name: "About Chambers", href: "/about" },
                 { name: "Practice Areas & Services", href: "/services" },
                 { name: "POSH Compliance Hub", href: "/posh" },
+                { name: "17 Statutory Remedies", href: "/posh/options" },
                 { name: "Insights & Articles", href: "/blog" },
                 { name: "Frequently Asked Questions", href: "/faq" },
                 { name: "Contact Chambers", href: "/contact" },

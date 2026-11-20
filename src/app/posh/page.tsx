@@ -173,6 +173,14 @@ export default function PoshPage() {
                 >
                   Report a concern privately
                 </Button>
+                <Button
+                  variant="secondary"
+                  size="md"
+                  href="/posh/options"
+                  arrow
+                >
+                  17 Statutory Remedies
+                </Button>
               </div>
 
               <div className="pt-6 border-t border-border/80 flex items-center gap-2 text-xs text-ink-secondary">
