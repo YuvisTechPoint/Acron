@@ -41,6 +41,7 @@ import {
   LineReveal,
   GoverningPrincipleScrollReveal,
 } from "@/components/ui";
+import { FooterChambersDispatch } from "@/components/footer-chambers-dispatch";
 
 const ICON_MAP: Record<string, React.ReactNode> = {
   Briefcase: <Briefcase className="w-5 h-5 text-brass-500" />,
@@ -1319,38 +1320,49 @@ export default function HomePage() {
         {/* Soft radial brass glow */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-brass-500/10 rounded-full blur-[140px] pointer-events-none" />
 
-        <div className="max-w-[960px] mx-auto px-4 sm:px-6 text-center relative z-10 space-y-8">
-          {/* Subtle Arch Icon Accent */}
-          <div className="w-12 h-12 rounded-t-full border-t-2 border-x-2 border-brass-500/50 mx-auto flex items-end justify-center pb-1">
-            <span className="w-1.5 h-1.5 rounded-full bg-brass-500" />
+        <div className="max-w-[1080px] mx-auto px-4 sm:px-6 relative z-10 space-y-12">
+          {/* Top Block: Intake Invitation */}
+          <div className="text-center space-y-4 max-w-2xl mx-auto">
+            {/* Subtle Arch Icon Accent */}
+            <div className="w-12 h-12 rounded-t-full border-t-2 border-x-2 border-brass-500/50 mx-auto flex items-end justify-center pb-1">
+              <span className="w-1.5 h-1.5 rounded-full bg-brass-500" />
+            </div>
+
+            <Eyebrow dark className="justify-center">CONFIDENTIAL INTAKE</Eyebrow>
+
+            <h2 className="font-serif text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-white leading-[1.08]">
+              Let us understand your <span className="font-serif italic font-normal text-brass-300">matter</span>.
+            </h2>
+
+            <p className="font-sans text-base sm:text-lg text-slate-300 max-w-xl mx-auto leading-relaxed">
+              Reach out to our chambers in Kolkata. We respond to every formal inquiry with absolute discretion, precision, and commercial clarity.
+            </p>
           </div>
 
-          <Eyebrow dark className="justify-center">CONFIDENTIAL INTAKE</Eyebrow>
-
-          <h2 className="font-serif text-4xl sm:text-6xl font-bold tracking-tight text-white leading-[1.08]">
-            Let us understand your <span className="font-serif italic font-normal text-brass-300">matter</span>.
-          </h2>
-
-          <p className="font-sans text-base sm:text-lg text-slate-300 max-w-xl mx-auto leading-relaxed">
-            Reach out to our chambers in Kolkata. We respond to every formal inquiry with absolute discretion, precision, and commercial clarity.
-          </p>
-
-          <div className="pt-4 flex flex-wrap items-center justify-center gap-5">
-            <Button variant="dark-primary" size="lg" href="/request-service" arrow>
-              Request a Consultation
-            </Button>
-
-            <a
-              href={`tel:${BRAND_CONFIG.phone}`}
-              className="inline-flex items-center gap-2 px-6 h-[52px] rounded-btn border border-brass-500/40 text-ivory-50 text-sm font-semibold tracking-wide hover:bg-white/10 transition"
-            >
-              <Phone className="w-4 h-4 text-brass-300" />
-              <span>Call: {BRAND_CONFIG.phone}</span>
-            </a>
+          {/* Newsletter / Chambers Dispatch Embedded Between Headline and Contact */}
+          <div className="max-w-4xl mx-auto">
+            <FooterChambersDispatch />
           </div>
 
-          <div className="pt-8 text-xs text-slate-400">
-            Suite 4B, Camac Court, 25 Camac Street, Kolkata 700016 &bull; Strict Bar Council Compliance
+          {/* Bottom Block: Call & Consultation Actions + Bar Council Address */}
+          <div className="text-center pt-2 space-y-6">
+            <div className="flex flex-wrap items-center justify-center gap-5">
+              <Button variant="dark-primary" size="lg" href="/request-service" arrow>
+                Request a Consultation
+              </Button>
+
+              <a
+                href={`tel:${BRAND_CONFIG.phone}`}
+                className="inline-flex items-center gap-2 px-6 h-[52px] rounded-btn border border-brass-500/40 text-ivory-50 text-sm font-semibold tracking-wide hover:bg-white/10 transition"
+              >
+                <Phone className="w-4 h-4 text-brass-300" />
+                <span>Call: {BRAND_CONFIG.phone}</span>
+              </a>
+            </div>
+
+            <div className="text-xs text-slate-400 tracking-wide">
+              Suite 4B, Camac Court, 25 Camac Street, Kolkata 700016 &bull; Strict Bar Council Compliance
+            </div>
           </div>
         </div>
       </section>
