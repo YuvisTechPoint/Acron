@@ -1278,9 +1278,16 @@ export default function HomePage() {
         <div className="max-w-[1080px] mx-auto px-4 sm:px-6 relative z-10 space-y-12">
           {/* Top Block: Intake Invitation */}
           <div className="text-center space-y-4 max-w-2xl mx-auto">
-            {/* Subtle Arch Icon Accent */}
-            <div className="w-12 h-12 rounded-t-full border-t-2 border-x-2 border-brass-500/50 mx-auto flex items-end justify-center pb-1">
-              <span className="w-1.5 h-1.5 rounded-full bg-brass-500" />
+            {/* Official Acorn Logo Emblem */}
+            <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-xl overflow-hidden mx-auto border border-brass-500/40 shadow-[0_4px_24px_rgba(0,0,0,0.6)] bg-navy-950 p-1 flex items-center justify-center transition-transform hover:scale-105 duration-300">
+              <Image
+                src="/brand/logo.png"
+                alt="Acorn Legal Consultants Crest"
+                width={80}
+                height={80}
+                className="w-full h-full object-contain"
+                priority
+              />
             </div>
 
             <Eyebrow dark className="justify-center">CONFIDENTIAL INTAKE</Eyebrow>
