@@ -42,6 +42,7 @@ import {
   GoverningPrincipleScrollReveal,
 } from "@/components/ui";
 import { FooterChambersDispatch } from "@/components/footer-chambers-dispatch";
+import { EngagementProtocol } from "@/components/home/engagement-protocol";
 
 const ICON_MAP: Record<string, React.ReactNode> = {
   Briefcase: <Briefcase className="w-5 h-5 text-brass-500" />,
@@ -260,7 +261,6 @@ const ROLLING_TRUST_ITEMS = [
 ];
 
 export default function HomePage() {
-  const [activeStep, setActiveStep] = useState(0);
   const [currentMobileSlide, setCurrentMobileSlide] = useState(0);
   const [touchStartX, setTouchStartX] = useState<number | null>(null);
   const [isRollingPaused, setIsRollingPaused] = useState(false);
@@ -1025,73 +1025,8 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 4. HOW WE WORK: Sticky-left, scrolling-right layout with 5 steps */}
-      <section className="bg-ivory-50 py-24 sm:py-32 border-b border-border">
-        <div className="max-w-[1240px] mx-auto px-4 sm:px-6">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
-
-            {/* Sticky Left Column (Spans 5 cols) */}
-            <div className="lg:col-span-5 lg:sticky lg:top-32 space-y-6">
-              <Eyebrow>ENGAGEMENT PROTOCOL</Eyebrow>
-              <h2 className="font-serif text-3xl sm:text-5xl font-bold text-ink-950 leading-[1.12]">
-                How We Work: A <span className="font-serif italic font-normal text-brass-700">Disciplined</span> Pathway.
-              </h2>
-              <p className="font-sans text-base text-ink-secondary leading-relaxed">
-                From privileged intake to final resolution, every step follows a structured methodology to safeguard legal interests and maintain strict fiduciary accountability.
-              </p>
-
-              <div className="pt-2">
-                <Button variant="primary" href="/request-service" arrow>
-                  Initiate an Engagement
-                </Button>
-              </div>
-
-              {/* Progress Indicator */}
-              <div className="pt-8 border-t border-border hidden lg:block">
-                <div className="text-xs uppercase tracking-wider text-ink-muted mb-2">
-                  Progressive Stage
-                </div>
-                <div className="w-full h-1 bg-border rounded-full overflow-hidden">
-                  <div
-                    className="h-full bg-brass-500 transition-all duration-300"
-                    style={{ width: `${((activeStep + 1) / steps.length) * 100}%` }}
-                  />
-                </div>
-              </div>
-            </div>
-
-            {/* Scrolling Right Column (Spans 7 cols) - Interactive & Clickable */}
-            <div className="lg:col-span-7 space-y-6">
-              {steps.map((step, idx) => (
-                <div
-                  key={step.num || idx}
-                  onClick={() => setActiveStep(idx)}
-                  onMouseEnter={() => setActiveStep(idx)}
-                  className={`p-6 sm:p-8 rounded-card border transition-all duration-200 cursor-pointer ${activeStep === idx
-                    ? "bg-white border-brass-500/50 shadow-card"
-                    : "bg-surface/60 border-border hover:bg-white"
-                    }`}
-                >
-                  <div className="flex items-start gap-4">
-                    <span className="font-serif text-3xl sm:text-4xl font-bold text-brass-700 shrink-0">
-                      {step.num}
-                    </span>
-                    <div className="space-y-2">
-                      <h3 className="font-serif text-2xl font-bold text-ink-950">
-                        {step.title}
-                      </h3>
-                      <p className="font-sans text-sm sm:text-base text-ink-secondary leading-relaxed">
-                        {step.desc}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-          </div>
-        </div>
-      </section>
+      {/* 4. HOW WE WORK: Sticky-left, scrolling-right layout with 5 steps & Scroll-Driven Progressive Stage */}
+      <EngagementProtocol steps={steps} />
 
       {/* 5. WHY ACORN: Stone background, 3 columns, principle sentences, NO statistics - Fully Clickable */}
       <section className="bg-stone-100 py-24 sm:py-32 border-b border-border">
