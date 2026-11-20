@@ -741,23 +741,23 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 2. PHILOSOPHY STRIP: ivory background, one large centred serif statement */}
-      <section className="bg-ivory-50 py-24 sm:py-32 border-b border-border relative overflow-hidden">
+      {/* 2. PHILOSOPHY STRIP: ivory background, grand commanding serif statement */}
+      <section className="bg-ivory-50 py-24 sm:py-36 lg:py-44 border-b border-border relative overflow-hidden">
         {/* Low contrast section numeral watermark */}
         <div
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 font-serif text-[clamp(6rem,20vw,16rem)] font-bold text-navy-700/[0.03] select-none pointer-events-none leading-none"
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 font-serif text-[clamp(8rem,30vw,28rem)] font-bold text-navy-700/[0.03] select-none pointer-events-none leading-none"
           aria-hidden="true"
         >
           01
         </div>
 
-        <div className="max-w-[1040px] mx-auto px-4 sm:px-6 text-center relative z-10 space-y-6">
+        <div className="max-w-[1440px] xl:max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-12 text-center relative z-10 space-y-8 sm:space-y-10">
           <Eyebrow className="justify-center">OUR GOVERNING PRINCIPLE</Eyebrow>
 
           <GoverningPrincipleScrollReveal />
 
           <div className="pt-4 flex justify-center">
-            <div className="w-16 h-[2px] bg-brass-500" />
+            <div className="w-24 sm:w-32 h-[2.5px] bg-brass-500 rounded-full" />
           </div>
         </div>
       </section>

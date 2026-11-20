@@ -162,7 +162,7 @@ export function GoverningPrincipleScrollReveal({
   return (
     <p
       ref={containerRef}
-      className={`font-serif text-2xl sm:text-4xl md:text-6xl font-medium leading-[1.28] tracking-tight text-center select-text transition-colors ${className}`}
+      className={`font-serif text-3xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-[76px] 2xl:text-[88px] font-medium leading-[1.18] sm:leading-[1.16] lg:leading-[1.12] tracking-tight text-center select-text transition-colors max-w-full ${className}`}
       aria-label="“To protect what matters, navigate complexity with confidence, and uphold the highest standards of professional integrity.”"
     >
       {GOVERNING_QUOTE_WORDS.map((item, index) => {
