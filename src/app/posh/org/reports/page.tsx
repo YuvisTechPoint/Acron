@@ -120,32 +120,38 @@ export default function PoshOrgReportsPage() {
               </p>
             </div>
 
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap gap-2.5">
               <label htmlFor="report-year" className="sr-only">Select Report Calendar Year</label>
-              <select
-                id="report-year"
-                value={reportYear}
-                onChange={(e) => setReportYear(e.target.value)}
-                className="px-3 py-2 min-h-[44px] bg-white border border-border rounded text-xs font-semibold text-ink shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
-              >
-                <option value="2026">Calendar Year 2026</option>
-                <option value="2025">Calendar Year 2025</option>
-                <option value="2024">Calendar Year 2024</option>
-              </select>
+              <div className="relative inline-flex items-center">
+                <Calendar className="w-4 h-4 text-brass-700 absolute left-3 pointer-events-none" />
+                <select
+                  id="report-year"
+                  value={reportYear}
+                  onChange={(e) => setReportYear(e.target.value)}
+                  className="pl-9 pr-8 py-2 min-h-[44px] bg-white border border-border rounded-lg text-xs font-semibold text-ink shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary shadow-2xs hover:border-brass-500/60 transition"
+                >
+                  <option value="2026">Calendar Year 2026</option>
+                  <option value="2025">Calendar Year 2025</option>
+                  <option value="2024">Calendar Year 2024</option>
+                </select>
+              </div>
 
               <label htmlFor="org-select-reports" className="sr-only">Select Employer Organisation</label>
-              <select
-                id="org-select-reports"
-                value={selectedOrgId}
-                onChange={(e) => handleOrgChange(e.target.value)}
-                className="px-3 py-2 min-h-[44px] bg-white border border-border rounded text-xs font-semibold text-ink shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
-              >
-                {orgs.map((o) => (
-                  <option key={o.id} value={o.id}>
-                    {o.name}
-                  </option>
-                ))}
-              </select>
+              <div className="relative inline-flex items-center">
+                <Building className="w-4 h-4 text-brass-700 absolute left-3 pointer-events-none" />
+                <select
+                  id="org-select-reports"
+                  value={selectedOrgId}
+                  onChange={(e) => handleOrgChange(e.target.value)}
+                  className="pl-9 pr-8 py-2 min-h-[44px] bg-white border border-border rounded-lg text-xs font-semibold text-ink shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary shadow-2xs hover:border-brass-500/60 transition"
+                >
+                  {orgs.map((o) => (
+                    <option key={o.id} value={o.id}>
+                      {o.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
             </div>
           </div>
         </div>
@@ -189,48 +195,51 @@ export default function PoshOrgReportsPage() {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
-            <div className="bg-white p-4 rounded border border-border space-y-1">
-              <span className="text-ink-secondary">1. Complaints Received (Sec 21(a)):</span>
+            <div className="bg-white p-4 rounded-lg border border-border border-l-4 border-l-primary space-y-1 shadow-2xs hover:shadow-xs transition">
+              <span className="text-ink-secondary font-semibold">1. Complaints Received (Sec 21(a)):</span>
               <div className="font-serif font-bold text-2xl text-primary mt-1">
                 {formatSuppressedCount(statutoryMetrics.received)}
               </div>
-              <div className="text-[10px] text-ink-secondary">
+              <div className="text-[10.5px] text-ink-muted">
                 {isCellSuppressed(statutoryMetrics.received) ? "Small-cell suppressed (< 5)" : "Registered within calendar year"}
               </div>
             </div>
 
-            <div className="bg-white p-4 rounded border border-border space-y-1">
-              <span className="text-ink-secondary">2. Complaints Disposed Of (Sec 21(b)):</span>
+            <div className="bg-white p-4 rounded-lg border border-border border-l-4 border-l-emerald-600 space-y-1 shadow-2xs hover:shadow-xs transition">
+              <span className="text-ink-secondary font-semibold">2. Complaints Disposed Of (Sec 21(b)):</span>
               <div className="font-serif font-bold text-2xl text-emerald-700 mt-1">
                 {formatSuppressedCount(statutoryMetrics.disposed)}
               </div>
-              <div className="text-[10px] text-ink-secondary">
+              <div className="text-[10.5px] text-emerald-700 font-medium">
                 {isCellSuppressed(statutoryMetrics.disposed) ? "Small-cell suppressed (< 5)" : "Findings reports concluded"}
               </div>
             </div>
 
-            <div className="bg-white p-4 rounded border border-border space-y-1">
-              <span className="text-ink-secondary">3. Cases Pending &gt;90 Days (Sec 21(c)):</span>
+            <div className="bg-white p-4 rounded-lg border border-border border-l-4 border-l-stone-400 space-y-1 shadow-2xs hover:shadow-xs transition">
+              <span className="text-ink-secondary font-semibold">3. Cases Pending &gt;90 Days (Sec 21(c)):</span>
               <div className="font-serif font-bold text-2xl text-ink mt-1">
                 {statutoryMetrics.pendingAbove90}
               </div>
-              <div className="text-[10px] text-emerald-600 font-semibold">Zero statutory delays</div>
+              <div className="text-[10.5px] text-emerald-700 font-semibold flex items-center gap-1">
+                <Check className="w-3 h-3 text-emerald-600" />
+                <span>Zero statutory delays</span>
+              </div>
             </div>
 
-            <div className="bg-white p-4 rounded border border-border space-y-1">
-              <span className="text-ink-secondary">4. Awareness Workshops Conducted (Sec 21(d)):</span>
-              <div className="font-serif font-bold text-2xl text-primary mt-1">
+            <div className="bg-white p-4 rounded-lg border border-border border-l-4 border-l-brass-500 space-y-1 shadow-2xs hover:shadow-xs transition">
+              <span className="text-ink-secondary font-semibold">4. Awareness Workshops Conducted (Sec 21(d)):</span>
+              <div className="font-serif font-bold text-2xl text-brass-700 mt-1">
                 {statutoryMetrics.workshopsConducted}
               </div>
-              <div className="text-[10px] text-ink-secondary">{statutoryMetrics.employeesSensitised} employees trained</div>
+              <div className="text-[10.5px] text-ink-muted">{statutoryMetrics.employeesSensitised} employees sensitised</div>
             </div>
 
-            <div className="bg-white p-4 rounded border border-border space-y-1 sm:col-span-2">
-              <span className="text-ink-secondary">5. Nature of Action Taken by Employer (Sec 21(e)):</span>
-              <div className="font-bold text-ink text-xs mt-1">
+            <div className="bg-white p-4 rounded-lg border border-border border-l-4 border-l-navy-700 space-y-1 sm:col-span-2 shadow-2xs hover:shadow-xs transition">
+              <span className="text-ink-secondary font-semibold">5. Nature of Action Taken by Employer (Sec 21(e)):</span>
+              <div className="font-semibold text-ink text-xs mt-1 leading-relaxed">
                 {statutoryMetrics.employerActionCompleted}
               </div>
-              <div className="text-[10px] text-ink-secondary">Implemented within 60 days per Section 13(4)</div>
+              <div className="text-[10.5px] text-ink-muted">Implemented within 60 days per Section 13(4) statutory mandate</div>
             </div>
           </div>
 
@@ -322,9 +331,9 @@ export default function PoshOrgReportsPage() {
             role="dialog"
             aria-modal="true"
             aria-labelledby="ack-modal-title"
-            className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4 animate-fade-in"
+            className="fixed inset-0 bg-ink-950/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-fade-in"
           >
-            <div className="bg-white rounded-card border border-border shadow-raised max-w-md w-full p-6 space-y-4">
+            <div className="bg-white rounded-xl border border-border shadow-raised max-w-md w-full p-6 space-y-4">
               <div className="flex items-center justify-between border-b border-border pb-3">
                 <h3 id="ack-modal-title" className="font-serif font-bold text-base text-ink">
                   Record DO Filing Acknowledgement
@@ -333,7 +342,7 @@ export default function PoshOrgReportsPage() {
                   type="button"
                   onClick={() => setShowAckModal(false)}
                   aria-label="Close dialog"
-                  className="p-2 min-h-[44px] min-w-[44px] hover:bg-border rounded text-ink-secondary flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                  className="p-2 min-h-[44px] min-w-[44px] hover:bg-stone-100 rounded-lg text-ink-secondary flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary transition"
                 >
                   <X className="w-4 h-4" />
                 </button>

@@ -413,189 +413,117 @@ export default function HomePage() {
         }}
       />
 
-      {/* 1A. MOBILE PHONE HERO & BANNER (vibemusic pattern: < lg screens) */}
-      <section className="block lg:hidden bg-white pt-[89px] border-b border-stone-200">
-        {/* Standalone Visual Banner Carousel Card (aspect 16:9, clean imagery, arrows & indicators) */}
+      {/* 1A. MOBILE PHONE HERO: Integrated High-End Luxury Editorial (< lg screens) */}
+      <section className="block lg:hidden relative bg-navy-950 text-white pt-[76px] pb-10 border-b border-navy-800/80 overflow-hidden">
+        {/* Full atmospheric background image with smooth slide cross-fade */}
         <div
-          className="relative w-full aspect-[16/9] sm:aspect-[2/1] max-h-[260px] bg-navy-950 overflow-hidden select-none border-b border-stone-200"
+          className="relative min-h-[500px] sm:min-h-[560px] w-full flex flex-col justify-between overflow-hidden"
           onTouchStart={handleTouchStart}
           onTouchEnd={handleTouchEnd}
         >
-          {bannerSlides.map((slide, idx) => (
-            <div
-              key={slide.id}
-              className={`absolute inset-0 transition-opacity duration-300 ease-in-out ${
-                currentMobileSlide === idx ? "opacity-100 z-10" : "opacity-0 z-0 pointer-events-none"
-              }`}
-            >
-              <Image
-                src={slide.image}
-                alt={slide.alt}
-                fill
-                sizes="(max-width: 768px) 100vw, 1200px"
-                priority={idx === 0}
-                className="object-cover object-center"
-              />
-              {/* Subtle bottom vignette to ensure tag & title contrast */}
-              <div className="absolute inset-0 bg-gradient-to-t from-navy-950/85 via-navy-950/20 to-transparent pointer-events-none" />
-
-              {/* Bottom slide metadata pill */}
-              <div className="absolute bottom-3 left-3.5 right-14 z-10 pointer-events-none">
-                <span className="inline-block px-2 py-0.5 rounded text-[10px] font-bold tracking-wider uppercase bg-brass-500 text-ink-950 shadow-xs mb-1">
-                  {slide.tag}
-                </span>
-                <h2 className="font-serif text-sm sm:text-base font-bold text-white line-clamp-1 drop-shadow">
-                  {slide.title}
-                </h2>
-              </div>
-            </div>
-          ))}
-
-          {/* Left Arrow Button */}
-          <button
-            type="button"
-            onClick={() => setCurrentMobileSlide((prev) => (prev === 0 ? bannerSlides.length - 1 : prev - 1))}
-            className="absolute left-2 top-1/2 -translate-y-1/2 z-20 w-10 h-10 min-w-[40px] min-h-[40px] rounded-full bg-white/95 hover:bg-white text-ink-950 shadow-md backdrop-blur-xs flex items-center justify-center transition active:scale-95 border border-stone-200 cursor-pointer"
-            aria-label="Previous slide"
-          >
-            <ChevronLeft className="w-4 h-4" />
-          </button>
-
-          {/* Right Arrow Button */}
-          <button
-            type="button"
-            onClick={() => setCurrentMobileSlide((prev) => (prev === bannerSlides.length - 1 ? 0 : prev + 1))}
-            className="absolute right-2 top-1/2 -translate-y-1/2 z-20 w-10 h-10 min-w-[40px] min-h-[40px] rounded-full bg-white/95 hover:bg-white text-ink-950 shadow-md backdrop-blur-xs flex items-center justify-center transition active:scale-95 border border-stone-200 cursor-pointer"
-            aria-label="Next slide"
-          >
-            <ChevronRight className="w-4 h-4" />
-          </button>
-
-          {/* Slide Dots Indicator */}
-          <div className="absolute bottom-2.5 right-3 z-20 flex items-center gap-1.5 bg-navy-950/80 px-2.5 py-1.5 rounded-full backdrop-blur-xs">
-            {bannerSlides.map((_, idx) => (
-              <button
-                key={idx}
-                onClick={() => setCurrentMobileSlide(idx)}
-                aria-label={`Go to slide ${idx + 1}`}
-                className={`transition-all duration-300 rounded-full cursor-pointer p-1 -m-0.5 ${
-                  currentMobileSlide === idx ? "w-4 h-1.5 bg-brass-400" : "w-1.5 h-1.5 bg-white/50 hover:bg-white"
+          {/* Background image layer */}
+          <div className="absolute inset-0 z-0 select-none pointer-events-none">
+            {bannerSlides.map((slide, idx) => (
+              <div
+                key={slide.id}
+                className={`absolute inset-0 transition-opacity duration-500 ease-in-out ${
+                  currentMobileSlide === idx ? "opacity-100 z-10" : "opacity-0 z-0 pointer-events-none"
                 }`}
-              />
+              >
+                <Image
+                  src={slide.image}
+                  alt={slide.alt}
+                  fill
+                  sizes="(max-width: 1024px) 100vw, 1200px"
+                  priority={idx === 0}
+                  className="object-cover"
+                  style={{ objectPosition: "68% 22%" }}
+                />
+              </div>
             ))}
-          </div>
-        </div>
-
-        {/* Clean Ivory/White Content Block directly UNDER the Banner */}
-        <div className="px-5 pt-5 pb-7 text-left bg-white">
-          {/* High-Contrast Bold 3-Tier Headline (vibemusic pattern) */}
-          <h1 className="font-serif text-[30px] sm:text-4xl font-bold tracking-tight text-ink-950 leading-[1.12]">
-            Excellence in Law.<br />
-            <span className="font-serif italic font-normal text-brass-700">Integrity in Practice.</span><br />
-            Strategic Counsel.
-          </h1>
-
-          {/* Editorial Paragraph */}
-          <p suppressHydrationWarning className="mt-3 font-sans text-[13.5px] text-ink-secondary leading-relaxed">
-            {siteConfig.heroDescription || "Over 15 years of trusted expertise providing dedicated legal advocacy, 30-year property title search, statutory document attestation, society management, and educational consulting with personal client care."}
-          </p>
-
-          {/* Stacked Full-Width Action Buttons */}
-          <div className="mt-5 space-y-2.5">
-            <Link
-              href={siteConfig.heroPrimaryCtaLink || "/request-service"}
-              className="w-full h-12 rounded-xl bg-brass-500 hover:bg-brass-400 text-ink-950 font-bold text-sm flex items-center justify-center gap-2 shadow-sm transition active:scale-[0.99]"
-            >
-              <span suppressHydrationWarning>{siteConfig.heroPrimaryCtaText || "Request a Consultation"}</span>
-              <ArrowRight className="w-4 h-4" />
-            </Link>
-
-            <Link
-              href={siteConfig.heroSecondaryCtaLink || "/services"}
-              className="w-full h-12 rounded-xl border border-stone-300 hover:border-stone-400 bg-white hover:bg-stone-50 text-ink-950 font-semibold text-sm flex items-center justify-center gap-2 shadow-2xs transition active:scale-[0.99]"
-            >
-              <span suppressHydrationWarning>{siteConfig.heroSecondaryCtaText || "Explore our services"}</span>
-              <ArrowRight className="w-4 h-4 text-brass-700" />
-            </Link>
+            {/* Cinematic multi-stop gradient overlay for pristine contrast and depth */}
+            <div className="absolute inset-0 bg-gradient-to-b from-navy-950/85 via-navy-950/75 via-45% to-navy-950 z-10 pointer-events-none" />
           </div>
 
-          {/* Hotline & Response Time Notice */}
-          <div className="mt-3.5 flex items-center justify-between text-[11.5px] text-ink-muted px-1">
-            <div className="flex items-center gap-1.5">
-              <span className="text-brass-800 font-semibold">Chambers Desk:</span>
-              <a href={`tel:${BRAND_CONFIG.phone}`} className="font-bold text-ink-950 underline underline-offset-2">
-                {BRAND_CONFIG.phone}
-              </a>
-            </div>
-            <div className="flex items-center gap-1 text-emerald-700 font-medium">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-              <span>Mon–Sat 9AM–8PM</span>
+          {/* Interactive Segmented Slide Selector Tabs */}
+          <div className="relative z-20 px-4 pt-3">
+            <div className="flex items-center justify-between gap-1.5 p-1 rounded-full bg-navy-900/90 border border-white/15 backdrop-blur-md shadow-lg">
+              {bannerSlides.map((slide, idx) => {
+                const isActive = currentMobileSlide === idx;
+                const shortLabels = ["⚖️ Chambers", "🛡️ POSH Hub", "📜 Property"];
+                return (
+                  <button
+                    key={slide.id}
+                    type="button"
+                    onClick={() => setCurrentMobileSlide(idx)}
+                    className={`flex-1 py-1.5 px-2 rounded-full text-[11px] sm:text-xs font-semibold tracking-wide transition-all duration-300 text-center truncate cursor-pointer ${
+                      isActive
+                        ? "bg-brass-500 text-ink-950 font-bold shadow-xs scale-[1.02]"
+                        : "text-slate-300 hover:text-white hover:bg-white/5"
+                    }`}
+                  >
+                    {shortLabels[idx] || slide.tag}
+                  </button>
+                );
+              })}
             </div>
           </div>
 
-          {/* 2x2 Feature / Trust Box (vibemusic pattern) */}
-          <div className="mt-5 rounded-2xl border border-stone-200 bg-stone-50/70 p-3.5 shadow-2xs">
-            <div className="grid grid-cols-2 divide-x divide-stone-200">
-              {/* Col 1 Top */}
-              <div className="pr-3 pb-3">
-                <span className="text-[10px] font-semibold text-brass-700 block mb-0.5">
-                  Direct Privilege
-                </span>
-                <div className="text-[17px] font-bold text-ink-950 leading-tight">
-                  Privileged
-                </div>
-                <span className="text-[9px] font-bold uppercase tracking-wider text-ink-muted block mt-0.5">
-                  100% CONFIDENTIAL
-                </span>
-              </div>
+          {/* Core Content Container */}
+          <div className="relative z-20 px-5 pt-6 pb-4 space-y-4 text-left my-auto">
+            {/* Display Headline - Bold, Authoritative & Balanced */}
+            <h1 suppressHydrationWarning className="font-serif text-[32px] sm:text-4xl font-bold tracking-tight text-white leading-[1.12] drop-shadow-lg">
+              Excellence in<br />
+              Law &amp; Advisory.<br />
+              <span className="font-serif italic font-normal text-brass-400">
+                Educational, Tax &amp; Legal<br />
+                Solutions.
+              </span>
+            </h1>
 
-              {/* Col 2 Top */}
-              <div className="pl-3 pb-3">
-                <span className="text-[10px] font-semibold text-emerald-700 block mb-0.5">
-                  Pan-India Reach
-                </span>
-                <div className="text-[17px] font-bold text-ink-950 leading-tight">
-                  Expedited
-                </div>
-                <span className="text-[9px] font-bold uppercase tracking-wider text-ink-muted block mt-0.5">
-                  HIGH COURTS &amp; TRIBUNALS
-                </span>
-              </div>
+            {/* Editorial Paragraph */}
+            <p suppressHydrationWarning className="font-sans text-[13.5px] text-slate-200 leading-relaxed drop-shadow">
+              {siteConfig.heroDescription || "Over 15 years of trusted expertise providing dedicated legal advocacy, 30-year property title search, statutory document attestation, society management, and educational consulting with personal client care."}
+            </p>
+
+            {/* Stacked Full-Width Action Buttons */}
+            <div className="pt-2 space-y-2.5">
+              <Link
+                href={siteConfig.heroPrimaryCtaLink || "/request-service"}
+                className="w-full h-12 rounded-xl bg-brass-500 hover:bg-brass-400 text-ink-950 font-bold text-sm flex items-center justify-center gap-2 shadow-sm transition active:scale-[0.99]"
+              >
+                <span suppressHydrationWarning>{siteConfig.heroPrimaryCtaText || "Request a Consultation"}</span>
+                <ArrowRight className="w-4 h-4" />
+              </Link>
+
+              <Link
+                href={siteConfig.heroSecondaryCtaLink || "/services"}
+                className="w-full h-12 rounded-xl border border-brass-500/40 hover:border-brass-400 bg-navy-950/70 hover:bg-navy-900/80 text-brass-200 hover:text-white font-semibold text-sm flex items-center justify-center gap-2 backdrop-blur-md shadow-2xs transition active:scale-[0.99]"
+              >
+                <span suppressHydrationWarning>{siteConfig.heroSecondaryCtaText || "Explore our services"}</span>
+                <ArrowRight className="w-4 h-4 text-brass-400" />
+              </Link>
             </div>
 
-            <div className="border-t border-stone-200 grid grid-cols-2 divide-x divide-stone-200 pt-3">
-              {/* Col 1 Bottom */}
-              <div className="pr-3">
-                <span className="text-[10px] font-semibold text-brass-700 block mb-0.5">
-                  Commercial Matters
-                </span>
-                <div className="text-[17px] font-bold text-ink-950 leading-tight">
-                  Strategic
-                </div>
-                <span className="text-[9px] font-bold uppercase tracking-wider text-ink-muted block mt-0.5">
-                  PROMPT ASSIGNMENT
-                </span>
+            {/* Hotline & Response Time Notice */}
+            <div className="pt-1 flex items-center justify-between text-[11.5px] text-slate-300 px-0.5">
+              <div className="flex items-center gap-1.5">
+                <span className="text-brass-400 font-semibold">Chambers Desk:</span>
+                <a href={`tel:${BRAND_CONFIG.phone}`} className="font-bold text-white underline underline-offset-2">
+                  {BRAND_CONFIG.phone}
+                </a>
               </div>
-
-              {/* Col 2 Bottom */}
-              <div className="pl-3">
-                <span className="text-[10px] font-semibold text-blue-700 block mb-0.5">
-                  Statutory Diligence
-                </span>
-                <div className="text-[17px] font-bold text-ink-950 leading-tight">
-                  Rigorous
-                </div>
-                <span className="text-[9px] font-bold uppercase tracking-wider text-ink-muted block mt-0.5">
-                  30-YEAR TITLE DUE DILIGENCE
-                </span>
+              <div className="flex items-center gap-1 text-emerald-400 font-medium">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                <span>Mon–Sat 9AM–8PM</span>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* 1B. DESKTOP HERO SECTION: Full-bleed Heritage Law Library (preserved on >= lg screens) */}
-      <section className="hidden lg:flex relative min-h-[96vh] bg-ink-950 text-white flex-col justify-between pt-32 pb-16 border-b border-navy-800/80 overflow-hidden">
+      {/* 1B. DESKTOP HERO SECTION: Full-bleed Heritage Law Library (Exact match to target design) */}
+      <section className="hidden lg:flex relative min-h-[96vh] bg-ink-950 text-white flex-col justify-center pt-28 pb-16 border-b border-navy-800/80 overflow-hidden">
         {/* Full-bleed Hero Background Image - Exactly matches user's uploaded master background */}
         <div className="absolute inset-0 z-0 select-none pointer-events-none">
           <Image
@@ -612,19 +540,21 @@ export default function HomePage() {
           <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-ink-950/85 to-transparent pointer-events-none" />
         </div>
 
-        <div className="relative z-10 max-w-[1380px] mx-auto px-4 sm:px-6 lg:px-8 w-full my-auto py-6 sm:py-8 flex flex-col justify-between min-h-[82vh] lg:min-h-[86vh]">
+        <div className="relative z-10 max-w-[1380px] mx-auto px-4 sm:px-6 lg:px-8 w-full my-auto py-6 sm:py-8 flex flex-col justify-center">
           
           {/* Main Hero Story Grid */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center my-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
 
             {/* Left Column (7-8 cols): Display Headline, Editorial Body, CTAs */}
             <div className="lg:col-span-8 xl:col-span-7 space-y-6 sm:space-y-7 text-left max-w-2xl">
 
               {/* Display Headline - Bold, Authoritative & Balanced */}
               <h1 suppressHydrationWarning className="font-serif text-4xl sm:text-6xl lg:text-[68px] font-bold tracking-tight text-white leading-[1.08] drop-shadow-lg">
-                {siteConfig.heroHeadline || "Excellence in Law & Advisory."}<br />
+                Excellence in<br />
+                Law &amp; Advisory.<br />
                 <span className="font-serif italic font-normal text-brass-400">
-                  {siteConfig.heroSubheadline || "Educational, Tax & Legal Solutions."}
+                  Educational, Tax &amp; Legal<br />
+                  Solutions.
                 </span>
               </h1>
 
@@ -637,7 +567,7 @@ export default function HomePage() {
               <div className="pt-2 flex flex-wrap items-center gap-4">
                 <Link
                   href={siteConfig.heroPrimaryCtaLink || "/request-service"}
-                  className="h-[50px] px-7 rounded-btn bg-brass-500 hover:bg-brass-400 text-ink-950 font-sans font-bold text-sm flex items-center gap-2.5 shadow-raised transition-all duration-200 hover:translate-x-0.5"
+                  className="h-[50px] px-7 rounded-xl bg-brass-500 hover:bg-brass-400 text-ink-950 font-sans font-bold text-sm flex items-center gap-2.5 shadow-raised transition-all duration-200 hover:translate-x-0.5"
                 >
                   <span suppressHydrationWarning>{siteConfig.heroPrimaryCtaText || "Request a Consultation"}</span>
                   <ArrowRight className="w-4 h-4" />
@@ -645,7 +575,7 @@ export default function HomePage() {
 
                 <Link
                   href={siteConfig.heroSecondaryCtaLink || "/services"}
-                  className="h-[50px] px-6 rounded-btn bg-ink-950/60 hover:bg-ink-950/80 border border-brass-500/40 hover:border-brass-400 text-brass-200 hover:text-white font-sans font-semibold text-sm flex items-center gap-2.5 backdrop-blur-md transition-all duration-200"
+                  className="h-[50px] px-6 rounded-xl bg-ink-950/60 hover:bg-ink-950/80 border border-brass-500/40 hover:border-brass-400 text-brass-200 hover:text-white font-sans font-semibold text-sm flex items-center gap-2.5 backdrop-blur-md transition-all duration-200"
                 >
                   <span suppressHydrationWarning>{siteConfig.heroSecondaryCtaText || "Explore our services"}</span>
                   <ArrowRight className="w-4 h-4 text-brass-400" />
@@ -675,76 +605,78 @@ export default function HomePage() {
 
           </div>
 
-          {/* Bottom Row: 3 Floating Principle Cards in a wide, balanced glassmorphic dock */}
-          <div className="pt-10 sm:pt-14 w-full">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-3.5 sm:gap-4 w-full">
+        </div>
+      </section>
 
-              {/* Card 1: Discretion */}
-              <Link
-                href="/about"
-                className="bg-ink-950/70 border border-brass-500/35 hover:border-brass-400/80 rounded-xl p-4 sm:p-5 flex items-start gap-3.5 sm:gap-4 backdrop-blur-xl shadow-2xl transition-all duration-200 hover:bg-ink-950/85 group"
-              >
-                <div className="w-10 h-10 rounded-lg bg-brass-500/10 border border-brass-500/30 flex items-center justify-center text-brass-400 shrink-0 group-hover:border-brass-400 group-hover:scale-105 transition-all">
-                  <Lock className="w-5 h-5 text-brass-400" />
-                </div>
-                <div>
-                  <div className="text-[10px] sm:text-[11px] uppercase tracking-widest text-brass-400 font-bold mb-0.5">
-                    Ethical Governance
-                  </div>
-                  <h3 suppressHydrationWarning className="text-sm sm:text-base font-bold text-white group-hover:text-brass-300 transition-colors">
-                    {siteConfig.heroBadge1Title || "Discretion"}
-                  </h3>
-                  <p suppressHydrationWarning className="text-xs text-slate-300 leading-snug mt-1">
-                    {siteConfig.heroBadge1Desc || "Absolute privilege & confidentiality across every client matter."}
-                  </p>
-                </div>
-              </Link>
+      {/* 1C. FLOATING PRINCIPLE BAR (Docked below hero for full desktop breathing room) */}
+      <section className="bg-ink-950 py-7 sm:py-9 border-b border-navy-800/80 relative z-20">
+        <div className="max-w-[1380px] mx-auto px-4 sm:px-6 lg:px-8 w-full">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-3.5 sm:gap-4 w-full">
 
-              {/* Card 2: Diligence */}
-              <Link
-                href="/services"
-                className="bg-ink-950/70 border border-brass-500/35 hover:border-brass-400/80 rounded-xl p-4 sm:p-5 flex items-start gap-3.5 sm:gap-4 backdrop-blur-xl shadow-2xl transition-all duration-200 hover:bg-ink-950/85 group"
-              >
-                <div className="w-10 h-10 rounded-lg bg-brass-500/10 border border-brass-500/30 flex items-center justify-center text-brass-400 shrink-0 group-hover:border-brass-400 group-hover:scale-105 transition-all">
-                  <Search className="w-5 h-5 text-brass-400" />
+            {/* Card 1: Discretion */}
+            <Link
+              href="/about"
+              className="bg-navy-900/60 border border-brass-500/30 hover:border-brass-400/80 rounded-xl p-4 sm:p-5 flex items-start gap-3.5 sm:gap-4 backdrop-blur-xl shadow-2xl transition-all duration-200 hover:bg-navy-900/85 group"
+            >
+              <div className="w-10 h-10 rounded-lg bg-brass-500/10 border border-brass-500/30 flex items-center justify-center text-brass-400 shrink-0 group-hover:border-brass-400 group-hover:scale-105 transition-all">
+                <Lock className="w-5 h-5 text-brass-400" />
+              </div>
+              <div>
+                <div className="text-[10px] sm:text-[11px] uppercase tracking-widest text-brass-400 font-bold mb-0.5">
+                  Ethical Governance
                 </div>
-                <div>
-                  <div className="text-[10px] sm:text-[11px] uppercase tracking-widest text-brass-400 font-bold mb-0.5">
-                    Exhaustive Review
-                  </div>
-                  <h3 suppressHydrationWarning className="text-sm sm:text-base font-bold text-white group-hover:text-brass-300 transition-colors">
-                    {siteConfig.heroBadge2Title || "Diligence"}
-                  </h3>
-                  <p suppressHydrationWarning className="text-xs text-slate-300 leading-snug mt-1">
-                    {siteConfig.heroBadge2Desc || "Exhaustive statutory research & 30-year property title verification."}
-                  </p>
-                </div>
-              </Link>
+                <h3 suppressHydrationWarning className="text-sm sm:text-base font-bold text-white group-hover:text-brass-300 transition-colors">
+                  {siteConfig.heroBadge1Title || "Discretion"}
+                </h3>
+                <p suppressHydrationWarning className="text-xs text-slate-300 leading-snug mt-1">
+                  {siteConfig.heroBadge1Desc || "Absolute privilege & confidentiality across every client matter."}
+                </p>
+              </div>
+            </Link>
 
-              {/* Card 3: Transparency */}
-              <Link
-                href="/request-service"
-                className="bg-ink-950/70 border border-brass-500/35 hover:border-brass-400/80 rounded-xl p-4 sm:p-5 flex items-start gap-3.5 sm:gap-4 backdrop-blur-xl shadow-2xl transition-all duration-200 hover:bg-ink-950/85 group"
-              >
-                <div className="w-10 h-10 rounded-lg bg-brass-500/10 border border-brass-500/30 flex items-center justify-center text-brass-400 shrink-0 group-hover:border-brass-400 group-hover:scale-105 transition-all">
-                  <ShieldCheck className="w-5 h-5 text-brass-400" />
+            {/* Card 2: Diligence */}
+            <Link
+              href="/services"
+              className="bg-navy-900/60 border border-brass-500/30 hover:border-brass-400/80 rounded-xl p-4 sm:p-5 flex items-start gap-3.5 sm:gap-4 backdrop-blur-xl shadow-2xl transition-all duration-200 hover:bg-navy-900/85 group"
+            >
+              <div className="w-10 h-10 rounded-lg bg-brass-500/10 border border-brass-500/30 flex items-center justify-center text-brass-400 shrink-0 group-hover:border-brass-400 group-hover:scale-105 transition-all">
+                <Search className="w-5 h-5 text-brass-400" />
+              </div>
+              <div>
+                <div className="text-[10px] sm:text-[11px] uppercase tracking-widest text-brass-400 font-bold mb-0.5">
+                  Exhaustive Review
                 </div>
-                <div>
-                  <div className="text-[10px] sm:text-[11px] uppercase tracking-widest text-brass-400 font-bold mb-0.5">
-                    Accountable Counsel
-                  </div>
-                  <h3 suppressHydrationWarning className="text-sm sm:text-base font-bold text-white group-hover:text-brass-300 transition-colors">
-                    {siteConfig.heroBadge3Title || "Transparency"}
-                  </h3>
-                  <p suppressHydrationWarning className="text-xs text-slate-300 leading-snug mt-1">
-                    {siteConfig.heroBadge3Desc || "Clear fee schedule, documented scope & direct advocate communication."}
-                  </p>
-                </div>
-              </Link>
+                <h3 suppressHydrationWarning className="text-sm sm:text-base font-bold text-white group-hover:text-brass-300 transition-colors">
+                  {siteConfig.heroBadge2Title || "Diligence"}
+                </h3>
+                <p suppressHydrationWarning className="text-xs text-slate-300 leading-snug mt-1">
+                  {siteConfig.heroBadge2Desc || "Exhaustive statutory research & 30-year property title verification."}
+                </p>
+              </div>
+            </Link>
 
-            </div>
+            {/* Card 3: Transparency */}
+            <Link
+              href="/request-service"
+              className="bg-navy-900/60 border border-brass-500/30 hover:border-brass-400/80 rounded-xl p-4 sm:p-5 flex items-start gap-3.5 sm:gap-4 backdrop-blur-xl shadow-2xl transition-all duration-200 hover:bg-navy-900/85 group"
+            >
+              <div className="w-10 h-10 rounded-lg bg-brass-500/10 border border-brass-500/30 flex items-center justify-center text-brass-400 shrink-0 group-hover:border-brass-400 group-hover:scale-105 transition-all">
+                <ShieldCheck className="w-5 h-5 text-brass-400" />
+              </div>
+              <div>
+                <div className="text-[10px] sm:text-[11px] uppercase tracking-widest text-brass-400 font-bold mb-0.5">
+                  Accountable Counsel
+                </div>
+                <h3 suppressHydrationWarning className="text-sm sm:text-base font-bold text-white group-hover:text-brass-300 transition-colors">
+                  {siteConfig.heroBadge3Title || "Transparency"}
+                </h3>
+                <p suppressHydrationWarning className="text-xs text-slate-300 leading-snug mt-1">
+                  {siteConfig.heroBadge3Desc || "Clear fee schedule, documented scope & direct advocate communication."}
+                </p>
+              </div>
+            </Link>
+
           </div>
-
         </div>
       </section>
 

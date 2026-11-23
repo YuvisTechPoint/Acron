@@ -179,7 +179,7 @@ export function Navbar() {
             : "top-7 h-[62px] lg:top-0 lg:h-[84px]"
         } ${
           isTransparent
-            ? "bg-white text-ink-950 border-b border-stone-200 lg:bg-transparent lg:text-white lg:border-white/10"
+            ? "bg-navy-950/85 backdrop-blur-md text-white border-b border-white/10 lg:bg-transparent lg:text-white lg:border-white/10"
             : "bg-white/95 backdrop-blur-md text-ink-950 border-b border-border shadow-card"
         }`}
       >
@@ -213,7 +213,7 @@ export function Navbar() {
               <span
                 suppressHydrationWarning
                 className={`font-serif text-xl sm:text-2xl font-bold tracking-tight leading-none transition-colors duration-200 ${
-                  isTransparent ? "text-ink-950 lg:text-white lg:drop-shadow-sm" : "text-ink-950"
+                  isTransparent ? "text-white drop-shadow-sm" : "text-ink-950"
                 }`}
               >
                 {siteConfig?.firmName || "Acorn Consultants"}
@@ -221,7 +221,7 @@ export function Navbar() {
               <span
                 suppressHydrationWarning
                 className={`font-sans text-[9px] sm:text-[10px] font-semibold tracking-[0.2em] uppercase mt-1 transition-colors duration-200 ${
-                  isTransparent ? "text-brass-700 lg:text-brass-300 lg:drop-shadow-sm" : "text-brass-700"
+                  isTransparent ? "text-brass-300 drop-shadow-sm" : "text-brass-700"
                 }`}
               >
                 {siteConfig?.tagline || "Educational, Tax & Legal Consultants"}
@@ -671,27 +671,27 @@ export function Navbar() {
             <Link
               href="/services"
               className={`w-11 h-11 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-btn transition-colors ${
-                isTransparent ? "text-ink-700 lg:text-white hover:bg-white/10" : "text-ink-700 hover:bg-stone-100"
+                isTransparent ? "text-white/80 hover:text-white hover:bg-white/10" : "text-ink-700 hover:bg-stone-100"
               }`}
               aria-label="Search practice disciplines"
             >
-              <Search className="w-5 h-5 text-ink-secondary" />
+              <Search className={`w-5 h-5 ${isTransparent ? "text-brass-300" : "text-ink-secondary"}`} />
             </Link>
             <a
               href={`tel:${siteConfig?.receptionPhone || BRAND_CONFIG.phone}`}
               className={`w-11 h-11 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-btn border transition-colors ${
                 isTransparent
-                  ? "text-brass-700 border-stone-200 hover:bg-stone-100 lg:text-brass-300 lg:border-white/20 lg:hover:bg-white/10"
+                  ? "text-brass-300 border-white/20 hover:bg-white/10"
                   : "text-navy-700 border-border hover:bg-stone-100"
               }`}
               aria-label="Call chambers"
             >
-              <Phone className="w-4 h-4 text-brass-600" />
+              <Phone className={`w-4 h-4 ${isTransparent ? "text-brass-300" : "text-brass-600"}`} />
             </a>
             <button
               onClick={() => setMobileMenuOpen(true)}
               className={`w-11 h-11 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-btn transition-colors ${
-                isTransparent ? "text-ink-950 lg:text-white hover:bg-white/10" : "text-ink-950 hover:bg-stone-100"
+                isTransparent ? "text-white hover:bg-white/10" : "text-ink-950 hover:bg-stone-100"
               }`}
               aria-label="Open mobile navigation"
             >

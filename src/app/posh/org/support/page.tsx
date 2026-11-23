@@ -145,40 +145,45 @@ export default function PoshOrgSupportPage() {
               </p>
             </div>
 
-            <label htmlFor="org-select-support" className="sr-only">Select Employer Organisation</label>
-            <select
-              id="org-select-support"
-              value={selectedOrgId}
-              onChange={(e) => handleOrgChange(e.target.value)}
-              className="px-3 py-2 min-h-[44px] bg-white border border-border rounded text-xs font-semibold text-ink shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
-            >
-              {orgs.map((o) => (
-                <option key={o.id} value={o.id}>
-                  {o.name}
-                </option>
-              ))}
-            </select>
+            <div className="flex items-center gap-3">
+              <label htmlFor="org-select-support" className="sr-only">Select Employer Organisation</label>
+              <div className="relative inline-flex items-center">
+                <Building className="w-4 h-4 text-brass-700 absolute left-3 pointer-events-none" />
+                <select
+                  id="org-select-support"
+                  value={selectedOrgId}
+                  onChange={(e) => handleOrgChange(e.target.value)}
+                  className="pl-9 pr-8 py-2 min-h-[44px] bg-white border border-border rounded-lg text-xs font-semibold text-ink shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary shadow-2xs hover:border-brass-500/60 transition"
+                >
+                  {orgs.map((o) => (
+                    <option key={o.id} value={o.id}>
+                      {o.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
           </div>
         </div>
 
         {/* SLA Coverage Indicators */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          <div className="bg-surface p-4 rounded-card border border-border text-xs space-y-1">
-            <div className="text-[10px] uppercase font-bold text-red-700">P1 Critical SLA (2 Hours)</div>
+          <div className="bg-surface p-4 rounded-lg border border-border border-l-4 border-l-rose-500 shadow-2xs text-xs space-y-1 hover:shadow-xs transition">
+            <div className="text-[10px] uppercase font-bold text-rose-700">P1 Critical SLA (2 Hours)</div>
             <div className="font-bold text-ink">Urgent Safety / Police Threat</div>
-            <p className="text-ink-secondary text-[11px]">Immediate intervention by managing counsel.</p>
+            <p className="text-ink-secondary text-[11px] leading-relaxed">Immediate intervention by managing counsel.</p>
           </div>
 
-          <div className="bg-surface p-4 rounded-card border border-border text-xs space-y-1">
+          <div className="bg-surface p-4 rounded-lg border border-border border-l-4 border-l-amber-500 shadow-2xs text-xs space-y-1 hover:shadow-xs transition">
             <div className="text-[10px] uppercase font-bold text-amber-700">P2 High SLA (6 Hours)</div>
             <div className="font-bold text-ink">Procedural Inquiry Questions</div>
-            <p className="text-ink-secondary text-[11px]">Limitation, quorum, or interim transfer advice.</p>
+            <p className="text-ink-secondary text-[11px] leading-relaxed">Limitation, quorum, or interim transfer advice.</p>
           </div>
 
-          <div className="bg-surface p-4 rounded-card border border-border text-xs space-y-1">
+          <div className="bg-surface p-4 rounded-lg border border-border border-l-4 border-l-emerald-600 shadow-2xs text-xs space-y-1 hover:shadow-xs transition">
             <div className="text-[10px] uppercase font-bold text-emerald-700">P3 Standard SLA (24 Hours)</div>
             <div className="font-bold text-ink">Statutory Filing &amp; LMS Queries</div>
-            <p className="text-ink-secondary text-[11px]">Policy updates and DO return assistance.</p>
+            <p className="text-ink-secondary text-[11px] leading-relaxed">Policy updates and DO return assistance.</p>
           </div>
         </div>
 
@@ -190,7 +195,7 @@ export default function PoshOrgSupportPage() {
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
             <div>
-              <label htmlFor="ticket-subject" className="block text-ink-secondary font-medium mb-1">
+              <label htmlFor="ticket-subject" className="block text-ink font-semibold mb-1">
                 Subject / Advisory Topic <span className="text-red-500">*</span>
               </label>
               <input
@@ -199,20 +204,20 @@ export default function PoshOrgSupportPage() {
                 placeholder="e.g. Quorum validity check for emergency hearing"
                 value={ticketSubject}
                 onChange={(e) => setTicketSubject(e.target.value)}
-                className="w-full px-3 py-2.5 min-h-[44px] bg-white border border-border rounded text-xs focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                className="w-full px-3 py-2.5 min-h-[44px] bg-white border border-border rounded-lg text-xs focus:outline-none focus-visible:ring-2 focus-visible:ring-primary shadow-2xs"
                 required
               />
             </div>
 
             <div>
-              <label htmlFor="ticket-priority" className="block text-ink-secondary font-medium mb-1">
+              <label htmlFor="ticket-priority" className="block text-ink font-semibold mb-1">
                 Priority Level <span className="text-red-500">*</span>
               </label>
               <select
                 id="ticket-priority"
                 value={priority}
                 onChange={(e) => setPriority(e.target.value as any)}
-                className="w-full px-3 py-2.5 min-h-[44px] bg-white border border-border rounded text-xs focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                className="w-full px-3 py-2.5 min-h-[44px] bg-white border border-border rounded-lg text-xs focus:outline-none focus-visible:ring-2 focus-visible:ring-primary shadow-2xs"
               >
                 <option value="P1_CRITICAL">P1 - Critical (2-Hour SLA)</option>
                 <option value="P2_HIGH">P2 - High (6-Hour SLA)</option>
@@ -221,7 +226,7 @@ export default function PoshOrgSupportPage() {
             </div>
 
             <div>
-              <label htmlFor="ticket-case-ref" className="block text-ink-secondary font-medium mb-1">
+              <label htmlFor="ticket-case-ref" className="block text-ink font-semibold mb-1">
                 Docket Ref (Optional &bull; Case ID only)
               </label>
               <input
@@ -230,13 +235,13 @@ export default function PoshOrgSupportPage() {
                 placeholder="e.g. POSH-TECHKOL-2026-0014"
                 value={caseReference}
                 onChange={(e) => setCaseReference(e.target.value)}
-                className="w-full px-3 py-2.5 min-h-[44px] bg-white border border-border rounded text-xs font-mono focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                className="w-full px-3 py-2.5 min-h-[44px] bg-white border border-border rounded-lg text-xs font-mono focus:outline-none focus-visible:ring-2 focus-visible:ring-primary shadow-2xs"
               />
             </div>
           </div>
 
           <div className="text-xs space-y-1">
-            <label htmlFor="ticket-description" className="block text-ink-secondary font-medium">
+            <label htmlFor="ticket-description" className="block text-ink font-semibold">
               Detailed Advisory Request <span className="text-red-500">*</span>
             </label>
             <textarea
@@ -245,7 +250,7 @@ export default function PoshOrgSupportPage() {
               placeholder="State the statutory question or procedural challenge. Remember to omit personal names or complaint allegations pursuant to Section 16 confidentiality..."
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              className="w-full p-3 bg-white border border-border rounded text-xs leading-relaxed focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+              className="w-full p-3 bg-white border border-border rounded-lg text-xs leading-relaxed focus:outline-none focus-visible:ring-2 focus-visible:ring-primary shadow-2xs"
               required
             />
           </div>
@@ -253,7 +258,7 @@ export default function PoshOrgSupportPage() {
           <div className="flex justify-end gap-3 pt-2">
             <button
               type="submit"
-              className="px-6 py-2.5 min-h-[44px] bg-primary text-white text-xs font-semibold rounded hover:bg-primary-hover flex items-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass-500 focus-visible:ring-offset-2"
+              className="px-6 py-2.5 min-h-[44px] bg-primary text-white text-xs font-semibold rounded-lg hover:bg-primary-hover flex items-center gap-2 shadow-2xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass-500 focus-visible:ring-offset-2 transition"
             >
               <Send className="w-3.5 h-3.5 text-accent" />
               <span>Submit Request to Counsel</span>
@@ -289,13 +294,18 @@ export default function PoshOrgSupportPage() {
 
           <div className="space-y-3">
             {filteredTickets.map((t) => (
-              <div key={t.id} className="bg-white p-4 rounded border border-border space-y-2 text-xs">
+              <div
+                key={t.id}
+                className={`bg-white p-4 rounded-lg border border-border space-y-2.5 text-xs shadow-2xs hover:shadow-xs transition ${
+                  t.status.includes("Resolved") ? "border-l-4 border-l-emerald-600" : "border-l-4 border-l-primary"
+                }`}
+              >
                 <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-2 border-b border-border-subtle pb-2">
                   <div className="flex items-center gap-2">
-                    <span className="font-mono font-bold text-primary">{t.id}</span>
+                    <span className="font-mono font-bold text-primary bg-blue-50 px-2 py-0.5 rounded border border-blue-100">{t.id}</span>
                     <span className="font-bold text-ink text-sm">{t.subject}</span>
                   </div>
-                  <span className={`px-2.5 py-0.5 rounded text-[10px] font-bold ${
+                  <span className={`px-2.5 py-1 rounded text-[10.5px] font-bold ${
                     t.status.includes("Resolved") ? "bg-emerald-100 text-emerald-800" : "bg-primary text-white"
                   }`}>
                     {t.status}
@@ -309,12 +319,12 @@ export default function PoshOrgSupportPage() {
                 </div>
 
                 {t.description && (
-                  <p className="text-[11px] text-ink-secondary bg-surface p-2 rounded border border-border-subtle">
+                  <p className="text-[11.5px] text-ink-secondary bg-surface p-2.5 rounded-lg border border-border-subtle leading-relaxed">
                     {t.description}
                   </p>
                 )}
 
-                <div className="text-[10px] text-ink-secondary">
+                <div className="text-[10.5px] text-ink-muted">
                   Lodged on: {t.createdAt}
                 </div>
               </div>

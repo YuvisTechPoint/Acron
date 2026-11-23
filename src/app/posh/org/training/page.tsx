@@ -15,6 +15,7 @@ import {
   Plus,
   X,
   Calendar,
+  Building,
 } from "lucide-react";
 import { platformStore } from "@/lib/store";
 import { downloadFile } from "@/lib/utils";
@@ -118,53 +119,58 @@ export default function PoshOrgTrainingPage() {
               </p>
             </div>
 
-            <label htmlFor="org-select-training" className="sr-only">Select Employer Organisation</label>
-            <select
-              id="org-select-training"
-              value={selectedOrgId}
-              onChange={(e) => handleOrgChange(e.target.value)}
-              className="px-3 py-2 min-h-[44px] bg-white border border-border rounded text-xs font-semibold text-ink shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
-            >
-              {orgs.map((o) => (
-                <option key={o.id} value={o.id}>
-                  {o.name}
-                </option>
-              ))}
-            </select>
+            <div className="flex items-center gap-3">
+              <label htmlFor="org-select-training" className="sr-only">Select Employer Organisation</label>
+              <div className="relative inline-flex items-center">
+                <Building className="w-4 h-4 text-brass-700 absolute left-3 pointer-events-none" />
+                <select
+                  id="org-select-training"
+                  value={selectedOrgId}
+                  onChange={(e) => handleOrgChange(e.target.value)}
+                  className="pl-9 pr-8 py-2 min-h-[44px] bg-white border border-border rounded-lg text-xs font-semibold text-ink shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary shadow-2xs hover:border-brass-500/60 transition"
+                >
+                  {orgs.map((o) => (
+                    <option key={o.id} value={o.id}>
+                      {o.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
           </div>
         </div>
 
         {/* Overall Completion Metrics */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          <div className="bg-surface p-5 rounded-card border border-border shadow-card">
-            <div className="text-xs text-ink-secondary">Overall Workforce Trained</div>
-            <div className="flex items-baseline gap-2 mt-1">
-              <span className="font-serif font-bold text-3xl text-emerald-700">{overallRate}%</span>
-              <span className="text-xs text-emerald-600 font-semibold">&uarr; Compliant</span>
+          <div className="bg-surface p-5 rounded-card border border-border border-l-4 border-l-emerald-600 shadow-card hover:shadow-md transition">
+            <div className="text-xs font-semibold text-ink-secondary">Overall Workforce Trained</div>
+            <div className="flex items-baseline gap-2 mt-1.5">
+              <span className="font-serif font-bold text-3xl text-emerald-800">{overallRate}%</span>
+              <span className="text-xs text-emerald-700 font-semibold bg-emerald-50 px-1.5 py-0.5 rounded">&uarr; Compliant</span>
             </div>
-            <p className="text-[11px] text-ink-secondary mt-1">
+            <p className="text-[11.5px] text-ink-secondary mt-1.5 leading-relaxed">
               {totalCompletedAll} of {totalAssignedAll} active learners certified.
             </p>
           </div>
 
-          <div className="bg-surface p-5 rounded-card border border-border shadow-card">
-            <div className="text-xs text-ink-secondary">IC Committee Master Training</div>
-            <div className="flex items-baseline gap-2 mt-1">
+          <div className="bg-surface p-5 rounded-card border border-border border-l-4 border-l-primary shadow-card hover:shadow-md transition">
+            <div className="text-xs font-semibold text-ink-secondary">IC Committee Master Training</div>
+            <div className="flex items-baseline gap-2 mt-1.5">
               <span className="font-serif font-bold text-3xl text-primary">100%</span>
-              <span className="text-xs text-primary font-semibold">Certified</span>
+              <span className="text-xs text-primary font-semibold bg-blue-50 px-1.5 py-0.5 rounded">Certified</span>
             </div>
-            <p className="text-[11px] text-ink-secondary mt-1">
+            <p className="text-[11.5px] text-ink-secondary mt-1.5 leading-relaxed">
               All 5 IC members certified by Acorn Legal.
             </p>
           </div>
 
-          <div className="bg-surface p-5 rounded-card border border-border shadow-card">
-            <div className="text-xs text-ink-secondary">Annual Recertification Window</div>
-            <div className="flex items-baseline gap-2 mt-1">
+          <div className="bg-surface p-5 rounded-card border border-border border-l-4 border-l-brass-500 shadow-card hover:shadow-md transition">
+            <div className="text-xs font-semibold text-ink-secondary">Annual Recertification Window</div>
+            <div className="flex items-baseline gap-2 mt-1.5">
               <span className="font-serif font-bold text-3xl text-ink">31 Dec</span>
-              <span className="text-xs text-ink-secondary font-medium">2026 Cycle</span>
+              <span className="text-xs text-ink-secondary font-medium bg-stone-100 px-1.5 py-0.5 rounded">2026 Cycle</span>
             </div>
-            <p className="text-[11px] text-ink-secondary mt-1">
+            <p className="text-[11.5px] text-ink-secondary mt-1.5 leading-relaxed">
               Automatic re-enrolment 30 days before expiration.
             </p>
           </div>
@@ -196,14 +202,23 @@ export default function PoshOrgTrainingPage() {
 
           <div className="space-y-4">
             {courses.map((c) => (
-              <div key={c.code} className="bg-white p-5 rounded border border-border space-y-3 text-xs">
+              <div
+                key={c.code}
+                className={`bg-white p-5 rounded-lg border border-border space-y-3 text-xs shadow-2xs hover:shadow-xs transition ${
+                  c.completionRate >= 90
+                    ? "border-l-4 border-l-emerald-600"
+                    : c.completionRate > 0
+                    ? "border-l-4 border-l-amber-600"
+                    : "border-l-4 border-l-primary"
+                }`}
+              >
                 <div className="flex flex-col sm:flex-row justify-between sm:items-start gap-2">
                   <div>
-                    <span className="font-mono text-xs font-bold text-primary">{c.code}</span>
-                    <h3 className="font-serif font-bold text-base text-ink mt-0.5">{c.title}</h3>
-                    <div className="text-ink-secondary mt-0.5">Audience: {c.target}</div>
+                    <span className="font-mono text-xs font-bold text-primary bg-blue-50 px-2 py-0.5 rounded border border-blue-100">{c.code}</span>
+                    <h3 className="font-serif font-bold text-base text-ink mt-1">{c.title}</h3>
+                    <div className="text-ink-secondary mt-0.5">Audience: <span className="font-medium text-ink">{c.target}</span></div>
                   </div>
-                  <span className={`px-2.5 py-0.5 rounded text-[10px] font-bold ${
+                  <span className={`px-2.5 py-1 rounded text-[10.5px] font-bold ${
                     c.completionRate >= 90
                       ? "bg-emerald-100 text-emerald-800"
                       : c.completionRate > 0
@@ -214,23 +229,25 @@ export default function PoshOrgTrainingPage() {
                   </span>
                 </div>
 
-                <div className="space-y-1 pt-1">
+                <div className="space-y-1.5 pt-1">
                   <div className="flex justify-between text-xs">
-                    <span className="text-ink-secondary">Progress:</span>
+                    <span className="text-ink-secondary font-medium">Workforce Progress:</span>
                     <span className="font-bold text-ink">
                       {c.completedCount} / {c.totalAssigned} ({c.completionRate}%)
                     </span>
                   </div>
-                  <div className="w-full h-2.5 bg-surface rounded-full overflow-hidden border border-border-subtle">
+                  <div className="w-full h-3 bg-stone-100 rounded-full overflow-hidden border border-border-subtle p-0.5">
                     <div
-                      className={`h-full ${c.completionRate >= 90 ? "bg-emerald-600" : c.completionRate > 0 ? "bg-amber-600" : "bg-blue-600"}`}
+                      className={`h-full rounded-full transition-all duration-500 ${
+                        c.completionRate >= 90 ? "bg-emerald-600" : c.completionRate > 0 ? "bg-amber-600" : "bg-primary"
+                      }`}
                       style={{ width: `${Math.max(4, c.completionRate)}%` }}
                     />
                   </div>
                 </div>
 
                 <div className="pt-2 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 border-t border-border-subtle">
-                  <span className="text-[11px] text-ink-secondary">
+                  <span className="text-[11.5px] text-ink-secondary">
                     Standard Assessment Passmark: 80% &bull; Interactive Scenarios Included
                   </span>
                   <button
@@ -247,7 +264,7 @@ export default function PoshOrgTrainingPage() {
                         variant: "success",
                       });
                     }}
-                    className="px-3 py-2 min-h-[44px] border border-border rounded hover:bg-surface text-ink flex items-center gap-1.5 font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                    className="px-3.5 py-2 min-h-[44px] border border-border rounded-lg hover:bg-stone-50 text-ink flex items-center gap-1.5 font-medium shadow-2xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary transition"
                   >
                     <Download className="w-3.5 h-3.5 text-primary" />
                     <span>Export Completion Ledger</span>
@@ -264,9 +281,9 @@ export default function PoshOrgTrainingPage() {
             role="dialog"
             aria-modal="true"
             aria-labelledby="enrol-modal-title"
-            className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4 animate-fade-in"
+            className="fixed inset-0 bg-ink-950/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-fade-in"
           >
-            <div className="bg-white rounded-card border border-border shadow-raised max-w-lg w-full p-6 space-y-4">
+            <div className="bg-white rounded-xl border border-border shadow-raised max-w-lg w-full p-6 space-y-4">
               <div className="flex items-center justify-between border-b border-border pb-3">
                 <h3 id="enrol-modal-title" className="font-serif font-bold text-base text-ink">
                   Schedule Section 19(c) Sensitisation Workshop
@@ -275,7 +292,7 @@ export default function PoshOrgTrainingPage() {
                   type="button"
                   onClick={() => setShowEnrolModal(false)}
                   aria-label="Close dialog"
-                  className="p-2 min-h-[44px] min-w-[44px] hover:bg-border rounded text-ink-secondary flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                  className="p-2 min-h-[44px] min-w-[44px] hover:bg-stone-100 rounded-lg text-ink-secondary flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary transition"
                 >
                   <X className="w-4 h-4" />
                 </button>

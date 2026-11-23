@@ -157,25 +157,28 @@ export default function PoshOrgPreventionPage() {
 
             <div className="flex flex-wrap items-center gap-3">
               <label htmlFor="org-select" className="sr-only">Select Organisation</label>
-              <select
-                id="org-select"
-                value={selectedOrgId}
-                onChange={(e) => handleOrgChange(e.target.value)}
-                className="px-3 py-2 min-h-[44px] bg-white border border-border rounded text-xs font-semibold text-ink shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
-              >
-                {orgs.map((o) => (
-                  <option key={o.id} value={o.id}>
-                    {o.name}
-                  </option>
-                ))}
-              </select>
+              <div className="relative inline-flex items-center">
+                <Building className="w-4 h-4 text-brass-700 absolute left-3 pointer-events-none" />
+                <select
+                  id="org-select"
+                  value={selectedOrgId}
+                  onChange={(e) => handleOrgChange(e.target.value)}
+                  className="pl-9 pr-8 py-2 min-h-[44px] bg-white border border-border rounded-lg text-xs font-semibold text-ink shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary shadow-2xs hover:border-brass-500/60 transition"
+                >
+                  {orgs.map((o) => (
+                    <option key={o.id} value={o.id}>
+                      {o.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
 
               <button
                 type="button"
                 onClick={handleExportMatrix}
-                className="inline-flex items-center gap-1.5 px-3.5 py-2 min-h-[44px] border border-border bg-white rounded text-xs font-semibold hover:bg-surface text-ink transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                className="inline-flex items-center gap-2 px-4 py-2 min-h-[44px] border border-brass-500/30 bg-white rounded-lg text-xs font-semibold hover:bg-brass-50/40 text-ink transition shadow-2xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
               >
-                <Download className="w-3.5 h-3.5 text-primary" />
+                <Download className="w-4 h-4 text-brass-700" />
                 <span>Export Matrix</span>
               </button>
             </div>
@@ -197,36 +200,36 @@ export default function PoshOrgPreventionPage() {
 
         {/* Climate Survey Highlights */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          <div className="bg-surface p-5 rounded-card border border-border shadow-card">
-            <div className="text-xs text-ink-secondary">Psychological Safety Index</div>
-            <div className="flex items-baseline gap-2 mt-1">
-              <span className="font-serif font-bold text-3xl text-emerald-700">88%</span>
-              <span className="text-xs text-emerald-600 font-semibold">&uarr; +4% YoY</span>
+          <div className="bg-surface p-5 rounded-card border border-border border-l-4 border-l-emerald-600 shadow-card hover:shadow-md transition">
+            <div className="text-xs font-semibold text-ink-secondary">Psychological Safety Index</div>
+            <div className="flex items-baseline gap-2 mt-1.5">
+              <span className="font-serif font-bold text-3xl text-emerald-800">88%</span>
+              <span className="text-xs text-emerald-700 font-semibold bg-emerald-50 px-1.5 py-0.5 rounded">&uarr; +4% YoY</span>
             </div>
-            <p className="text-[11px] text-ink-secondary mt-1">
+            <p className="text-[11.5px] text-ink-secondary mt-1.5 leading-relaxed">
               Employees feel confident reporting grievances without reprisal.
             </p>
           </div>
 
-          <div className="bg-surface p-5 rounded-card border border-border shadow-card">
-            <div className="text-xs text-ink-secondary">IC Awareness Index</div>
-            <div className="flex items-baseline gap-2 mt-1">
+          <div className="bg-surface p-5 rounded-card border border-border border-l-4 border-l-primary shadow-card hover:shadow-md transition">
+            <div className="text-xs font-semibold text-ink-secondary">IC Awareness Index</div>
+            <div className="flex items-baseline gap-2 mt-1.5">
               <span className="font-serif font-bold text-3xl text-primary">96%</span>
-              <span className="text-xs text-primary font-semibold">High Visibility</span>
+              <span className="text-xs text-primary font-semibold bg-blue-50 px-1.5 py-0.5 rounded">High Visibility</span>
             </div>
-            <p className="text-[11px] text-ink-secondary mt-1">
-              Workforce knows IC members and contact email coordinates.
+            <p className="text-[11.5px] text-ink-secondary mt-1.5 leading-relaxed">
+              Workforce knows IC members and direct contact email coordinates.
             </p>
           </div>
 
-          <div className="bg-surface p-5 rounded-card border border-border shadow-card">
-            <div className="text-xs text-ink-secondary">Survey Participation Rate</div>
-            <div className="flex items-baseline gap-2 mt-1">
+          <div className="bg-surface p-5 rounded-card border border-border border-l-4 border-l-brass-500 shadow-card hover:shadow-md transition">
+            <div className="text-xs font-semibold text-ink-secondary">Survey Participation Rate</div>
+            <div className="flex items-baseline gap-2 mt-1.5">
               <span className="font-serif font-bold text-3xl text-ink">82%</span>
-              <span className="text-xs text-ink-secondary font-medium">344 Responses</span>
+              <span className="text-xs text-ink-secondary font-medium bg-stone-100 px-1.5 py-0.5 rounded">344 Responses</span>
             </div>
-            <p className="text-[11px] text-ink-secondary mt-1">
-              Statistically valid sample size across all 4 departments.
+            <p className="text-[11.5px] text-ink-secondary mt-1.5 leading-relaxed">
+              Statistically valid sample size across all 4 operational departments.
             </p>
           </div>
         </div>
@@ -241,7 +244,7 @@ export default function PoshOrgPreventionPage() {
               <button
                 type="button"
                 onClick={() => setShowAddModal(true)}
-                className="px-3.5 py-2 min-h-[44px] bg-white border border-border text-ink text-xs font-semibold rounded hover:bg-surface flex items-center gap-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                className="px-3.5 py-2 min-h-[44px] bg-white border border-border text-ink text-xs font-semibold rounded-lg hover:bg-surface flex items-center gap-1.5 shadow-2xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary transition"
               >
                 <Plus className="w-3.5 h-3.5 text-primary" />
                 <span>Add Preventive Directive</span>
@@ -256,7 +259,7 @@ export default function PoshOrgPreventionPage() {
                   });
                   router.push("/posh/org/surveys");
                 }}
-                className="px-4 py-2 min-h-[44px] bg-primary text-white text-xs font-semibold rounded hover:bg-primary-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass-500 focus-visible:ring-offset-2"
+                className="px-4 py-2 min-h-[44px] bg-primary text-white text-xs font-semibold rounded-lg hover:bg-primary-hover shadow-2xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass-500 focus-visible:ring-offset-2 transition"
               >
                 Launch Climate Survey
               </button>
@@ -265,7 +268,16 @@ export default function PoshOrgPreventionPage() {
 
           <div className="space-y-3">
             {riskFactors.map((r, i) => (
-              <div key={i} className="bg-white p-4 rounded border border-border space-y-2 text-xs">
+              <div
+                key={i}
+                className={`bg-white p-4 rounded-lg border border-border space-y-2 text-xs shadow-2xs transition hover:shadow-xs ${
+                  r.level === "Low Risk"
+                    ? "border-l-4 border-l-emerald-600"
+                    : r.level === "Controlled Risk"
+                    ? "border-l-4 border-l-blue-600"
+                    : "border-l-4 border-l-amber-600"
+                }`}
+              >
                 <div className="flex justify-between items-center border-b border-border-subtle pb-2">
                   <span className="font-serif font-bold text-ink text-sm">{r.area}</span>
                   <span className={`px-2.5 py-0.5 rounded text-[10px] font-bold ${
@@ -295,9 +307,9 @@ export default function PoshOrgPreventionPage() {
             role="dialog"
             aria-modal="true"
             aria-labelledby="prevent-modal-title"
-            className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4 animate-fade-in"
+            className="fixed inset-0 bg-ink-950/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-fade-in"
           >
-            <div className="bg-white rounded-card border border-border shadow-raised max-w-lg w-full p-6 space-y-4 max-h-[90vh] overflow-y-auto">
+            <div className="bg-white rounded-xl border border-border shadow-raised max-w-lg w-full p-6 space-y-4 max-h-[90vh] overflow-y-auto">
               <div className="flex items-center justify-between border-b border-border pb-3">
                 <h3 id="prevent-modal-title" className="font-serif font-bold text-base text-ink">
                   Register Preventive Safeguard / Audit Action
@@ -306,7 +318,7 @@ export default function PoshOrgPreventionPage() {
                   type="button"
                   onClick={() => setShowAddModal(false)}
                   aria-label="Close dialog"
-                  className="p-2 min-h-[44px] min-w-[44px] hover:bg-border rounded text-ink-secondary flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                  className="p-2 min-h-[44px] min-w-[44px] hover:bg-stone-100 rounded-lg text-ink-secondary flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary transition"
                 >
                   <X className="w-4 h-4" />
                 </button>
