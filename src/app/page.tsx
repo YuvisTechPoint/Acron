@@ -263,24 +263,7 @@ const ROLLING_TRUST_ITEMS = [
 ];
 
 export default function HomePage() {
-  const [currentMobileSlide, setCurrentMobileSlide] = useState(0);
-  const [touchStartX, setTouchStartX] = useState<number | null>(null);
   const [isRollingPaused, setIsRollingPaused] = useState(false);
-
-  const handleTouchStart = (e: React.TouchEvent) => {
-    setTouchStartX(e.touches[0].clientX);
-  };
-
-  const handleTouchEnd = (e: React.TouchEvent) => {
-    if (touchStartX === null) return;
-    const diff = touchStartX - e.changedTouches[0].clientX;
-    if (diff > 50) {
-      setCurrentMobileSlide((prev) => (prev === 2 ? 0 : prev + 1));
-    } else if (diff < -50) {
-      setCurrentMobileSlide((prev) => (prev === 0 ? 2 : prev - 1));
-    }
-    setTouchStartX(null);
-  };
 
   const [mounted, setMounted] = useState(false);
   useEffect(() => {
@@ -337,33 +320,6 @@ export default function HomePage() {
     }))
     : HOMEPAGE_FAQS;
 
-  const bannerSlides = [
-    {
-      id: "slide-hero",
-      tag: "Advocacy & Chambers Counsel",
-      title: siteConfig.heroArchTitle || "Chambers of Acorn",
-      subtitle: "Excellence in Law. Integrity in Practice.",
-      image: siteConfig.heroBgImage || "/images/hero.jpg",
-      alt: "Chambers of Acorn consultation desk",
-    },
-    {
-      id: "slide-posh",
-      tag: "Workplace Harassment Protection",
-      title: "POSH Statutory Compliance Hub",
-      subtitle: "Confidential Grievance Redressal & IC Advisory",
-      image: "/images/posh.png",
-      alt: "POSH Statutory Compliance Desk",
-    },
-    {
-      id: "slide-property",
-      tag: "Real Estate & Commercial Diligence",
-      title: "30-Year Property Verification",
-      subtitle: "Title Due Diligence & RERA Advisory",
-      image: "/images/hero-custom-bg.jpg",
-      alt: "Property Title Verification & Due Diligence",
-    },
-  ];
-
   return (
     <div className="bg-ivory-50 text-ink selection:bg-brass-300/30">
       <script
@@ -413,66 +369,28 @@ export default function HomePage() {
         }}
       />
 
-      {/* 1A. MOBILE PHONE HERO: Integrated High-End Luxury Editorial (< lg screens) */}
-      <section className="block lg:hidden relative bg-navy-950 text-white pt-[76px] pb-10 border-b border-navy-800/80 overflow-hidden">
-        {/* Full atmospheric background image with smooth slide cross-fade */}
-        <div
-          className="relative min-h-[500px] sm:min-h-[560px] w-full flex flex-col justify-between overflow-hidden"
-          onTouchStart={handleTouchStart}
-          onTouchEnd={handleTouchEnd}
-        >
-          {/* Background image layer */}
-          <div className="absolute inset-0 z-0 select-none pointer-events-none">
-            {bannerSlides.map((slide, idx) => (
-              <div
-                key={slide.id}
-                className={`absolute inset-0 transition-opacity duration-500 ease-in-out ${
-                  currentMobileSlide === idx ? "opacity-100 z-10" : "opacity-0 z-0 pointer-events-none"
-                }`}
-              >
-                <Image
-                  src={slide.image}
-                  alt={slide.alt}
-                  fill
-                  sizes="(max-width: 1024px) 100vw, 1200px"
-                  priority={idx === 0}
-                  className="object-cover"
-                  style={{ objectPosition: "68% 22%" }}
-                />
-              </div>
-            ))}
-            {/* Cinematic multi-stop gradient overlay for pristine contrast and depth */}
-            <div className="absolute inset-0 bg-gradient-to-b from-navy-950/85 via-navy-950/75 via-45% to-navy-950 z-10 pointer-events-none" />
-          </div>
+      {/* 1A. MOBILE PHONE HERO: Full-bleed Heritage Law Library matching desktop (< lg screens) */}
+      <section className="block lg:hidden relative min-h-[90vh] bg-ink-950 text-white flex flex-col justify-center pt-24 pb-14 border-b border-navy-800/80 overflow-hidden">
+        {/* Full-bleed Hero Background Image - Exactly matches desktop consultation desk */}
+        <div className="absolute inset-0 z-0 select-none pointer-events-none">
+          <Image
+            src={siteConfig.heroBgImage || "/images/hero.jpg"}
+            alt="Chambers of Acorn - Educational, Tax & Legal Consultants"
+            fill
+            priority
+            quality={95}
+            className="object-cover object-[72%_center] sm:object-[65%_center]"
+          />
+          {/* Studio Vignette: Deep rich gradient on left & top for maximum typographic contrast, fading across advocate & library */}
+          <div className="absolute inset-0 bg-gradient-to-r from-ink-950/95 via-ink-950/80 via-65% to-ink-950/40 pointer-events-none" />
+          <div className="absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-ink-950/90 via-ink-950/40 to-transparent pointer-events-none" />
+          <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-ink-950 to-transparent pointer-events-none" />
+        </div>
 
-          {/* Interactive Segmented Slide Selector Tabs */}
-          <div className="relative z-20 px-4 pt-3">
-            <div className="flex items-center justify-between gap-1.5 p-1 rounded-full bg-navy-900/90 border border-white/15 backdrop-blur-md shadow-lg">
-              {bannerSlides.map((slide, idx) => {
-                const isActive = currentMobileSlide === idx;
-                const shortLabels = ["⚖️ Chambers", "🛡️ POSH Hub", "📜 Property"];
-                return (
-                  <button
-                    key={slide.id}
-                    type="button"
-                    onClick={() => setCurrentMobileSlide(idx)}
-                    className={`flex-1 py-1.5 px-2 rounded-full text-[11px] sm:text-xs font-semibold tracking-wide transition-all duration-300 text-center truncate cursor-pointer ${
-                      isActive
-                        ? "bg-brass-500 text-ink-950 font-bold shadow-xs scale-[1.02]"
-                        : "text-slate-300 hover:text-white hover:bg-white/5"
-                    }`}
-                  >
-                    {shortLabels[idx] || slide.tag}
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-
-          {/* Core Content Container */}
-          <div className="relative z-20 px-5 pt-6 pb-4 space-y-4 text-left my-auto">
-            {/* Display Headline - Bold, Authoritative & Balanced */}
-            <h1 suppressHydrationWarning className="font-serif text-[32px] sm:text-4xl font-bold tracking-tight text-white leading-[1.12] drop-shadow-lg">
+        <div className="relative z-10 max-w-[1380px] mx-auto px-4 sm:px-6 w-full my-auto py-8 flex flex-col justify-center">
+          <div className="space-y-5 sm:space-y-6 text-left max-w-xl">
+            {/* Display Headline - Bold, Authoritative & Balanced matching desktop */}
+            <h1 suppressHydrationWarning className="font-serif text-[34px] sm:text-5xl font-bold tracking-tight text-white leading-[1.12] drop-shadow-[0_2px_12px_rgba(0,0,0,0.85)]">
               Excellence in<br />
               Law &amp; Advisory.<br />
               <span className="font-serif italic font-normal text-brass-400">
@@ -481,16 +399,16 @@ export default function HomePage() {
               </span>
             </h1>
 
-            {/* Editorial Paragraph */}
-            <p suppressHydrationWarning className="font-sans text-[13.5px] text-slate-200 leading-relaxed drop-shadow">
+            {/* Subtitle Paragraph */}
+            <p suppressHydrationWarning className="font-sans text-sm sm:text-base text-slate-200 leading-[1.65] font-normal drop-shadow-[0_1px_6px_rgba(0,0,0,0.85)]">
               {siteConfig.heroDescription || "Over 15 years of trusted expertise providing dedicated legal advocacy, 30-year property title search, statutory document attestation, society management, and educational consulting with personal client care."}
             </p>
 
-            {/* Stacked Full-Width Action Buttons */}
-            <div className="pt-2 space-y-2.5">
+            {/* Action Buttons */}
+            <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
               <Link
                 href={siteConfig.heroPrimaryCtaLink || "/request-service"}
-                className="w-full h-12 rounded-xl bg-brass-500 hover:bg-brass-400 text-ink-950 font-bold text-sm flex items-center justify-center gap-2 shadow-sm transition active:scale-[0.99]"
+                className="h-12 px-6 rounded-xl bg-brass-500 hover:bg-brass-400 text-ink-950 font-bold text-sm flex items-center justify-center gap-2.5 shadow-raised transition active:scale-[0.99]"
               >
                 <span suppressHydrationWarning>{siteConfig.heroPrimaryCtaText || "Request a Consultation"}</span>
                 <ArrowRight className="w-4 h-4" />
@@ -498,24 +416,24 @@ export default function HomePage() {
 
               <Link
                 href={siteConfig.heroSecondaryCtaLink || "/services"}
-                className="w-full h-12 rounded-xl border border-brass-500/40 hover:border-brass-400 bg-navy-950/70 hover:bg-navy-900/80 text-brass-200 hover:text-white font-semibold text-sm flex items-center justify-center gap-2 backdrop-blur-md shadow-2xs transition active:scale-[0.99]"
+                className="h-12 px-6 rounded-xl bg-ink-950/70 hover:bg-ink-950/90 border border-brass-500/40 hover:border-brass-400 text-brass-200 hover:text-white font-semibold text-sm flex items-center justify-center gap-2.5 backdrop-blur-md transition active:scale-[0.99]"
               >
                 <span suppressHydrationWarning>{siteConfig.heroSecondaryCtaText || "Explore our services"}</span>
                 <ArrowRight className="w-4 h-4 text-brass-400" />
               </Link>
             </div>
 
-            {/* Hotline & Response Time Notice */}
-            <div className="pt-1 flex items-center justify-between text-[11.5px] text-slate-300 px-0.5">
+            {/* Chambers Desk Status */}
+            <div className="pt-2 flex flex-wrap items-center justify-between gap-2 text-xs text-slate-300">
               <div className="flex items-center gap-1.5">
-                <span className="text-brass-400 font-semibold">Chambers Desk:</span>
+                <span className="text-brass-400 font-medium">Direct Chambers Desk:</span>
                 <a href={`tel:${BRAND_CONFIG.phone}`} className="font-bold text-white underline underline-offset-2">
                   {BRAND_CONFIG.phone}
                 </a>
               </div>
               <div className="flex items-center gap-1 text-emerald-400 font-medium">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                <span>Mon–Sat 9AM–8PM</span>
+                <span>Available Mon–Sat 9AM–8PM IST</span>
               </div>
             </div>
           </div>

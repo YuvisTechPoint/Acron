@@ -399,7 +399,7 @@ export function Footer() {
                 <Scale className="w-3.5 h-3.5 text-brass-400 shrink-0" />
                 <span>Bar Council of India Rule 36 Statutory Notice</span>
               </div>
-              <p className="text-slate-300/90">
+              <p suppressHydrationWarning className="text-slate-300/90">
                 {siteConfig?.disclaimer || BRAND_CONFIG.barCouncilNotice} All information on this website is provided solely for educational and statutory guidance purposes and should not be construed as legal advice or commercial solicitation.
               </p>
             </div>
