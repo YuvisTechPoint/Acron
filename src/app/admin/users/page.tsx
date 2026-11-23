@@ -67,7 +67,17 @@ export default function AdminUsersRBACPage() {
     setShowModal(true);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const syncUsers = async () => {
+    try {
+      await fetch("/api/sync", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ key: "admin_users", value: platformStore.getAdminUsers() }),
+      });
+    } catch {}
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.name || !formData.email) return;
 
@@ -92,12 +102,14 @@ export default function AdminUsersRBACPage() {
       triggerToast(`Created user account for ${formData.email}`);
     }
 
+    await syncUsers();
     setShowModal(false);
   };
 
-  const handleToggleStatus = (u: AdminUserItem) => {
+  const handleToggleStatus = async (u: AdminUserItem) => {
     const nextStatus: AdminUserItem["status"] = u.status === "Active" ? "Suspended" : "Active";
     platformStore.updateAdminUser(u.id, { status: nextStatus });
+    await syncUsers();
     triggerToast(`Account ${u.email} is now ${nextStatus}`);
   };
 
@@ -105,9 +117,10 @@ export default function AdminUsersRBACPage() {
     setUserToDelete({ id, email });
   };
 
-  const confirmDelete = () => {
+  const confirmDelete = async () => {
     if (!userToDelete) return;
     platformStore.deleteAdminUser(userToDelete.id);
+    await syncUsers();
     triggerToast(`Deleted user ${userToDelete.email}`);
     setUserToDelete(null);
   };
