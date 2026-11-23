@@ -1,3 +1,11 @@
+import path from "node:path";
+import fs from "node:fs";
+
+const fontCacheFile = path.join(process.cwd(), "data", "google-fonts-cache.json");
+if (fs.existsSync(fontCacheFile) && !process.env.NEXT_FONT_GOOGLE_MOCKED_RESPONSES) {
+  process.env.NEXT_FONT_GOOGLE_MOCKED_RESPONSES = fontCacheFile;
+}
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,

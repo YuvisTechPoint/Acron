@@ -80,7 +80,7 @@ if (fs.existsSync(requireFile)) {
   }
 }
 
-// 4. Patch build utils.js handleEdgeFunction copyFile safe fallback
+// 5. Patch build utils.js handleEdgeFunction copyFile safe fallback
 const buildUtilsFile = 'node_modules/next/dist/build/utils.js';
 if (fs.existsSync(buildUtilsFile)) {
   let content = fs.readFileSync(buildUtilsFile, 'utf8');
@@ -94,6 +94,79 @@ if (fs.existsSync(buildUtilsFile)) {
     console.log('• utils.js copyFile already patched');
   }
 }
+
+// 6. Patch Google font fetch timeouts, offline disk cache & retry noise for instant, resilient dev compile
+const fetchCssFile = 'node_modules/next/dist/compiled/@next/font/dist/google/fetch-css-from-google-fonts.js';
+if (fs.existsSync(fetchCssFile)) {
+  let content = fs.readFileSync(fetchCssFile, 'utf8');
+  if (content.includes('setTimeout(() => controller.abort(), 3000)')) {
+    content = content.replace(/setTimeout\(\(\) => controller\.abort\(\), 3000\)/g, 'setTimeout(() => controller.abort(), 30000)');
+  }
+  const targetMock = 'if (process.env.NEXT_FONT_GOOGLE_MOCKED_RESPONSES) {\n        const mockFile = require(process.env.NEXT_FONT_GOOGLE_MOCKED_RESPONSES);\n        mockedResponse = mockFile[url];\n        if (!mockedResponse) {\n            (0, next_font_error_1.nextFontError)(\'Missing mocked response for URL: \' + url);\n        }\n    }';
+  const replacementMock = `try {
+        const _cachePath = process.env.NEXT_FONT_GOOGLE_MOCKED_RESPONSES || require('path').join(process.cwd(), 'data', 'google-fonts-cache.json');
+        if (require('fs').existsSync(_cachePath)) {
+            const mockFile = require(_cachePath);
+            if (mockFile && mockFile[url]) {
+                mockedResponse = mockFile[url];
+            }
+        }
+    } catch {}
+    if (!mockedResponse && process.env.NEXT_FONT_GOOGLE_MOCKED_RESPONSES) {
+        try {
+            const mockFile = require(process.env.NEXT_FONT_GOOGLE_MOCKED_RESPONSES);
+            mockedResponse = mockFile[url];
+        } catch {}
+    }`;
+  if (content.includes(targetMock)) {
+    content = content.replace(targetMock, replacementMock);
+    fs.writeFileSync(fetchCssFile, content, 'utf8');
+    console.log('✔ Patched fetch-css-from-google-fonts.js with local offline font cache');
+  } else if (!content.includes('_cachePath')) {
+    fs.writeFileSync(fetchCssFile, content, 'utf8');
+    console.log('✔ Patched fetch-css-from-google-fonts.js timeout (30s)');
+  } else {
+    console.log('• fetch-css-from-google-fonts.js already patched');
+  }
+}
+
+const fetchFontFile = 'node_modules/next/dist/compiled/@next/font/dist/google/fetch-font-file.js';
+if (fs.existsSync(fetchFontFile)) {
+  let content = fs.readFileSync(fetchFontFile, 'utf8');
+  if (content.includes('setTimeout(() => controller.abort(), 3000)')) {
+    content = content.replace(/setTimeout\(\(\) => controller\.abort\(\), 3000\)/g, 'setTimeout(() => controller.abort(), 30000)');
+  }
+  const targetFontFile = 'async function fetchFontFile(url, isDev) {';
+  const replacementFontFile = `async function fetchFontFile(url, isDev) {
+    try {
+        const _path = require('path');
+        const _fs = require('fs');
+        const _base = _path.basename(url.split('?')[0]);
+        const _localFont = _path.join(process.cwd(), 'data', 'fonts', _base);
+        if (_fs.existsSync(_localFont)) {
+            return _fs.readFileSync(_localFont);
+        }
+    } catch {}`;
+  if (content.includes(targetFontFile) && !content.includes('_localFont')) {
+    content = content.replace(targetFontFile, replacementFontFile);
+    fs.writeFileSync(fetchFontFile, content, 'utf8');
+    console.log('✔ Patched fetch-font-file.js with local offline woff2 cache');
+  } else {
+    console.log('• fetch-font-file.js already patched');
+  }
+}
+
+const retryFile = 'node_modules/next/dist/compiled/@next/font/dist/google/retry.js';
+if (fs.existsSync(retryFile)) {
+  let content = fs.readFileSync(retryFile, 'utf8');
+  const targetRetry = 'console.error(e.message + `\\n\\nRetrying ${attempt}/${retries}...`);';
+  if (content.includes(targetRetry)) {
+    content = content.replace(targetRetry, "if (!e.message.includes('aborted')) console.warn(`Font fetch warning: ${e.message}`);");
+    fs.writeFileSync(retryFile, content, 'utf8');
+    console.log('✔ Patched font retry.js noise suppression');
+  }
+}
+
 
 
 
