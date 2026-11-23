@@ -69,21 +69,32 @@ The platform combines an editorial, high-trust digital presence with an enterpri
 ├── data/
 │   └── acorn-database.json        # Unified persistent database schema & seed records
 ├── docs/
+│   ├── INDEX.md                   # Master documentation catalog & index
 │   ├── DESIGN_SYSTEM.md           # Visual language, tokens, and typographic scale
 │   ├── PRD.md                     # Platform specification and statutory rule index
+│   ├── AUDIT.md                   # 139-route architectural mapping & system audit
 │   └── DEPLOYMENT_RUNBOOK.md      # Zero-downtime deployment and operational runbook
-├── public/                        # Static assets, seals, and typography
+├── public/                        # Static assets, brand icons, and service worker
+│   ├── brand/                     # Official brand logos, crests, and emblems
+│   ├── images/                    # Photographic assets and hero backgrounds
+│   └── manifest.json              # Standalone PWA manifest
 ├── scripts/
 │   ├── patch-next.js              # Standalone Next.js engine & loader patch hooks
 │   ├── copy-standalone.mjs        # Production asset bundler for standalone build
 │   ├── test-unit.mjs              # Unit tests (Crypto vault, rules engine, access control)
 │   ├── test-admin-realtime.mjs    # Admin console & SSE real-time E2E verification
 │   ├── test-workflows.mjs         # Client intake, payments, and IC investigative workflows
-│   └── verify-all.mjs             # 139-route crawler & 120 internal link verification
+│   └── verify-all.mjs             # 139-route crawler & internal link verification
 ├── src/
 │   ├── app/                       # Next.js 14 App Router routes & API endpoints
 │   ├── components/                # Reusable UI components, navigation, and modal systems
+│   │   ├── admin/                 # Dedicated staff admin console components
+│   │   ├── home/                  # Homepage editorial & protocol components
+│   │   ├── ui/                    # Primitive design system components (buttons, cards, etc.)
+│   │   └── index.ts               # Unified master component barrel export
 │   └── lib/                       # Types, session auth, cryptographic utilities, and store
+│       ├── rules/                 # Pure TypeScript POSH statutory rules engine
+│       └── index.ts               # Unified master library barrel export
 ├── package.json                   # Scripts, dependencies, and build hooks
 └── tailwind.config.ts             # Tailwind configuration wired to design system tokens
 ```
