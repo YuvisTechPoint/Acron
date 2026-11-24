@@ -9,7 +9,8 @@ import {
   Mail,
   Phone,
   Clock,
-  ChevronDown,
+  Plus,
+  Minus,
   ArrowUp,
   ArrowUpRight,
   ExternalLink,
@@ -154,10 +155,11 @@ export function Footer() {
                     <span className="text-[10px] font-mono font-medium text-slate-400 bg-navy-900 px-2 py-0.5 rounded-full border border-navy-800">
                       6 Areas
                     </span>
-                    <ChevronDown
-                      className={`w-4 h-4 text-brass-400 transition-transform duration-300 ${openAccordions["01"] ? "rotate-180" : ""
-                        }`}
-                    />
+                    {openAccordions["01"] ? (
+                      <Minus className="w-4 h-4 text-brass-400 shrink-0 transition-colors" />
+                    ) : (
+                      <Plus className="w-4 h-4 text-brass-400 shrink-0 transition-colors" />
+                    )}
                   </div>
                 </button>
 
@@ -204,10 +206,11 @@ export function Footer() {
                     <span className="text-[10px] font-mono font-medium text-slate-400 bg-navy-900 px-2 py-0.5 rounded-full border border-navy-800">
                       7 Hubs
                     </span>
-                    <ChevronDown
-                      className={`w-4 h-4 text-brass-400 transition-transform duration-300 ${openAccordions["02"] ? "rotate-180" : ""
-                        }`}
-                    />
+                    {openAccordions["02"] ? (
+                      <Minus className="w-4 h-4 text-brass-400 shrink-0 transition-colors" />
+                    ) : (
+                      <Plus className="w-4 h-4 text-brass-400 shrink-0 transition-colors" />
+                    )}
                   </div>
                 </button>
 
@@ -318,10 +321,11 @@ export function Footer() {
                     <span className="text-[10px] font-mono font-medium text-brass-300 bg-navy-900 px-2 py-0.5 rounded-full border border-navy-800">
                       Kolkata
                     </span>
-                    <ChevronDown
-                      className={`w-4 h-4 text-brass-400 transition-transform duration-300 ${openAccordions["03"] ? "rotate-180" : ""
-                        }`}
-                    />
+                    {openAccordions["03"] ? (
+                      <Minus className="w-4 h-4 text-brass-400 shrink-0 transition-colors" />
+                    ) : (
+                      <Plus className="w-4 h-4 text-brass-400 shrink-0 transition-colors" />
+                    )}
                   </div>
                 </button>
 
