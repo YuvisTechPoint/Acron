@@ -395,84 +395,126 @@ export function Footer() {
       </div>
 
       {/* ─────────────────────────────────────────────────────────────
-          3. ANCHORED LOWER FOOTER BASE
+          3. ANCHORED LOWER FOOTER BASE (Desktop & Mobile Responsive)
          ───────────────────────────────────────────────────────────── */}
-      <div className="border-t border-navy-800 bg-ink-950 relative z-20 shadow-[0_-4px_20px_rgba(0,0,0,0.35)]">
+      <div className="border-t border-navy-800 bg-ink-950 relative z-20 shadow-[0_-4px_24px_rgba(0,0,0,0.4)]">
+        <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-5 sm:py-6 pb-36 sm:pb-32 lg:pb-8">
 
-        {/* Lower Tier: Copyright, Realtime Kolkata Clock, Legal Navigation & Desktop Back-To-Top */}
-        <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 pt-5 pb-28 sm:pb-6 flex flex-col md:flex-row items-center justify-between gap-5 text-xs font-sans text-slate-400">
+          {/* Upper Tier: Legal & Compliance Directory Navigation */}
+          <div className="pb-4 sm:pb-5 border-b border-navy-800/70">
+            <nav aria-label="Legal & Statutory Directory" className="w-full">
+              {/* Mobile & Tablet View (< lg): Tactile, high-affordance touch grid */}
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:hidden gap-2 sm:gap-2.5 max-w-xl sm:max-w-2xl mx-auto text-xs font-sans">
+                <Link
+                  href="/privacy"
+                  className="min-h-[44px] px-3 py-2 rounded-lg bg-navy-900/70 border border-navy-800/90 hover:bg-navy-900 hover:border-brass-500/40 text-slate-200 text-center flex items-center justify-center transition active:scale-[0.98] active:text-brass-300"
+                >
+                  <FooterRollText>Privacy Policy</FooterRollText>
+                </Link>
+                <Link
+                  href="/terms"
+                  className="min-h-[44px] px-3 py-2 rounded-lg bg-navy-900/70 border border-navy-800/90 hover:bg-navy-900 hover:border-brass-500/40 text-slate-200 text-center flex items-center justify-center transition active:scale-[0.98] active:text-brass-300"
+                >
+                  <FooterRollText>Terms</FooterRollText>
+                </Link>
+                <Link
+                  href="/cookies"
+                  className="min-h-[44px] px-3 py-2 rounded-lg bg-navy-900/70 border border-navy-800/90 hover:bg-navy-900 hover:border-brass-500/40 text-slate-200 text-center flex items-center justify-center transition active:scale-[0.98] active:text-brass-300"
+                >
+                  <FooterRollText>Cookie Policy</FooterRollText>
+                </Link>
+                <Link
+                  href="/refund-policy"
+                  className="min-h-[44px] px-3 py-2 rounded-lg bg-navy-900/70 border border-navy-800/90 hover:bg-navy-900 hover:border-brass-500/40 text-slate-200 text-center flex items-center justify-center transition active:scale-[0.98] active:text-brass-300"
+                >
+                  <FooterRollText>Refund Policy</FooterRollText>
+                </Link>
+                <Link
+                  href="/disclaimer"
+                  className="min-h-[44px] px-3 py-2 rounded-lg bg-navy-900/70 border border-navy-800/90 hover:bg-navy-900 hover:border-brass-500/40 text-slate-200 text-center flex items-center justify-center transition active:scale-[0.98] active:text-brass-300"
+                >
+                  <FooterRollText>Disclaimer</FooterRollText>
+                </Link>
+                <Link
+                  href="/verify"
+                  className="min-h-[44px] px-3 py-2 rounded-lg bg-navy-900/70 border border-navy-800/90 hover:bg-navy-900 hover:border-brass-500/40 text-slate-200 text-center flex items-center justify-center transition active:scale-[0.98] active:text-brass-300"
+                >
+                  <FooterRollText>Verification</FooterRollText>
+                </Link>
+              </div>
 
-          {/* Copyright & Live Chambers Clock */}
-          <div className="flex flex-col sm:flex-row items-center justify-center md:justify-start gap-2 sm:gap-3 text-center sm:text-left">
-            <span className="text-slate-300 font-semibold tracking-wide text-xs">
-              &copy; {new Date().getFullYear()} ACORN LEGAL CONSULTANTS
-            </span>
-            <span className="hidden sm:inline text-navy-700 select-none">&bull;</span>
-            <span className="text-[11px] text-slate-400">
-              Kolkata Chambers
-            </span>
-            <span className="hidden sm:inline text-navy-700 select-none">&bull;</span>
-            <div className="pt-0.5 sm:pt-0">
+              {/* Desktop View (>= lg): Symmetrical, single-line horizontal directory with brass accents */}
+              <div className="hidden lg:flex flex-wrap items-center justify-center gap-x-6 xl:gap-x-8 gap-y-2 text-xs font-sans text-slate-300">
+                <Link
+                  href="/privacy"
+                  className="hover:text-brass-300 transition-colors whitespace-nowrap py-1 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-brass-400 rounded-sm"
+                >
+                  <FooterRollText>Privacy Policy</FooterRollText>
+                </Link>
+                <span className="text-navy-700 select-none" aria-hidden="true">&bull;</span>
+
+                <Link
+                  href="/terms"
+                  className="hover:text-brass-300 transition-colors whitespace-nowrap py-1 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-brass-400 rounded-sm"
+                >
+                  <FooterRollText>Terms</FooterRollText>
+                </Link>
+                <span className="text-navy-700 select-none" aria-hidden="true">&bull;</span>
+
+                <Link
+                  href="/cookies"
+                  className="hover:text-brass-300 transition-colors whitespace-nowrap py-1 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-brass-400 rounded-sm"
+                >
+                  <FooterRollText>Cookie Policy</FooterRollText>
+                </Link>
+                <span className="text-navy-700 select-none" aria-hidden="true">&bull;</span>
+
+                <Link
+                  href="/refund-policy"
+                  className="hover:text-brass-300 transition-colors whitespace-nowrap py-1 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-brass-400 rounded-sm"
+                >
+                  <FooterRollText>Refund Policy</FooterRollText>
+                </Link>
+                <span className="text-navy-700 select-none" aria-hidden="true">&bull;</span>
+
+                <Link
+                  href="/disclaimer"
+                  className="hover:text-brass-300 transition-colors whitespace-nowrap py-1 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-brass-400 rounded-sm"
+                >
+                  <FooterRollText>Disclaimer</FooterRollText>
+                </Link>
+                <span className="text-navy-700 select-none" aria-hidden="true">&bull;</span>
+
+                <Link
+                  href="/verify"
+                  className="hover:text-brass-300 transition-colors whitespace-nowrap py-1 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-brass-400 rounded-sm"
+                >
+                  <FooterRollText>Verification</FooterRollText>
+                </Link>
+              </div>
+            </nav>
+          </div>
+
+          {/* Lower Tier: Copyright, Chambers Jurisdiction & Realtime Kolkata Clock */}
+          <div className="pt-4 sm:pt-4 flex flex-col md:flex-row items-center justify-between gap-3 text-xs font-sans text-slate-400 text-center md:text-left">
+            <div className="flex flex-wrap items-center justify-center md:justify-start gap-x-3 gap-y-1">
+              <span className="text-slate-300 font-semibold tracking-wide text-[11px] sm:text-xs">
+                &copy; {new Date().getFullYear()} ACORN LEGAL CONSULTANTS
+              </span>
+              <span className="text-navy-700 select-none" aria-hidden="true">&bull;</span>
+              <span className="text-slate-400 text-[11px] sm:text-xs">
+                Kolkata Chambers
+              </span>
+              <span className="hidden sm:inline text-navy-700 select-none" aria-hidden="true">&bull;</span>
+              <span className="hidden sm:inline text-slate-400 text-[11px]">
+                Calcutta High Court Bar Association Jurisdiction
+              </span>
+            </div>
+
+            {/* Realtime Chambers Clock */}
+            <div className="flex items-center justify-center shrink-0 pt-1 md:pt-0">
               <FooterClock />
             </div>
-          </div>
-
-          {/* Legal Navigation Links (Generous Touch-Friendly Grid on Mobile, Inline on Desktop) */}
-          <div className="w-full md:w-auto grid grid-cols-2 sm:grid-cols-3 md:flex md:flex-wrap items-center justify-center gap-2 sm:gap-1.5 md:gap-2 text-[11px] sm:text-xs text-slate-400">
-            <Link
-              href="/privacy"
-              className="min-h-[44px] px-3 py-2 rounded-lg bg-navy-900/60 md:bg-transparent border border-navy-800/80 md:border-0 hover:border-brass-500/40 hover:bg-navy-900 md:hover:bg-transparent hover:text-brass-300 transition flex items-center justify-center text-center group active:text-brass-200"
-            >
-              <FooterRollText>Privacy Policy</FooterRollText>
-            </Link>
-            <span className="hidden md:inline text-navy-700 select-none">&bull;</span>
-            <Link
-              href="/terms"
-              className="min-h-[44px] px-3 py-2 rounded-lg bg-navy-900/60 md:bg-transparent border border-navy-800/80 md:border-0 hover:border-brass-500/40 hover:bg-navy-900 md:hover:bg-transparent hover:text-brass-300 transition flex items-center justify-center text-center group active:text-brass-200"
-            >
-              <FooterRollText>Terms</FooterRollText>
-            </Link>
-            <span className="hidden md:inline text-navy-700 select-none">&bull;</span>
-            <Link
-              href="/cookies"
-              className="min-h-[44px] px-3 py-2 rounded-lg bg-navy-900/60 md:bg-transparent border border-navy-800/80 md:border-0 hover:border-brass-500/40 hover:bg-navy-900 md:hover:bg-transparent hover:text-brass-300 transition flex items-center justify-center text-center group active:text-brass-200"
-            >
-              <FooterRollText>Cookie Policy</FooterRollText>
-            </Link>
-            <span className="hidden md:inline text-navy-700 select-none">&bull;</span>
-            <Link
-              href="/refund-policy"
-              className="min-h-[44px] px-3 py-2 rounded-lg bg-navy-900/60 md:bg-transparent border border-navy-800/80 md:border-0 hover:border-brass-500/40 hover:bg-navy-900 md:hover:bg-transparent hover:text-brass-300 transition flex items-center justify-center text-center group active:text-brass-200"
-            >
-              <FooterRollText>Refund Policy</FooterRollText>
-            </Link>
-            <span className="hidden md:inline text-navy-700 select-none">&bull;</span>
-            <Link
-              href="/disclaimer"
-              className="min-h-[44px] px-3 py-2 rounded-lg bg-navy-900/60 md:bg-transparent border border-navy-800/80 md:border-0 hover:border-brass-500/40 hover:bg-navy-900 md:hover:bg-transparent hover:text-brass-300 transition flex items-center justify-center text-center group active:text-brass-200"
-            >
-              <FooterRollText>Disclaimer</FooterRollText>
-            </Link>
-            <span className="hidden md:inline text-navy-700 select-none">&bull;</span>
-            <Link
-              href="/verify"
-              className="min-h-[44px] px-3 py-2 rounded-lg bg-navy-900/60 md:bg-transparent border border-navy-800/80 md:border-0 hover:border-brass-500/40 hover:bg-navy-900 md:hover:bg-transparent hover:text-brass-300 transition flex items-center justify-center text-center group active:text-brass-200"
-            >
-              <FooterRollText>Verification</FooterRollText>
-            </Link>
-          </div>
-
-          {/* Desktop Back-To-Top Button (Mobile already has fixed floating button) */}
-          <div className="hidden md:flex items-center justify-center">
-            <button
-              type="button"
-              onClick={scrollToTop}
-              title="Return to top of page"
-              aria-label="Scroll back to top of page"
-              className="w-11 h-11 min-w-[44px] min-h-[44px] rounded-full bg-navy-900 border border-brass-500/35 hover:border-brass-400 text-brass-300 hover:text-white flex items-center justify-center transition-all duration-300 shadow-sm group hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass-500 active:scale-95 cursor-pointer"
-            >
-              <ArrowUp className="w-4 h-4 group-hover:-translate-y-0.5 transition-transform" />
-            </button>
           </div>
 
         </div>
