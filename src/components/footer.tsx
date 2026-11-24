@@ -65,11 +65,11 @@ export function Footer() {
       <div id="footer-directory-body">
         <div className="overflow-hidden">
           {/* Main Directory Container */}
-          <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 pt-10 sm:pt-14 lg:pt-16 pb-8 sm:pb-12">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8 md:gap-10 lg:gap-12">
+          <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 pt-8 sm:pt-12 lg:pt-16 pb-0 lg:pb-12">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-y-0 lg:gap-y-0 gap-x-0 lg:gap-x-12">
 
               {/* Column 1: Firm Identity & Chambers Ethos (4 cols on desktop) */}
-              <div className="lg:col-span-4 space-y-4 sm:space-y-5">
+              <div className="lg:col-span-4 space-y-4 sm:space-y-5 pb-6 lg:pb-0">
                 <Link
                   href="/"
                   className="inline-flex items-center gap-3 sm:gap-3.5 group focus:outline-none focus-visible:ring-2 focus-visible:ring-brass-400 rounded-lg p-1 -m-1"
@@ -137,14 +137,14 @@ export function Footer() {
               </div>
 
               {/* Column 2: 01 / Practice Areas (3 cols on desktop) */}
-              <div className="lg:col-span-3 border-t border-navy-800/80 lg:border-t-0 pt-3 sm:pt-4 lg:pt-0">
+              <div className="lg:col-span-3 border-t border-navy-800/80 lg:border-t-0 pt-0 lg:pt-0">
                 <button
                   type="button"
                   id="accordion-header-01"
                   aria-controls="accordion-panel-01"
                   aria-expanded={openAccordions["01"]}
                   onClick={() => toggleAccordion("01")}
-                  className="w-full min-h-[48px] flex items-center justify-between text-left group lg:pointer-events-none mb-1 lg:mb-4 px-2 sm:px-3 -mx-2 sm:-mx-3 rounded-lg hover:bg-navy-900/50 active:bg-navy-900/70 lg:hover:bg-transparent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass-500 cursor-pointer"
+                  className="w-full min-h-[48px] py-3.5 lg:py-0 flex items-center justify-between text-left group lg:pointer-events-none mb-0 lg:mb-4 px-2 sm:px-3 -mx-2 sm:-mx-3 rounded-lg hover:bg-navy-900/50 active:bg-navy-900/70 lg:hover:bg-transparent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass-500 cursor-pointer"
                 >
                   <h4 className="font-sans text-[11px] sm:text-xs font-semibold uppercase tracking-[0.18em] text-brass-400 flex items-center gap-1.5">
                     <span className="font-mono text-[10px] text-brass-500/80">01 /</span>
@@ -165,7 +165,7 @@ export function Footer() {
                   id="accordion-panel-01"
                   role="region"
                   aria-labelledby="accordion-header-01"
-                  className={`transition-all duration-300 ease-in-out overflow-hidden ${openAccordions["01"] ? "max-h-[500px] opacity-100" : "max-h-0 lg:max-h-none opacity-0 lg:opacity-100"
+                  className={`transition-all duration-300 ease-in-out overflow-hidden ${openAccordions["01"] ? "max-h-[500px] opacity-100 pb-4 lg:pb-0" : "max-h-0 lg:max-h-none opacity-0 lg:opacity-100"
                     }`}
                 >
                   <ul className="space-y-1 sm:space-y-1.5 lg:space-y-2.5 font-sans text-xs sm:text-[13px] text-slate-300 pt-1 lg:pt-0">
@@ -187,14 +187,14 @@ export function Footer() {
               </div>
 
               {/* Column 3: 02 / Portals & Resources (2 cols on desktop) */}
-              <div className="lg:col-span-2 border-t border-navy-800/80 lg:border-t-0 pt-3 sm:pt-4 lg:pt-0">
+              <div className="lg:col-span-2 border-t border-navy-800/80 lg:border-t-0 pt-0 lg:pt-0">
                 <button
                   type="button"
                   id="accordion-header-02"
                   aria-controls="accordion-panel-02"
                   aria-expanded={openAccordions["02"]}
                   onClick={() => toggleAccordion("02")}
-                  className="w-full min-h-[48px] flex items-center justify-between text-left group lg:pointer-events-none mb-1 lg:mb-4 px-2 sm:px-3 -mx-2 sm:-mx-3 rounded-lg hover:bg-navy-900/50 active:bg-navy-900/70 lg:hover:bg-transparent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass-500 cursor-pointer"
+                  className="w-full min-h-[48px] py-3.5 lg:py-0 flex items-center justify-between text-left group lg:pointer-events-none mb-0 lg:mb-4 px-2 sm:px-3 -mx-2 sm:-mx-3 rounded-lg hover:bg-navy-900/50 active:bg-navy-900/70 lg:hover:bg-transparent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass-500 cursor-pointer"
                 >
                   <h4 className="font-sans text-[11px] sm:text-xs font-semibold uppercase tracking-[0.18em] text-brass-400 flex items-center gap-1.5">
                     <span className="font-mono text-[10px] text-brass-500/80">02 /</span>
@@ -215,7 +215,7 @@ export function Footer() {
                   id="accordion-panel-02"
                   role="region"
                   aria-labelledby="accordion-header-02"
-                  className={`transition-all duration-300 ease-in-out overflow-hidden ${openAccordions["02"] ? "max-h-[500px] opacity-100" : "max-h-0 lg:max-h-none opacity-0 lg:opacity-100"
+                  className={`transition-all duration-300 ease-in-out overflow-hidden ${openAccordions["02"] ? "max-h-[500px] opacity-100 pb-4 lg:pb-0" : "max-h-0 lg:max-h-none opacity-0 lg:opacity-100"
                     }`}
                 >
                   <ul className="space-y-1 sm:space-y-1.5 lg:space-y-2.5 font-sans text-xs sm:text-[13px] text-slate-300 pt-1 lg:pt-0">
@@ -301,14 +301,14 @@ export function Footer() {
               </div>
 
               {/* Column 4: 03 / Chambers Location (3 cols on desktop) */}
-              <div className="lg:col-span-3 border-t border-navy-800/80 lg:border-t-0 pt-3 sm:pt-4 lg:pt-0">
+              <div className="lg:col-span-3 border-t border-b lg:border-b-0 border-navy-800/80 lg:border-t-0 pt-0 lg:pt-0">
                 <button
                   type="button"
                   id="accordion-header-03"
                   aria-controls="accordion-panel-03"
                   aria-expanded={openAccordions["03"]}
                   onClick={() => toggleAccordion("03")}
-                  className="w-full min-h-[48px] flex items-center justify-between text-left group lg:pointer-events-none mb-1 lg:mb-4 px-2 sm:px-3 -mx-2 sm:-mx-3 rounded-lg hover:bg-navy-900/50 active:bg-navy-900/70 lg:hover:bg-transparent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass-500 cursor-pointer"
+                  className="w-full min-h-[48px] py-3.5 lg:py-0 flex items-center justify-between text-left group lg:pointer-events-none mb-0 lg:mb-4 px-2 sm:px-3 -mx-2 sm:-mx-3 rounded-lg hover:bg-navy-900/50 active:bg-navy-900/70 lg:hover:bg-transparent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass-500 cursor-pointer"
                 >
                   <h4 className="font-sans text-[11px] sm:text-xs font-semibold uppercase tracking-[0.18em] text-brass-400 flex items-center gap-1.5">
                     <span className="font-mono text-[10px] text-brass-500/80">03 /</span>
@@ -329,7 +329,7 @@ export function Footer() {
                   id="accordion-panel-03"
                   role="region"
                   aria-labelledby="accordion-header-03"
-                  className={`transition-all duration-300 ease-in-out overflow-hidden ${openAccordions["03"] ? "max-h-[500px] opacity-100" : "max-h-0 lg:max-h-none opacity-0 lg:opacity-100"
+                  className={`transition-all duration-300 ease-in-out overflow-hidden ${openAccordions["03"] ? "max-h-[500px] opacity-100 pb-5 lg:pb-0" : "max-h-0 lg:max-h-none opacity-0 lg:opacity-100"
                     }`}
                 >
                   <div className="space-y-2 sm:space-y-3 font-sans text-xs sm:text-[13px] text-slate-300 pt-1 lg:pt-0">
@@ -384,9 +384,9 @@ export function Footer() {
           </div>
 
           {/* Aesthetic Brand Watermark (Responsive Clamped Font Size & Safe Margins) */}
-          <div className="border-t border-navy-800/50 bg-ink-950/90 overflow-hidden">
-            <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-5 sm:py-6 text-center pointer-events-none select-none" aria-hidden="true">
-              <span className="font-serif text-[clamp(2.75rem,14vw,7.5rem)] font-black tracking-[0.12em] sm:tracking-[0.16em] text-slate-400/20 sm:text-slate-300/25 leading-none block select-none uppercase drop-shadow-[0_4px_24px_rgba(255,255,255,0.02)]">
+          <div className="bg-ink-950/90 overflow-hidden">
+            <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-2.5 sm:py-4 lg:py-6 text-center pointer-events-none select-none" aria-hidden="true">
+              <span className="font-serif text-[clamp(2rem,11vw,7.5rem)] font-black tracking-[0.12em] sm:tracking-[0.16em] text-slate-400/20 sm:text-slate-300/25 leading-none block select-none uppercase drop-shadow-[0_4px_24px_rgba(255,255,255,0.02)]">
                 ACORN
               </span>
             </div>
@@ -398,7 +398,7 @@ export function Footer() {
           3. ANCHORED LOWER FOOTER BASE (Desktop & Mobile Responsive)
          ───────────────────────────────────────────────────────────── */}
       <div className="border-t border-navy-800 bg-ink-950 relative z-20 shadow-[0_-4px_24px_rgba(0,0,0,0.4)]">
-        <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-5 sm:py-6 pb-36 sm:pb-32 lg:pb-8">
+        <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-5 pb-24 sm:pb-20 lg:pb-8">
 
           {/* Upper Tier: Legal & Compliance Directory Navigation */}
           <div className="pb-4 sm:pb-5 border-b border-navy-800/70">
