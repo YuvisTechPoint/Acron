@@ -956,10 +956,10 @@ export default function HomePage() {
               <Link href="/posh" className="lg:col-span-5 flex justify-center cursor-pointer group focus:outline-none">
                 <div className="relative w-full max-w-[360px] sm:max-w-[420px] aspect-[1856/2304] rounded-2xl overflow-hidden shadow-2xl border border-brass-500/30 bg-navy-950 group-hover:border-brass-400 transition-colors">
                   <Image
-                    src="/images/posh.png"
+                    src="/images/posh.jpg"
                     alt="POSH Compliance Desk - External Member Consultation at Chambers"
                     fill
-                    priority
+                    loading="lazy"
                     sizes="(max-width: 768px) 100vw, 420px"
                     className="object-contain group-hover:scale-[1.02] transition-transform duration-500"
                   />
@@ -1145,7 +1145,7 @@ export default function HomePage() {
                 width={80}
                 height={80}
                 className="w-full h-full object-contain"
-                priority
+                loading="lazy"
               />
             </div>
 

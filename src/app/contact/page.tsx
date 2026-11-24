@@ -26,8 +26,13 @@ import {
   Textarea,
   Checkbox,
 } from "@/components/ui";
-import { ChambersMap } from "@/components/chambers-map";
+import dynamic from "next/dynamic";
 import { useToast } from "@/components/ui/toast";
+
+const ChambersMap = dynamic(
+  () => import("@/components/chambers-map").then((mod) => mod.ChambersMap),
+  { ssr: false }
+);
 import {
   trackConsultationSubmitted,
   trackPhoneClick,

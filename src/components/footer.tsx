@@ -19,8 +19,13 @@ import {
 } from "lucide-react";
 import { BRAND_CONFIG, PRACTICE_AREAS } from "@/lib/constants";
 import { FooterRollText, FooterClock } from "@/components/footer-roll-text";
-import { ChambersMap } from "@/components/chambers-map";
+import dynamic from "next/dynamic";
 import { useRealtimeSiteConfig } from "@/lib/realtime";
+
+const ChambersMap = dynamic(
+  () => import("@/components/chambers-map").then((mod) => mod.ChambersMap),
+  { ssr: false }
+);
 
 export function Footer() {
   const pathname = usePathname();
@@ -28,9 +33,9 @@ export function Footer() {
   const siteConfig = useRealtimeSiteConfig();
   const [showMapModal, setShowMapModal] = useState(false);
 
-  // Foldable accordion state for mobile/tablet screens within the directory
+  // Foldable accordion state for mobile/tablet screens within the directory (cleanly collapsed by default)
   const [openAccordions, setOpenAccordions] = useState<Record<string, boolean>>({
-    "01": true,
+    "01": false,
     "02": false,
     "03": false,
   });
@@ -402,10 +407,10 @@ export function Footer() {
           3. ANCHORED LOWER FOOTER BASE (Desktop & Mobile Responsive)
          ───────────────────────────────────────────────────────────── */}
       <div className="border-t border-navy-800 bg-ink-950 relative z-20 shadow-[0_-4px_24px_rgba(0,0,0,0.4)]">
-        <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-3.5 sm:py-4 pb-6 sm:pb-6 lg:pb-8">
+        <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-3 sm:py-3.5 pb-4 sm:pb-5 lg:pb-6">
 
           {/* Upper Tier: Unified Legal & Compliance Directory Navigation (Clean text links, zero card boxes) */}
-          <div className="pb-3 sm:pb-4 border-b border-navy-800/70">
+          <div className="pb-2.5 sm:pb-3 border-b border-navy-800/70">
             <nav aria-label="Legal & Statutory Directory" className="w-full">
               <div className="flex flex-wrap items-center justify-center gap-x-3.5 sm:gap-x-6 lg:gap-x-8 gap-y-1.5 sm:gap-y-2 text-[11px] sm:text-xs font-sans text-slate-300 text-center">
                 <Link
@@ -459,14 +464,10 @@ export function Footer() {
           </div>
 
           {/* Lower Tier: Copyright, Chambers Jurisdiction & Realtime Kolkata Clock */}
-          <div className="pt-3 sm:pt-4 flex flex-col md:flex-row items-center justify-between gap-2.5 sm:gap-3 text-xs font-sans text-slate-400 text-center md:text-left">
-            <div className="flex flex-wrap items-center justify-center md:justify-start gap-x-3 gap-y-1">
+          <div className="pt-2.5 sm:pt-3.5 flex flex-col md:flex-row items-center justify-between gap-2 sm:gap-3 text-xs font-sans text-slate-400 text-center md:text-left">
+            <div className="flex flex-wrap items-center justify-center md:justify-start gap-x-2.5 sm:gap-x-3 gap-y-1">
               <span className="text-slate-300 font-semibold tracking-wide text-[11px] sm:text-xs">
                 &copy; {new Date().getFullYear()} ACORN LEGAL CONSULTANTS
-              </span>
-              <span className="text-navy-700 select-none" aria-hidden="true">&bull;</span>
-              <span className="text-slate-400 text-[11px] sm:text-xs">
-                Kolkata Chambers
               </span>
               <span className="hidden sm:inline text-navy-700 select-none" aria-hidden="true">&bull;</span>
               <span className="hidden sm:inline text-slate-400 text-[11px]">

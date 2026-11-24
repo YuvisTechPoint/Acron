@@ -1,7 +1,12 @@
 "use client";
 
 import React from "react";
-import { LegalGuidanceAssistant } from "./legal-guidance-assistant";
+import dynamic from "next/dynamic";
+
+const LegalGuidanceAssistant = dynamic(
+  () => import("./legal-guidance-assistant").then((mod) => mod.LegalGuidanceAssistant),
+  { ssr: false }
+);
 
 /**
  * Public Statutory Guidance Assistant

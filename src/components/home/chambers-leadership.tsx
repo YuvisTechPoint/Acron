@@ -27,7 +27,7 @@ const COUNSEL_MEMBERS = [
     focus: "Civil & Commercial Litigation • Section 138 NI Act • 30-Year Property Title Search • MahaRERA & Succession",
     creed:
       "We practice law with the conviction that behind every brief, contract, or inquiry is a person whose security and livelihood depend on our diligence. That fiduciary responsibility cannot be delegated to algorithms or junior intermediaries.",
-    image: "/images/hero-1.png",
+    image: "/images/hero-1.jpg",
     directPhone: "+91 8369171822",
     badge: "Principal Legal Consultant",
   },

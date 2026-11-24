@@ -705,43 +705,43 @@ export function Navbar() {
       {/* Full-Screen Ink-950 Mobile Drawer */}
       {mobileMenuOpen && (
         <div
-          className="fixed inset-0 z-50 bg-ink-950 text-white lg:hidden flex flex-col justify-between p-5 sm:p-6 animate-fade-up overflow-y-auto"
+          className="fixed inset-0 z-50 bg-ink-950/98 backdrop-blur-md text-white lg:hidden flex flex-col justify-between p-4 sm:p-6 animate-fade-up overflow-y-auto"
           role="dialog"
           aria-modal="true"
         >
           <div>
-            <div className="flex items-center justify-between pb-5 border-b border-navy-800">
-              <Link href="/" onClick={() => setMobileMenuOpen(false)} className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-md bg-navy-950 border border-brass-500/40 overflow-hidden flex items-center justify-center shrink-0 shadow-inner">
+            <div className="flex items-center justify-between pb-3.5 border-b border-navy-800">
+              <Link href="/" onClick={() => setMobileMenuOpen(false)} className="flex items-center gap-2.5">
+                <div className="w-9 h-9 rounded-md bg-navy-950 border border-brass-500/40 overflow-hidden flex items-center justify-center shrink-0 shadow-inner">
                   <Image
                     src="/brand/logo.png"
                     alt="Acorn Legal Consultants Crest"
-                    width={40}
-                    height={40}
+                    width={36}
+                    height={36}
                     className="w-full h-full object-cover"
-                    priority
+                    loading="lazy"
                   />
                 </div>
                 <div>
-                  <div className="font-serif font-bold text-xl text-white leading-none">
+                  <div className="font-serif font-bold text-lg text-white leading-tight">
                     {siteConfig?.firmName || "ACORN"}
                   </div>
-                  <div className="text-[9px] font-semibold uppercase tracking-[0.2em] text-brass-300 mt-1">
+                  <div className="text-[9px] font-semibold uppercase tracking-[0.16em] text-brass-300">
                     {siteConfig?.tagline || "Legal Consultants"}
                   </div>
                 </div>
               </Link>
               <button
                 onClick={() => setMobileMenuOpen(false)}
-                className="w-11 h-11 min-w-[44px] min-h-[44px] flex items-center justify-center text-slate-400 hover:text-white rounded-btn transition-colors"
+                className="w-10 h-10 min-w-[40px] min-h-[40px] flex items-center justify-center text-slate-400 hover:text-white rounded-lg hover:bg-navy-900 transition-colors"
                 aria-label="Close menu"
               >
-                <X className="w-6 h-6" />
+                <X className="w-5 h-5" />
               </button>
             </div>
 
-            {/* Staggered Large Serif Links */}
-            <nav className="flex flex-col gap-2 py-6">
+            {/* Refined Proportional Navigation Links */}
+            <nav className="flex flex-col divide-y divide-navy-900/60 py-2 sm:py-3">
               {[
                 { name: "Home", href: "/" },
                 { name: "About Chambers", href: "/about" },
@@ -752,33 +752,41 @@ export function Navbar() {
                 { name: "Frequently Asked Questions", href: "/faq" },
                 { name: "Contact Chambers", href: "/contact" },
                 { name: "Fee Settlement", href: "/pay" },
-              ].map((item, idx) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="font-serif text-2xl font-medium text-white/90 hover:text-brass-300 transition min-h-[44px] flex items-center py-2 px-1 rounded-md hover:bg-white/5"
-                  style={{ animationDelay: `${idx * 50}ms` }}
-                >
-                  {item.name}
-                </Link>
-              ))}
+              ].map((item) => {
+                const isActive = pathname === item.href;
+                return (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    onClick={() => setMobileMenuOpen(false)}
+                    className={`font-serif text-[15px] sm:text-base font-medium transition min-h-[40px] flex items-center justify-between py-2 px-2.5 rounded-md ${
+                      isActive
+                        ? "text-brass-300 bg-navy-900/80 font-semibold"
+                        : "text-slate-200 hover:text-brass-300 hover:bg-white/5"
+                    }`}
+                  >
+                    <span>{item.name}</span>
+                    <span className="text-xs font-sans text-brass-500/60 select-none">&rsaquo;</span>
+                  </Link>
+                );
+              })}
             </nav>
           </div>
 
           {/* Drawer Bottom Actions: Phone and Consultation */}
-          <div className="pt-6 border-t border-navy-800 space-y-3">
+          <div className="pt-3.5 border-t border-navy-800 space-y-2 sm:space-y-0 sm:grid sm:grid-cols-2 sm:gap-2.5">
             <a
               href={`tel:${BRAND_CONFIG.phone}`}
-              className="w-full h-[52px] px-4 rounded-btn border border-brass-500/40 text-ivory-50 flex items-center justify-center gap-2 font-semibold text-xs tracking-wider uppercase hover:bg-navy-800 transition"
+              className="w-full min-h-[44px] px-3 py-2 rounded-btn border border-brass-500/40 text-ivory-50 flex items-center justify-center gap-2 font-semibold text-xs tracking-wider uppercase hover:bg-navy-800 transition"
             >
-              <Phone className="w-4 h-4 text-brass-300" />
-              <span>Chambers: {BRAND_CONFIG.phone}</span>
+              <Phone className="w-3.5 h-3.5 text-brass-300 shrink-0" />
+              <span className="truncate">Chambers: {BRAND_CONFIG.phone}</span>
             </a>
 
             <Link
               href="/request-service"
-              className="w-full h-[52px] px-4 rounded-btn bg-brass-500 text-ink-950 flex items-center justify-center font-bold text-xs tracking-wider uppercase hover:bg-brass-300 transition"
+              onClick={() => setMobileMenuOpen(false)}
+              className="w-full min-h-[44px] px-3 py-2 rounded-btn bg-brass-500 text-ink-950 flex items-center justify-center font-bold text-xs tracking-wider uppercase hover:bg-brass-300 transition"
             >
               Request a Consultation
             </Link>
