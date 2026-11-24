@@ -42,7 +42,6 @@ import {
   LineReveal,
   GoverningPrincipleScrollReveal,
 } from "@/components/ui";
-import { FooterChambersDispatch } from "@/components/footer-chambers-dispatch";
 import { EngagementProtocol } from "@/components/home/engagement-protocol";
 import { ChambersLeadership } from "@/components/home/chambers-leadership";
 
@@ -1131,11 +1130,11 @@ export default function HomePage() {
       </section>
 
       {/* 9. CLOSING CTA: ink-950 band with an arch, headline, primary brass button, phone link */}
-      <section className="bg-ink-950 text-white py-24 sm:py-32 relative overflow-hidden">
+      <section className="bg-ink-950 text-white py-20 sm:py-28 relative overflow-hidden">
         {/* Soft radial brass glow */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-brass-500/10 rounded-full blur-[140px] pointer-events-none" />
 
-        <div className="max-w-[1080px] mx-auto px-4 sm:px-6 relative z-10 space-y-12">
+        <div className="max-w-[1080px] mx-auto px-4 sm:px-6 relative z-10 space-y-8 sm:space-y-10">
           {/* Top Block: Intake Invitation */}
           <div className="text-center space-y-4 max-w-2xl mx-auto">
             {/* Official Acorn Logo Emblem */}
@@ -1150,8 +1149,6 @@ export default function HomePage() {
               />
             </div>
 
-            <Eyebrow dark className="justify-center">CONFIDENTIAL INTAKE</Eyebrow>
-
             <h2 className="font-serif text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-white leading-[1.08]">
               Let us understand your <span className="font-serif italic font-normal text-brass-300">matter</span>.
             </h2>
@@ -1161,14 +1158,9 @@ export default function HomePage() {
             </p>
           </div>
 
-          {/* Newsletter / Chambers Dispatch Embedded Between Headline and Contact */}
-          <div className="max-w-4xl mx-auto">
-            <FooterChambersDispatch />
-          </div>
-
-          {/* Bottom Block: Call & Consultation Actions + Bar Council Address */}
-          <div className="text-center pt-2 space-y-6">
-            <div className="flex flex-wrap items-center justify-center gap-5">
+          {/* Bottom Block: Call & Consultation Actions */}
+          <div className="text-center pt-2">
+            <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-5">
               <Button variant="dark-primary" size="lg" href="/request-service" arrow>
                 Request a Consultation
               </Button>
@@ -1180,10 +1172,6 @@ export default function HomePage() {
                 <Phone className="w-4 h-4 text-brass-300" />
                 <span>Call: {BRAND_CONFIG.phone}</span>
               </a>
-            </div>
-
-            <div className="text-xs text-slate-400 tracking-wide">
-              Suite 4B, Camac Court, 25 Camac Street, Kolkata 700016 &bull; Strict Bar Council Compliance
             </div>
           </div>
         </div>

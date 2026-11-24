@@ -14,7 +14,6 @@ import {
   ArrowUpRight,
   ExternalLink,
   ShieldCheck,
-  Scale,
   FileText,
 } from "lucide-react";
 import { BRAND_CONFIG, PRACTICE_AREAS } from "@/lib/constants";
@@ -156,9 +155,8 @@ export function Footer() {
                       6 Areas
                     </span>
                     <ChevronDown
-                      className={`w-4 h-4 text-brass-400 transition-transform duration-300 ${
-                        openAccordions["01"] ? "rotate-180" : ""
-                      }`}
+                      className={`w-4 h-4 text-brass-400 transition-transform duration-300 ${openAccordions["01"] ? "rotate-180" : ""
+                        }`}
                     />
                   </div>
                 </button>
@@ -167,9 +165,8 @@ export function Footer() {
                   id="accordion-panel-01"
                   role="region"
                   aria-labelledby="accordion-header-01"
-                  className={`transition-all duration-300 ease-in-out overflow-hidden ${
-                    openAccordions["01"] ? "max-h-[500px] opacity-100" : "max-h-0 lg:max-h-none opacity-0 lg:opacity-100"
-                  }`}
+                  className={`transition-all duration-300 ease-in-out overflow-hidden ${openAccordions["01"] ? "max-h-[500px] opacity-100" : "max-h-0 lg:max-h-none opacity-0 lg:opacity-100"
+                    }`}
                 >
                   <ul className="space-y-1 sm:space-y-1.5 lg:space-y-2.5 font-sans text-xs sm:text-[13px] text-slate-300 pt-1 lg:pt-0">
                     {PRACTICE_AREAS.slice(0, 6).map((pa) => (
@@ -208,9 +205,8 @@ export function Footer() {
                       7 Hubs
                     </span>
                     <ChevronDown
-                      className={`w-4 h-4 text-brass-400 transition-transform duration-300 ${
-                        openAccordions["02"] ? "rotate-180" : ""
-                      }`}
+                      className={`w-4 h-4 text-brass-400 transition-transform duration-300 ${openAccordions["02"] ? "rotate-180" : ""
+                        }`}
                     />
                   </div>
                 </button>
@@ -219,9 +215,8 @@ export function Footer() {
                   id="accordion-panel-02"
                   role="region"
                   aria-labelledby="accordion-header-02"
-                  className={`transition-all duration-300 ease-in-out overflow-hidden ${
-                    openAccordions["02"] ? "max-h-[500px] opacity-100" : "max-h-0 lg:max-h-none opacity-0 lg:opacity-100"
-                  }`}
+                  className={`transition-all duration-300 ease-in-out overflow-hidden ${openAccordions["02"] ? "max-h-[500px] opacity-100" : "max-h-0 lg:max-h-none opacity-0 lg:opacity-100"
+                    }`}
                 >
                   <ul className="space-y-1 sm:space-y-1.5 lg:space-y-2.5 font-sans text-xs sm:text-[13px] text-slate-300 pt-1 lg:pt-0">
                     <li>
@@ -324,9 +319,8 @@ export function Footer() {
                       Kolkata
                     </span>
                     <ChevronDown
-                      className={`w-4 h-4 text-brass-400 transition-transform duration-300 ${
-                        openAccordions["03"] ? "rotate-180" : ""
-                      }`}
+                      className={`w-4 h-4 text-brass-400 transition-transform duration-300 ${openAccordions["03"] ? "rotate-180" : ""
+                        }`}
                     />
                   </div>
                 </button>
@@ -335,9 +329,8 @@ export function Footer() {
                   id="accordion-panel-03"
                   role="region"
                   aria-labelledby="accordion-header-03"
-                  className={`transition-all duration-300 ease-in-out overflow-hidden ${
-                    openAccordions["03"] ? "max-h-[500px] opacity-100" : "max-h-0 lg:max-h-none opacity-0 lg:opacity-100"
-                  }`}
+                  className={`transition-all duration-300 ease-in-out overflow-hidden ${openAccordions["03"] ? "max-h-[500px] opacity-100" : "max-h-0 lg:max-h-none opacity-0 lg:opacity-100"
+                    }`}
                 >
                   <div className="space-y-2 sm:space-y-3 font-sans text-xs sm:text-[13px] text-slate-300 pt-1 lg:pt-0">
                     <div className="flex items-start gap-2.5 py-1 sm:py-0">
@@ -387,21 +380,6 @@ export function Footer() {
                 </div>
               </div>
 
-            </div>
-          </div>
-
-          {/* ─────────────────────────────────────────────────────────────
-              2. MANDATORY BAR COUNCIL OF INDIA STATUTORY DISCLAIMER BOX
-             ───────────────────────────────────────────────────────────── */}
-          <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 pb-8">
-            <div className="rounded-lg sm:rounded-xl bg-navy-950/80 border border-navy-800/80 p-4 sm:p-5 lg:p-6 text-slate-400 text-[11px] sm:text-xs leading-relaxed space-y-2">
-              <div className="flex items-center gap-2 text-brass-300 font-semibold tracking-wide uppercase text-[10px] sm:text-[11px]">
-                <Scale className="w-3.5 h-3.5 text-brass-400 shrink-0" />
-                <span>Bar Council of India Rule 36 Statutory Notice</span>
-              </div>
-              <p suppressHydrationWarning className="text-slate-300/90">
-                {siteConfig?.disclaimer || BRAND_CONFIG.barCouncilNotice} All information on this website is provided solely for educational and statutory guidance purposes and should not be construed as legal advice or commercial solicitation.
-              </p>
             </div>
           </div>
 
