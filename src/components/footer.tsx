@@ -402,56 +402,15 @@ export function Footer() {
           3. ANCHORED LOWER FOOTER BASE (Desktop & Mobile Responsive)
          ───────────────────────────────────────────────────────────── */}
       <div className="border-t border-navy-800 bg-ink-950 relative z-20 shadow-[0_-4px_24px_rgba(0,0,0,0.4)]">
-        <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-5 pb-24 sm:pb-20 lg:pb-8">
+        <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-3.5 sm:py-4 pb-6 sm:pb-6 lg:pb-8">
 
-          {/* Upper Tier: Legal & Compliance Directory Navigation */}
-          <div className="pb-4 sm:pb-5 border-b border-navy-800/70">
+          {/* Upper Tier: Unified Legal & Compliance Directory Navigation (Clean text links, zero card boxes) */}
+          <div className="pb-3 sm:pb-4 border-b border-navy-800/70">
             <nav aria-label="Legal & Statutory Directory" className="w-full">
-              {/* Mobile & Tablet View (< lg): Tactile, high-affordance touch grid */}
-              <div className="grid grid-cols-2 sm:grid-cols-3 lg:hidden gap-2 sm:gap-2.5 max-w-xl sm:max-w-2xl mx-auto text-xs font-sans">
+              <div className="flex flex-wrap items-center justify-center gap-x-3.5 sm:gap-x-6 lg:gap-x-8 gap-y-1.5 sm:gap-y-2 text-[11px] sm:text-xs font-sans text-slate-300 text-center">
                 <Link
                   href="/privacy"
-                  className="min-h-[44px] px-3 py-2 rounded-lg bg-navy-900/70 border border-navy-800/90 hover:bg-navy-900 hover:border-brass-500/40 text-slate-200 text-center flex items-center justify-center transition active:scale-[0.98] active:text-brass-300"
-                >
-                  <FooterRollText>Privacy Policy</FooterRollText>
-                </Link>
-                <Link
-                  href="/terms"
-                  className="min-h-[44px] px-3 py-2 rounded-lg bg-navy-900/70 border border-navy-800/90 hover:bg-navy-900 hover:border-brass-500/40 text-slate-200 text-center flex items-center justify-center transition active:scale-[0.98] active:text-brass-300"
-                >
-                  <FooterRollText>Terms</FooterRollText>
-                </Link>
-                <Link
-                  href="/cookies"
-                  className="min-h-[44px] px-3 py-2 rounded-lg bg-navy-900/70 border border-navy-800/90 hover:bg-navy-900 hover:border-brass-500/40 text-slate-200 text-center flex items-center justify-center transition active:scale-[0.98] active:text-brass-300"
-                >
-                  <FooterRollText>Cookie Policy</FooterRollText>
-                </Link>
-                <Link
-                  href="/refund-policy"
-                  className="min-h-[44px] px-3 py-2 rounded-lg bg-navy-900/70 border border-navy-800/90 hover:bg-navy-900 hover:border-brass-500/40 text-slate-200 text-center flex items-center justify-center transition active:scale-[0.98] active:text-brass-300"
-                >
-                  <FooterRollText>Refund Policy</FooterRollText>
-                </Link>
-                <Link
-                  href="/disclaimer"
-                  className="min-h-[44px] px-3 py-2 rounded-lg bg-navy-900/70 border border-navy-800/90 hover:bg-navy-900 hover:border-brass-500/40 text-slate-200 text-center flex items-center justify-center transition active:scale-[0.98] active:text-brass-300"
-                >
-                  <FooterRollText>Disclaimer</FooterRollText>
-                </Link>
-                <Link
-                  href="/verify"
-                  className="min-h-[44px] px-3 py-2 rounded-lg bg-navy-900/70 border border-navy-800/90 hover:bg-navy-900 hover:border-brass-500/40 text-slate-200 text-center flex items-center justify-center transition active:scale-[0.98] active:text-brass-300"
-                >
-                  <FooterRollText>Verification</FooterRollText>
-                </Link>
-              </div>
-
-              {/* Desktop View (>= lg): Symmetrical, single-line horizontal directory with brass accents */}
-              <div className="hidden lg:flex flex-wrap items-center justify-center gap-x-6 xl:gap-x-8 gap-y-2 text-xs font-sans text-slate-300">
-                <Link
-                  href="/privacy"
-                  className="hover:text-brass-300 transition-colors whitespace-nowrap py-1 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-brass-400 rounded-sm"
+                  className="hover:text-brass-300 transition-colors whitespace-nowrap py-0.5 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-brass-400 rounded-sm"
                 >
                   <FooterRollText>Privacy Policy</FooterRollText>
                 </Link>
@@ -459,7 +418,7 @@ export function Footer() {
 
                 <Link
                   href="/terms"
-                  className="hover:text-brass-300 transition-colors whitespace-nowrap py-1 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-brass-400 rounded-sm"
+                  className="hover:text-brass-300 transition-colors whitespace-nowrap py-0.5 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-brass-400 rounded-sm"
                 >
                   <FooterRollText>Terms</FooterRollText>
                 </Link>
@@ -467,7 +426,7 @@ export function Footer() {
 
                 <Link
                   href="/cookies"
-                  className="hover:text-brass-300 transition-colors whitespace-nowrap py-1 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-brass-400 rounded-sm"
+                  className="hover:text-brass-300 transition-colors whitespace-nowrap py-0.5 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-brass-400 rounded-sm"
                 >
                   <FooterRollText>Cookie Policy</FooterRollText>
                 </Link>
@@ -475,7 +434,7 @@ export function Footer() {
 
                 <Link
                   href="/refund-policy"
-                  className="hover:text-brass-300 transition-colors whitespace-nowrap py-1 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-brass-400 rounded-sm"
+                  className="hover:text-brass-300 transition-colors whitespace-nowrap py-0.5 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-brass-400 rounded-sm"
                 >
                   <FooterRollText>Refund Policy</FooterRollText>
                 </Link>
@@ -483,7 +442,7 @@ export function Footer() {
 
                 <Link
                   href="/disclaimer"
-                  className="hover:text-brass-300 transition-colors whitespace-nowrap py-1 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-brass-400 rounded-sm"
+                  className="hover:text-brass-300 transition-colors whitespace-nowrap py-0.5 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-brass-400 rounded-sm"
                 >
                   <FooterRollText>Disclaimer</FooterRollText>
                 </Link>
@@ -491,7 +450,7 @@ export function Footer() {
 
                 <Link
                   href="/verify"
-                  className="hover:text-brass-300 transition-colors whitespace-nowrap py-1 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-brass-400 rounded-sm"
+                  className="hover:text-brass-300 transition-colors whitespace-nowrap py-0.5 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-brass-400 rounded-sm"
                 >
                   <FooterRollText>Verification</FooterRollText>
                 </Link>
@@ -500,7 +459,7 @@ export function Footer() {
           </div>
 
           {/* Lower Tier: Copyright, Chambers Jurisdiction & Realtime Kolkata Clock */}
-          <div className="pt-4 sm:pt-4 flex flex-col md:flex-row items-center justify-between gap-3 text-xs font-sans text-slate-400 text-center md:text-left">
+          <div className="pt-3 sm:pt-4 flex flex-col md:flex-row items-center justify-between gap-2.5 sm:gap-3 text-xs font-sans text-slate-400 text-center md:text-left">
             <div className="flex flex-wrap items-center justify-center md:justify-start gap-x-3 gap-y-1">
               <span className="text-slate-300 font-semibold tracking-wide text-[11px] sm:text-xs">
                 &copy; {new Date().getFullYear()} ACORN LEGAL CONSULTANTS
@@ -516,7 +475,7 @@ export function Footer() {
             </div>
 
             {/* Realtime Chambers Clock */}
-            <div className="flex items-center justify-center shrink-0 pt-1 md:pt-0">
+            <div className="flex items-center justify-center shrink-0 pt-0.5 md:pt-0">
               <FooterClock />
             </div>
           </div>
