@@ -5,7 +5,7 @@ export const metadata: Metadata = {
   description:
     "Cookie and local storage policy of Acorn Legal Consultants. Minimal, privacy-first technical tokens with zero tracking on POSH portals under Rule BR-046.",
   alternates: {
-    canonical: "https://www.acornlegal.in/cookies",
+    canonical: "https://acornconsultants.in/cookies",
   },
 };
 

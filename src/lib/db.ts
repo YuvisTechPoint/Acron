@@ -19,6 +19,7 @@ import {
   computeAuditHash,
   encryptNarrative,
   safeDecryptNarrative,
+  scrubPII,
   serializeEncryptedPayload,
 } from "./crypto";
 
@@ -30,7 +31,7 @@ export class CrossTenantAccessError extends Error {
   constructor(attemptedOrgId?: string, authorizedOrgId?: string, message?: string) {
     super(
       message ||
-        `Cross-tenant access violation: Caller authorized for org '${authorizedOrgId || "UNKNOWN"}' attempted access to tenant '${attemptedOrgId || "PROTECTED"}'.`
+      `Cross-tenant access violation: Caller authorized for org '${authorizedOrgId || "UNKNOWN"}' attempted access to tenant '${attemptedOrgId || "PROTECTED"}'.`
     );
     this.name = "CrossTenantAccessError";
     this.attemptedOrgId = attemptedOrgId;
@@ -903,13 +904,13 @@ class ProductionDatabase extends EventEmitter {
       ...poshCase,
       detailedStatement: poshCase.detailedStatement
         ? (poshCase.detailedStatement.includes(":")
-            ? poshCase.detailedStatement
-            : serializeEncryptedPayload(encryptNarrative(poshCase.detailedStatement)))
+          ? poshCase.detailedStatement
+          : serializeEncryptedPayload(encryptNarrative(poshCase.detailedStatement)))
         : poshCase.detailedStatement,
       summary: poshCase.summary
         ? (poshCase.summary.includes(":")
-            ? poshCase.summary
-            : serializeEncryptedPayload(encryptNarrative(poshCase.summary)))
+          ? poshCase.summary
+          : serializeEncryptedPayload(encryptNarrative(poshCase.summary)))
         : poshCase.summary,
     };
 
@@ -1282,18 +1283,22 @@ class ProductionDatabase extends EventEmitter {
     entityId = "sys-01",
     actorRole = "super_admin"
   ): AuditLogEntry {
+    // Strip direct personal PII (emails, phones, Aadhaar, PAN) from audit records per Constitution Security Rule 2
+    const safeActor = scrubPII(actor);
+    const safeDetails = scrubPII(details);
+
     return this.mutate("auditLogs", (logs: AuditLogEntry[]) => {
       const prevHash = logs.length > 0 ? logs[0].hash : "0".repeat(64);
       const entryWithoutHash = {
         id: `audit-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`,
         orgId,
-        actor,
+        actor: safeActor,
         actorRole,
         action,
         entityType,
         entityId,
         timestamp: new Date().toISOString(),
-        details,
+        details: safeDetails,
         ipAddress: "127.0.0.1",
         prevHash,
       };

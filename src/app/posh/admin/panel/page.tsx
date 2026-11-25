@@ -15,6 +15,8 @@ import {
   AlertCircle,
   FileText
 } from "lucide-react";
+import { platformStore } from "@/lib/store";
+import { useRealtimeCollection } from "@/lib/realtime";
 
 interface PanelMember {
   id: string;
@@ -81,7 +83,7 @@ const INITIAL_PANEL: PanelMember[] = [
 ];
 
 export default function PoshPanelManagementPage() {
-  const [panel, setPanel] = useState<PanelMember[]>(INITIAL_PANEL);
+  const panel = useRealtimeCollection<PanelMember[]>("posh_external_panel", INITIAL_PANEL);
   const [showAddModal, setShowAddModal] = useState(false);
   const [newMember, setNewMember] = useState({
     name: "",
@@ -107,7 +109,7 @@ export default function PoshPanelManagementPage() {
       email: newMember.email,
       phone: newMember.phone
     };
-    setPanel([...panel, created]);
+    platformStore.saveCollectionState("posh_external_panel", [...panel, created]);
     setShowAddModal(false);
     setNewMember({
       name: "",

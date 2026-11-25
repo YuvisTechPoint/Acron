@@ -19,6 +19,8 @@ import {
   Compass,
 } from "lucide-react";
 import { useToast } from "@/components/ui/toast";
+import { platformStore } from "@/lib/store";
+import { useRealtimeCollection } from "@/lib/realtime";
 
 interface SectorOverlayConfig {
   code: string;
@@ -290,23 +292,22 @@ const INITIAL_OVERLAYS: SectorOverlayConfig[] = [
 
 export default function PoshAdminOverlaysPage() {
   const { toast } = useToast();
-  const [overlays, setOverlays] = useState<SectorOverlayConfig[]>(INITIAL_OVERLAYS);
+  const overlays = useRealtimeCollection<SectorOverlayConfig[]>("posh_sector_overlays", INITIAL_OVERLAYS);
   const [selectedFilter, setSelectedFilter] = useState<string>("ALL");
   const [selectedOverlay, setSelectedOverlay] = useState<SectorOverlayConfig | null>(null);
 
   const handleApprove = (code: string) => {
-    setOverlays((prev) =>
-      prev.map((o) =>
-        o.code === code
-          ? {
-              ...o,
-              status: "ACTIVE",
-              dualApprovedBy: "Adv. Rajesh Telge (Chambers Counsel)",
-              approvalDate: new Date().toISOString().split("T")[0],
-            }
-          : o
-      )
+    const updated = overlays.map((o) =>
+      o.code === code
+        ? {
+            ...o,
+            status: "ACTIVE" as const,
+            dualApprovedBy: "Adv. Rajesh Telge (Chambers Counsel)",
+            approvalDate: new Date().toISOString().split("T")[0],
+          }
+        : o
     );
+    platformStore.saveCollectionState("posh_sector_overlays", updated);
     toast({
       title: "Sector Approved",
       description: `Sector Overlay ${code} dual-approved by Chambers Counsel.`,

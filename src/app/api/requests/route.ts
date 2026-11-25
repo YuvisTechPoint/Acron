@@ -3,6 +3,7 @@ import { db } from "@/lib/db";
 import { platformStore } from "@/lib/store";
 import { generateReferenceNumber } from "@/lib/utils";
 import { ServiceRequest } from "@/lib/types";
+import { verifyRequestSession } from "@/lib/session";
 
 export const dynamic = "force-dynamic";
 
@@ -49,7 +50,7 @@ export async function POST(req: NextRequest) {
     platformStore.addServiceRequest(newRequest);
     db.insertAuditLog(
       "SERVICE_REQUEST_SUBMITTED",
-      body.email,
+      "Public Intake Desk",
       `New service request ${referenceNumber} saved in database for practice area ${practiceArea}`
     );
 
@@ -69,9 +70,14 @@ export async function POST(req: NextRequest) {
   }
 }
 
-// GET /api/requests - List service requests
+// GET /api/requests - List service requests (Staff Admin Restricted)
 export async function GET(req: NextRequest) {
   try {
+    const auth = await verifyRequestSession(req);
+    if (!auth.authorized) {
+      return NextResponse.json({ error: auth.error }, { status: auth.status });
+    }
+
     const requests = db.getServiceRequests();
     return NextResponse.json({
       success: true,
@@ -87,9 +93,14 @@ export async function GET(req: NextRequest) {
   }
 }
 
-// PATCH /api/requests - Update service request status and notes
+// PATCH /api/requests - Update service request status and notes (Staff Admin Restricted)
 export async function PATCH(req: NextRequest) {
   try {
+    const auth = await verifyRequestSession(req);
+    if (!auth.authorized) {
+      return NextResponse.json({ error: auth.error }, { status: auth.status });
+    }
+
     const body = await req.json();
     const { id, status, note } = body;
     if (!id) {

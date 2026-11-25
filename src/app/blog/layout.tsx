@@ -5,13 +5,13 @@ export const metadata: Metadata = {
   description:
     "Authoritative legal analysis, Calcutta High Court case notes, corporate regulatory briefings, and POSH compliance guides published by Acorn Legal Consultants.",
   alternates: {
-    canonical: "https://www.acornlegal.in/blog",
+    canonical: "https://acornconsultants.in/blog",
   },
   openGraph: {
     title: "Legal Insights & Commentary | Acorn Legal Consultants, Kolkata",
     description:
       "Statutory updates, corporate governance analysis, and court case notes from Kolkata counsel.",
-    url: "https://www.acornlegal.in/blog",
+    url: "https://acornconsultants.in/blog",
     siteName: "Acorn Legal Consultants",
     type: "website",
   },

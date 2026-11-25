@@ -28,7 +28,8 @@ function generateAdminToken() {
   return `acorn_sess_${b64Payload}.${sigHex}`;
 }
 
-let BASE_URL = process.env.TEST_BASE_URL || "http://localhost:3005";
+const WORKFLOW_PORT = process.env.WORKFLOW_PORT || "3006";
+let BASE_URL = process.env.TEST_BASE_URL || `http://localhost:${WORKFLOW_PORT}`;
 
 let serverProc = null;
 
@@ -66,12 +67,12 @@ async function ensureServerRunning(url) {
 
   const serverScript = fs.existsSync(".next/standalone/server.js")
     ? [".next/standalone/server.js"]
-    : ["node_modules/next/dist/bin/next", "start", "-p", "3005"];
+    : ["node_modules/next/dist/bin/next", "start", "-p", WORKFLOW_PORT];
 
   console.log(`Starting standalone server via node ${serverScript.join(" ")}...`);
   const child = spawn("node", serverScript, {
     stdio: "ignore",
-    env: { ...process.env, PORT: "3005" },
+    env: { ...process.env, PORT: WORKFLOW_PORT },
   });
 
   for (let i = 0; i < 30; i++) {
@@ -344,7 +345,7 @@ async function testWorkflows() {
 
     let allLoaded = true;
     for (const screen of subScreens) {
-      const res = await fetch(`${BASE_URL}${screen}`);
+      const res = await fetch(`${BASE_URL}${screen}`, { headers: authHeaders, redirect: "manual" });
       const text = await res.text();
       if (res.status !== 200 || text.includes("Case not found") || text.includes("Case docket not found")) {
         allLoaded = false;

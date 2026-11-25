@@ -79,7 +79,7 @@ export default function ComplainantCaseTrackingPage() {
         </form>
 
         {errorMsg && (
-          <div className="p-3 bg-red-50 border border-red-200 text-xs text-red-700 rounded">
+          <div className="p-3 bg-amber-50 border border-amber-200 text-xs text-amber-900 rounded">
             {errorMsg}
           </div>
         )}

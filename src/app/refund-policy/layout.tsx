@@ -5,7 +5,7 @@ export const metadata: Metadata = {
   description:
     "Remittance, cancellation, and refund policy of Acorn Legal Consultants, Kolkata. Guidelines for scheduled consultations, retainers, and banking timelines.",
   alternates: {
-    canonical: "https://www.acornlegal.in/refund-policy",
+    canonical: "https://acornconsultants.in/refund-policy",
   },
 };
 

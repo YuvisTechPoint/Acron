@@ -105,9 +105,9 @@ export default function PoshRespondentDeskPage() {
                 </div>
               </div>
 
-              {/* Anti-Retaliation Warning */}
-              <div className="p-3.5 bg-red-50 rounded border border-red-200 text-xs text-red-900 flex items-start gap-2.5">
-                <ShieldAlert className="w-5 h-5 text-red-600 shrink-0 mt-0.5" />
+              {/* Anti-Retaliation Notice (Calm Mode) */}
+              <div className="p-3.5 bg-amber-50/80 rounded border border-amber-200 text-xs text-amber-950 flex items-start gap-2.5">
+                <ShieldAlert className="w-5 h-5 text-amber-700 shrink-0 mt-0.5" />
                 <div>
                   <strong>Statutory Anti-Retaliation Directive:</strong> You are strictly directed not to initiate contact (direct or indirect), harass, intimidate, or influence the complainant or any prospective witnesses during the pendency of inquiry. Any breach will be recorded as misconduct.
                 </div>

@@ -43,11 +43,11 @@ export default function PoshRetaliationPage() {
         <div className="bg-surface rounded-card p-6 sm:p-8 border border-border shadow-card">
           {submitted ? (
             <div className="text-center py-6 space-y-4">
-              <div className="w-14 h-14 bg-red-100 text-status-danger rounded-full flex items-center justify-center mx-auto">
+              <div className="w-14 h-14 bg-amber-50 text-amber-800 border border-amber-200 rounded-full flex items-center justify-center mx-auto">
                 <CheckCircle2 className="w-8 h-8" />
               </div>
               <h3 className="font-serif font-bold text-xl text-ink">
-                Priority Incident Escalated
+                Retaliation Protection Request Logged
               </h3>
               <p className="text-xs text-ink-secondary leading-relaxed">
                 The Internal Committee Presiding Officer and Acorn External Member have received immediate notification. Interim protective measures will be reviewed within 24 hours.
@@ -115,9 +115,9 @@ export default function PoshRetaliationPage() {
 
                 <button
                   type="submit"
-                  className="px-6 py-2.5 bg-status-danger hover:bg-red-700 text-white text-xs font-bold uppercase tracking-wider rounded shadow transition-colors"
+                  className="px-6 py-2.5 bg-navy-800 hover:bg-navy-900 text-white text-xs font-bold uppercase tracking-wider rounded shadow transition-colors"
                 >
-                  Escalate Immediately
+                  Submit Confidential Protection Request
                 </button>
               </div>
             </form>

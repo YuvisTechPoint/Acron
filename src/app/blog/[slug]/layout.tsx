@@ -26,12 +26,12 @@ export async function generateMetadata({
     title: `${post.title} | Acorn Legal Consultants, Kolkata`,
     description: post.excerpt || post.summary,
     alternates: {
-      canonical: `https://www.acornlegal.in/blog/${post.slug}`,
+      canonical: `https://acornconsultants.in/blog/${post.slug}`,
     },
     openGraph: {
       title: `${post.title} | Acorn Legal Consultants`,
       description: post.excerpt || post.summary,
-      url: `https://www.acornlegal.in/blog/${post.slug}`,
+      url: `https://acornconsultants.in/blog/${post.slug}`,
       siteName: "Acorn Legal Consultants",
       type: "article",
       publishedTime: post.publishedAt,

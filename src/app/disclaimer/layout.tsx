@@ -5,7 +5,7 @@ export const metadata: Metadata = {
   description:
     "Statutory declaration and website notice pursuant to Bar Council of India Rule 36 and the Advocates Act, 1961 for Acorn Legal Consultants, Kolkata.",
   alternates: {
-    canonical: "https://www.acornlegal.in/disclaimer",
+    canonical: "https://acornconsultants.in/disclaimer",
   },
 };
 

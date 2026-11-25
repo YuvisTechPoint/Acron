@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { platformStore } from "@/lib/store";
+import { verifyRequestSession } from "@/lib/session";
 
 export const dynamic = "force-dynamic";
 
@@ -15,6 +16,11 @@ export async function GET() {
 
 export async function PATCH(req: NextRequest) {
   try {
+    const auth = await verifyRequestSession(req);
+    if (!auth.authorized) {
+      return NextResponse.json({ error: auth.error }, { status: auth.status });
+    }
+
     const body = await req.json();
     const { param, value, status } = body;
 

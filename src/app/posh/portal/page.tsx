@@ -161,7 +161,7 @@ export default function PoshPortalPage() {
             href="/posh/retaliation"
             className="p-6 bg-surface hover:bg-surface-muted rounded-card border border-border shadow-card transition-all group"
           >
-            <div className="w-10 h-10 rounded bg-red-100 text-red-800 flex items-center justify-center mb-3">
+            <div className="w-10 h-10 rounded bg-amber-50 text-amber-800 border border-amber-200 flex items-center justify-center mb-3">
               <ShieldAlert className="w-5 h-5" />
             </div>
             <h3 className="font-serif font-bold text-ink text-base group-hover:text-primary transition-colors">

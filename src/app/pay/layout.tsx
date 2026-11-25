@@ -5,7 +5,7 @@ export const metadata: Metadata = {
   description:
     "Secure digital payment gateway for existing clients of Acorn Legal Consultants to pay consultation fees, retainers, and matter invoices via Razorpay.",
   alternates: {
-    canonical: "https://www.acornlegal.in/pay",
+    canonical: "https://acornconsultants.in/pay",
   },
 };
 

@@ -95,7 +95,7 @@ export default function PoshSubmissionDonePage() {
               onClick={() => {
                 window.location.replace("https://www.google.com/search?q=kolkata+weather+forecast");
               }}
-              className="px-4 py-2.5 bg-status-danger text-white text-xs font-semibold rounded hover:bg-red-700 transition-colors"
+              className="px-4 py-2.5 bg-navy-800 text-white text-xs font-semibold rounded hover:bg-navy-900 transition-colors"
             >
               Safe Quick Exit (ESC)
             </button>

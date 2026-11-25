@@ -404,6 +404,57 @@ async function runTests() {
     failed++;
   }
 
+  // 1q: Unauthenticated admin/staff API mutations & sensitive reads must return 401
+  try {
+    const probes = await Promise.all([
+      fetch(`${BASE_URL}/api/requests`),
+      fetch(`${BASE_URL}/api/settings`),
+      fetch(`${BASE_URL}/api/services`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name: "Unauthorized Probe" }),
+      }),
+      fetch(`${BASE_URL}/api/rules`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ param: "inquiry_days", value: "10" }),
+      }),
+      fetch(`${BASE_URL}/api/ai/timeline_synthesizer`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ partyConsentConfirmed: true }),
+      }),
+    ]);
+
+    if (probes.every((r) => r.status === 401)) {
+      console.log(`  ✔ [PASS] API Auth Gate: Unauthenticated admin reads/writes strictly rejected (HTTP 401)`);
+      passed++;
+    } else {
+      console.error(`  ✖ [FAIL] API Auth Gate: Expected all 401, got ${probes.map((r) => r.status).join(", ")}`);
+      failed++;
+    }
+  } catch (err) {
+    console.error(`  ✖ [ERROR] API Auth Gate check: ${err.message}`);
+    failed++;
+  }
+
+  // 1r: Public GET /api/qa strips submitter email PII
+  try {
+    const res = await fetch(`${BASE_URL}/api/qa`);
+    const data = await res.json();
+    const leaked = (data.questions || []).some((q) => q.authorEmail || q.askedByEmail);
+    if (res.status === 200 && !leaked) {
+      console.log(`  ✔ [PASS] Public Q&A Privacy Gate: Zero submitter emails exposed on GET /api/qa`);
+      passed++;
+    } else {
+      console.error(`  ✖ [FAIL] Public Q&A Privacy Gate: Submitter email field exposed!`);
+      failed++;
+    }
+  } catch (err) {
+    console.error(`  ✖ [ERROR] Public Q&A Privacy check: ${err.message}`);
+    failed++;
+  }
+
   // ----------------------------------------------------------------------
   // 2. Real-Time Endpoints & Live Data Propagation
   // ----------------------------------------------------------------------

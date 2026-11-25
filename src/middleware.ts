@@ -35,8 +35,8 @@ export async function middleware(request: NextRequest) {
     }
   }
 
-  // 1. Edge Session Verification for Dense Staff Admin (/admin/*)
-  if (pathname.startsWith("/admin")) {
+  // 1. Edge Session Verification for Dense Staff Admin (/admin/*) and Operations War-Room (/ops/*)
+  if (pathname.startsWith("/admin") || pathname === "/ops" || pathname.startsWith("/ops/")) {
     if (pathname === "/admin/login") {
       // If already logged in, redirect directly to admin console
       if (hasAdminSession) {
@@ -109,7 +109,10 @@ export async function middleware(request: NextRequest) {
   response.headers.set("X-Frame-Options", "SAMEORIGIN");
   response.headers.set("X-XSS-Protection", "1; mode=block");
   response.headers.set("Referrer-Policy", "strict-origin-when-cross-origin");
-  response.headers.set("Permissions-Policy", "camera=(), microphone=(), geolocation=()");
+  response.headers.set(
+    "Permissions-Policy",
+    "camera=(self), microphone=(self), geolocation=(), browsing-topics=()"
+  );
 
   return response;
 }

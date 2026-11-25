@@ -3827,6 +3827,16 @@ class PlatformStore {
     return contracts;
   }
 
+  // Generic Persistent Collection Helpers for Console Sub-Modules
+  getCollectionState<T>(key: string, seed: T): T {
+    return this.get<T>(key, seed);
+  }
+
+  saveCollectionState<T>(key: string, value: T): T {
+    this.set<T>(key, value);
+    return value;
+  }
+
 }
 
 export const platformStore = new PlatformStore();

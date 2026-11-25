@@ -605,3 +605,12 @@ export function useRealtimeClientContracts<T>(seed: T): T {
   return useRealtimeStore<T>("client_contracts", getter);
 }
 
+/**
+ * Generic Real-time Persistent Collection Hook
+ * Ensures every console module syncs across tabs and persists to /api/sync.
+ */
+export function useRealtimeCollection<T>(key: string, seed: T): T {
+  const getter = useCallback(() => platformStore.getCollectionState<T>(key, seed), [key, seed]);
+  return useRealtimeStore<T>(key, getter);
+}
+

@@ -241,3 +241,50 @@ export async function revokeSessionToken(token?: string | null): Promise<boolean
   globalThis.__acorn_revoked_sessions__.add(verified.user.sessionId);
   return true;
 }
+
+/**
+ * Extracts and cryptographically verifies admin/staff session tokens from any standard Request or NextRequest.
+ * Prevents unauthenticated access on sensitive API handlers (defense-in-depth alongside Edge middleware).
+ */
+export async function verifyRequestSession(
+  req: Request,
+  options: { allowPoshSession?: boolean } = {}
+): Promise<{ authorized: boolean; user?: SessionTokenPayload; error?: string; status: number }> {
+  const cookieHeader = req.headers.get("cookie") || "";
+  const parseCookie = (name: string): string | null => {
+    const match = cookieHeader.match(new RegExp(`(?:^|;\\s*)${name}=([^;]+)`));
+    return match ? decodeURIComponent(match[1]) : null;
+  };
+
+  const authHeader = req.headers.get("authorization");
+  const bearerToken = authHeader?.startsWith("Bearer ") ? authHeader.slice(7).trim() : null;
+
+  const candidateToken =
+    parseCookie("acorn_admin_session") ||
+    parseCookie("acorn_session") ||
+    (options.allowPoshSession ? parseCookie("acorn_posh_session") : null) ||
+    bearerToken;
+
+  if (!candidateToken || candidateToken.trim().length === 0) {
+    return {
+      authorized: false,
+      status: 401,
+      error: "Unauthorized: Administrative session token required.",
+    };
+  }
+
+  const verified = await verifySessionToken(candidateToken);
+  if (!verified.valid || !verified.user) {
+    return {
+      authorized: false,
+      status: 403,
+      error: `Forbidden: ${verified.reason || "Invalid or expired session token."}`,
+    };
+  }
+
+  return {
+    authorized: true,
+    user: verified.user,
+    status: 200,
+  };
+}

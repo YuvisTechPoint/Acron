@@ -19,6 +19,8 @@ import {
 } from "lucide-react";
 import { formatDate } from "@/lib/utils";
 import { useToast } from "@/components/ui/toast";
+import { platformStore } from "@/lib/store";
+import { useRealtimeCollection } from "@/lib/realtime";
 
 interface AftercareItem {
   id: string;
@@ -74,15 +76,14 @@ const INITIAL_QUEUE: AftercareItem[] = [
 
 export default function PoshAftercarePage() {
   const { toast } = useToast();
-  const [queue, setQueue] = useState<AftercareItem[]>(INITIAL_QUEUE);
+  const queue = useRealtimeCollection<AftercareItem[]>("posh_aftercare_queue", INITIAL_QUEUE);
   const [activeTab, setActiveTab] = useState<"ALL" | "DUE" | "FLAGGED">("ALL");
 
   const handleSendSurvey = (id: string) => {
-    setQueue(
-      queue.map((item) =>
-        item.id === id ? { ...item, status: "SURVEY_SENT" } : item
-      )
+    const updated = queue.map((item) =>
+      item.id === id ? { ...item, status: "SURVEY_SENT" as const } : item
     );
+    platformStore.saveCollectionState("posh_aftercare_queue", updated);
     toast({
       title: "Aftercare Dispatched",
       description: "Confidential Aftercare check-in pulse dispatched via encrypted SMS & Email.",

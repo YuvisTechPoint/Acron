@@ -3,6 +3,7 @@ import { db } from "@/lib/db";
 import { platformStore } from "@/lib/store";
 import { generateReferenceNumber } from "@/lib/utils";
 import { QuestionAnswer } from "@/lib/types";
+import { verifyRequestSession } from "@/lib/session";
 
 export const dynamic = "force-dynamic";
 
@@ -46,7 +47,7 @@ export async function POST(req: NextRequest) {
     platformStore.addQuestion(newQuestion);
     db.insertAuditLog(
       "QA_QUESTION_SUBMITTED",
-      email,
+      "Public Q&A Desk",
       `New legal query ${referenceNumber} saved in database for moderation.`
     );
 
@@ -66,13 +67,20 @@ export async function POST(req: NextRequest) {
   }
 }
 
-// GET /api/qa - Get published Q&As
+// GET /api/qa - Get published Q&As (or all queries for verified staff admin)
 export async function GET(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url);
     const category = searchParams.get("category");
     const search = searchParams.get("search");
     const all = searchParams.get("all") === "true";
+
+    if (all) {
+      const auth = await verifyRequestSession(req);
+      if (!auth.authorized) {
+        return NextResponse.json({ error: auth.error }, { status: auth.status });
+      }
+    }
 
     let questions = db.getQuestions();
     if (!all) {
@@ -90,10 +98,15 @@ export async function GET(req: NextRequest) {
       );
     }
 
+    // Omit submitter emails from public unauthenticated Q&A responses
+    const payload = all
+      ? questions
+      : questions.map(({ authorEmail, askedByEmail, ...rest }) => rest);
+
     return NextResponse.json({
       success: true,
-      count: questions.length,
-      questions,
+      count: payload.length,
+      questions: payload,
       database: "connected",
     });
   } catch (error: any) {
@@ -104,9 +117,14 @@ export async function GET(req: NextRequest) {
   }
 }
 
-// PATCH /api/qa - Moderation: Answer, edit, or toggle publication
+// PATCH /api/qa - Moderation: Answer, edit, or toggle publication (Staff Admin Restricted)
 export async function PATCH(req: NextRequest) {
   try {
+    const auth = await verifyRequestSession(req);
+    if (!auth.authorized) {
+      return NextResponse.json({ error: auth.error }, { status: auth.status });
+    }
+
     const body = await req.json();
     const id = body.id;
     if (!id) {
@@ -155,9 +173,14 @@ export async function PATCH(req: NextRequest) {
   }
 }
 
-// DELETE /api/qa - Remove question from moderation queue
+// DELETE /api/qa - Remove question from moderation queue (Staff Admin Restricted)
 export async function DELETE(req: NextRequest) {
   try {
+    const auth = await verifyRequestSession(req);
+    if (!auth.authorized) {
+      return NextResponse.json({ error: auth.error }, { status: auth.status });
+    }
+
     const { searchParams } = new URL(req.url);
     const id = searchParams.get("id");
     if (!id) {

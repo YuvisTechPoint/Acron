@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { platformStore } from "@/lib/store";
+import { verifyRequestSession } from "@/lib/session";
 
 // GET /api/scripts - Retrieve active third-party tracking scripts
 export async function GET(req: NextRequest) {
@@ -33,9 +34,14 @@ export async function GET(req: NextRequest) {
   }
 }
 
-// PATCH /api/scripts - Toggle or update a script's enabled state
+// PATCH /api/scripts - Toggle or update a script's enabled state (Staff Admin Restricted)
 export async function PATCH(req: NextRequest) {
   try {
+    const auth = await verifyRequestSession(req);
+    if (!auth.authorized) {
+      return NextResponse.json({ error: auth.error }, { status: auth.status });
+    }
+
     const body = await req.json();
     const { id, isEnabled } = body;
     if (!id || typeof isEnabled !== "boolean") {

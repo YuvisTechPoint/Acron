@@ -5,7 +5,7 @@ export const metadata: Metadata = {
   description:
     "Privacy and data protection policy of Acorn Legal Consultants, Kolkata. Learn how client data and statutory POSH Section 16 confidentiality are safeguarded.",
   alternates: {
-    canonical: "https://www.acornlegal.in/privacy",
+    canonical: "https://acornconsultants.in/privacy",
   },
 };
 

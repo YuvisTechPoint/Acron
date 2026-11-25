@@ -1,11 +1,17 @@
 import { NextResponse } from "next/server";
 import { platformStore } from "@/lib/store";
+import { verifyRequestSession } from "@/lib/session";
 
 export async function POST(
   req: Request,
   { params }: { params: { feature: string } }
 ) {
   try {
+    const auth = await verifyRequestSession(req, { allowPoshSession: true });
+    if (!auth.authorized) {
+      return NextResponse.json({ error: auth.error }, { status: auth.status });
+    }
+
     const { feature } = params;
     const body = await req.json();
 

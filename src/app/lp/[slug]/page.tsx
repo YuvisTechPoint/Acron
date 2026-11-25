@@ -1,13 +1,13 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { Suspense, useState } from "react";
 import Link from "next/link";
 import { useParams, useSearchParams } from "next/navigation";
 import { ShieldCheck, CheckCircle2, ArrowRight, Phone, Landmark } from "lucide-react";
 import { BRAND_CONFIG } from "@/lib/constants";
 import { platformStore } from "@/lib/store";
 
-export default function CampaignLandingPage() {
+function CampaignLandingContent() {
   const params = useParams();
   const searchParams = useSearchParams();
   const slug = (params?.slug as string) || "kolkata-posh-compliance";
@@ -19,21 +19,58 @@ export default function CampaignLandingPage() {
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [orgName, setOrgName] = useState("");
+  const [submitting, setSubmitting] = useState(false);
   const [submittedRef, setSubmittedRef] = useState<string | null>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const req = platformStore.addServiceRequest({
-      fullName: `${fullName} (${orgName || "Enterprise"}) [Campaign: ${slug} / ${utmSource}]`,
-      email,
-      phone,
-      serviceCategory: "posh_compliance",
-      subject: `Campaign Lead: ${slug.toUpperCase()} via ${utmSource}`,
-      description: `Inquiry captured from campaign landing page: /lp/${slug}. Campaign: ${utmCampaign}, Source: ${utmSource}.`,
-      urgency: "urgent",
-      preferredChannel: "phone",
-    });
-    setSubmittedRef(req.refNumber);
+    setSubmitting(true);
+    const subject = `Campaign Lead: ${slug.toUpperCase()} via ${utmSource}`;
+    const description = `Inquiry captured from campaign landing page: /lp/${slug}. Campaign: ${utmCampaign}, Source: ${utmSource}.`;
+
+    try {
+      const res = await fetch("/api/requests", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          fullName: `${fullName} (${orgName || "Enterprise"})`,
+          organization: orgName,
+          email,
+          phone,
+          serviceCategory: "posh_compliance",
+          subject,
+          description,
+          urgency: "urgent",
+          preferredChannel: "phone",
+        }),
+      });
+      const data = await res.json();
+      const localReq = platformStore.addServiceRequest({
+        fullName: `${fullName} (${orgName || "Enterprise"}) [Campaign: ${slug} / ${utmSource}]`,
+        email,
+        phone,
+        serviceCategory: "posh_compliance",
+        subject,
+        description,
+        urgency: "urgent",
+        preferredChannel: "phone",
+      });
+      setSubmittedRef(data.referenceNumber || data.refNumber || localReq.refNumber);
+    } catch {
+      const localReq = platformStore.addServiceRequest({
+        fullName: `${fullName} (${orgName || "Enterprise"}) [Campaign: ${slug} / ${utmSource}]`,
+        email,
+        phone,
+        serviceCategory: "posh_compliance",
+        subject,
+        description,
+        urgency: "urgent",
+        preferredChannel: "phone",
+      });
+      setSubmittedRef(localReq.refNumber);
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -145,9 +182,10 @@ export default function CampaignLandingPage() {
 
                 <button
                   type="submit"
-                  className="w-full py-2.5 bg-primary hover:bg-primary-hover text-white font-bold uppercase tracking-wider rounded shadow transition-colors flex items-center justify-center gap-1.5"
+                  disabled={submitting}
+                  className="w-full py-2.5 bg-primary hover:bg-primary-hover text-white font-bold uppercase tracking-wider rounded shadow transition-colors flex items-center justify-center gap-1.5 disabled:opacity-60"
                 >
-                  <span>Request Priority Callback</span>
+                  <span>{submitting ? "Submitting Brief..." : "Request Priority Callback"}</span>
                   <ArrowRight className="w-3.5 h-3.5" />
                 </button>
               </form>
@@ -156,6 +194,20 @@ export default function CampaignLandingPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function CampaignLandingPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="bg-white min-h-screen py-16 flex items-center justify-center text-xs text-ink-secondary">
+          Loading advisory brief...
+        </div>
+      }
+    >
+      <CampaignLandingContent />
+    </Suspense>
   );
 }
 

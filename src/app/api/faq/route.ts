@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { platformStore } from "@/lib/store";
+import { verifyRequestSession } from "@/lib/session";
 
 export const dynamic = "force-dynamic";
 
@@ -11,6 +12,11 @@ export async function GET() {
 
 export async function POST(req: Request) {
   try {
+    const auth = await verifyRequestSession(req);
+    if (!auth.authorized) {
+      return NextResponse.json({ error: auth.error }, { status: auth.status });
+    }
+
     const body = await req.json();
     if (!body.question) {
       return NextResponse.json({ error: "Question text is required" }, { status: 400 });
@@ -44,6 +50,11 @@ export async function POST(req: Request) {
 
 export async function DELETE(req: Request) {
   try {
+    const auth = await verifyRequestSession(req);
+    if (!auth.authorized) {
+      return NextResponse.json({ error: auth.error }, { status: auth.status });
+    }
+
     const { searchParams } = new URL(req.url);
     const id = searchParams.get("id");
     if (!id) {

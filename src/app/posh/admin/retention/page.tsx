@@ -19,6 +19,8 @@ import {
 } from "lucide-react";
 import { formatDate } from "@/lib/utils";
 import { useToast } from "@/components/ui/toast";
+import { platformStore } from "@/lib/store";
+import { useRealtimeCollection } from "@/lib/realtime";
 
 interface RetentionRecord {
   id: string;
@@ -62,19 +64,18 @@ const INITIAL_RECORDS: RetentionRecord[] = [
 
 export default function PoshRetentionPage() {
   const { toast } = useToast();
-  const [records, setRecords] = useState<RetentionRecord[]>(INITIAL_RECORDS);
+  const records = useRealtimeCollection<RetentionRecord[]>("posh_retention_records", INITIAL_RECORDS);
   const [searchTerm, setSearchTerm] = useState("");
   const [holdTargetId, setHoldTargetId] = useState<string | null>(null);
   const [holdReasonInput, setHoldReasonInput] = useState("");
 
   const releaseHold = (id: string) => {
-    setRecords((prev) =>
-      prev.map((r) =>
-        r.id === id
-          ? { ...r, status: "ACTIVE_RETENTION", legalHoldReason: undefined, holdImposedBy: undefined }
-          : r
-      )
+    const updated = records.map((r) =>
+      r.id === id
+        ? { ...r, status: "ACTIVE_RETENTION" as const, legalHoldReason: undefined, holdImposedBy: undefined }
+        : r
     );
+    platformStore.saveCollectionState("posh_retention_records", updated);
     toast({
       title: "Legal Hold Released",
       description: "Case returned to active 7-year statutory retention schedule.",
@@ -87,18 +88,17 @@ export default function PoshRetentionPage() {
     if (!holdTargetId || !holdReasonInput.trim()) return;
 
     const caseItem = records.find((r) => r.id === holdTargetId);
-    setRecords((prev) =>
-      prev.map((r) =>
-        r.id === holdTargetId
-          ? {
-              ...r,
-              status: "LEGAL_HOLD",
-              legalHoldReason: holdReasonInput.trim(),
-              holdImposedBy: "Adv. Debjani Sen (Acorn Legal)",
-            }
-          : r
-      )
+    const updated = records.map((r) =>
+      r.id === holdTargetId
+        ? {
+            ...r,
+            status: "LEGAL_HOLD" as const,
+            legalHoldReason: holdReasonInput.trim(),
+            holdImposedBy: "Adv. Debjani Sen (Acorn Legal)",
+          }
+        : r
     );
+    platformStore.saveCollectionState("posh_retention_records", updated);
 
     toast({
       title: "Legal Hold Imposed",
