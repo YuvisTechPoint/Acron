@@ -112,7 +112,7 @@ export default function TrustAndBYOKPage() {
   };
 
   return (
-    <div className="min-h-screen bg-ivory-50 text-ink-950 pt-28 pb-20">
+    <div className="bg-ivory-50 text-ink-950 py-2 pb-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Navigation Breadcrumb */}

@@ -151,7 +151,7 @@ export default function StatutorySandboxPage() {
   };
 
   return (
-    <div className="min-h-screen bg-ivory-50 text-ink pt-28 pb-20">
+    <div className="bg-ivory-50 text-ink py-2 pb-12">
       <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
         {/* Prominent Mandatory Watermark Warning */}
         <div className="bg-amber-500 text-navy-950 px-4 py-2.5 rounded-md font-mono text-xs font-bold tracking-wider uppercase text-center mb-6 shadow-sm flex items-center justify-center gap-2">

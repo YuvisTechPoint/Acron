@@ -1,6 +1,6 @@
 {
   "version": "3.0.0",
-  "lastUpdated": "2026-11-24T15:48:12.052Z",
+  "lastUpdated": "2026-11-25T10:15:19.444Z",
   "siteConfig": {
     "firmName": "Acorn Consultants",
     "tagline": "Educational, Tax & Legal Consultants",
@@ -273,6 +273,28 @@
     }
   ],
   "cases": [
+    {
+      "id": "CASE-1795601719410",
+      "caseNumber": "POSH-ORG-BCT-01-2026-9996",
+      "orgId": "org-bengal-tech",
+      "orgName": "Bengal Cloud Technologies Pvt Ltd",
+      "complainantCode": "CMP-6260",
+      "respondentCode": "RSP-9121",
+      "state": "SUBMITTED",
+      "priority": "NORMAL",
+      "filedAt": "2026-11-25T10:15:19.410Z",
+      "daysRemaining90": 90,
+      "allegations": [
+        "Automated workflow verification for IC case docket registration."
+      ],
+      "summary": "80d425c436acf7499e14a2a4:deae6a27d0ca863bde47b69a93c499d6:601c19858e1333bf4b1197dfc700e9ccea8985b625f9c268d1593751f7e8216d23e6f4f4996f52b5c6368a44707b9fe530cdb92010bb149bb651119a0c7331ea",
+      "detailedStatement": "4338812a3bda81b84a9f5a38:35b8bad9deede0cd6d57bb35da84cca0:a1b1fcaaa14e5dfb3d57ee8683c9ea9f7eadb2613b12e07368bd45350d33e747bdbddbc141a48c1afabf93f93546b40ce15f22504a1140dc0014c6498a658e5a",
+      "evidence": [],
+      "hearings": [],
+      "interimReliefs": [],
+      "presidingOfficerName": "Presiding Officer",
+      "externalMemberName": "Adv. Debjani Sen (Acorn Legal)"
+    },
     {
       "id": "CASE-1795525789545",
       "caseNumber": "POSH-ORG-BCT-01-2026-8862",
@@ -1307,6 +1329,26 @@
   ],
   "serviceRequests": [
     {
+      "id": "SR-1795601717720",
+      "refNumber": "ACN-SR-2026-815676",
+      "referenceNumber": "ACN-SR-2026-815676",
+      "fullName": "Test Automated Client",
+      "name": "Test Automated Client",
+      "email": "autoclient@testacorn.com",
+      "phone": "+91 98300 99999",
+      "organization": "",
+      "serviceCategory": "corporate_commercial",
+      "practiceArea": "corporate_commercial",
+      "subject": "Automated Verification Test Intake",
+      "description": "Testing matter submission, validation, and reference code generation.",
+      "status": "NEW",
+      "createdAt": "2026-11-25T10:15:17.720Z",
+      "updatedAt": "2026-11-25T10:15:17.720Z",
+      "urgency": "standard",
+      "preferredChannel": "phone",
+      "preferredMode": "ONLINE_VC"
+    },
+    {
       "id": "SR-1795525789370",
       "refNumber": "ACN-SR-2026-584936",
       "referenceNumber": "ACN-SR-2026-584936",
@@ -2123,9 +2165,15 @@
       "description": "We are closing an institutional seed round from Singapore investors and require FDI reporting and RBI filings.",
       "status": "IN_REVIEW",
       "createdAt": "2026-11-05T14:20:00.000Z",
-      "updatedAt": "2026-11-24T15:48:09.517Z",
+      "updatedAt": "2026-11-25T10:14:14.526Z",
       "urgency": "urgent",
       "internalNotes": [
+        {
+          "id": "note-1795601654526",
+          "author": "Admin / Legal Consultant",
+          "content": "Preliminary conflict check passed. Proceeding with fee quote.",
+          "createdAt": "2026-11-25T10:14:14.526Z"
+        },
         {
           "id": "note-1795535289517",
           "author": "Admin / Legal Consultant",
@@ -2358,6 +2406,24 @@
     }
   ],
   "questions": [
+    {
+      "id": "QA-1795601717987",
+      "refNumber": "ACN-QA-2026-850408",
+      "referenceNumber": "ACN-QA-2026-850408",
+      "authorName": "Ananya Mukherjee",
+      "authorEmail": "ananya@example.com",
+      "askedByName": "Ananya Mukherjee",
+      "askedByEmail": "ananya@example.com",
+      "question": "Is an external member strictly required in the Internal Committee if our workplace has fewer than 20 employees?",
+      "category": "posh_compliance",
+      "status": "pending_review",
+      "isPublic": false,
+      "isPublished": false,
+      "views": 0,
+      "upvotes": 0,
+      "createdAt": "2026-11-25T10:15:17.987Z",
+      "updatedAt": "2026-11-25T10:15:17.987Z"
+    },
     {
       "id": "QA-1795525789469",
       "refNumber": "ACN-QA-2026-342781",
@@ -3184,6 +3250,230 @@
     }
   ],
   "auditLogs": [
+    {
+      "id": "audit-1795601719412-cx3g9",
+      "orgId": "org-bengal-tech",
+      "actor": "CMP-6260",
+      "actorRole": "super_admin",
+      "action": "POSH_INTAKE_SUBMITTED",
+      "entityType": "system",
+      "entityId": "sys-01",
+      "timestamp": "2026-11-25T10:15:19.412Z",
+      "details": "New confidential inquiry docket POSH-ORG-BCT-01-2026-9996 initiated in database.",
+      "ipAddress": "127.0.0.1",
+      "prevHash": "d327819a21926d30729ebabb1273b949f06653835abab529412bb1d518ed736a",
+      "hash": "f03f069702d2164eb6189c08b1ba2f80d2b5b5f49f5eefae06639a6f402c83ba"
+    },
+    {
+      "id": "audit-1795601717987-smcza",
+      "orgId": "SYSTEM",
+      "actor": "ananya@example.com",
+      "actorRole": "super_admin",
+      "action": "QA_QUESTION_SUBMITTED",
+      "entityType": "system",
+      "entityId": "sys-01",
+      "timestamp": "2026-11-25T10:15:17.987Z",
+      "details": "New legal query ACN-QA-2026-850408 saved in database for moderation.",
+      "ipAddress": "127.0.0.1",
+      "prevHash": "c1d0213fe8db8570e1cdc5adf3e8c41337bbb722de1e3b95dea64d7483422023",
+      "hash": "d327819a21926d30729ebabb1273b949f06653835abab529412bb1d518ed736a"
+    },
+    {
+      "id": "audit-1795601717722-y1lzo",
+      "orgId": "SYSTEM",
+      "actor": "autoclient@testacorn.com",
+      "actorRole": "super_admin",
+      "action": "SERVICE_REQUEST_SUBMITTED",
+      "entityType": "system",
+      "entityId": "sys-01",
+      "timestamp": "2026-11-25T10:15:17.722Z",
+      "details": "New service request ACN-SR-2026-815676 saved in database for practice area corporate_commercial",
+      "ipAddress": "127.0.0.1",
+      "prevHash": "02600a9d293fe777085cd52d55003bf1ed30cfbb67b648c353e8e72a32346a94",
+      "hash": "c1d0213fe8db8570e1cdc5adf3e8c41337bbb722de1e3b95dea64d7483422023"
+    },
+    {
+      "id": "audit-1795601655255-vllde",
+      "orgId": "SYSTEM",
+      "actor": "Super Admin",
+      "actorRole": "super_admin",
+      "action": "SYSTEM_SETTINGS_UPDATED",
+      "entityType": "system",
+      "entityId": "sys-01",
+      "timestamp": "2026-11-25T10:14:15.255Z",
+      "details": "Gateway mode=test, retention=3y",
+      "ipAddress": "127.0.0.1",
+      "prevHash": "b060e27db9c74d18136721f59e192a007b2054c2e1a874cdf0fab28ceb37a8dd",
+      "hash": "02600a9d293fe777085cd52d55003bf1ed30cfbb67b648c353e8e72a32346a94"
+    },
+    {
+      "id": "audit-1795601654974-jgvt7",
+      "orgId": "SYSTEM",
+      "actor": "Admin",
+      "actorRole": "super_admin",
+      "action": "LEGAL_RULE_MODIFIED",
+      "entityType": "system",
+      "entityId": "sys-01",
+      "timestamp": "2026-11-25T10:14:14.974Z",
+      "details": "Statutory rule parameter inquiry_days updated to \"90\"",
+      "ipAddress": "127.0.0.1",
+      "prevHash": "ab85e2b46570f7e54bb0c4d142f96e8842303bc8ed0808a34dac8c26605889bd",
+      "hash": "b060e27db9c74d18136721f59e192a007b2054c2e1a874cdf0fab28ceb37a8dd"
+    },
+    {
+      "id": "audit-1795601654748-2kmyn",
+      "orgId": "SYSTEM",
+      "actor": "Admin",
+      "actorRole": "super_admin",
+      "action": "CASE_STATUS_UPDATED",
+      "entityType": "system",
+      "entityId": "sys-01",
+      "timestamp": "2026-11-25T10:14:14.748Z",
+      "details": "Case ACN-POSH-2026-0041 transitioned to INQUIRY_IN_PROGRESS",
+      "ipAddress": "127.0.0.1",
+      "prevHash": "d70d7d5403e825b77e0cd91b9e80d66d283900df69b789cdbee06f08c46cf0b2",
+      "hash": "ab85e2b46570f7e54bb0c4d142f96e8842303bc8ed0808a34dac8c26605889bd"
+    },
+    {
+      "id": "audit-1795601654278-e6vna",
+      "orgId": "SYSTEM",
+      "actor": "Admin",
+      "actorRole": "super_admin",
+      "action": "QA_QUESTION_DELETED",
+      "entityType": "system",
+      "entityId": "sys-01",
+      "timestamp": "2026-11-25T10:14:14.278Z",
+      "details": "Question query QA-1795601654185 removed from queue.",
+      "ipAddress": "127.0.0.1",
+      "prevHash": "b0c1c3076fe6483ff9be94b3c310dc2c90566f72f8e187df0feb27b48a054daf",
+      "hash": "d70d7d5403e825b77e0cd91b9e80d66d283900df69b789cdbee06f08c46cf0b2"
+    },
+    {
+      "id": "audit-1795601654237-2qjr2",
+      "orgId": "SYSTEM",
+      "actor": "Adv. Debjani Sen, Head of POSH Practice",
+      "actorRole": "super_admin",
+      "action": "QA_QUESTION_ANSWERED",
+      "entityType": "system",
+      "entityId": "sys-01",
+      "timestamp": "2026-11-25T10:14:14.237Z",
+      "details": "Moderation update applied to question query QA-1795601654185.",
+      "ipAddress": "127.0.0.1",
+      "prevHash": "5521bd7fee780ff0364b462ee39d69321e6976dac9289ddbbb501e93ef534c7b",
+      "hash": "b0c1c3076fe6483ff9be94b3c310dc2c90566f72f8e187df0feb27b48a054daf"
+    },
+    {
+      "id": "audit-1795601654185-x50dv",
+      "orgId": "SYSTEM",
+      "actor": "inquirer@acorn-client.in",
+      "actorRole": "super_admin",
+      "action": "QA_QUESTION_SUBMITTED",
+      "entityType": "system",
+      "entityId": "sys-01",
+      "timestamp": "2026-11-25T10:14:14.185Z",
+      "details": "New legal query ACN-QA-2026-940447 saved in database for moderation.",
+      "ipAddress": "127.0.0.1",
+      "prevHash": "73cc54e2c0c5e59176a8e35e0155e0f2c5cdf3d0c5231d2ff61752d6b7da7422",
+      "hash": "5521bd7fee780ff0364b462ee39d69321e6976dac9289ddbbb501e93ef534c7b"
+    },
+    {
+      "id": "audit-1795601652490-e9b0j",
+      "orgId": "SYSTEM",
+      "actor": "admin@acornlegal.in",
+      "actorRole": "super_admin",
+      "action": "ADMIN_LOGIN_SUCCESS",
+      "entityType": "auth",
+      "entityId": "admin@acornlegal.in",
+      "timestamp": "2026-11-25T10:14:12.490Z",
+      "details": "Authenticated successfully as Super Admin / Managing Partner",
+      "ipAddress": "127.0.0.1",
+      "prevHash": "4ac8f903cd8076a76a370d0571e262e6b66ec83876a18e1c8bfdfc97be060a4b",
+      "hash": "73cc54e2c0c5e59176a8e35e0155e0f2c5cdf3d0c5231d2ff61752d6b7da7422"
+    },
+    {
+      "id": "audit-1795601652280-0pdvy",
+      "orgId": "SYSTEM",
+      "actor": "Admin",
+      "actorRole": "super_admin",
+      "action": "ADMIN_LOGOUT",
+      "entityType": "auth",
+      "entityId": "session",
+      "timestamp": "2026-11-25T10:14:12.280Z",
+      "details": "Staff admin session terminated",
+      "ipAddress": "127.0.0.1",
+      "prevHash": "397068672bec473cb3577c90bebf308a7a03ab34d72a8f97504e168cbf180e71",
+      "hash": "4ac8f903cd8076a76a370d0571e262e6b66ec83876a18e1c8bfdfc97be060a4b"
+    },
+    {
+      "id": "audit-1795601640648-f27u5",
+      "orgId": "SYSTEM",
+      "actor": "debjani.sen@acornlegal.in",
+      "actorRole": "super_admin",
+      "action": "ADMIN_LOGIN_SUCCESS",
+      "entityType": "auth",
+      "entityId": "debjani.sen@acornlegal.in",
+      "timestamp": "2026-11-25T10:14:00.648Z",
+      "details": "Authenticated successfully as Partner & External Member",
+      "ipAddress": "127.0.0.1",
+      "prevHash": "c38aaec8834d052079c0d8480f0c26712b76e1fc0bedda250df4ff440b74c996",
+      "hash": "397068672bec473cb3577c90bebf308a7a03ab34d72a8f97504e168cbf180e71"
+    },
+    {
+      "id": "audit-1795601640421-i532i",
+      "orgId": "SYSTEM",
+      "actor": "admin@acornlegal.in",
+      "actorRole": "super_admin",
+      "action": "ADMIN_LOGIN_SUCCESS",
+      "entityType": "auth",
+      "entityId": "admin@acornlegal.in",
+      "timestamp": "2026-11-25T10:14:00.421Z",
+      "details": "Authenticated successfully as Super Admin / Managing Partner",
+      "ipAddress": "127.0.0.1",
+      "prevHash": "1bd6356c8eff3dc169bb979ba3b12e0a87bc23e22671de87b2c856a3ebef52b0",
+      "hash": "c38aaec8834d052079c0d8480f0c26712b76e1fc0bedda250df4ff440b74c996"
+    },
+    {
+      "id": "audit-1795601640343-0mvvv",
+      "orgId": "SYSTEM",
+      "actor": "admin@acornlegal.in",
+      "actorRole": "super_admin",
+      "action": "ADMIN_MFA_FAILED",
+      "entityType": "auth",
+      "entityId": "admin@acornlegal.in",
+      "timestamp": "2026-11-25T10:14:00.343Z",
+      "details": "Invalid 6-digit TOTP security code",
+      "ipAddress": "127.0.0.1",
+      "prevHash": "f6e4937efcc8807585531b78ec6b5898f0d2d48e02d8a74518bbcafedf640910",
+      "hash": "1bd6356c8eff3dc169bb979ba3b12e0a87bc23e22671de87b2c856a3ebef52b0"
+    },
+    {
+      "id": "audit-1795601640272-yf9sn",
+      "orgId": "SYSTEM",
+      "actor": "admin@acornlegal.in",
+      "actorRole": "super_admin",
+      "action": "ADMIN_LOGIN_FAILED",
+      "entityType": "auth",
+      "entityId": "admin@acornlegal.in",
+      "timestamp": "2026-11-25T10:14:00.272Z",
+      "details": "Invalid password attempt",
+      "ipAddress": "127.0.0.1",
+      "prevHash": "bb7928fbc8f45aa8d5f2d33e53f70f01b210ae383709b87cfe1462a10713a476",
+      "hash": "f6e4937efcc8807585531b78ec6b5898f0d2d48e02d8a74518bbcafedf640910"
+    },
+    {
+      "id": "audit-1795601640195-znjon",
+      "orgId": "SYSTEM",
+      "actor": "intruder@malicious.domain",
+      "actorRole": "super_admin",
+      "action": "ADMIN_LOGIN_FAILED",
+      "entityType": "auth",
+      "entityId": "intruder@malicious.domain",
+      "timestamp": "2026-11-25T10:14:00.195Z",
+      "details": "Unrecognized administrator email address",
+      "ipAddress": "127.0.0.1",
+      "prevHash": "0273f40f322c7bff5a568b9d56c800668ad1e32d16bba05217e209a5a655b38e",
+      "hash": "bb7928fbc8f45aa8d5f2d33e53f70f01b210ae383709b87cfe1462a10713a476"
+    },
     {
       "id": "audit-1795535291256-zzef7",
       "orgId": "SYSTEM",
@@ -12068,7 +12358,7 @@
       "source": "Section 11(4) POSH Act",
       "status": "Active (v1.0)",
       "description": "Mandatory statutory timeline to conclude inquiry",
-      "updatedAt": "2026-11-24"
+      "updatedAt": "2026-11-25"
     },
     {
       "param": "report_days",
@@ -12111,7 +12401,7 @@
     "smtpHost": "email-smtp.ap-south-1.amazonaws.com",
     "smtpFrom": "contact@acornlegal.in",
     "retentionYears": "3",
-    "updatedAt": "2026-11-24T15:48:11.255Z"
+    "updatedAt": "2026-11-25T10:14:15.254Z"
   },
   "customCollections": {
     "directory_items": [],

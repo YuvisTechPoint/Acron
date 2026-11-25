@@ -168,6 +168,8 @@ const ROUTES = [
   "/admin/legal/templates",
   "/admin/legal/watch",
   "/admin/legal/calendars",
+  "/admin/legal/sandbox",
+  "/admin/contracts",
   "/admin/ops",
   "/admin/ops/gate",
   "/admin/ops/dr",

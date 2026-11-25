@@ -56,7 +56,7 @@ export default function AdminDashboardPage() {
             <div className="flex items-center gap-2">
               <span className="w-2.5 h-2.5 rounded-full bg-status-success animate-ping"></span>
               <span className="text-xs uppercase tracking-widest text-navy-700 font-bold">
-                Admin Control System &bull; Production v2.0
+                Admin Control System &bull; Production v3.0
               </span>
             </div>
             <h1 className="font-serif text-2xl sm:text-3xl font-bold text-ink-950 mt-1">

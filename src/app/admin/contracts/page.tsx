@@ -18,6 +18,7 @@ import {
 } from "lucide-react";
 import { useToast } from "@/components/ui/toast";
 import { platformStore } from "@/lib/store";
+import { useRealtimeClientContracts } from "@/lib/realtime";
 
 interface ClientContract {
   id: string;
@@ -80,7 +81,7 @@ const INITIAL_CONTRACTS: ClientContract[] = [
 
 export default function ContractsAndOffboardingPage() {
   const { toast } = useToast();
-  const [contracts, setContracts] = useState<ClientContract[]>(INITIAL_CONTRACTS);
+  const contracts = useRealtimeClientContracts<ClientContract[]>(INITIAL_CONTRACTS);
   const [selectedContract, setSelectedContract] = useState<ClientContract | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
 
@@ -111,11 +112,10 @@ export default function ContractsAndOffboardingPage() {
       a.click();
       URL.revokeObjectURL(url);
 
-      setContracts((prev) =>
-        prev.map((c) =>
-          c.id === contract.id ? { ...c, status: "OFFBOARDED" } : c
-        )
+      const updated = contracts.map((c) =>
+        c.id === contract.id ? { ...c, status: "OFFBOARDED" as const } : c
       );
+      platformStore.saveClientContracts(updated);
 
       platformStore.addAuditLog(
         "ADMIN_GOVERNANCE_DESK",
@@ -136,7 +136,7 @@ export default function ContractsAndOffboardingPage() {
   };
 
   return (
-    <div className="min-h-screen bg-ivory-50 text-ink pt-28 pb-20">
+    <div className="bg-ivory-50 text-ink py-2 pb-12">
       <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header Breadcrumbs */}
         <div className="mb-6">

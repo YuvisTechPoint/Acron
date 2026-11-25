@@ -3817,6 +3817,16 @@ class PlatformStore {
     return sections;
   }
 
+  // Client Contracts & Offboarding Registry
+  getClientContracts<T>(seed: T): T {
+    return this.get("client_contracts", seed);
+  }
+
+  saveClientContracts<T>(contracts: T): T {
+    this.set("client_contracts", contracts);
+    return contracts;
+  }
+
 }
 
 export const platformStore = new PlatformStore();

@@ -44,6 +44,7 @@ import {
   Bot,
   Key,
   RefreshCw,
+  FlaskConical,
 } from "lucide-react";
 import { AdminThemeToggle } from "@/components/admin/AdminThemeToggle";
 import {
@@ -75,6 +76,7 @@ const NAV_GROUPS: NavGroup[] = [
       { label: "Payments", href: "/admin/payments", icon: CreditCard },
       { label: "Payment Links", href: "/admin/payment-links", icon: Link2 },
       { label: "Subscriptions", href: "/admin/subscriptions", icon: CalendarDays },
+      { label: "Client Contracts", href: "/admin/contracts", icon: FileCheck2 },
     ],
   },
   {
@@ -97,6 +99,7 @@ const NAV_GROUPS: NavGroup[] = [
       { label: "Draft Templates", href: "/admin/legal/templates", icon: FileCheck2 },
       { label: "Precedent Watch", href: "/admin/legal/watch", icon: Eye },
       { label: "Compliance Calendars", href: "/admin/legal/calendars", icon: CalendarDays },
+      { label: "Amendment Sandbox", href: "/admin/legal/sandbox", icon: FlaskConical },
       { label: "POSH IC Docket", href: "/posh/ic", icon: ShieldCheck },
     ],
   },
@@ -197,14 +200,22 @@ export default function AdminLayout({
     return () => window.removeEventListener("acorn_admin_theme_change", onThemeChange);
   }, []);
 
+  const isRouteActive = useCallback(
+    (href: string) =>
+      href === "/admin"
+        ? pathname === "/admin"
+        : pathname === href || pathname.startsWith(href + "/"),
+    [pathname]
+  );
+
   // If on login screen, render clean standalone view
   if (pathname === "/admin/login") {
     return <>{children}</>;
   }
 
   // Derive current title for breadcrumb
-  const currentItem = NAV_GROUPS.flatMap((g) => g.items).find(
-    (item) => item.href === pathname
+  const currentItem = NAV_GROUPS.flatMap((g) => g.items).find((item) =>
+    isRouteActive(item.href)
   );
   const currentTitle = currentItem?.label || "Admin Console";
 
@@ -279,6 +290,15 @@ export default function AdminLayout({
         </div>
       </div>
 
+      {/* Mobile Sidebar Backdrop Scrim */}
+      {mobileSidebarOpen && (
+        <div
+          className="fixed inset-0 bg-black/50 backdrop-blur-xs z-30 lg:hidden"
+          onClick={() => setMobileSidebarOpen(false)}
+          aria-hidden="true"
+        />
+      )}
+
       {/* Admin Navy Sidebar (Desktop & Drawer on Mobile) */}
       <aside
         className={`fixed lg:sticky top-0 left-0 bottom-0 z-40 w-64 bg-ink-950 text-white border-r border-navy-800/80 flex flex-col justify-between transition-transform duration-200 h-screen overflow-y-auto ${
@@ -319,7 +339,7 @@ export default function AdminLayout({
                 </div>
                 {grp.items.map((item) => {
                   const Icon = item.icon;
-                  const isActive = pathname === item.href;
+                  const isActive = isRouteActive(item.href);
 
                   return (
                     <Link
@@ -482,7 +502,7 @@ export default function AdminLayout({
             Acorn Legal Consultants &bull; Practice &amp; Redressal Docket &bull; Confidential
           </div>
           <div>
-            Kolkata Chambers &bull; Park Street District &bull; Version 2.0.4
+            Kolkata Chambers &bull; Park Street District &bull; Version 3.0.0
           </div>
         </footer>
 
