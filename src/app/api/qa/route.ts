@@ -3,7 +3,7 @@ import { db } from "@/lib/db";
 import { platformStore } from "@/lib/store";
 import { generateReferenceNumber } from "@/lib/utils";
 import { QuestionAnswer } from "@/lib/types";
-import { verifyRequestSession } from "@/lib/session";
+import { requireAuth } from "@/lib/api-response";
 
 export const dynamic = "force-dynamic";
 
@@ -76,9 +76,9 @@ export async function GET(req: NextRequest) {
     const all = searchParams.get("all") === "true";
 
     if (all) {
-      const auth = await verifyRequestSession(req);
+      const auth = await requireAuth(req);
       if (!auth.authorized) {
-        return NextResponse.json({ error: auth.error }, { status: auth.status });
+        return auth.response;
       }
     }
 
@@ -120,9 +120,9 @@ export async function GET(req: NextRequest) {
 // PATCH /api/qa - Moderation: Answer, edit, or toggle publication (Staff Admin Restricted)
 export async function PATCH(req: NextRequest) {
   try {
-    const auth = await verifyRequestSession(req);
+    const auth = await requireAuth(req);
     if (!auth.authorized) {
-      return NextResponse.json({ error: auth.error }, { status: auth.status });
+      return auth.response;
     }
 
     const body = await req.json();
@@ -176,9 +176,9 @@ export async function PATCH(req: NextRequest) {
 // DELETE /api/qa - Remove question from moderation queue (Staff Admin Restricted)
 export async function DELETE(req: NextRequest) {
   try {
-    const auth = await verifyRequestSession(req);
+    const auth = await requireAuth(req);
     if (!auth.authorized) {
-      return NextResponse.json({ error: auth.error }, { status: auth.status });
+      return auth.response;
     }
 
     const { searchParams } = new URL(req.url);

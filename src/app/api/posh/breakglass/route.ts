@@ -1,10 +1,24 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
-import { verifySessionToken } from "@/lib/session";
+import { verifyRequestSession } from "@/lib/session";
 import { platformStore } from "@/lib/store";
 import crypto from "crypto";
 
 export const dynamic = "force-dynamic";
+
+async function authorizeBreakGlass(req: NextRequest): Promise<NextResponse | null> {
+  const auth = await verifyRequestSession(req, { allowPoshSession: true });
+  if (!auth.authorized || !auth.user) {
+    const code = auth.status === 401 ? "UNAUTHENTICATED" : "FORBIDDEN";
+    const fallbackMessage =
+      auth.status === 401 ? "Session required to invoke emergency protocol." : "Invalid session.";
+    return NextResponse.json(
+      { error: { code, message: auth.error || fallbackMessage } },
+      { status: auth.status }
+    );
+  }
+  return null;
+}
 
 const BREAK_GLASS_SECRET = process.env.BREAK_GLASS_SECRET || "acorn-breakglass-dual-approval-key-256";
 
@@ -32,27 +46,8 @@ const activeSessions: Map<string, ActiveBreakGlassSession> = new Map();
 // POST /api/posh/breakglass - Request Dual-Approved Break-Glass Override
 export async function POST(req: NextRequest) {
   try {
-    const sessionCookie =
-      req.cookies.get("acorn_admin_session")?.value ||
-      req.cookies.get("acorn_session")?.value ||
-      (req.headers.get("authorization")?.startsWith("Bearer ")
-        ? req.headers.get("authorization")!.slice(7)
-        : null);
-
-    if (!sessionCookie) {
-      return NextResponse.json(
-        { error: { code: "UNAUTHENTICATED", message: "Session required to invoke emergency protocol." } },
-        { status: 401 }
-      );
-    }
-
-    const verified = await verifySessionToken(sessionCookie);
-    if (!verified.valid || !verified.user) {
-      return NextResponse.json(
-        { error: { code: "FORBIDDEN", message: "Invalid session." } },
-        { status: 403 }
-      );
-    }
+    const authError = await authorizeBreakGlass(req);
+    if (authError) return authError;
 
     const body: BreakGlassApprovalRequest = await req.json();
     const { caseNumber, primaryAuthorizer, secondaryAuthorizer, secondaryApproverCode, reasonCategory, justification } = body;
@@ -132,6 +127,9 @@ export async function POST(req: NextRequest) {
 // GET /api/posh/breakglass - Retrieve immutable break-glass audit logs
 export async function GET(req: NextRequest) {
   try {
+    const authError = await authorizeBreakGlass(req);
+    if (authError) return authError;
+
     const logs = db.getAuditLogs().filter((l) =>
       l.action.includes("BREAK_GLASS")
     );

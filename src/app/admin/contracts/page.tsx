@@ -18,7 +18,7 @@ import {
 } from "lucide-react";
 import { useToast } from "@/components/ui/toast";
 import { platformStore } from "@/lib/store";
-import { useRealtimeClientContracts } from "@/lib/realtime";
+import { useRealtimeCollection } from "@/lib/realtime";
 
 interface ClientContract {
   id: string;
@@ -81,7 +81,7 @@ const INITIAL_CONTRACTS: ClientContract[] = [
 
 export default function ContractsAndOffboardingPage() {
   const { toast } = useToast();
-  const contracts = useRealtimeClientContracts<ClientContract[]>(INITIAL_CONTRACTS);
+  const contracts = useRealtimeCollection<ClientContract[]>("client_contracts", INITIAL_CONTRACTS);
   const [selectedContract, setSelectedContract] = useState<ClientContract | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
 
@@ -115,7 +115,7 @@ export default function ContractsAndOffboardingPage() {
       const updated = contracts.map((c) =>
         c.id === contract.id ? { ...c, status: "OFFBOARDED" as const } : c
       );
-      platformStore.saveClientContracts(updated);
+      platformStore.saveCollectionState("client_contracts", updated);
 
       platformStore.addAuditLog(
         "ADMIN_GOVERNANCE_DESK",

@@ -14,12 +14,10 @@ export * from "./providers";
 export * from "./analytics-tracker";
 export * from "./pwa-register";
 export * from "./chambers-map";
-export * from "./footer-chambers-dispatch";
 export * from "./footer-roll-text";
 export * from "./gold-eyebrow";
 export * from "./legal-page-layout";
 export * from "./payment-modal";
-export * from "./whatsapp-floating-button";
 
 // Subdirectories
 export * from "./ui";

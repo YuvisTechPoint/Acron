@@ -424,6 +424,11 @@ async function runTests() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ partyConsentConfirmed: true }),
       }),
+      fetch(`${BASE_URL}/api/cases`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id: "ACN-POSH-2026-0041", state: "CLOSED" }),
+      }),
     ]);
 
     if (probes.every((r) => r.status === 401)) {

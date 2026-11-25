@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { platformStore } from "@/lib/store";
-import { verifyRequestSession } from "@/lib/session";
+import { requireAuth } from "@/lib/api-response";
 
 export const dynamic = "force-dynamic";
 
@@ -12,9 +12,9 @@ export async function GET() {
 
 export async function POST(req: Request) {
   try {
-    const auth = await verifyRequestSession(req);
+    const auth = await requireAuth(req);
     if (!auth.authorized) {
-      return NextResponse.json({ error: auth.error }, { status: auth.status });
+      return auth.response;
     }
 
     const body = await req.json();

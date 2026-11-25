@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
-import { verifySessionToken } from "@/lib/session";
+import { verifyRequestSession } from "@/lib/session";
+import { requireAuth } from "@/lib/api-response";
 
 export const dynamic = "force-dynamic";
 
@@ -12,20 +13,8 @@ export const dynamic = "force-dynamic";
  */
 export async function GET(req: NextRequest) {
   try {
-    const adminToken =
-      req.cookies.get("acorn_admin_session")?.value ||
-      req.cookies.get("acorn_session")?.value ||
-      (req.headers.get("authorization")?.startsWith("Bearer ")
-        ? req.headers.get("authorization")!.slice(7)
-        : null);
-
-    let isAuthorizedAdmin = false;
-    if (adminToken && adminToken.trim().length > 0) {
-      const verified = await verifySessionToken(adminToken);
-      if (verified.valid) {
-        isAuthorizedAdmin = true;
-      }
-    }
+    const auth = await verifyRequestSession(req);
+    const isAuthorizedAdmin = auth.authorized;
 
     if (isAuthorizedAdmin) {
       const allData = db.getAllCollections();
@@ -70,26 +59,9 @@ export async function GET(req: NextRequest) {
  */
 export async function POST(req: NextRequest) {
   try {
-    const adminToken =
-      req.cookies.get("acorn_admin_session")?.value ||
-      req.cookies.get("acorn_session")?.value ||
-      (req.headers.get("authorization")?.startsWith("Bearer ")
-        ? req.headers.get("authorization")!.slice(7)
-        : null);
-
-    if (!adminToken || adminToken.trim().length === 0) {
-      return NextResponse.json(
-        { error: "Unauthorized: Administrative session token required for persistence." },
-        { status: 401 }
-      );
-    }
-
-    const verified = await verifySessionToken(adminToken);
-    if (!verified.valid) {
-      return NextResponse.json(
-        { error: "Forbidden: Invalid or expired administrative session." },
-        { status: 403 }
-      );
+    const auth = await requireAuth(req);
+    if (!auth.authorized) {
+      return auth.response;
     }
 
     const body = await req.json();

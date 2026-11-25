@@ -598,14 +598,6 @@ export function useRealtimePageSections(): PageSectionItem[] {
 }
 
 /**
- * Real-time Client Contracts & Offboarding Hook
- */
-export function useRealtimeClientContracts<T>(seed: T): T {
-  const getter = useCallback(() => platformStore.getClientContracts<T>(seed), [seed]);
-  return useRealtimeStore<T>("client_contracts", getter);
-}
-
-/**
  * Generic Real-time Persistent Collection Hook
  * Ensures every console module syncs across tabs and persists to /api/sync.
  */

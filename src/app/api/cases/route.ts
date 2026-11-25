@@ -3,7 +3,7 @@ import { db } from "@/lib/db";
 import { platformStore } from "@/lib/store";
 import { POSHCase } from "@/lib/types";
 import { canAccessCase } from "@/lib/rules/access";
-import { verifySessionToken } from "@/lib/session";
+import { requireAuth } from "@/lib/api-response";
 
 export const dynamic = "force-dynamic";
 
@@ -85,30 +85,12 @@ export async function GET(req: NextRequest) {
     const orgId = searchParams.get("orgId") || undefined;
     const requestedCaseId = searchParams.get("id");
 
-    const sessionCookie =
-      req.cookies.get("acorn_admin_session")?.value ||
-      req.cookies.get("acorn_posh_session")?.value ||
-      req.cookies.get("acorn_session")?.value ||
-      (req.headers.get("authorization")?.startsWith("Bearer ")
-        ? req.headers.get("authorization")!.slice(7)
-        : null);
-
-    if (!sessionCookie) {
-      return NextResponse.json(
-        { error: "Authentication required: Missing session token." },
-        { status: 401 }
-      );
+    const auth = await requireAuth(req, { allowPoshSession: true });
+    if (!auth.authorized) {
+      return auth.response;
     }
 
-    const verified = await verifySessionToken(sessionCookie);
-    if (!verified.valid || !verified.user) {
-      return NextResponse.json(
-        { error: "Forbidden: Invalid or expired session token." },
-        { status: 403 }
-      );
-    }
-
-    const user = verified.user;
+    const user = auth.user;
     const userRoleStr = (user.role || "").toLowerCase();
     const effectiveRole =
       userRoleStr.includes("super_admin") || userRoleStr.includes("managing partner")
@@ -226,6 +208,11 @@ export async function GET(req: NextRequest) {
 // PATCH /api/cases - Update case state and procedural notes
 export async function PATCH(req: NextRequest) {
   try {
+    const auth = await requireAuth(req, { allowPoshSession: true });
+    if (!auth.authorized) {
+      return auth.response;
+    }
+
     const body = await req.json();
     const { id, state, note, updates } = body;
     if (!id) {

@@ -3,7 +3,7 @@ import { db } from "@/lib/db";
 import { platformStore } from "@/lib/store";
 import { generateReferenceNumber } from "@/lib/utils";
 import { ServiceRequest } from "@/lib/types";
-import { verifyRequestSession } from "@/lib/session";
+import { requireAuth } from "@/lib/api-response";
 
 export const dynamic = "force-dynamic";
 
@@ -73,9 +73,9 @@ export async function POST(req: NextRequest) {
 // GET /api/requests - List service requests (Staff Admin Restricted)
 export async function GET(req: NextRequest) {
   try {
-    const auth = await verifyRequestSession(req);
+    const auth = await requireAuth(req);
     if (!auth.authorized) {
-      return NextResponse.json({ error: auth.error }, { status: auth.status });
+      return auth.response;
     }
 
     const requests = db.getServiceRequests();
@@ -96,9 +96,9 @@ export async function GET(req: NextRequest) {
 // PATCH /api/requests - Update service request status and notes (Staff Admin Restricted)
 export async function PATCH(req: NextRequest) {
   try {
-    const auth = await verifyRequestSession(req);
+    const auth = await requireAuth(req);
     if (!auth.authorized) {
-      return NextResponse.json({ error: auth.error }, { status: auth.status });
+      return auth.response;
     }
 
     const body = await req.json();

@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import crypto from "crypto";
+import { verifyRequestSession, type SessionTokenPayload } from "./session";
 
 export interface ApiPaginationMeta {
   page: number;
@@ -159,4 +160,29 @@ export function parsePaginationParams(req: NextRequest): {
   const order = (searchParams.get("order")?.toLowerCase() === "asc" ? "asc" : "desc") as "asc" | "desc";
 
   return { page, limit, offset, sort, order };
+}
+
+/**
+ * Verifies an administrative (or optional POSH) session token from request
+ * cookies or Bearer header and returns either the authenticated user or a
+ * standardized error NextResponse.
+ */
+export async function requireAuth(
+  req: Request,
+  options?: { allowPoshSession?: boolean }
+): Promise<
+  | { authorized: true; user: SessionTokenPayload }
+  | { authorized: false; response: NextResponse }
+> {
+  const auth = await verifyRequestSession(req, options);
+  if (!auth.authorized || !auth.user) {
+    return {
+      authorized: false,
+      response: NextResponse.json(
+        { error: auth.error || "Unauthorized" },
+        { status: auth.status }
+      ),
+    };
+  }
+  return { authorized: true, user: auth.user };
 }
