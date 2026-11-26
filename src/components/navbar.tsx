@@ -164,36 +164,38 @@ export function Navbar() {
         </div>
       </div>
 
-      {/* Soft Dimming Backdrop Scrim behind Mega Menu (Zero Bleed-Through) */}
+      {/* Soft Dimming Backdrop Overlay behind Mega Menu */}
       <div
-        className={`fixed inset-0 top-[72px] sm:top-[84px] bg-navy-950/45 backdrop-blur-[2px] z-30 transition-opacity duration-300 pointer-events-none ${
+        className={`fixed inset-0 ${
+          scrolled ? "top-[100px]" : "top-[90px] lg:top-[84px]"
+        } bg-ink-950/55 z-30 transition-opacity duration-200 pointer-events-none ${
           megaMenuOpen ? "opacity-100" : "opacity-0 invisible pointer-events-none"
         }`}
         aria-hidden="true"
       />
 
       <header
-        className={`fixed left-0 right-0 z-40 transition-all duration-300 ${
+        className={`fixed left-0 right-0 z-40 transition-colors duration-200 ${
           scrolled
             ? "top-7 h-[62px] lg:top-7 lg:h-[72px]"
             : "top-7 h-[62px] lg:top-0 lg:h-[84px]"
         } ${
           isTransparent
-            ? "bg-navy-950/85 backdrop-blur-md text-white border-b border-white/10 lg:bg-transparent lg:text-white lg:border-white/10"
-            : "bg-white/95 backdrop-blur-md text-ink-950 border-b border-border shadow-card"
+            ? "bg-ink-950 text-white border-b border-navy-800/80 shadow-sm"
+            : "bg-ivory-50 text-ink-950 border-b border-border shadow-card"
         }`}
       >
-        <div className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center justify-between">
+        <div className="max-w-[1360px] mx-auto px-3 sm:px-6 lg:px-8 h-full flex items-center justify-between gap-2">
           
           {/* Logo Lockup: Official Acorn Crest + ACORN LEGAL CONSULTANTS */}
           <Link
             href="/"
-            className="flex items-center gap-3 group focus:outline-none"
+            className="flex items-center gap-2.5 sm:gap-3 group focus:outline-none min-w-0 shrink"
             aria-label="Acorn Legal Consultants Home"
           >
             {/* Authentic Brand Crest Emblem */}
             <div
-              className={`w-10 h-10 rounded-md overflow-hidden flex items-center justify-center transition duration-200 border shrink-0 ${
+              className={`w-9 h-9 sm:w-10 sm:h-10 rounded-md overflow-hidden flex items-center justify-center transition duration-200 border shrink-0 ${
                 isTransparent
                   ? "bg-navy-950 border-brass-500/50 shadow-inner group-hover:border-brass-400 group-hover:ring-1 group-hover:ring-brass-400/40"
                   : "bg-navy-950 border-brass-500/40 shadow-sm group-hover:border-brass-400 group-hover:ring-1 group-hover:ring-brass-400/40"
@@ -209,19 +211,19 @@ export function Navbar() {
               />
             </div>
 
-            <div className="flex flex-col">
+            <div className="flex flex-col min-w-0">
               <span
                 suppressHydrationWarning
-                className={`font-serif text-xl sm:text-2xl font-bold tracking-tight leading-none transition-colors duration-200 ${
-                  isTransparent ? "text-white drop-shadow-sm" : "text-ink-950"
+                className={`font-serif text-lg sm:text-xl lg:text-2xl font-bold tracking-tight leading-none truncate transition-colors duration-200 ${
+                  isTransparent ? "text-white" : "text-ink-950"
                 }`}
               >
                 {siteConfig?.firmName || "Acorn Consultants"}
               </span>
               <span
                 suppressHydrationWarning
-                className={`font-sans text-[9px] sm:text-[10px] font-semibold tracking-[0.2em] uppercase mt-1 transition-colors duration-200 ${
-                  isTransparent ? "text-brass-300 drop-shadow-sm" : "text-brass-700"
+                className={`font-sans text-[8px] sm:text-[10px] font-semibold tracking-[0.12em] sm:tracking-[0.2em] uppercase mt-1 truncate transition-colors duration-200 ${
+                  isTransparent ? "text-brass-300" : "text-brass-700"
                 }`}
               >
                 {siteConfig?.tagline || "Educational, Tax & Legal Consultants"}
@@ -231,18 +233,18 @@ export function Navbar() {
 
           {/* Desktop Navigation */}
           <nav
-            className="hidden lg:flex items-center gap-1 text-[14px] font-medium"
+            className="hidden lg:flex items-center gap-0.5 xl:gap-1 text-[13.5px] xl:text-[14px] font-medium shrink-0"
             aria-label="Main Navigation"
           >
             <Link
               href="/"
-              className={`px-3 py-2 rounded-btn transition ${
+              className={`px-2.5 xl:px-3 py-2 rounded-btn whitespace-nowrap transition ${
                 pathname === "/"
                   ? isTransparent
-                    ? "text-white font-semibold"
+                    ? "text-brass-300 font-semibold bg-navy-900/90"
                     : "text-navy-700 font-semibold bg-stone-100"
                   : isTransparent
-                  ? "text-white/80 hover:text-white"
+                  ? "text-ivory-50/90 hover:text-brass-300 hover:bg-navy-900/60"
                   : "text-ink hover:text-navy-700 hover:bg-stone-100"
               }`}
             >
@@ -251,13 +253,13 @@ export function Navbar() {
 
             <Link
               href="/about"
-              className={`px-3 py-2 rounded-btn transition ${
+              className={`px-2.5 xl:px-3 py-2 rounded-btn whitespace-nowrap transition ${
                 pathname === "/about"
                   ? isTransparent
-                    ? "text-white font-semibold"
+                    ? "text-brass-300 font-semibold bg-navy-900/90"
                     : "text-navy-700 font-semibold bg-stone-100"
                   : isTransparent
-                  ? "text-white/80 hover:text-white"
+                  ? "text-ivory-50/90 hover:text-brass-300 hover:bg-navy-900/60"
                   : "text-ink hover:text-navy-700 hover:bg-stone-100"
               }`}
             >
@@ -275,13 +277,13 @@ export function Navbar() {
                 onClick={() => setMegaMenuOpen((prev) => !prev)}
                 aria-expanded={megaMenuOpen}
                 aria-haspopup="true"
-                className={`flex items-center gap-1.5 px-3 py-2 rounded-btn transition ${
+                className={`flex items-center gap-1.5 px-2.5 xl:px-3 py-2 rounded-btn whitespace-nowrap transition ${
                   pathname.startsWith("/services")
                     ? isTransparent
-                      ? "text-white font-semibold"
+                      ? "text-brass-300 font-semibold bg-navy-900/90"
                       : "text-navy-700 font-semibold bg-stone-100"
                     : isTransparent
-                    ? "text-white/80 hover:text-white"
+                    ? "text-ivory-50/90 hover:text-brass-300 hover:bg-navy-900/60"
                     : "text-ink hover:text-navy-700 hover:bg-stone-100"
                 }`}
               >
@@ -308,8 +310,8 @@ export function Navbar() {
                 <div
                   className={`w-full transition-colors duration-200 ${
                     isTransparent
-                      ? "bg-[#0b1329] border-b-2 border-brass-500/40 border-t border-white/10 text-white shadow-[0_35px_80px_rgba(0,0,0,0.85)]"
-                      : "bg-[#FAF7F2] border-b-2 border-brass-500/35 border-t border-border/80 text-ink-950 shadow-[0_35px_80px_rgba(15,23,42,0.22)]"
+                      ? "bg-ink-950 border-b-2 border-brass-500/40 border-t border-navy-800 text-white shadow-[0_35px_80px_rgba(0,0,0,0.85)]"
+                      : "bg-ivory-50 border-b-2 border-brass-500/35 border-t border-border text-ink-950 shadow-[0_35px_80px_rgba(15,23,42,0.22)]"
                   }`}
                 >
                   <div className="max-w-[1380px] mx-auto px-6 sm:px-10 lg:px-12 py-8 sm:py-9">
@@ -580,13 +582,13 @@ export function Navbar() {
 
             <Link
               href="/posh"
-              className={`px-3 py-2 rounded-btn transition ${
+              className={`px-2.5 xl:px-3 py-2 rounded-btn whitespace-nowrap transition ${
                 pathname.startsWith("/posh")
                   ? isTransparent
-                    ? "text-white font-semibold"
+                    ? "text-brass-300 font-semibold bg-navy-900/90"
                     : "text-navy-700 font-semibold bg-stone-100"
                   : isTransparent
-                  ? "text-white/80 hover:text-white"
+                  ? "text-ivory-50/90 hover:text-brass-300 hover:bg-navy-900/60"
                   : "text-ink hover:text-navy-700 hover:bg-stone-100"
               }`}
             >
@@ -595,13 +597,13 @@ export function Navbar() {
 
             <Link
               href="/blog"
-              className={`px-3 py-2 rounded-btn transition ${
+              className={`px-2.5 xl:px-3 py-2 rounded-btn whitespace-nowrap transition ${
                 pathname.startsWith("/blog")
                   ? isTransparent
-                    ? "text-white font-semibold"
+                    ? "text-brass-300 font-semibold bg-navy-900/90"
                     : "text-navy-700 font-semibold bg-stone-100"
                   : isTransparent
-                  ? "text-white/80 hover:text-white"
+                  ? "text-ivory-50/90 hover:text-brass-300 hover:bg-navy-900/60"
                   : "text-ink hover:text-navy-700 hover:bg-stone-100"
               }`}
             >
@@ -610,13 +612,13 @@ export function Navbar() {
 
             <Link
               href="/faq"
-              className={`px-3 py-2 rounded-btn transition ${
+              className={`px-2.5 xl:px-3 py-2 rounded-btn whitespace-nowrap transition ${
                 pathname === "/faq"
                   ? isTransparent
-                    ? "text-white font-semibold"
+                    ? "text-brass-300 font-semibold bg-navy-900/90"
                     : "text-navy-700 font-semibold bg-stone-100"
                   : isTransparent
-                  ? "text-white/80 hover:text-white"
+                  ? "text-ivory-50/90 hover:text-brass-300 hover:bg-navy-900/60"
                   : "text-ink hover:text-navy-700 hover:bg-stone-100"
               }`}
             >
@@ -625,13 +627,13 @@ export function Navbar() {
 
             <Link
               href="/contact"
-              className={`px-3 py-2 rounded-btn transition ${
+              className={`px-2.5 xl:px-3 py-2 rounded-btn whitespace-nowrap transition ${
                 pathname === "/contact"
                   ? isTransparent
-                    ? "text-white font-semibold"
+                    ? "text-brass-300 font-semibold bg-navy-900/90"
                     : "text-navy-700 font-semibold bg-stone-100"
                   : isTransparent
-                  ? "text-white/80 hover:text-white"
+                  ? "text-ivory-50/90 hover:text-brass-300 hover:bg-navy-900/60"
                   : "text-ink hover:text-navy-700 hover:bg-stone-100"
               }`}
             >
@@ -640,14 +642,14 @@ export function Navbar() {
           </nav>
 
           {/* Right Action: Chambers Telephone & Primary Consultation Button */}
-          <div className="hidden sm:flex items-center gap-3">
+          <div className="hidden sm:flex items-center gap-2.5 xl:gap-3 shrink-0">
             <a
               href={`tel:${siteConfig?.receptionPhone || BRAND_CONFIG.phone}`}
               title={`Call Chambers: ${siteConfig?.receptionPhone || BRAND_CONFIG.phone}`}
-              className={`w-11 h-11 rounded-full transition border flex items-center justify-center ${
+              className={`w-10 h-10 xl:w-11 xl:h-11 rounded-full transition border flex items-center justify-center shrink-0 ${
                 isTransparent
-                  ? "bg-navy-900/60 border-white/20 text-brass-300 hover:text-white hover:border-brass-400 backdrop-blur-sm"
-                  : "border-border text-navy-700 hover:text-brass-700 hover:bg-surface"
+                  ? "bg-navy-900 border-brass-500/40 text-brass-300 hover:bg-navy-800 hover:text-white hover:border-brass-400"
+                  : "bg-white border-border text-navy-700 hover:text-brass-700 hover:bg-stone-100"
               }`}
               aria-label="Call Acorn Legal Consultants"
             >
@@ -656,7 +658,7 @@ export function Navbar() {
 
             <Link
               href="/request-service"
-              className={`min-h-[44px] px-5 rounded-btn flex items-center justify-center text-xs font-bold uppercase tracking-[0.14em] transition-all duration-200 shadow-sm ${
+              className={`min-h-[44px] px-4 xl:px-5 rounded-btn flex items-center justify-center text-[11px] xl:text-xs font-bold uppercase tracking-[0.12em] xl:tracking-[0.14em] whitespace-nowrap transition-all duration-200 shadow-sm ${
                 isTransparent
                   ? "bg-brass-500 hover:bg-brass-400 text-ink-950 border border-brass-400"
                   : "bg-navy-700 hover:bg-blue-600 text-ivory-50 border border-navy-800"
@@ -667,11 +669,11 @@ export function Navbar() {
           </div>
 
           {/* Mobile Navigation Controls */}
-          <div className="lg:hidden flex items-center gap-1.5">
+          <div className="lg:hidden flex items-center gap-1 sm:gap-1.5 shrink-0">
             <Link
               href="/services"
               className={`w-11 h-11 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-btn transition-colors ${
-                isTransparent ? "text-white/80 hover:text-white hover:bg-white/10" : "text-ink-700 hover:bg-stone-100"
+                isTransparent ? "text-white/90 hover:text-white hover:bg-navy-900" : "text-ink hover:bg-stone-100"
               }`}
               aria-label="Search practice disciplines"
             >
@@ -679,19 +681,22 @@ export function Navbar() {
             </Link>
             <a
               href={`tel:${siteConfig?.receptionPhone || BRAND_CONFIG.phone}`}
-              className={`w-11 h-11 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-btn border transition-colors ${
+              className={`sm:hidden w-11 h-11 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-btn border transition-colors ${
                 isTransparent
-                  ? "text-brass-300 border-white/20 hover:bg-white/10"
-                  : "text-navy-700 border-border hover:bg-stone-100"
+                  ? "bg-navy-900 text-brass-300 border-brass-500/40 hover:bg-navy-800"
+                  : "bg-white text-navy-700 border-border hover:bg-stone-100"
               }`}
               aria-label="Call chambers"
             >
               <Phone className={`w-4 h-4 ${isTransparent ? "text-brass-300" : "text-brass-600"}`} />
             </a>
             <button
+              type="button"
               onClick={() => setMobileMenuOpen(true)}
+              aria-expanded={mobileMenuOpen}
+              aria-controls="mobile-nav-drawer"
               className={`w-11 h-11 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-btn transition-colors ${
-                isTransparent ? "text-white hover:bg-white/10" : "text-ink-950 hover:bg-stone-100"
+                isTransparent ? "text-white hover:bg-navy-900" : "text-ink-950 hover:bg-stone-100"
               }`}
               aria-label="Open mobile navigation"
             >
@@ -702,16 +707,18 @@ export function Navbar() {
         </div>
       </header>
 
-      {/* Full-Screen Ink-950 Mobile Drawer */}
+      {/* Full-Screen Opaque Ink-950 Mobile Drawer */}
       {mobileMenuOpen && (
         <div
-          className="fixed inset-0 z-50 bg-ink-950/98 backdrop-blur-md text-white lg:hidden flex flex-col justify-between p-4 sm:p-6 animate-fade-up overflow-y-auto"
+          id="mobile-nav-drawer"
+          className="fixed inset-0 z-[60] bg-ink-950 text-white lg:hidden flex flex-col justify-between p-4 sm:p-6 overflow-y-auto"
           role="dialog"
           aria-modal="true"
+          aria-label="Mobile Navigation"
         >
           <div>
-            <div className="flex items-center justify-between pb-3.5 border-b border-navy-800">
-              <Link href="/" onClick={() => setMobileMenuOpen(false)} className="flex items-center gap-2.5">
+            <div className="flex items-center justify-between pb-4 border-b border-navy-800">
+              <Link href="/" onClick={() => setMobileMenuOpen(false)} className="flex items-center gap-2.5 min-w-0">
                 <div className="w-9 h-9 rounded-md bg-navy-950 border border-brass-500/40 overflow-hidden flex items-center justify-center shrink-0 shadow-inner">
                   <Image
                     src="/brand/logo.png"
@@ -722,26 +729,27 @@ export function Navbar() {
                     loading="lazy"
                   />
                 </div>
-                <div>
-                  <div className="font-serif font-bold text-lg text-white leading-tight">
+                <div className="min-w-0">
+                  <div className="font-serif font-bold text-lg text-white leading-tight truncate">
                     {siteConfig?.firmName || "ACORN"}
                   </div>
-                  <div className="text-[9px] font-semibold uppercase tracking-[0.16em] text-brass-300">
+                  <div className="text-[9px] font-semibold uppercase tracking-[0.16em] text-brass-300 truncate">
                     {siteConfig?.tagline || "Legal Consultants"}
                   </div>
                 </div>
               </Link>
               <button
+                type="button"
                 onClick={() => setMobileMenuOpen(false)}
-                className="w-10 h-10 min-w-[40px] min-h-[40px] flex items-center justify-center text-slate-400 hover:text-white rounded-lg hover:bg-navy-900 transition-colors"
+                className="w-11 h-11 min-w-[44px] min-h-[44px] flex items-center justify-center bg-navy-900 border border-navy-800 text-ivory-50 hover:text-white hover:border-brass-400 rounded-btn transition-colors shrink-0"
                 aria-label="Close menu"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
 
-            {/* Refined Proportional Navigation Links */}
-            <nav className="flex flex-col divide-y divide-navy-900/60 py-2 sm:py-3">
+            {/* Clean Contrast Navigation Links */}
+            <nav className="flex flex-col divide-y divide-navy-800/80 py-2 sm:py-3" aria-label="Mobile Navigation Links">
               {[
                 { name: "Home", href: "/" },
                 { name: "About Chambers", href: "/about" },
@@ -753,20 +761,21 @@ export function Navbar() {
                 { name: "Contact Chambers", href: "/contact" },
                 { name: "Fee Settlement", href: "/pay" },
               ].map((item) => {
-                const isActive = pathname === item.href;
+                const isActive =
+                  item.href === "/" ? pathname === "/" : pathname.startsWith(item.href);
                 return (
                   <Link
                     key={item.href}
                     href={item.href}
                     onClick={() => setMobileMenuOpen(false)}
-                    className={`font-serif text-[15px] sm:text-base font-medium transition min-h-[40px] flex items-center justify-between py-2 px-2.5 rounded-md ${
+                    className={`font-serif text-[16px] sm:text-lg font-medium transition min-h-[44px] flex items-center justify-between py-2.5 px-3 rounded-md ${
                       isActive
-                        ? "text-brass-300 bg-navy-900/80 font-semibold"
-                        : "text-slate-200 hover:text-brass-300 hover:bg-white/5"
+                        ? "text-brass-300 bg-navy-800 border-l-2 border-brass-400 font-semibold"
+                        : "text-ivory-50 hover:text-brass-300 hover:bg-navy-900"
                     }`}
                   >
                     <span>{item.name}</span>
-                    <span className="text-xs font-sans text-brass-500/60 select-none">&rsaquo;</span>
+                    <span className="text-sm font-sans text-brass-400 select-none" aria-hidden="true">&rsaquo;</span>
                   </Link>
                 );
               })}
@@ -774,19 +783,19 @@ export function Navbar() {
           </div>
 
           {/* Drawer Bottom Actions: Phone and Consultation */}
-          <div className="pt-3.5 border-t border-navy-800 space-y-2 sm:space-y-0 sm:grid sm:grid-cols-2 sm:gap-2.5">
+          <div className="pt-4 border-t border-navy-800 space-y-2.5 sm:space-y-0 sm:grid sm:grid-cols-2 sm:gap-3">
             <a
-              href={`tel:${BRAND_CONFIG.phone}`}
-              className="w-full min-h-[44px] px-3 py-2 rounded-btn border border-brass-500/40 text-ivory-50 flex items-center justify-center gap-2 font-semibold text-xs tracking-wider uppercase hover:bg-navy-800 transition"
+              href={`tel:${siteConfig?.receptionPhone || BRAND_CONFIG.phone}`}
+              className="w-full min-h-[44px] px-3 py-2.5 rounded-btn bg-navy-900 border border-brass-500/50 text-ivory-50 flex items-center justify-center gap-2 font-semibold text-xs tracking-wider uppercase hover:bg-navy-800 hover:border-brass-400 transition"
             >
               <Phone className="w-3.5 h-3.5 text-brass-300 shrink-0" />
-              <span className="truncate">Chambers: {BRAND_CONFIG.phone}</span>
+              <span className="truncate">Chambers: {siteConfig?.receptionPhone || BRAND_CONFIG.phone}</span>
             </a>
 
             <Link
               href="/request-service"
               onClick={() => setMobileMenuOpen(false)}
-              className="w-full min-h-[44px] px-3 py-2 rounded-btn bg-brass-500 text-ink-950 flex items-center justify-center font-bold text-xs tracking-wider uppercase hover:bg-brass-300 transition"
+              className="w-full min-h-[44px] px-3 py-2.5 rounded-btn bg-brass-500 text-ink-950 flex items-center justify-center font-bold text-xs tracking-wider uppercase hover:bg-brass-400 transition shadow-sm"
             >
               Request a Consultation
             </Link>
