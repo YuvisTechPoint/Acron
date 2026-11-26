@@ -92,7 +92,7 @@ const PATHWAYS: Pathway[] = [
 
 export default function JusticePathwaysPage() {
   return (
-    <div className="bg-surface min-h-screen py-10">
+    <div className="bg-surface min-h-screen pt-32 pb-16 sm:pt-36 sm:pb-20">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
         
         {/* Navigation Breadcrumb */}

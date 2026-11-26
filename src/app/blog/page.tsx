@@ -94,7 +94,7 @@ export default function BlogIndexPage() {
       </section>
 
       {/* Category Chips with Animated Underlines & Search */}
-      <section className="py-8 border-b border-border bg-stone-100/60 sticky top-20 z-30 backdrop-blur-md">
+      <section className="py-6 sm:py-8 border-b border-border bg-stone-100 sticky top-[90px] lg:top-[100px] z-30 shadow-xs">
         <div className="max-w-[1240px] mx-auto px-4 sm:px-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
           
           {/* Category Chips with Animated Underlines */}

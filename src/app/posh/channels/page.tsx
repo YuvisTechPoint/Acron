@@ -11,22 +11,12 @@ import {
   Lock,
   ArrowRight,
   ExternalLink,
-  LogOut,
 } from "lucide-react";
 
 export default function PoshChannelsPage() {
-  const [quickExitActive, setQuickExitActive] = useState(false);
   const [isLowBandwidth, setIsLowBandwidth] = useState(false);
   const [callbackNumber, setCallbackNumber] = useState("");
   const [callbackRequested, setCallbackRequested] = useState(false);
-
-  const triggerQuickExit = () => {
-    // Instantly purge session & redirect
-    if (typeof window !== "undefined") {
-      sessionStorage.clear();
-      window.location.replace("https://www.accuweather.com/en/in/kolkata/206690/weather-forecast/206690");
-    }
-  };
 
   const handleCallbackSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -36,21 +26,9 @@ export default function PoshChannelsPage() {
 
   return (
     <div className={`min-h-screen ${isLowBandwidth ? "bg-white text-black" : "bg-slate-50 text-slate-800"} pb-20`}>
-      {/* Quick Exit Emergency Floater */}
-      <div className="fixed top-20 right-4 z-50">
-        <button
-          onClick={triggerQuickExit}
-          className="bg-rose-700 hover:bg-rose-800 text-white font-bold text-xs uppercase tracking-wider px-3.5 py-2 rounded-full shadow-lg flex items-center gap-2 border border-rose-500 transition-all hover:scale-105"
-          title="Instantly leave this site and open weather news"
-        >
-          <LogOut className="w-3.5 h-3.5" />
-          <span>Quick Exit (Esc)</span>
-        </button>
-      </div>
-
       {/* Header */}
       <div className="bg-ink-950 text-white border-b border-navy-800">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 pb-10 sm:pt-32">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
               <div className="flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-brass-400 mb-2">
@@ -70,8 +48,8 @@ export default function PoshChannelsPage() {
               <button
                 onClick={() => setIsLowBandwidth(!isLowBandwidth)}
                 className={`px-3 py-1.5 rounded text-xs font-mono border transition ${isLowBandwidth
-                    ? "bg-amber-400 text-black border-amber-500 font-bold"
-                    : "bg-navy-900 text-brass-300 border-brass-500/30"
+                  ? "bg-amber-400 text-black border-amber-500 font-bold"
+                  : "bg-navy-900 text-brass-300 border-brass-500/30"
                   }`}
               >
                 {isLowBandwidth ? "2G Mode: ON" : "Toggle 2G Text Mode"}

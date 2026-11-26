@@ -74,7 +74,7 @@ function CampaignLandingContent() {
   };
 
   return (
-    <div className="bg-white min-h-screen py-16">
+    <div className="bg-white min-h-screen pt-32 pb-20 sm:pt-36">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
         {/* Campaign Hero */}
         <div className="text-center max-w-3xl mx-auto space-y-4">
@@ -155,7 +155,7 @@ function CampaignLandingContent() {
                   />
                 </div>
 
-                <div className="grid grid-cols-2 gap-3">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div>
                     <label className="block font-semibold text-ink mb-1">Email *</label>
                     <input

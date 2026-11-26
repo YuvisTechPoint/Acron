@@ -90,7 +90,7 @@ export function ChambersMap({
             onClick={() =>
               setMapType((prev) => (prev === "standard" ? "satellite" : "standard"))
             }
-            className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-btn text-[11px] font-semibold tracking-wide bg-navy-900/90 hover:bg-navy-800 text-ivory-50 border border-brass-500/40 backdrop-blur-md shadow-md transition"
+            className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-btn text-[11px] font-semibold tracking-wide bg-ink-950/95 hover:bg-navy-900 text-ivory-50 border border-brass-500/40 shadow-md transition"
             title="Toggle between Street Map and Satellite View"
             aria-label="Toggle map view mode"
           >
@@ -107,7 +107,7 @@ export function ChambersMap({
             rel="noopener noreferrer"
             title="Open directions to Camac Court in Apple Maps"
             aria-label="Open directions to Camac Court in Apple Maps"
-            className="px-3 py-1.5 rounded-btn text-[11px] font-medium bg-navy-950/90 hover:bg-navy-900 text-slate-200 hover:text-white border border-navy-800 backdrop-blur-md shadow-sm pointer-events-auto flex items-center gap-1.5 transition group"
+            className="px-3 py-1.5 rounded-btn text-[11px] font-medium bg-ink-950/95 hover:bg-navy-900 text-slate-200 hover:text-white border border-navy-800 shadow-sm pointer-events-auto flex items-center gap-1.5 transition group"
           >
             <MapPin className="w-3.5 h-3.5 text-brass-400 group-hover:scale-110 transition-transform" />
             <span className="text-white font-semibold">Camac Court</span>

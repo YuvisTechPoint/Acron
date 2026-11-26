@@ -24,11 +24,21 @@ export function QuickExit() {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [isPoshRoute]);
 
+  const isAdminOrConsole =
+    typeof pathname === "string" &&
+    (pathname.startsWith("/posh/admin") ||
+      pathname.startsWith("/posh/ic") ||
+      pathname.startsWith("/posh/org"));
+
   // Show persistently on POSH complainant and inquiry routes
   if (!isPoshRoute) return null;
 
   return (
-    <div className="fixed top-4 right-4 z-50 flex items-center gap-2">
+    <div
+      className={`fixed right-4 z-30 flex items-center gap-2 ${
+        isAdminOrConsole ? "top-4" : "top-[98px] lg:top-[108px]"
+      }`}
+    >
       <button
         type="button"
         onClick={triggerQuickExit}

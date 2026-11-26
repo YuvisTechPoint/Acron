@@ -441,12 +441,12 @@ export function LegalGuidanceAssistant() {
 
   return (
     <>
-      {/* Floating Trigger - Statutory Guidance Desk Icon with Green Pulse */}
+      {/* Floating Trigger - Statutory Guidance Desk Icon */}
       {!isOpen && (
         <button
           type="button"
           onClick={() => setIsOpen(true)}
-          className="fixed bottom-[74px] right-4 sm:bottom-[90px] sm:right-6 z-40 w-13 h-13 w-[52px] h-[52px] sm:w-14 sm:h-14 rounded-full p-0.5 bg-navy-950/95 backdrop-blur-md shadow-2xl hover:scale-105 active:scale-95 transition-all duration-200 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass-500 border border-brass-500/40 hover:border-brass-400 overflow-visible"
+          className="fixed bottom-[74px] right-4 sm:bottom-[90px] sm:right-6 z-40 w-[52px] h-[52px] sm:w-14 sm:h-14 rounded-full p-0.5 bg-ink-950 shadow-2xl hover:scale-105 active:scale-95 transition-all duration-200 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass-500 border border-brass-500/50 hover:border-brass-400 overflow-visible"
           aria-label="Open Statutory Guidance Support Desk"
         >
           {/* Custom Statutory Guidance Badge Icon */}
@@ -462,7 +462,7 @@ export function LegalGuidanceAssistant() {
           </span>
 
           {/* Hover Tooltip Label */}
-          <span className="pointer-events-none absolute right-full mr-3.5 top-1/2 -translate-y-1/2 px-3 py-1.5 rounded-md bg-navy-950/95 backdrop-blur-sm text-ivory-50 text-xs font-semibold tracking-wide border border-brass-500/40 shadow-xl opacity-0 group-hover:opacity-100 transition-all duration-200 whitespace-nowrap translate-x-2 group-hover:translate-x-0">
+          <span className="hidden sm:block pointer-events-none absolute right-full mr-3.5 top-1/2 -translate-y-1/2 px-3 py-1.5 rounded-md bg-ink-950 text-ivory-50 text-xs font-semibold tracking-wide border border-brass-500/40 shadow-xl opacity-0 group-hover:opacity-100 transition-all duration-200 whitespace-nowrap translate-x-2 group-hover:translate-x-0">
             Statutory Guidance
           </span>
         </button>
@@ -470,7 +470,7 @@ export function LegalGuidanceAssistant() {
 
       {/* Slide-Up Guidance Drawer */}
       {isOpen && (
-        <div className="fixed bottom-4 right-3 sm:bottom-6 sm:right-6 z-50 w-[calc(100vw-24px)] sm:w-[420px] max-w-[430px] h-[550px] max-h-[82vh] bg-white rounded-2xl border border-border shadow-2xl flex flex-col overflow-hidden animate-in fade-in slide-in-from-bottom-4 duration-300">
+        <div className="fixed bottom-4 right-3 sm:bottom-6 sm:right-6 z-[60] w-[calc(100vw-24px)] sm:w-[420px] max-w-[430px] h-[550px] max-h-[82vh] bg-white rounded-2xl border border-border shadow-2xl flex flex-col overflow-hidden animate-in fade-in slide-in-from-bottom-4 duration-300">
           
           {/* Header */}
           <div className="bg-navy-950 text-white px-4 py-3 sm:px-5 sm:py-3.5 flex items-center justify-between border-b border-brass-500/30">

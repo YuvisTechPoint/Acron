@@ -108,7 +108,7 @@ export default function DesignSystemPage() {
   ];
 
   return (
-    <div className="bg-ivory-50 min-h-screen py-16 sm:py-24">
+    <div className="bg-ivory-50 min-h-screen pt-32 pb-20 sm:pt-36 sm:pb-24">
       <div className="max-w-[1240px] mx-auto px-4 sm:px-6 space-y-20">
         
         {/* Page Header */}

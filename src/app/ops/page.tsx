@@ -54,7 +54,7 @@ export default function RootOpsPage() {
   ];
 
   return (
-    <div className="bg-ivory-50 min-h-screen py-8 text-ink">
+    <div className="bg-ivory-50 min-h-screen pt-32 pb-16 sm:pt-36 sm:pb-20 text-ink">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
         
         {/* Header Ribbon */}

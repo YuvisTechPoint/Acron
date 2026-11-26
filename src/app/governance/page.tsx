@@ -77,7 +77,7 @@ export default function GovernanceHubPage() {
   ];
 
   return (
-    <div className="bg-surface min-h-screen py-12 sm:py-16">
+    <div className="bg-surface min-h-screen pt-32 pb-16 sm:pt-36 sm:pb-20">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
         {/* Navigation Breadcrumb */}
         <div className="flex items-center justify-between">

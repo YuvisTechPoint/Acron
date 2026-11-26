@@ -85,7 +85,7 @@ export function ChambersLeadership() {
     <section className="bg-ivory-50 py-24 sm:py-32 border-b border-border relative overflow-hidden">
       {/* Ambient background watermark */}
       <div className="max-w-[1240px] mx-auto px-4 sm:px-6 space-y-16 relative z-10">
-        
+
         {/* Section Header */}
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6">
           <SectionHeading
@@ -102,7 +102,7 @@ export function ChambersLeadership() {
         {/* 1. Principal Counsel Spotlight Card (Adv. Rajesh Telge) */}
         <div className="bg-white rounded-2xl border border-brass-500/30 p-8 sm:p-10 lg:p-12 shadow-card hover:border-brass-400 transition-all duration-300">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
-            
+
             {/* Left: Framed High-Res Counsel Portrait */}
             <div className="lg:col-span-5 flex justify-center">
               <div className="relative w-full max-w-[340px] sm:max-w-[380px] aspect-[4/5] rounded-2xl overflow-hidden border-2 border-brass-500/40 shadow-raised bg-navy-950 group">
@@ -114,9 +114,9 @@ export function ChambersLeadership() {
                   className="object-cover object-top group-hover:scale-105 transition-transform duration-700"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-navy-950 via-navy-950/20 to-transparent" />
-                
+
                 {/* Floating Bottom Counsel Title Overlay */}
-                <div className="absolute bottom-4 left-4 right-4 p-4 rounded-xl bg-navy-900/90 backdrop-blur-md border border-brass-500/30 text-white space-y-1">
+                <div className="absolute bottom-4 left-4 right-4 p-4 rounded-xl bg-ink-950/95 border border-brass-500/35 text-white space-y-1 shadow-lg">
                   <div className="flex items-center justify-between text-xs">
                     <span className="text-brass-300 font-semibold tracking-wider uppercase text-[10px]">
                       {COUNSEL_MEMBERS[0].badge}
@@ -143,11 +143,11 @@ export function ChambersLeadership() {
                   <Award className="w-3.5 h-3.5 text-brass-600" />
                   <span>{COUNSEL_MEMBERS[0].enrollment}</span>
                 </div>
-                
+
                 <h3 className="font-serif text-3xl sm:text-4xl font-bold text-ink-950 leading-tight">
                   {COUNSEL_MEMBERS[0].name}
                 </h3>
-                
+
                 <p className="font-sans text-xs sm:text-sm font-semibold uppercase tracking-wider text-brass-700">
                   {COUNSEL_MEMBERS[0].role}
                 </p>

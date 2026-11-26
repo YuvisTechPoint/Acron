@@ -59,7 +59,7 @@ export default function PoshAnonymousPage() {
     <div className="min-h-screen bg-slate-50 text-slate-800 pb-20">
       {/* Header */}
       <div className="bg-ink-950 text-white border-b border-navy-800">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 pb-10 sm:pt-32">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
               <div className="flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-brass-400 mb-2">

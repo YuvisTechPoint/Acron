@@ -344,7 +344,7 @@ export default function AboutPage() {
                     <div className="absolute inset-0 bg-gradient-to-t from-navy-950 via-navy-950/25 to-transparent" />
 
                     {/* Floating Bottom Card */}
-                    <div className="absolute bottom-3 left-3 right-3 p-3.5 rounded-xl bg-navy-900/90 backdrop-blur-md border border-brass-500/30 text-white space-y-1">
+                    <div className="absolute bottom-3 left-3 right-3 p-3.5 rounded-xl bg-ink-950/95 border border-brass-500/35 text-white space-y-1 shadow-lg">
                       <div className="flex items-center justify-between text-xs">
                         <span className="text-brass-300 font-semibold tracking-wider uppercase text-[10px]">
                           Practice Lead
